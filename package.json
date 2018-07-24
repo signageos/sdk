@@ -1,0 +1,48 @@
+{
+  "name": "@signageos/test",
+  "version": "0.0.0",
+  "main": "./dist",
+  "files": [
+    "tools/npm-login.sh",
+    "dist",
+    "README.md",
+    "package.json",
+    "package-lock.json"
+  ],
+  "repository": {
+    "url": "git@gitlab.com:signageos/test",
+    "type": "git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "lint": "tslint --config node_modules/hugport-codestyle/tslint.json {src,tests}/**/*.{ts,tsx}",
+    "prebuild": "rm -rf dist/*",
+    "prepublish": "npm run prebuild && npm run build",
+    "test": "NODE_ENV=test mocha --opts mocha.opts",
+    "watch": "tsc --watch"
+  },
+  "author": "Michael Zabka <zabka.michael@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": "^8.9.0",
+    "npm": "5.3.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.signageos.io",
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.41",
+    "@types/moment-timezone": "^0.5.4",
+    "@types/node": "8.5.0",
+    "@types/should": "^8.3.0",
+    "@types/webpack": "^3.8.1",
+    "hugport-codestyle": "^0.0.8",
+    "lodash": "^4.17.10",
+    "mocha": "^3.3.0",
+    "should": "^11.2.1",
+    "ts-node": "^3.0.4",
+    "tslint": "^5.1.0",
+    "typescript": "^2.3.2"
+  }
+}
