@@ -5,6 +5,7 @@
   "files": [
     "tools/npm-login.sh",
     "dist",
+    "config",
     "README.md",
     "package.json",
     "package-lock.json"
