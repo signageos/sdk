@@ -16,10 +16,16 @@ try {
 
 module.exports = {
 	environment,
+	version: packageConfig.version,
 	configPath: __dirname,
 	paths: {
 		rootPath,
 		testsPath,
 		distPath,
+	},
+	apiUrl: process.env.api_url,
+	auth: {
+		clientId: process.env.auth_client_id,
+		secret: process.env.auth_secret,
 	},
 };
