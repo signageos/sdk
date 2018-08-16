@@ -74,7 +74,7 @@ export default class TimingManagement {
 		const response = await getResource(this.options, TimingManagement.RESOURCE, filter);
 		const timingsData: ITiming[] = JSON.parse(await response.text(), deserializeJSON);
 		if (response.status === 200) {
-			return timingsData.map((timingData: ITiming) => new Timing(timingData, this.timingCommandManagement));
+			return timingsData.map((timingData: ITiming) => new Timing(timingData, this, this.timingCommandManagement));
 		} else {
 			throw new RequestError(response.status, timingsData);
 		}
@@ -84,7 +84,7 @@ export default class TimingManagement {
 		const response = await getResource(this.options, TimingManagement.RESOURCE + '/' + timingUid);
 		const timingData: ITiming = JSON.parse(await response.text(), deserializeJSON);
 		if (response.status === 200) {
-			return new Timing(timingData, this.timingCommandManagement);
+			return new Timing(timingData, this, this.timingCommandManagement);
 		} else {
 			throw new RequestError(response.status, timingData);
 		}

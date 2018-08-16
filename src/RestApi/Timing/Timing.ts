@@ -3,6 +3,7 @@ import ITiming from "./ITiming";
 import TimingCommandManagement from "./Command/TimingCommandManagement";
 import { TimingLoaded } from "@signageos/front-applet/dist/Monitoring/Timing/timingCommands";
 import waitUntil from "../../Timer/waitUntil";
+import TimingManagement from "./TimingManagement";
 
 export default class Timing implements ITiming {
 
@@ -21,6 +22,7 @@ export default class Timing implements ITiming {
 
 	constructor(
 		timingData: ITiming,
+		private timingManagement: TimingManagement,
 		private timingCommandManagement: TimingCommandManagement,
 	) {
 		for (const key in timingData) {
@@ -39,5 +41,9 @@ export default class Timing implements ITiming {
 			});
 			return timingCommands.length > 0;
 		});
+	}
+
+	public async delete() {
+		await this.timingManagement.delete(this.uid);
 	}
 }
