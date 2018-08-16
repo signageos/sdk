@@ -1,9 +1,30 @@
 
+import { JSDOM } from 'jsdom';
+import * as _ from 'lodash';
 import ITiming from "./ITiming";
 import TimingCommandManagement from "./Command/TimingCommandManagement";
 import { TimingLoaded } from "@signageos/front-applet/dist/Monitoring/Timing/timingCommands";
 import waitUntil from "../../Timer/waitUntil";
 import TimingManagement from "./TimingManagement";
+import { HtmlSnapshotTaken, TakeHtmlSnapshot } from "@signageos/front-applet/dist/Monitoring/Html/htmlCommands";
+import wait from "../../Timer/wait";
+import { ConsoleLogged } from '@signageos/front-applet/dist/Monitoring/Console/consoleCommands';
+import TimingCommand from './Command/TimingCommand';
+
+export interface IHtml {
+	getDOMDocument(): Promise<HTMLDocument>;
+}
+
+type ILogOperations = {
+	getAll(since?: Date): Promise<string[]>;
+};
+export interface IConsole {
+	log: ILogOperations;
+	error: ILogOperations;
+	warn: ILogOperations;
+	info: ILogOperations;
+	debug: ILogOperations;
+}
 
 export default class Timing implements ITiming {
 
@@ -19,6 +40,51 @@ export default class Timing implements ITiming {
 	public readonly configuration: ITiming['configuration'];
 	public readonly position: ITiming['position'];
 	public readonly finishEvent: ITiming['finishEvent'];
+
+	public readonly html: IHtml = {
+		getDOMDocument: async () => {
+			const takeHtmlSnapshotCommand = await this.timingCommandManagement.create<TakeHtmlSnapshot>({
+				deviceUid: this.deviceUid,
+				appletUid: this.appletUid,
+				commandPayload: {
+					type: TakeHtmlSnapshot,
+				}
+			});
+			while (true) {
+				const timingCommands = await this.timingCommandManagement.getList<HtmlSnapshotTaken>({
+					deviceUid: this.deviceUid,
+					appletUid: this.appletUid,
+					receivedSince: takeHtmlSnapshotCommand.receivedAt.toISOString(),
+					type: HtmlSnapshotTaken,
+				});
+				if (timingCommands.length > 0) {
+					return new JSDOM(timingCommands[0].commandPayload.html).window.document;
+				}
+				await wait(500);
+			}
+		},
+	};
+	public readonly console: IConsole = ['log', 'error', 'warn', 'info', 'debug'].reduce<any>(
+		(consoleMemo: IConsole, level: string) => ({
+			...consoleMemo,
+			[level]: {
+				getAll: async (since: Date = this.updatedAt) => {
+					const timingCommands = await this.timingCommandManagement.getList<ConsoleLogged>({
+						deviceUid: this.deviceUid,
+						appletUid: this.appletUid,
+						receivedSince: since.toISOString(),
+						type: ConsoleLogged,
+					});
+					return _.flatMap(
+						timingCommands
+							.filter((timingCommand: TimingCommand<ConsoleLogged>) => timingCommand.commandPayload.level === level),
+						(timingCommand: TimingCommand<ConsoleLogged>) => timingCommand.commandPayload.messages,
+					);
+				},
+			}
+		}),
+		{},
+	);
 
 	constructor(
 		timingData: ITiming,
