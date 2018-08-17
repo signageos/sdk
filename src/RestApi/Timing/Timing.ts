@@ -10,9 +10,23 @@ import { HtmlSnapshotTaken, TakeHtmlSnapshot } from "@signageos/front-applet/dis
 import wait from "../../Timer/wait";
 import { ConsoleLogged } from '@signageos/front-applet/dist/Monitoring/Console/consoleCommands';
 import TimingCommand from './Command/TimingCommand';
+import {
+	OfflineCacheListFiles,
+	OfflineCacheFilesListed,
+	OfflineCacheLoadFile,
+	OfflineCacheFileLoaded,
+} from '@signageos/front-applet/dist/Monitoring/Offline/Cache/offlineCacheCommands';
+import IFile from '@signageos/front-applet/dist/FrontApplet/Offline/Cache/IFile';
 
 export interface IHtml {
 	getDOMDocument(): Promise<HTMLDocument>;
+}
+
+export interface IOffline {
+	cache: {
+		listFiles(): Promise<string[]>;
+		loadFile(uid: string): Promise<IFile>;
+	};
 }
 
 type ILogOperations = {
@@ -85,6 +99,53 @@ export default class Timing implements ITiming {
 		}),
 		{},
 	);
+	public readonly offline: IOffline = {
+		cache: {
+			listFiles: async () => {
+				const listFilesCommand = await this.timingCommandManagement.create<OfflineCacheListFiles>({
+					deviceUid: this.deviceUid,
+					appletUid: this.appletUid,
+					commandPayload: {
+						type: OfflineCacheListFiles,
+					}
+				});
+				while (true) {
+					const filesListedCommands = await this.timingCommandManagement.getList<OfflineCacheFilesListed>({
+						deviceUid: this.deviceUid,
+						appletUid: this.appletUid,
+						receivedSince: listFilesCommand.receivedAt.toISOString(),
+						type: OfflineCacheFilesListed,
+					});
+					if (filesListedCommands.length > 0) {
+						return filesListedCommands[0].commandPayload.fileUids;
+					}
+					await wait(500);
+				}
+			},
+			loadFile: async (uid: string) => {
+				const loadFileCommand = await this.timingCommandManagement.create<OfflineCacheLoadFile>({
+					deviceUid: this.deviceUid,
+					appletUid: this.appletUid,
+					commandPayload: {
+						type: OfflineCacheLoadFile,
+						uid,
+					}
+				});
+				while (true) {
+					const fileLoadedCommands = await this.timingCommandManagement.getList<OfflineCacheFileLoaded>({
+						deviceUid: this.deviceUid,
+						appletUid: this.appletUid,
+						receivedSince: loadFileCommand.receivedAt.toISOString(),
+						type: OfflineCacheFileLoaded,
+					});
+					if (fileLoadedCommands.length > 0) {
+						return fileLoadedCommands[0].commandPayload.file;
+					}
+					await wait(500);
+				}
+			},
+		},
+	};
 
 	constructor(
 		timingData: ITiming,
