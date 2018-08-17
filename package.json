@@ -47,6 +47,7 @@
     "typescript": "^2.9.2"
   },
   "dependencies": {
+    "@signageos/front-applet": "^1.3.2-master.28544499",
     "lodash": "^4.17.10",
     "node-fetch": "^2.2.0"
   }
