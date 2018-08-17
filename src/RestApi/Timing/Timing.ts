@@ -16,6 +16,8 @@ import {
 	OfflineCacheLoadFile,
 	OfflineCacheFileLoaded,
 } from '@signageos/front-applet/dist/Monitoring/Offline/Cache/offlineCacheCommands';
+import { VideoStateChanged } from '@signageos/front-applet/dist/Monitoring/Video/videoCommands';
+import IVideoProperties from '@signageos/front-applet/dist/FrontApplet/Video/IVideoProperties';
 import IFile from '@signageos/front-applet/dist/FrontApplet/Offline/Cache/IFile';
 
 export interface IHtml {
@@ -39,6 +41,18 @@ export interface IConsole {
 	info: ILogOperations;
 	debug: ILogOperations;
 }
+
+type IVideoOperations = {
+	getAll(since?: Date): Promise<IVideoProperties[]>;
+};
+export interface IVideo {
+	played: IVideoOperations;
+	stopped: IVideoOperations;
+	paused: IVideoOperations;
+	ended: IVideoOperations;
+	error: IVideoOperations;
+}
+const videoStates: VideoStateChanged['state'][] = ['play', 'stop', 'pause', 'ended', 'error'];
 
 export default class Timing implements ITiming {
 
@@ -146,6 +160,37 @@ export default class Timing implements ITiming {
 			},
 		},
 	};
+	public readonly video: IVideo = videoStates.reduce<any>(
+		(videoMemo: IVideo, state: VideoStateChanged['state']) => ({
+			...videoMemo,
+			[state]: {
+				getAll: async (since: Date = this.updatedAt) => {
+					const videoStateChangedCommands = await this.timingCommandManagement.getList<VideoStateChanged>({
+						deviceUid: this.deviceUid,
+						appletUid: this.appletUid,
+						receivedSince: since.toISOString(),
+						type: VideoStateChanged,
+					});
+					const videosByStateMap = _.groupBy(
+						videoStateChangedCommands,
+						(videoStateChangedCommand: TimingCommand<VideoStateChanged>) => videoStateChangedCommand.commandPayload.state,
+					);
+					const videosOfCurrentState = videosByStateMap[state].map(
+						(videoStateChangedCommand: TimingCommand<VideoStateChanged>) => _.pick(
+							videoStateChangedCommand.commandPayload,
+							'uri',
+							'x',
+							'y',
+							'width',
+							'height',
+						)
+					);
+					return videosOfCurrentState;
+				},
+			}
+		}),
+		{},
+	);
 
 	constructor(
 		timingData: ITiming,
