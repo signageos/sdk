@@ -8,3 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - Initialize test library
+- Package is available in npm registry https://www.npmjs.com/package/@signageos/test
+- Timing REST API
+- Timing features: HTML, console, offline cache, videos
+- Timing Command REST API
