@@ -10,9 +10,7 @@ const distPath = rootPath + '/dist';
 try {
 	const localEnv = require('./env.' + environment + '.json');
 	process.env = assign(process.env, localEnv);
-} catch (e) {
-	console.info(`Do not use override env.${environment}.json file`);
-}
+} catch (e) {}
 
 module.exports = {
 	environment,
