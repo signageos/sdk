@@ -1,6 +1,6 @@
 {
   "name": "@signageos/test",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "./dist",
   "files": [
     "tools/npm-login.sh",
