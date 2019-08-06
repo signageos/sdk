@@ -3,22 +3,22 @@ import { JSDOM } from 'jsdom';
 import * as _ from 'lodash';
 import ITiming from "./ITiming";
 import TimingCommandManagement from "./Command/TimingCommandManagement";
-import { TimingLoaded } from "@signageos/front-applet/dist/Monitoring/Timing/timingCommands";
+import { TimingLoaded } from "@signageos/front-applet/es6/Monitoring/Timing/timingCommands";
 import waitUntil from "../../Timer/waitUntil";
 import TimingManagement from "./TimingManagement";
-import { HtmlSnapshotTaken, TakeHtmlSnapshot } from "@signageos/front-applet/dist/Monitoring/Html/htmlCommands";
+import { HtmlSnapshotTaken, TakeHtmlSnapshot } from "@signageos/front-applet/es6/Monitoring/Html/htmlCommands";
 import wait from "../../Timer/wait";
-import { ConsoleLogged } from '@signageos/front-applet/dist/Monitoring/Console/consoleCommands';
+import { ConsoleLogged } from '@signageos/front-applet/es6/Monitoring/Console/consoleCommands';
 import TimingCommand from './Command/TimingCommand';
 import {
 	OfflineCacheListFiles,
 	OfflineCacheFilesListed,
 	OfflineCacheLoadFile,
 	OfflineCacheFileLoaded,
-} from '@signageos/front-applet/dist/Monitoring/Offline/Cache/offlineCacheCommands';
-import { VideoStateChanged } from '@signageos/front-applet/dist/Monitoring/Video/videoCommands';
-import IVideoProperties from '@signageos/front-applet/dist/FrontApplet/Video/IVideoProperties';
-import IFile from '@signageos/front-applet/dist/FrontApplet/Offline/Cache/IFile';
+} from '@signageos/front-applet/es6/Monitoring/Offline/Cache/offlineCacheCommands';
+import { VideoStateChanged } from '@signageos/front-applet/es6/Monitoring/Video/videoCommands';
+import IVideoProperties from '@signageos/front-applet/es6/FrontApplet/Video/IVideoProperties';
+import IFile from '@signageos/front-applet/es6/FrontApplet/Offline/Cache/IFile';
 
 export interface IHtml {
 	getDOMDocument(): Promise<HTMLDocument>;
