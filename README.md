@@ -1,3 +1,3 @@
-# Test Library
+# SDK Library
 
-Library which allow to fully test signageOS applets, devices, management & monitoring
+Library which allow to fully manage signageOS applets, devices, management & monitoring using JS

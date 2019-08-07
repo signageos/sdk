@@ -1,5 +1,5 @@
 {
-  "name": "@signageos/test",
+  "name": "@signageos/sdk",
   "version": "0.1.0",
   "main": "./dist",
   "files": [
@@ -11,7 +11,7 @@
     "package-lock.json"
   ],
   "repository": {
-    "url": "git@gitlab.com:signageos/test",
+    "url": "git@gitlab.com:signageos/sdk",
     "type": "git"
   },
   "scripts": {
