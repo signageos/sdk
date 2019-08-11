@@ -1,16 +1,11 @@
-
 const path = require('path');
-const { assign } = require('lodash');
 const packageConfig = require('../package.json');
 const environment = process.env.NODE_ENV || 'dev';
 const rootPath = __dirname + path.normalize('/..');
 const testsPath = rootPath + '/tests';
 const distPath = rootPath + '/dist';
 
-try {
-	const localEnv = require('./env.' + environment + '.json');
-	process.env = assign(process.env, localEnv);
-} catch (e) {}
+require('dotenv').config();
 
 module.exports = {
 	environment,
@@ -21,9 +16,9 @@ module.exports = {
 		testsPath,
 		distPath,
 	},
-	apiUrl: process.env.api_url,
+	apiUrl: process.env.SOS_API_URL,
 	auth: {
-		clientId: process.env.auth_client_id,
-		secret: process.env.auth_secret,
+		clientId: process.env.SOS_AUTH_CLIENT_ID,
+		secret: process.env.SOS_AUTH_SECRET,
 	},
 };
