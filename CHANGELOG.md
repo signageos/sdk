@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Package was renamed to @signageos/sdk instead of @signageos/test
 
+### Fixed
+- Use environment variables SOS_API_URL, SOS_AUTH_CLIENT_ID & SOS_AUTH_SECRET instead
+
 ## [0.1.0] - 2018-08-23
 ### Added
 - Initialize sdk library
