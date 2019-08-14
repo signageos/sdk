@@ -1,4 +1,4 @@
-image: $CI_REGISTRY/signageos/docker-node:8.9.0-alpine-build
+image: $CI_REGISTRY/signageos/docker-node:10.14.2-alpine-build
 services:
   - docker:dind
 
@@ -18,7 +18,6 @@ cache:
 before_script:
   - TAG=$([ "$CI_COMMIT_TAG" == "" ] && echo $CI_COMMIT_REF_NAME || echo "latest")
   - VERSION=`cat ./VERSION`
-  - tools/npm-login.sh
   - npx @signageos/lib@just-tools version-upgrade $VERSION
   - mkdir -p dist
   - npm install --tag $TAG
@@ -58,7 +57,7 @@ build:
   dependencies:
     - prepare
   script:
-    - npm run prepublish --production
+    - npm run prepare --production
   artifacts:
     when: on_success
     paths:
@@ -82,7 +81,6 @@ publish:npm-public:
   script:
     - NPM_REGISTRY_URL=https://registry.npmjs.org/
     - NPM_AUTH_TOKEN=$PUBLIC_NPM_AUTH_TOKEN
-    - tools/npm-login.sh
     - node -e 'require("fs").writeFileSync("./package.json", JSON.stringify({ ...require("./package"), "publishConfig":{"registry":"https://registry.npmjs.org/","access":"public" } }, undefined, 2) + "\n")'
     - npm publish --ignore-scripts --tag $TAG
 
