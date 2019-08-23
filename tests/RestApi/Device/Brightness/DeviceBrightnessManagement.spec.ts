@@ -2,11 +2,10 @@ import * as should from 'should';
 import * as nock from "nock";
 import DeviceBrightnessManagement from "../../../../src/RestApi/Device/Brightness/DeviceBrightnessManagement";
 import IDeviceBrightness, {IDeviceBrightnessUpdatable} from "../../../../src/RestApi/Device/Brightness/IDeviceBrightness";
-import {errorRespMessage, nockOpts} from "../../helper";
+import {errorResp, errorRespMessage, nockOpts} from "../../helper";
 
 describe('DeviceBrightnessManagement', () => {
 
-	const invalidResp: any = {"error": "some error"};
 	const validGetResp: IDeviceBrightness = {
 		uid: 'someUid',
 		deviceUid: '3caXXX589b',
@@ -32,9 +31,9 @@ describe('DeviceBrightnessManagement', () => {
 			},
 		})
 		.get('/v1/device/someUid/brightness').reply(200, validGetResp)
-		.get('/v1/device/shouldFail/brightness').reply(500, invalidResp)
+		.get('/v1/device/shouldFail/brightness').reply(500, errorResp)
 		.put('/v1/device/someUid/brightness', validSetReq).reply(200, 'OK')
-		.put('/v1/device/shouldFail/brightness', validSetReq).reply(500, {"error": "some error"});
+		.put('/v1/device/shouldFail/brightness', validSetReq).reply(500, errorResp);
 
 	describe('getBrightness', () => {
 		it('should parse the response', async () => {
