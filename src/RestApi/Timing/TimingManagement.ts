@@ -1,9 +1,8 @@
 
 import wait from '../../Timer/wait';
-import { postResource, putResource, deleteResource, getResource, deserializeJSON } from '../helper';
+import {postResource, putResource, deleteResource, getResource, parseJSONResponse} from '../requester';
 import IOptions from "../IOptions";
 import ITiming, { ITimingUpdatable, ITimingCreateOnly } from "./ITiming";
-import RequestError from '../Error/RequestError';
 import UnsupportedError from '../Error/UnsupportedError';
 import ITimingFilter from './ITimingFilter';
 import Timing from './Timing';
@@ -21,72 +20,55 @@ export default class TimingManagement {
 
 	constructor(private options: IOptions) {}
 
-	public async create(data: ITimingCreateOnly & ITimingUpdatable) {
-		if (this.options.version === 'v1') {
-			const response = await postResource(this.options, TimingManagement.RESOURCE, data);
-			const body = await response.text();
-			if (response.status === 200) {
-				// v1 does not respond created uid
-				let timing: Timing | undefined;
-				do {
-					await wait(500);
-					const timings = await this.getList({ deviceUid: data.deviceUid });
-					timing = timings.find((t: Timing) => this.areDataSame(t, data));
-				} while (!timing);
-				return timing;
-			} else {
-				throw new RequestError(response.status, body);
-			}
-		} else {
-			throw new UnsupportedError(`API version ${this.options.version} is not implemented`);
-		}
+	public async create(data: ITimingCreateOnly & ITimingUpdatable): Promise<Timing> {
+		this.assertV1();
+
+		await postResource(this.options, TimingManagement.RESOURCE, data);
+		// v1 does not respond created uid
+		let timing: Timing | undefined;
+		do {
+			await wait(500);
+			const timings = await this.getList({ deviceUid: data.deviceUid });
+			timing = timings.find((t: Timing) => this.areDataSame(t, data));
+		} while (!timing);
+
+		return timing;
 	}
 
-	public async update(timingUid: string, data: ITimingUpdatable) {
-		if (this.options.version === 'v1') {
-			const response = await putResource(this.options, TimingManagement.RESOURCE + '/' + timingUid, data);
-			const body = await response.text();
-			if (response.status === 200) {
-				// v1 does not respond created uid
-				let timing: Timing;
-				do {
-					await wait(500);
-					timing = await this.get(timingUid);
-				} while (!this.areDataSame(timing, { ...data, appletUid: timing.appletUid, deviceUid: timing.deviceUid }));
-				return timing;
-			} else {
-				throw new RequestError(response.status, body);
-			}
-		} else {
-			throw new UnsupportedError(`API version ${this.options.version} is not implemented`);
-		}
+	public async update(timingUid: string, data: ITimingUpdatable): Promise<Timing> {
+		this.assertV1();
+
+		await putResource(this.options, TimingManagement.RESOURCE + '/' + timingUid, data);
+		// v1 does not respond created uid
+		let timing: Timing;
+		do {
+			await wait(500);
+			timing = await this.get(timingUid);
+		} while (!this.areDataSame(timing, { ...data, appletUid: timing.appletUid, deviceUid: timing.deviceUid }));
+
+		return timing;
 	}
 
 	public async delete(timingUid: string) {
-		const response = await deleteResource(this.options, TimingManagement.RESOURCE + '/' + timingUid);
-		const body = await response.text();
-		if (response.status !== 200) {
-			throw new RequestError(response.status, body);
-		}
+		await deleteResource(this.options, TimingManagement.RESOURCE + '/' + timingUid);
 	}
 
-	public async getList(filter: ITimingFilter = {}) {
+	public async getList(filter: ITimingFilter = {}): Promise<Timing[]> {
 		const response = await getResource(this.options, TimingManagement.RESOURCE, filter);
-		const timingsData: ITiming[] = JSON.parse(await response.text(), deserializeJSON);
-		if (response.status === 200) {
-			return timingsData.map((timingData: ITiming) => new Timing(timingData, this, this.timingCommandManagement));
-		} else {
-			throw new RequestError(response.status, timingsData);
-		}
+		const timingsData: ITiming[] = await parseJSONResponse(response);
+
+		return timingsData.map((timingData: ITiming) => new Timing(timingData, this, this.timingCommandManagement));
 	}
 
-	public async get(timingUid: string) {
+	public async get(timingUid: string): Promise<Timing> {
 		const response = await getResource(this.options, TimingManagement.RESOURCE + '/' + timingUid);
-		const timingData: ITiming = JSON.parse(await response.text(), deserializeJSON);
-		if (response.status === 200) {
-			return new Timing(timingData, this, this.timingCommandManagement);
-		} else {
-			throw new RequestError(response.status, timingData);
+
+		return new Timing(await parseJSONResponse(response), this, this.timingCommandManagement);
+	}
+
+	private assertV1(): void {
+		if (this.options.version !== 'v1') {
+			throw new UnsupportedError(`API version ${this.options.version} is not implemented`);
 		}
 	}
 

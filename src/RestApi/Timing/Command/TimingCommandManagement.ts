@@ -1,5 +1,5 @@
 
-import { getResource, deserializeJSON, postResource } from '../../helper';
+import {getResource, postResource, parseJSONResponse} from '../../requester';
 import IOptions from "../../IOptions";
 import ITimingCommand, { ITimingCommandPayload, ITimingCommandCreateOnly } from "./ITimingCommand";
 import RequestError from '../../Error/RequestError';
@@ -28,7 +28,7 @@ export default class TimingCommandManagement {
 				+ '/' + TimingCommandManagement.RESOURCE[2],
 			filter,
 		);
-		const timingCommandsData: ITimingCommand<TCommandPayload>[] = JSON.parse(await response.text(), deserializeJSON);
+		const timingCommandsData: ITimingCommand<TCommandPayload>[] = await parseJSONResponse(response);
 		if (response.status === 200) {
 			return timingCommandsData
 				.map((timingCommandData: ITimingCommand<TCommandPayload>) => new TimingCommand<TCommandPayload>(timingCommandData));
@@ -51,7 +51,7 @@ export default class TimingCommandManagement {
 				+ '/' + TimingCommandManagement.RESOURCE[2]
 				+ '/' + timingCommandUid,
 		);
-		const timingCommandData: ITimingCommand<TCommandPayload> = JSON.parse(await response.text(), deserializeJSON);
+		const timingCommandData: ITimingCommand<TCommandPayload> = await parseJSONResponse(response);
 		if (response.status === 200) {
 			return new TimingCommand<TCommandPayload>(timingCommandData);
 		} else {
