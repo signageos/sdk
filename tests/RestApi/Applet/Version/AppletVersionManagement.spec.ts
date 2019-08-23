@@ -9,19 +9,18 @@ import AppletVersionManagement from "../../../../src/RestApi/Applet/Version/Appl
 
 describe('AppletVersionManagement', () => {
 
-	const validGetResp: IAppletVersion =
-		{
-			appletUid: "appletUid",
-			version: "1.1.0",
-			createdAt: new Date("2018-05-10T09:07:53.375Z"),
-			updatedAt: new Date("2018-05-10T09:09:47.466Z"),
-			binary: "some binary data",
-			frontAppletVersion: "1.1.1",
-			publishedSince: null,
-			deprecatedSince: null,
-			builtSince: new Date("2018-05-10T09:09:51.651Z"),
+	const validGetResp: IAppletVersion = {
+		appletUid: "appletUid",
+		version: "1.1.0",
+		createdAt: new Date("2018-05-10T09:07:53.375Z"),
+		updatedAt: new Date("2018-05-10T09:09:47.466Z"),
+		binary: "some binary data",
+		frontAppletVersion: "1.1.1",
+		publishedSince: null,
+		deprecatedSince: null,
+		builtSince: new Date("2018-05-10T09:09:51.651Z"),
 
-		};
+	};
 	const validListResp: IAppletVersion[] = [validGetResp];
 	const validCreateReq: IAppletVersionCreatable = {
 		version: "1.1.0",
