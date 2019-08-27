@@ -29,7 +29,7 @@ describe('DeviceVolumeManagement', () => {
 		.put('/v1/device/someUid/volume', validSetReq).reply(200, {volume: 90})
 		.put('/v1/device/shouldFail/volume', validSetReq).reply(500, errorResp);
 
-	describe('get device Volume installs', () => {
+	describe('get device volume', () => {
 		it('should parse the response', async () => {
 			const dvm = new DeviceVolumeManagement(nockOpts);
 			const vol = await dvm.get('someUid');
@@ -47,7 +47,7 @@ describe('DeviceVolumeManagement', () => {
 		});
 	});
 
-	describe('set device Volume installs', () => {
+	describe('set device volume', () => {
 		it('should set brightness correctly', async () => {
 			const dvm = new DeviceVolumeManagement(nockOpts);
 			const currentVol = await dvm.set('someUid', validSetReq);
