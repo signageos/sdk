@@ -4,6 +4,10 @@ import { stringify } from 'querystring';
 import { RequestInit } from "node-fetch";
 import IOptions from "./IOptions";
 import RequestError from "./Error/RequestError";
+import NotFoundError from "./Error/NotFoundError";
+import TooMAnyRequestsError from "./Error/TooMAnyRequestsError";
+import AuthenticationError from "./Error/AuthenticationError";
+import InternalApiError from "./Error/InternalApiError";
 
 export function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options: IOptions, data?: any): RequestInit {
 	return {
@@ -57,5 +61,17 @@ async function doRequest(url: string | Request, init?: RequestInit): Promise<Res
 		return resp;
 	}
 
-	throw new RequestError(resp.status, await parseJSONResponse(resp));
+	const body = await parseJSONResponse(resp);
+	switch (resp.status) {
+		case 403:
+			throw new AuthenticationError(resp.status, body);
+		case 404:
+			throw new NotFoundError(resp.status, body);
+		case 429:
+			throw new TooMAnyRequestsError(resp.status, body);
+		case 500:
+			throw new InternalApiError(resp.status, body);
+		default:
+			throw new RequestError(resp.status, body);
+	}
 }

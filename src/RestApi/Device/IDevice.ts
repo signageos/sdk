@@ -1,7 +1,10 @@
 
+export interface IDeviceUpdatable {
+	name: string;
+}
+
 export interface IDeviceReadOnly {
 	uid: string;
-	name: string;
 	createdAt: Date;
 	aliveAt: Date;
 	pinCode: string;
@@ -42,7 +45,7 @@ export interface IDeviceReadOnly {
 	};
 }
 
-interface IDevice extends IDeviceReadOnly {
+interface IDevice extends IDeviceReadOnly, IDeviceUpdatable {
 
 }
 

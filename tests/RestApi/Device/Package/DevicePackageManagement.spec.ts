@@ -55,7 +55,7 @@ describe('DevicePackageManagement', () => {
 	});
 
 	describe('set device package installs', () => {
-		it('should set brightness correctly', async () => {
+		it('should set package installs correctly', async () => {
 			const dpm = new DevicePackageManagement(nockOpts);
 			await dpm.install('someUid', validSetReq);
 		});

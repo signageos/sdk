@@ -41,7 +41,7 @@ describe('DeviceDebugManagement', () => {
 	});
 
 	describe('set debug settings', () => {
-		it('should set brightness correctly', async () => {
+		it('should set debug options correctly', async () => {
 			await ddm.set('someUid', validSetReq);
 			should(true).true();
 		});

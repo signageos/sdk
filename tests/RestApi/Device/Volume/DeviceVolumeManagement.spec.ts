@@ -48,7 +48,7 @@ describe('DeviceVolumeManagement', () => {
 	});
 
 	describe('set device volume', () => {
-		it('should set brightness correctly', async () => {
+		it('should set volume correctly', async () => {
 			const dvm = new DeviceVolumeManagement(nockOpts);
 			const currentVol = await dvm.set('someUid', validSetReq);
 			should.equal(90, currentVol);

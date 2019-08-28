@@ -40,7 +40,7 @@ describe('DeviceAppVersionManagement', () => {
 	});
 
 	describe('set application version', () => {
-		it('should set brightness correctly', async () => {
+		it('should set app version', async () => {
 			await davm.set('someUid', validSetReq);
 			should(true).true();
 		});
