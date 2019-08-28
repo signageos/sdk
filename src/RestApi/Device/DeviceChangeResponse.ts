@@ -1,4 +1,4 @@
-import IDeviceChangeResponse from "./IDeviceDeprovision";
+import IDeviceChangeResponse from "./IDeviceChangeResponse";
 
 export default class DeviceChangeResponse implements IDeviceChangeResponse {
 

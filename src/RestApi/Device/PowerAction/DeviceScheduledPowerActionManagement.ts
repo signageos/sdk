@@ -1,0 +1,31 @@
+import {deleteResource, getResource, parseJSONResponse, postResource} from "../../requester";
+import DeviceManagement from "../DeviceManagement";
+import IOptions from "../../IOptions";
+import IScheduledPowerAction, {IScheduledPowerActionCreatable} from "./IScheduledPowerAction";
+import ScheduledPowerAction from "./ScheduledPowerAction";
+
+export default class DeviceScheduledPowerActionManagement {
+
+	private static getUrl(deviceUid: string): string {
+		return `${DeviceManagement.RESOURCE}/${deviceUid}/scheduled-power-action`;
+	}
+
+	constructor(private options: IOptions) {
+	}
+
+	public async list(deviceUid: string): Promise<IScheduledPowerAction[]> {
+		const response = await getResource(this.options, DeviceScheduledPowerActionManagement.getUrl(deviceUid));
+		const data: IScheduledPowerAction[] = await parseJSONResponse(response);
+
+		return data.map((item: IScheduledPowerAction) => new ScheduledPowerAction(item));
+	}
+
+	public async create(deviceUid: string, settings: IScheduledPowerActionCreatable): Promise<void> {
+		await postResource(this.options, DeviceScheduledPowerActionManagement.getUrl(deviceUid), settings);
+	}
+
+	public async cancel(deviceUid: string, scheduledPowerActionId: string): Promise<void> {
+		await deleteResource(this.options, DeviceScheduledPowerActionManagement.getUrl(deviceUid) + '/' + scheduledPowerActionId);
+	}
+
+}
