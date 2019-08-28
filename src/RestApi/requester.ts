@@ -21,8 +21,7 @@ export function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options
 }
 
 export function createUri(options: IOptions, resource: string, queryParams?: any) {
-	return [options.url, options.version, resource].join('/')
-		+ (typeof queryParams !== 'undefined' ? '?' + stringify(queryParams) : '');
+	return [options.url, options.version, resource].join('/') + prepareQueryParams(queryParams);
 }
 
 export function getResource(options: IOptions, path: string, query?: any) {
@@ -53,6 +52,21 @@ function deserializeJSON(_key: string, value: any) {
 		}
 	}
 	return value;
+}
+
+function prepareQueryParams(qp: any): string {
+	// ignore empty objects
+	if (typeof qp === 'undefined' || Object.getOwnPropertyNames(qp).length === 0) {
+		return '';
+	}
+
+	Object.getOwnPropertyNames(qp).forEach((prop: string) => {
+		if (qp[prop] instanceof Date) {
+			qp[prop] = qp[prop].toISOString();
+		}
+	});
+
+	return '?' + stringify(qp);
 }
 
 async function doRequest(url: string | Request, init?: RequestInit): Promise<Response> {

@@ -30,7 +30,10 @@ describe('DeviceVerificationManagement', () => {
 		})
 		.get('/v1/device/verification/someUid').reply(200, validGetResp)
 		.put('/v1/device/verification', validSetReq).reply(200, "OK")
-		.put('/v1/device/verification', invalidSetReq).reply(404, { message: "Device verification was not found by hash cc5d2c: undefined", "data": {}});
+		.put('/v1/device/verification', invalidSetReq).reply(
+			404,
+			{ message: "Device verification was not found by hash cc5d2c: undefined", "data": {}}
+		);
 
 	describe('get device verification', () => {
 		it('should parse the response', async () => {
@@ -50,7 +53,7 @@ describe('DeviceVerificationManagement', () => {
 			try {
 				await dvm.set(invalidSetReq);
 			} catch (e) {
-				should.equal('Request failed with status code 404. Body: {"message":"Device verification was not found by hash cc5d2c: undefined","data":{}}', e.message);
+				should(e.message.includes('Device verification was not found by hash cc5d2c')).true()
 			}
 		});
 	});

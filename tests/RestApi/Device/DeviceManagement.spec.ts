@@ -62,9 +62,9 @@ describe('DeviceManagement', () => {
 				'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
 			},
 		})
-		.get('/v1/device?').reply(200, validListResp)
-		.get('/v1/device/someUid?').reply(200, validGetResp)
-		.get('/v1/device/shouldFail?').reply(500, errorResp)
+		.get('/v1/device').reply(200, validListResp)
+		.get('/v1/device/someUid').reply(200, validGetResp)
+		.get('/v1/device/shouldFail').reply(500, errorResp)
 		.put('/v1/device/someUid', validSetReq).reply(200, {volume: 90})
 		.put('/v1/device/shouldFail', validSetReq).reply(500, errorResp);
 

@@ -29,10 +29,10 @@ describe('DeviceTimerManagement', () => {
 	};
 	const validSetReq: IDeviceTimerUpdatable = {
 		'type': DeviceTimerType.Timer4,
-		'timeOn':'03:02:01',
-		'timeOff':'04:02:01',
+		'timeOn': '03:02:01',
+		'timeOff': '04:02:01',
 		'volume': 34,
-		'weekdays':[day.Saturday, day.Sunday],
+		'weekdays': [day.Saturday, day.Sunday],
 		'level': DeviceTimerLevel.Proprietary,
 	};
 

@@ -1,13 +1,12 @@
-
 import RestApi from './RestApi/RestApi';
 import waitUntilTrue from './Timer/waitUntil';
+
 const parameters = require('../config/parameters');
 
-const rest = new RestApi({
-	url: parameters.apiUrl,
-	version: 'v1',
-	auth: parameters.auth,
-});
+const rest = new RestApi(
+	{url: parameters.apiUrl, version: 'v1', auth: parameters.auth},
+	{url: parameters.apiUrl, version: 'v1', auth: parameters.accountAuth},
+);
 
 export const CURRENT_DEVICE_UID = Symbol('CURRENT_DEVICE_UID');
 export const CURRENT_APPLET_UID = Symbol('CURRENT_APPLET_UID');

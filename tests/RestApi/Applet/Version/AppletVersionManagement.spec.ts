@@ -38,9 +38,9 @@ describe('AppletVersionManagement', () => {
 				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
 			},
 		})
-		.get('/v1/applet/appletUid/version/?').reply(200, validListResp)
+		.get('/v1/applet/appletUid/version/').reply(200, validListResp)
 		.post('/v1/applet/appletUid/version/', validCreateReq).reply(200, 'OK')
-		.get('/v1/applet/appletUid/version/1.1.0/?').reply(200, validGetResp)
+		.get('/v1/applet/appletUid/version/1.1.0/').reply(200, validGetResp)
 		.put('/v1/applet/appletUid/version/1.1.0/').reply(200, 'OK');
 
 	const avm = new AppletVersionManagement(nockOpts);
