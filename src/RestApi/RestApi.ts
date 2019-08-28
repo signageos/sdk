@@ -55,7 +55,6 @@ export default class RestApi {
 	public readonly deviceVerification: DeviceVerificationManagement = new DeviceVerificationManagement(this.options);
 	public readonly deviceVolume: DeviceVolumeManagement = new DeviceVolumeManagement(this.options);
 
-
 	constructor(
 		private options: IOptions,
 		private accountOptions: IOptions
