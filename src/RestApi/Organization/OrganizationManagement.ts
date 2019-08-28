@@ -22,5 +22,4 @@ export default class OrganizationManagement {
 		await postResource(this.options, OrganizationManagement.RESOURCE, settings);
 	}
 
-
 }

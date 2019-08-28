@@ -53,7 +53,7 @@ describe('DeviceVerificationManagement', () => {
 			try {
 				await dvm.set(invalidSetReq);
 			} catch (e) {
-				should(e.message.includes('Device verification was not found by hash cc5d2c')).true()
+				should(e.message.includes('Device verification was not found by hash cc5d2c')).true();
 			}
 		});
 	});
