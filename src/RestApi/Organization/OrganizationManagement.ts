@@ -12,6 +12,13 @@ export default class OrganizationManagement {
 	constructor(private options: IOptions) {
 	}
 
+	public async list(filter: IOrganizationFilter = {}): Promise<IOrganization[]> {
+		const response = await getResource(this.options, OrganizationManagement.RESOURCE, filter);
+		const data: IOrganization[] = await parseJSONResponse(response);
+
+		return data.map((item: IOrganization) => new Organization(item));
+	}
+
 	public async get(orgUid: string, filter: IOrganizationFilter = {}): Promise<IOrganization> {
 		const response = await getResource(this.options, OrganizationManagement.RESOURCE + '/' + orgUid, filter);
 
