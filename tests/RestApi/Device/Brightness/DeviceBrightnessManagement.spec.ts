@@ -6,7 +6,7 @@ import {errorResp, errorRespMessage, nockOpts} from "../../helper";
 
 describe('DeviceBrightnessManagement', () => {
 
-	const validGetResp: IDeviceBrightness = {
+	const brightness: IDeviceBrightness = {
 		uid: 'someUid',
 		deviceUid: '3caXXX589b',
 		brightness1: 86,
@@ -17,6 +17,7 @@ describe('DeviceBrightnessManagement', () => {
 		succeededAt: null,
 		failedAt: null
 	};
+	const validGetResp: IDeviceBrightness[] = [brightness];
 	const validSetReq: IDeviceBrightnessUpdatable = {
 		brightness1: 86,
 		timeFrom1: '03:00:00',
@@ -38,12 +39,13 @@ describe('DeviceBrightnessManagement', () => {
 	describe('getBrightness', () => {
 		it('should parse the response', async () => {
 			const dbm = new DeviceBrightnessManagement(nockOpts);
-			const pin = await dbm.get('someUid');
-			should.equal('someUid', pin.uid);
-			should.equal(86, pin.brightness1);
-			should.equal('03:00:00', pin.timeFrom1);
-			should.equal(25, pin.brightness2);
-			should.equal('23:00:00', pin.timeFrom2);
+			const br = await dbm.get('someUid');
+			should.equal(1, br.length);
+			should.equal('someUid', br[0].uid);
+			should.equal(86, br[0].brightness1);
+			should.equal('03:00:00', br[0].timeFrom1);
+			should.equal(25, br[0].brightness2);
+			should.equal('23:00:00', br[0].timeFrom2);
 		});
 
 		it('should throw error', async () => {
