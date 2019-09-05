@@ -10,6 +10,10 @@ export default class DeviceScheduledPowerActionManagement {
 		return `${DeviceManagement.RESOURCE}/${deviceUid}/scheduled-power-action`;
 	}
 
+	private static getDetailUrl(deviceUid: string, scheduledPowerActionId: string): string {
+		return DeviceScheduledPowerActionManagement.getUrl(deviceUid) + '/' + scheduledPowerActionId;
+	}
+
 	constructor(private options: IOptions) {
 	}
 
@@ -24,8 +28,14 @@ export default class DeviceScheduledPowerActionManagement {
 		await postResource(this.options, DeviceScheduledPowerActionManagement.getUrl(deviceUid), settings);
 	}
 
-	public async cancel(deviceUid: string, scheduledPowerActionId: string): Promise<void> {
-		await deleteResource(this.options, DeviceScheduledPowerActionManagement.getUrl(deviceUid) + '/' + scheduledPowerActionId);
+	public async get(deviceUid: string, sPowerActionId: string): Promise<IScheduledPowerAction> {
+		const response = await getResource(this.options, DeviceScheduledPowerActionManagement.getDetailUrl(deviceUid, sPowerActionId));
+
+		return new ScheduledPowerAction(await parseJSONResponse(response));
+	}
+
+	public async cancel(deviceUid: string, sPowerActionId: string): Promise<void> {
+		await deleteResource(this.options, DeviceScheduledPowerActionManagement.getDetailUrl(deviceUid, sPowerActionId));
 	}
 
 }

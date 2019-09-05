@@ -37,24 +37,34 @@ describe('AppletCommandManagement', () => {
 				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
 			},
 		})
-		.get('/v1/device/someUid/applet/anotherUid/command').reply(200, cmdResp)
-		.post('/v1/device/someUid/applet/anotherUid/command', sendCmd).reply(200, 'Accepted');
+		.get('/v1/device/someUid/applet/appletUid/command').reply(200, cmdResp)
+		.get('/v1/device/someUid/applet/appletUid/command/cmdUid').reply(200, cmd)
+		.post('/v1/device/someUid/applet/appletUid/command', sendCmd).reply(200, 'Accepted');
 
 	const acm = new AppletCommandManagement(nockOpts);
 
+	const assertCmd = (c: IAppletCommand) => {
+		should.equal(cmd.uid, c.uid);
+		should.equal(cmd.deviceUid, c.deviceUid);
+		should.equal(cmd.appletUid, c.appletUid);
+		should.deepEqual(cmd.receivedAt, c.receivedAt);
+		should.deepEqual(cmd.timingChecksum, c.timingChecksum);
+		should.deepEqual(cmd.commandPayload, c.commandPayload);
+	};
+
 	it('should list all commands', async () => {
-		const c = await acm.commands('someUid', 'anotherUid');
+		const c = await acm.commands('someUid', 'appletUid');
 		should.equal(1, c.length);
-		should.equal(cmd.uid, c[0].uid);
-		should.equal(cmd.deviceUid, c[0].deviceUid);
-		should.equal(cmd.appletUid, c[0].appletUid);
-		should.deepEqual(cmd.receivedAt, c[0].receivedAt);
-		should.deepEqual(cmd.timingChecksum, c[0].timingChecksum);
-		should.deepEqual(cmd.commandPayload, c[0].commandPayload);
+		assertCmd(c[0]);
+	});
+
+	it('should get single command', async () => {
+		const c = await acm.get('someUid', 'appletUid', 'cmdUid');
+		assertCmd(c);
 	});
 
 	it('should send new applet command', async () => {
-		await acm.send('someUid', 'anotherUid', sendCmd);
+		await acm.send('someUid', 'appletUid', sendCmd);
 		should(true).true();
 	});
 

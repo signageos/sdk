@@ -1,6 +1,6 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import {nockOpts} from '../../helper';
+import { nockOpts, successRes } from '../../helper';
 import {
 	DeviceTimerLevel,
 	DeviceTimerType,
@@ -11,7 +11,7 @@ import DeviceTimerManagement from '../../../../../src/RestApi/Device/Timer/Devic
 
 describe('DeviceTimerManagement', () => {
 
-	const validGetResp: any = {
+	const tmr: any = {
 		'uid': '0836b9XX044f68',
 		'deviceUid': '21adXXXdb93',
 		'type': 'TIMER_2',
@@ -27,6 +27,7 @@ describe('DeviceTimerManagement', () => {
 		'succeededAt': new Date('2017-08-07T16:03:57.563Z'),
 		'failedAt': null
 	};
+	const validGetResp: any[] = [tmr];
 	const validSetReq: IDeviceTimerUpdatable = {
 		'type': DeviceTimerType.Timer4,
 		'timeOn': '03:02:01',
@@ -43,19 +44,22 @@ describe('DeviceTimerManagement', () => {
 			},
 		})
 		.get('/v1/device/someUid/timer-settings').reply(200, validGetResp)
-		.put('/v1/device/someUid/timer-settings', validSetReq).reply(200, 'OK');
+		.put('/v1/device/someUid/timer-settings', validSetReq).reply(200, successRes);
 
 	const dtm = new DeviceTimerManagement(nockOpts);
 
 	it('should get the device timer', async () => {
-		const t = await dtm.get('someUid');
-		should.equal(validGetResp.uid, t.uid);
-		should.equal(validGetResp.type, t.type);
-		should.equal(validGetResp.level, t.level);
-		should.equal(validGetResp.timeOn, t.timeOn);
-		should.equal(validGetResp.timeOff, t.timeOff);
-		should.deepEqual(validGetResp.weekdays, t.weekdays);
-		should.deepEqual(validGetResp.weekdays, [day.Monday, day.Friday]);
+		const timers = await dtm.get('someUid');
+		should.equal(1, timers.length);
+
+		const t = timers[0];
+		should.equal(tmr.uid, t.uid);
+		should.equal(tmr.type, t.type);
+		should.equal(tmr.level, t.level);
+		should.equal(tmr.timeOn, t.timeOn);
+		should.equal(tmr.timeOff, t.timeOff);
+		should.deepEqual(tmr.weekdays, t.weekdays);
+		should.deepEqual(tmr.weekdays, [day.Monday, day.Friday]);
 	});
 
 	it('should set the device timer', async () => {

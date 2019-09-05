@@ -1,6 +1,6 @@
 import * as should from 'should';
 import * as nock from "nock";
-import {nockOpts} from "../../helper";
+import { nockOpts, successRes } from "../../helper";
 import IDeviceResolution, {
 	DeviceResolutionOrientation as Orientation,
 	DeviceResolutionResolution as Resolution,
@@ -10,7 +10,7 @@ import DeviceResolutionManagement from "../../../../../src/RestApi/Device/Resolu
 
 describe('DeviceResolutionManagement', () => {
 
-	const validGetResp: IDeviceResolution = {
+	const resol: IDeviceResolution = {
 		uid: 'someUid',
 		deviceUid: '3caXXX589b',
 		orientation: Orientation.Landscape,
@@ -20,6 +20,7 @@ describe('DeviceResolutionManagement', () => {
 		succeededAt: null,
 		failedAt: null
 	};
+	const validGetResp: IDeviceResolution[] = [resol];
 	const validSetReq: IDeviceResolutionUpdatable = {
 		orientation: Orientation.Portrait,
 		resolution: Resolution.FullHD,
@@ -32,17 +33,20 @@ describe('DeviceResolutionManagement', () => {
 			},
 		})
 		.get('/v1/device/someUid/resolution').reply(200, validGetResp)
-		.put('/v1/device/someUid/resolution', validSetReq).reply(200, 'OK');
+		.put('/v1/device/someUid/resolution', validSetReq).reply(200, successRes);
 
 	const drm = new DeviceResolutionManagement(nockOpts);
 
 	it('should get the resolution info', async () => {
 		const res = await drm.get('someUid');
-		should.equal(validGetResp.uid, res.uid);
-		should.equal(validGetResp.deviceUid, res.deviceUid);
-		should.equal(validGetResp.orientation, res.orientation);
-		should.equal(validGetResp.resolution, res.resolution);
-		should.equal(validGetResp.videoOrientation, res.videoOrientation);
+		should.equal(1, res.length);
+		const r = res[0];
+
+		should.equal(resol.uid, r.uid);
+		should.equal(resol.deviceUid, r.deviceUid);
+		should.equal(resol.orientation, r.orientation);
+		should.equal(resol.resolution, r.resolution);
+		should.equal(resol.videoOrientation, r.videoOrientation);
 	});
 
 	it('should set resolution info', async () => {

@@ -1,12 +1,12 @@
 import * as should from 'should';
 import * as nock from "nock";
-import {nockOpts} from "../../helper";
+import { nockOpts, successRes } from "../../helper";
 import IDeviceDebug, {IDeviceDebugUpdatable} from "../../../../../src/RestApi/Device/Debug/IDeviceDebug";
 import DeviceDebugManagement from "../../../../../src/RestApi/Device/Debug/DeviceDebugManagement";
 
 describe('DeviceDebugManagement', () => {
 
-	const validGetResp: IDeviceDebug = {
+	const dbg: IDeviceDebug = {
 		uid: 'someUid',
 		deviceUid: '3caXXX589b',
 		appletEnabled: true,
@@ -15,6 +15,7 @@ describe('DeviceDebugManagement', () => {
 		succeededAt: null,
 		failedAt: null,
 	};
+	const validGetResp: IDeviceDebug[] = [dbg];
 	const validSetReq: IDeviceDebugUpdatable = {
 		appletEnabled: false,
 		nativeEnabled: true,
@@ -29,14 +30,15 @@ describe('DeviceDebugManagement', () => {
 			},
 		})
 		.get('/v1/device/someUid/debug').reply(200, validGetResp)
-		.put('/v1/device/someUid/debug', validSetReq).reply(200, "OK");
+		.put('/v1/device/someUid/debug', validSetReq).reply(200, successRes);
 
 	describe('get debug settings', () => {
 		it('should parse the response', async () => {
 			const debug = await ddm.get('someUid');
-			should.equal('someUid', debug.uid);
-			should(debug.appletEnabled).true();
-			should(debug.nativeEnabled).false();
+			should.equal(1, debug.length);
+			should.equal('someUid', debug[0].uid);
+			should(debug[0].appletEnabled).true();
+			should(debug[0].nativeEnabled).false();
 		});
 	});
 

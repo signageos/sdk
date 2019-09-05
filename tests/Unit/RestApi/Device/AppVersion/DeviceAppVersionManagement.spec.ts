@@ -1,6 +1,6 @@
 import * as should from 'should';
 import * as nock from "nock";
-import {nockOpts} from "../../helper";
+import { nockOpts, successRes } from "../../helper";
 import IDeviceAppVersion, {IDeviceAppVersionUpdatable} from "../../../../../src/RestApi/Device/AppVersion/IDeviceAppVersion";
 import DeviceAppVersionManagement from "../../../../../src/RestApi/Device/AppVersion/DeviceAppVersionManagement";
 
@@ -29,7 +29,7 @@ describe('DeviceAppVersionManagement', () => {
 			},
 		})
 		.get('/v1/device/someUid/application/version').reply(200, validGetResp)
-		.put('/v1/device/someUid/application/version', validSetReq).reply(200, "OK");
+		.put('/v1/device/someUid/application/version', validSetReq).reply(200, successRes);
 
 	describe('get application version', () => {
 		it('should parse the response', async () => {

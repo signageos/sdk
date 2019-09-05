@@ -1,6 +1,6 @@
-import {getResource, parseJSONResponse, putResource} from "../../requester";
+import { getResource, parseJSONResponse, putResource } from "../../requester";
 import DeviceManagement from "../DeviceManagement";
-import IDevicePackage, {IDevicePackageUpdatable} from "./IDevicePackage";
+import IDevicePackage, { IDevicePackageUpdatable } from "./IDevicePackage";
 import DevicePackage from "./DevicePackage";
 import IOptions from "../../IOptions";
 
@@ -13,10 +13,11 @@ export default class DevicePackageManagement {
 	constructor(private options: IOptions) {
 	}
 
-	public async get(deviceUid: string): Promise<IDevicePackage> {
+	public async get(deviceUid: string): Promise<IDevicePackage[]> {
 		const response = await getResource(this.options, DevicePackageManagement.getUrl(deviceUid));
+		const data: IDevicePackage[] = await parseJSONResponse(response);
 
-		return new DevicePackage(await parseJSONResponse(response));
+		return data.map((item: IDevicePackage) => new DevicePackage(item));
 	}
 
 	public async install(deviceUid: string, settings: IDevicePackageUpdatable): Promise<void> {

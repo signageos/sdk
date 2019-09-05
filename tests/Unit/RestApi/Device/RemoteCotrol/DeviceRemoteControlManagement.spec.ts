@@ -1,12 +1,12 @@
 import * as should from 'should';
 import * as nock from "nock";
-import {nockOpts} from "../../helper";
+import { nockOpts, successRes } from "../../helper";
 import IDeviceRemoteControl, {IDeviceRemoteControlUpdatable} from "../../../../../src/RestApi/Device/RemoteControl/IDeviceRemoteControl";
 import DeviceRemoteControlManagement from "../../../../../src/RestApi/Device/RemoteControl/DeviceRemoteControlManagement";
 
 describe('DeviceRemoteControlManagement', () => {
 
-	const validGetResp: IDeviceRemoteControl = {
+	const dcr: IDeviceRemoteControl = {
 		uid: 'someUid',
 		deviceUid: '3caXXX589b',
 		enabled: false,
@@ -14,6 +14,7 @@ describe('DeviceRemoteControlManagement', () => {
 		succeededAt: null,
 		failedAt: null,
 	};
+	const validGetResp: IDeviceRemoteControl[] = [dcr];
 	const validSetReq: IDeviceRemoteControlUpdatable = {
 		enabled: false,
 	};
@@ -25,18 +26,19 @@ describe('DeviceRemoteControlManagement', () => {
 			},
 		})
 		.get('/v1/device/someUid/remote-control').reply(200, validGetResp)
-		.put('/v1/device/someUid/remote-control', validSetReq).reply(200, 'OK');
+		.put('/v1/device/someUid/remote-control', validSetReq).reply(200, successRes);
 
 	const drcm = new DeviceRemoteControlManagement(nockOpts);
 
 	it('should get the remote control information', async () => {
 		const rc = await drcm.get('someUid');
-		should.equal(validGetResp.uid, rc.uid);
-		should.equal(validGetResp.deviceUid, rc.deviceUid);
-		should.equal(validGetResp.enabled, rc.enabled);
-		should.deepEqual(validGetResp.createdAt, rc.createdAt);
-		should.equal(validGetResp.succeededAt, rc.succeededAt);
-		should.equal(validGetResp.failedAt, rc.failedAt);
+		should.equal(1, rc.length);
+		should.equal(dcr.uid, rc[0].uid);
+		should.equal(dcr.deviceUid, rc[0].deviceUid);
+		should.equal(dcr.enabled, rc[0].enabled);
+		should.deepEqual(dcr.createdAt, rc[0].createdAt);
+		should.equal(dcr.succeededAt, rc[0].succeededAt);
+		should.equal(dcr.failedAt, rc[0].failedAt);
 	});
 
 	it('should enable the remote control', async () => {

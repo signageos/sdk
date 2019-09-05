@@ -22,6 +22,13 @@ export default class AppletCommandManagement {
 		return data.map((item: IAppletCommand) => new AppletCommand(item));
 	}
 
+	public async get(deviceUid: string, appletUid: string, cmdUid: string): Promise<IAppletCommand> {
+		const url = AppletCommandManagement.getResource(deviceUid, appletUid) + '/' + cmdUid;
+		const response = await getResource(this.options, url);
+
+		return new AppletCommand(await parseJSONResponse(response));
+	}
+
 	public async send(deviceUid: string, appletUid: string, settings: IAppletCommandSendable): Promise<void> {
 		await postResource(this.options, AppletCommandManagement.getResource(deviceUid, appletUid), settings);
 	}

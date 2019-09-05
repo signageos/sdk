@@ -6,7 +6,7 @@ import OrganizationManagement from "../../../../src/RestApi/Organization/Organiz
 
 describe('OrganizationManagement', () => {
 
-	const org: IOrganization = {
+	const organization: IOrganization = {
 		'uid': 'someUid',
 		'name': 'signageos',
 		'title': 'signageOS.io',
@@ -15,8 +15,8 @@ describe('OrganizationManagement', () => {
 		'createdAt': new Date('2017-05-24T08:56:52.550Z'),
 	};
 
-	const validGetResp: IOrganization = org;
-	const validListResp: IOrganization[] = [org];
+	const validGetResp: IOrganization = organization;
+	const validListResp: IOrganization[] = [organization];
 	const validCreateReq: IOrganizationCreatable = {
 		name: 'SOS',
 		title: 'signageOS.io organization',

@@ -2,7 +2,7 @@ import * as should from 'should';
 import * as nock from "nock";
 import DeviceBrightnessManagement from "../../../../../src/RestApi/Device/Brightness/DeviceBrightnessManagement";
 import IDeviceBrightness, {IDeviceBrightnessUpdatable} from "../../../../../src/RestApi/Device/Brightness/IDeviceBrightness";
-import {errorResp, errorRespMessage, nockOpts} from "../../helper";
+import { errorResp, errorRespMessage, nockOpts, successRes } from "../../helper";
 
 describe('DeviceBrightnessManagement', () => {
 
@@ -33,12 +33,13 @@ describe('DeviceBrightnessManagement', () => {
 		})
 		.get('/v1/device/someUid/brightness').reply(200, validGetResp)
 		.get('/v1/device/shouldFail/brightness').reply(500, errorResp)
-		.put('/v1/device/someUid/brightness', validSetReq).reply(200, 'OK')
+		.put('/v1/device/someUid/brightness', validSetReq).reply(200, successRes)
 		.put('/v1/device/shouldFail/brightness', validSetReq).reply(500, errorResp);
+
+	const dbm = new DeviceBrightnessManagement(nockOpts);
 
 	describe('getBrightness', () => {
 		it('should parse the response', async () => {
-			const dbm = new DeviceBrightnessManagement(nockOpts);
 			const br = await dbm.get('someUid');
 			should.equal(1, br.length);
 			should.equal('someUid', br[0].uid);
@@ -49,7 +50,6 @@ describe('DeviceBrightnessManagement', () => {
 		});
 
 		it('should throw error', async () => {
-			const dbm = new DeviceBrightnessManagement(nockOpts);
 			try {
 				await dbm.get('shouldFail');
 			} catch (e) {
@@ -60,12 +60,11 @@ describe('DeviceBrightnessManagement', () => {
 
 	describe('setBrightness', () => {
 		it('should set brightness correctly', async () => {
-			const dbm = new DeviceBrightnessManagement(nockOpts);
 			await dbm.set('someUid', validSetReq);
+			should(true).true();
 		});
 
 		it('should fail when api returns non 200 status', async () => {
-			const dbm = new DeviceBrightnessManagement(nockOpts);
 			try {
 				await dbm.set('shouldFail', validSetReq);
 			} catch (e) {

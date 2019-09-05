@@ -1,6 +1,6 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import {nockOpts} from '../../helper';
+import { nockOpts, successRes } from '../../helper';
 import IReportFile from '../../../../../src/RestApi/Device/Monitoring/ReportFile/IReportFile';
 import DeviceMonitoringManagement from '../../../../../src/RestApi/Device/Monitoring/DeviceMonitoringManagement';
 import IStorageStatus from '../../../../../src/RestApi/Device/Monitoring/Storage/IStorageStatus';
@@ -34,7 +34,7 @@ describe('DeviceMonitoringManagement', () => {
 			})
 			.get('/v1/device/someUid/screenshot').reply(200, scrResp)
 			.get('/v1/device/someUid/screenshot?' + filterUri).reply(200, scrResp)
-			.post('/v1/device/someUid/screenshot', {}).reply(200, 'OK');
+			.post('/v1/device/someUid/screenshot', {}).reply(200, successRes);
 
 		const dmm = new DeviceMonitoringManagement(nockOpts);
 

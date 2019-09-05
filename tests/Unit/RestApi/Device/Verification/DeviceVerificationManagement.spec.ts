@@ -1,6 +1,6 @@
 import * as should from 'should';
 import * as nock from "nock";
-import {nockOpts} from "../../helper";
+import { nockOpts, successRes } from "../../helper";
 import IDeviceVerification, {IDeviceVerificationUpdatable} from "../../../../../src/RestApi/Device/Verification/IDeviceVerification";
 import DeviceVerificationManagement from "../../../../../src/RestApi/Device/Verification/DeviceVerificationManagement";
 
@@ -29,7 +29,7 @@ describe('DeviceVerificationManagement', () => {
 			},
 		})
 		.get('/v1/device/verification/someUid').reply(200, validGetResp)
-		.put('/v1/device/verification', validSetReq).reply(200, "OK")
+		.put('/v1/device/verification', validSetReq).reply(200, successRes)
 		.put('/v1/device/verification', invalidSetReq).reply(
 			404,
 			{ message: "Device verification was not found by hash cc5d2c: undefined", "data": {}}

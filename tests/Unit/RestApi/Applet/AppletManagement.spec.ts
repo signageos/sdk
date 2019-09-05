@@ -1,6 +1,6 @@
 import * as should from 'should';
 import * as nock from "nock";
-import {nockOpts} from "../helper";
+import { nockOpts, successRes } from "../helper";
 import IApplet, {IAppletCreatable} from "../../../../src/RestApi/Applet/IApplet";
 import AppletManagement from "../../../../src/RestApi/Applet/AppletManagement";
 
@@ -23,9 +23,9 @@ describe('AppletManagement', () => {
 			},
 		})
 		.get('/v1/applet').reply(200, validListResp)
-		.post('/v1/applet', validCreateReq).reply(200, 'OK')
+		.post('/v1/applet', validCreateReq).reply(200, successRes)
 		.get('/v1/applet/someUid/').reply(200, validGetResp)
-		.delete('/v1/applet/someUid/').reply(200, 'OK');
+		.delete('/v1/applet/someUid/').reply(200, successRes);
 
 	const am = new AppletManagement(nockOpts);
 

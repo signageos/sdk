@@ -1,10 +1,10 @@
 
-export interface IDeviceTimeUpdatable {
+export interface IDeviceDateTimeUpdatable {
 	time: string;
 	timezone: string;
 }
 
-export interface IDeviceTime {
+export interface IDeviceDateTime {
 	uid: string;
 	timestamp: number;
 	timezone: string;
@@ -13,4 +13,4 @@ export interface IDeviceTime {
 	failedAt: Date | null;
 }
 
-export default IDeviceTime;
+export default IDeviceDateTime;

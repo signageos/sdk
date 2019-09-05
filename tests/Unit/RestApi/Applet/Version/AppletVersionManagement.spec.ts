@@ -1,6 +1,6 @@
 import * as should from 'should';
 import * as nock from "nock";
-import {nockOpts} from "../../helper";
+import { nockOpts, successRes } from "../../helper";
 import IAppletVersion, {
 	IAppletVersionCreatable,
 	IAppletVersionUpdatable
@@ -39,9 +39,9 @@ describe('AppletVersionManagement', () => {
 			},
 		})
 		.get('/v1/applet/appletUid/version/').reply(200, validListResp)
-		.post('/v1/applet/appletUid/version/', validCreateReq).reply(200, 'OK')
+		.post('/v1/applet/appletUid/version/', validCreateReq).reply(200, successRes)
 		.get('/v1/applet/appletUid/version/1.1.0/').reply(200, validGetResp)
-		.put('/v1/applet/appletUid/version/1.1.0/').reply(200, 'OK');
+		.put('/v1/applet/appletUid/version/1.1.0/').reply(200, successRes);
 
 	const avm = new AppletVersionManagement(nockOpts);
 

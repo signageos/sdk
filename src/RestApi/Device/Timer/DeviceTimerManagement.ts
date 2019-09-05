@@ -1,7 +1,7 @@
-import {getResource, parseJSONResponse, putResource} from "../../requester";
+import { getResource, parseJSONResponse, putResource } from "../../requester";
 import DeviceManagement from "../DeviceManagement";
 import IOptions from "../../IOptions";
-import IDeviceTimer, {IDeviceTimerUpdatable} from "./IDeviceTimer";
+import IDeviceTimer, { IDeviceTimerUpdatable } from "./IDeviceTimer";
 import DeviceTimer from "./DeviceTimer";
 
 export default class DeviceTimerManagement {
@@ -13,10 +13,11 @@ export default class DeviceTimerManagement {
 	constructor(private options: IOptions) {
 	}
 
-	public async get(deviceUid: string): Promise<IDeviceTimer> {
+	public async get(deviceUid: string): Promise<IDeviceTimer[]> {
 		const response = await getResource(this.options, DeviceTimerManagement.getUrl(deviceUid));
+		const data: IDeviceTimer[] = await parseJSONResponse(response);
 
-		return new DeviceTimer(await parseJSONResponse(response));
+		return data.map((item: IDeviceTimer) => new DeviceTimer(item));
 	}
 
 	public async set(deviceUid: string, settings: IDeviceTimerUpdatable): Promise<void> {

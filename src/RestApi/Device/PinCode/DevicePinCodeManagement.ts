@@ -4,7 +4,7 @@ import IDevicePin from "./IDevicePin";
 import DevicePin from "./DevicePin";
 import IOptions from "../../IOptions";
 
-export default class DevicePinManagement {
+export default class DevicePinCodeManagement {
 
 	private static getUrl(deviceUid: string): string {
 		return `${DeviceManagement.RESOURCE}/${deviceUid}/pin-code`;
@@ -14,7 +14,7 @@ export default class DevicePinManagement {
 	}
 
 	public async get(deviceUid: string): Promise<IDevicePin> {
-		const response = await getResource(this.options, DevicePinManagement.getUrl(deviceUid));
+		const response = await getResource(this.options, DevicePinCodeManagement.getUrl(deviceUid));
 
 		return new DevicePin(await parseJSONResponse(response));
 	}

@@ -1,12 +1,12 @@
 import * as should from 'should';
 import * as nock from "nock";
-import {errorResp, errorRespMessage, nockOpts} from "../../helper";
+import { errorResp, errorRespMessage, nockOpts, successRes } from "../../helper";
 import IDevicePackage, {IDevicePackageUpdatable} from "../../../../../src/RestApi/Device/Package/IDevicePackage";
 import DevicePackageManagement from "../../../../../src/RestApi/Device/Package/DevicePackageManagement";
 
 describe('DevicePackageManagement', () => {
 
-	const validGetResp: IDevicePackage = {
+	const dPkg: IDevicePackage = {
 		uid: 'someUid',
 		deviceUid: '3caXXX589b',
 		packageName: 'com.google.android.webview',
@@ -17,6 +17,7 @@ describe('DevicePackageManagement', () => {
 		failedAt: null,
 		postponedAt: null,
 	};
+	const validGetResp: IDevicePackage[] = [dPkg];
 	const validSetReq: IDevicePackageUpdatable = {
 		packageName: 'com.google.android.webview',
 		version: '62.0.3202.66',
@@ -31,21 +32,22 @@ describe('DevicePackageManagement', () => {
 		})
 		.get('/v1/device/someUid/package-install').reply(200, validGetResp)
 		.get('/v1/device/shouldFail/package-install').reply(500, errorResp)
-		.put('/v1/device/someUid/package-install', validSetReq).reply(200, 'OK')
+		.put('/v1/device/someUid/package-install', validSetReq).reply(200, successRes)
 		.put('/v1/device/shouldFail/package-install', validSetReq).reply(500, errorResp);
+
+	const dpm = new DevicePackageManagement(nockOpts);
 
 	describe('get device package installs', () => {
 		it('should parse the response', async () => {
-			const dpm = new DevicePackageManagement(nockOpts);
 			const pkg = await dpm.get('someUid');
-			should.equal('someUid', pkg.uid);
-			should.equal('com.google.android.webview', pkg.packageName);
-			should.equal('62.0.3202.66', pkg.version);
-			should.equal('320206650', pkg.build);
+			should.equal(1, pkg.length);
+			should.equal(dPkg.uid, pkg[0].uid);
+			should.equal(dPkg.packageName, pkg[0].packageName);
+			should.equal(dPkg.version, pkg[0].version);
+			should.equal(dPkg.build, pkg[0].build);
 		});
 
 		it('should throw error', async () => {
-			const dpm = new DevicePackageManagement(nockOpts);
 			try {
 				await dpm.get('shouldFail');
 			} catch (e) {
@@ -56,12 +58,10 @@ describe('DevicePackageManagement', () => {
 
 	describe('set device package installs', () => {
 		it('should set package installs correctly', async () => {
-			const dpm = new DevicePackageManagement(nockOpts);
 			await dpm.install('someUid', validSetReq);
 		});
 
 		it('should fail when api returns non 200 status', async () => {
-			const dpm = new DevicePackageManagement(nockOpts);
 			try {
 				await dpm.install('shouldFail', validSetReq);
 			} catch (e) {
