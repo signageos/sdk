@@ -2,7 +2,7 @@ import * as should from 'should';
 import RestApi from "../../../../src/RestApi/RestApi";
 import { accountOpts, opts } from "../helper";
 import IDevice, { IDeviceUpdatable } from "../../../../src/RestApi/Device/IDevice";
-import {
+import IDeviceResolution, {
 	DeviceResolutionOrientation,
 	DeviceResolutionResolution,
 	IDeviceResolutionUpdatable
@@ -43,7 +43,7 @@ describe('RestAPI - Device', () => {
 		}
 
 		const dvc = await api.device.get(device.uid);
-		should.deepEqual(device, dvc);
+		should.equal(device.uid, dvc.uid);
 
 	}).timeout(allowedTimeout);
 
@@ -59,7 +59,7 @@ describe('RestAPI - Device', () => {
 
 		await api.device.set(device.uid, update);
 		const devices = await api.device.list();
-		devices.forEach((dvc) => {
+		devices.forEach((dvc: IDevice) => {
 			// @ts-ignore potentially undefined uid
 			if (dvc.uid === device.uid) {
 				should.equal(dvc.name, update.name);
@@ -92,7 +92,7 @@ describe('RestAPI - Device', () => {
 		const res = await api.device.resolution.get(device.uid);
 		should(Array.isArray(res)).true();
 		should(res.length > 0).true();
-		res.forEach(item => {
+		res.forEach((item: IDeviceResolution) => {
 			// @ts-ignore potentially undefined deviceUid
 			should.equal(item.deviceUid, device.uid);
 			should(item.uid.length > 0).true();

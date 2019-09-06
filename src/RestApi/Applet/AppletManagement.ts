@@ -10,12 +10,12 @@ export const RESOURCE: string = 'applet';
 
 export default class AppletManagement {
 
+	public version: AppletVersionManagement;
+	public command: AppletCommandManagement;
+
 	private static getUrl(appletUid: string): string {
 		return `${RESOURCE}/${appletUid}/`;
 	}
-
-	public version: AppletVersionManagement;
-	public command: AppletCommandManagement;
 
 	constructor(private options: IOptions) {
 		this.version = new AppletVersionManagement(options);
