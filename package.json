@@ -21,7 +21,8 @@
     "prepare": "npm run prebuild && npm run build",
     "test": "NODE_ENV=test mocha --opts mocha.opts",
     "ci": "npm run lint && npm run test",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "docs": "typedoc ./src/RestApi"
   },
   "author": "Michael Zabka <zabka.michael@gmail.com>",
   "license": "MIT",
@@ -49,6 +50,7 @@
     "should": "^11.2.1",
     "ts-node": "^7.0.1",
     "tslint": "^5.1.0",
+    "typedoc": "^0.15.0",
     "typescript": "^2.9.2"
   },
   "dependencies": {
