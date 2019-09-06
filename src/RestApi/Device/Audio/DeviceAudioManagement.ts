@@ -1,5 +1,5 @@
 import {getResource, parseJSONResponse, putResource} from "../../requester";
-import DeviceManagement from "../DeviceManagement";
+import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IDeviceAudio, {IDeviceAudioUpdatable} from "./IDeviceAudio";
 import DeviceVolume from "./DeviceAudio";
 import IOptions from "../../IOptions";
@@ -7,7 +7,7 @@ import IOptions from "../../IOptions";
 export default class DeviceAudioManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DeviceManagement.RESOURCE}/${deviceUid}/volume`;
+		return `${DEVICE}/${deviceUid}/volume`;
 	}
 
 	constructor(private options: IOptions) {

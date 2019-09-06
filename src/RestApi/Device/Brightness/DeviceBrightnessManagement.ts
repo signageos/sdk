@@ -1,5 +1,5 @@
 import {getResource, parseJSONResponse, putResource} from "../../requester";
-import DeviceManagement from "../DeviceManagement";
+import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IDeviceBrightness, {IDeviceBrightnessUpdatable} from "./IDeviceBrightness";
 import DeviceBrightness from "./DeviceBrightness";
 import IOptions from "../../IOptions";
@@ -7,7 +7,7 @@ import IOptions from "../../IOptions";
 export default class DeviceBrightnessManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DeviceManagement.RESOURCE}/${deviceUid}/brightness`;
+		return `${DEVICE}/${deviceUid}/brightness`;
 	}
 
 	constructor(private options: IOptions) {

@@ -1,5 +1,5 @@
 import {getResource, parseJSONResponse, putResource} from "../../requester";
-import DeviceManagement from "../DeviceManagement";
+import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IOptions from "../../IOptions";
 import IPowerAction, {IPowerActionUpdatable} from "./IPowerAction";
 import PowerAction from "./PowerAction";
@@ -7,7 +7,7 @@ import PowerAction from "./PowerAction";
 export default class DevicePowerActionManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DeviceManagement.RESOURCE}/${deviceUid}/power-action`;
+		return `${DEVICE}/${deviceUid}/power-action`;
 	}
 
 	constructor(private options: IOptions) {

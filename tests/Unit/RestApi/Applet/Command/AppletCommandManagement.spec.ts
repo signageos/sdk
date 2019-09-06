@@ -52,8 +52,8 @@ describe('AppletCommandManagement', () => {
 		should.deepEqual(cmd.commandPayload, c.commandPayload);
 	};
 
-	it('should list all commands', async () => {
-		const c = await acm.commands('someUid', 'appletUid');
+	it('should list all list', async () => {
+		const c = await acm.list('someUid', 'appletUid');
 		should.equal(1, c.length);
 		assertCmd(c[0]);
 	});

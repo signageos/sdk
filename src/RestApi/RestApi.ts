@@ -2,27 +2,8 @@ import TimingManagement from './Timing/TimingManagement';
 import IOptions from './IOptions';
 import TimingCommandManagement from './Timing/Command/TimingCommandManagement';
 import DeviceManagement from "./Device/DeviceManagement";
-import DevicePinCodeManagement from "./Device/PinCode/DevicePinCodeManagement";
-import DeviceBrightnessManagement from "./Device/Brightness/DeviceBrightnessManagement";
-import DevicePackageManagement from "./Device/Package/DevicePackageManagement";
-import DeviceAudioManagement from "./Device/Audio/DeviceAudioManagement";
 import AppletManagement from "./Applet/AppletManagement";
-import AppletVersionManagement from "./Applet/Version/AppletVersionManagement";
 import OrganizationManagement from "./Organization/OrganizationManagement";
-import DeviceAppVersionManagement from "./Device/AppVersion/DeviceAppVersionManagement";
-import DeviceAuthenticationManagement from "./Device/Authentication/DeviceAuthenticationManagement";
-import DeviceDebugManagement from "./Device/Debug/DeviceDebugManagement";
-import DeviceProvisioningManagement from "./Device/Provisioning/DeviceProvisioningManagement";
-import DeviceFirmwareManagement from "./Device/Firmware/DeviceFirmwareManagement";
-import DevicePowerActionManagement from "./Device/PowerAction/DevicePowerActionManagement";
-import DeviceScheduledPowerActionManagement from "./Device/PowerAction/DeviceScheduledPowerActionManagement";
-import DeviceRemoteControlManagement from "./Device/RemoteControl/DeviceRemoteControlManagement";
-import DeviceResolutionManagement from "./Device/Resolution/DeviceResolutionManagement";
-import DeviceDateTimeManagement from "./Device/DateTime/DeviceDateTimeManagement";
-import DeviceTimerManagement from "./Device/Timer/DeviceTimerManagement";
-import DeviceVerificationManagement from "./Device/Verification/DeviceVerificationManagement";
-import DeviceMonitoringManagement from "./Device/Monitoring/DeviceMonitoringManagement";
-import AppletCommandManagement from "./Applet/Command/AppletCommandManagement";
 
 export default class RestApi {
 
@@ -33,27 +14,7 @@ export default class RestApi {
 	public readonly timingCommand: TimingCommandManagement = new TimingCommandManagement(this.options);
 
 	public readonly applet: AppletManagement = new AppletManagement(this.options);
-	public readonly appletVersion: AppletVersionManagement = new AppletVersionManagement(this.options);
-	public readonly appletCommand: AppletCommandManagement = new AppletCommandManagement(this.options);
-
 	public readonly device: DeviceManagement = new DeviceManagement(this.options);
-	public readonly deviceAppVersion: DeviceAppVersionManagement = new DeviceAppVersionManagement(this.options);
-	public readonly deviceAudio: DeviceAudioManagement = new DeviceAudioManagement(this.options);
-	public readonly deviceAuthentication: DeviceAuthenticationManagement = new DeviceAuthenticationManagement(this.options);
-	public readonly deviceBrightness: DeviceBrightnessManagement = new DeviceBrightnessManagement(this.options);
-	public readonly deviceDateTime: DeviceDateTimeManagement = new DeviceDateTimeManagement(this.options);
-	public readonly deviceDebug: DeviceDebugManagement = new DeviceDebugManagement(this.options);
-	public readonly deviceProvisioning: DeviceProvisioningManagement = new DeviceProvisioningManagement(this.options);
-	public readonly deviceFirmware: DeviceFirmwareManagement = new DeviceFirmwareManagement(this.options);
-	public readonly deviceMonitoring: DeviceMonitoringManagement = new DeviceMonitoringManagement(this.options);
-	public readonly devicePackage: DevicePackageManagement = new DevicePackageManagement(this.options);
-	public readonly devicePinCode: DevicePinCodeManagement = new DevicePinCodeManagement(this.options);
-	public readonly devicePowerAction: DevicePowerActionManagement = new DevicePowerActionManagement(this.options);
-	public readonly deviceScheduledPowerAction: DeviceScheduledPowerActionManagement = new DeviceScheduledPowerActionManagement(this.options);
-	public readonly deviceRemoteControl: DeviceRemoteControlManagement = new DeviceRemoteControlManagement(this.options);
-	public readonly deviceResolution: DeviceResolutionManagement = new DeviceResolutionManagement(this.options);
-	public readonly deviceTimer: DeviceTimerManagement = new DeviceTimerManagement(this.options);
-	public readonly deviceVerification: DeviceVerificationManagement = new DeviceVerificationManagement(this.options);
 
 	constructor(
 		private options: IOptions,

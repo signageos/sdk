@@ -1,5 +1,5 @@
 import {deleteResource, getResource, parseJSONResponse, postResource} from "../../requester";
-import DeviceManagement from "../DeviceManagement";
+import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IOptions from "../../IOptions";
 import IScheduledPowerAction, {IScheduledPowerActionCreatable} from "./IScheduledPowerAction";
 import ScheduledPowerAction from "./ScheduledPowerAction";
@@ -7,7 +7,7 @@ import ScheduledPowerAction from "./ScheduledPowerAction";
 export default class DeviceScheduledPowerActionManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DeviceManagement.RESOURCE}/${deviceUid}/scheduled-power-action`;
+		return `${DEVICE}/${deviceUid}/scheduled-power-action`;
 	}
 
 	private static getDetailUrl(deviceUid: string, scheduledPowerActionId: string): string {

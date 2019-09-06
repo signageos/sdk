@@ -4,15 +4,15 @@ import IOrganization from "../../../../src/RestApi/Organization/IOrganization";
 import Organization from "../../../../src/RestApi/Organization/Organization";
 import {accountOpts, opts} from "../helper";
 
-const allowedTimeout = 5000;
+const allowedTimeout = 10000;
 const api = new RestApi(opts, accountOpts);
 
 describe('RestAPI - Organization', () => {
 
 	before(function () {
 		// in order to run these tests, fill in to mandatory ENV variables (please see ../helper file)
-		if (opts.auth.clientId === '' || accountOpts.auth.clientId === '') {
-			this.test.skip('');
+		if (accountOpts.auth.clientId === '' || accountOpts.auth.secret === '') {
+			this.test.skip('you must set account auth details in order to run this test');
 		}
 	});
 
@@ -28,11 +28,11 @@ describe('RestAPI - Organization', () => {
 
 	let pickedOrg: IOrganization;
 
-	it('should create and the new organization', async () => {
+	it('should create the new organization', async () => {
 		const now = new Date();
 		await api.organization.create({
-			name: `Test - ${now.getTime()}`,
-			title: `Integration test organization - ${now.toISOString()}`
+			name: `SDK${now.getTime()}`,
+			title: `Integration test organization created on ${now.toISOString()}`
 		});
 		should(true).true();
 	}).timeout(allowedTimeout);

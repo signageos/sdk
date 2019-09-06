@@ -1,5 +1,5 @@
 import {getResource, parseJSONResponse, putResource} from "../../requester";
-import DeviceManagement from "../DeviceManagement";
+import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IDeviceFirmware, {IDeviceFirmwareUpdatable} from "./IDeviceFirmware";
 import DeviceFirmware from "./DeviceFirmware";
 import IOptions from "../../IOptions";
@@ -9,7 +9,7 @@ import IDeviceChangeResponse from "../IDeviceChangeResponse";
 export default class DeviceFirmwareManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DeviceManagement.RESOURCE}/${deviceUid}/firmware`;
+		return `${DEVICE}/${deviceUid}/firmware`;
 	}
 
 	constructor(private options: IOptions) {

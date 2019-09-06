@@ -1,5 +1,5 @@
 import { getResource, parseJSONResponse, putResource } from "../../requester";
-import DeviceManagement from "../DeviceManagement";
+import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IOptions from "../../IOptions";
 import IDeviceDateTime, { IDeviceDateTimeUpdatable } from "./IDeviceDateTime";
 import DeviceDateTime from "./DeviceDateTime";
@@ -7,7 +7,7 @@ import DeviceDateTime from "./DeviceDateTime";
 export default class DeviceDateTimeManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DeviceManagement.RESOURCE}/${deviceUid}/time`;
+		return `${DEVICE}/${deviceUid}/time`;
 	}
 
 	constructor(private options: IOptions) {

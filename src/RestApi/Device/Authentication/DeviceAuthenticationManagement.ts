@@ -1,5 +1,5 @@
 import {getResource, parseJSONResponse} from "../../requester";
-import DeviceManagement from "../DeviceManagement";
+import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IOptions from "../../IOptions";
 import IDeviceAuthentication from "./IDeviceAuthentication";
 import DeviceAuthentication from "./DeviceAuthentication";
@@ -7,7 +7,7 @@ import DeviceAuthentication from "./DeviceAuthentication";
 export default class DeviceAuthenticationManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DeviceManagement.RESOURCE}/${deviceUid}/authentication`;
+		return `${DEVICE}/${deviceUid}/authentication`;
 	}
 
 	constructor(private options: IOptions) {

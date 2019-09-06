@@ -1,16 +1,16 @@
-import {getResource, parseJSONResponse, postResource, putResource} from "../../requester";
+import { getResource, parseJSONResponse, postResource, putResource } from "../../requester";
 import IOptions from "../../IOptions";
-import AppletManagement from "../AppletManagement";
-import IAppletVersion, {IAppletVersionCreatable, IAppletVersionUpdatable} from "./IAppletVersion";
+import { RESOURCE as APPLET } from "../AppletManagement";
+import IAppletVersion, { IAppletVersionCreatable, IAppletVersionUpdatable } from "./IAppletVersion";
 import AppletVersion from "./AppletVersion";
-import IAppletVersionFilter, {IAppletVersionListFilter} from "./IAppletVersionFilter";
+import IAppletVersionFilter, { IAppletVersionListFilter } from "./IAppletVersionFilter";
 
 export default class AppletVersionManagement {
 
 	private static readonly RESOURCE: string = 'version';
 
 	private static getResource(appletUid: string): string {
-		return `${AppletManagement.RESOURCE}/${appletUid}/${AppletVersionManagement.RESOURCE}/`;
+		return `${APPLET}/${appletUid}/${AppletVersionManagement.RESOURCE}/`;
 	}
 
 	private static getUrl(appletUid: string, version: string): string {

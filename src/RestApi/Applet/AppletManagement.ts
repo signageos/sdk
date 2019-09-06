@@ -3,20 +3,27 @@ import IOptions from "../IOptions";
 import IApplet, {IAppletCreatable} from "./IApplet";
 import {postResource} from "../requester";
 import Applet from "./Applet";
+import AppletVersionManagement from "./Version/AppletVersionManagement";
+import AppletCommandManagement from "./Command/AppletCommandManagement";
+
+export const RESOURCE: string = 'applet';
 
 export default class AppletManagement {
 
-	public static readonly RESOURCE: string = 'applet';
-
 	private static getUrl(appletUid: string): string {
-		return `${AppletManagement.RESOURCE}/${appletUid}/`;
+		return `${RESOURCE}/${appletUid}/`;
 	}
 
+	public version: AppletVersionManagement;
+	public command: AppletCommandManagement;
+
 	constructor(private options: IOptions) {
+		this.version = new AppletVersionManagement(options);
+		this.command = new AppletCommandManagement(options);
 	}
 
 	public async list(): Promise<IApplet[]> {
-		const response = await getResource(this.options, AppletManagement.RESOURCE);
+		const response = await getResource(this.options, RESOURCE);
 		const data: IApplet[] = await parseJSONResponse(response);
 
 		return data.map((item: IApplet) => new Applet(item));
@@ -29,7 +36,7 @@ export default class AppletManagement {
 	}
 
 	public async create(settings: IAppletCreatable): Promise<void> {
-		await postResource(this.options, AppletManagement.RESOURCE, settings);
+		await postResource(this.options, RESOURCE, settings);
 	}
 
 	public async delete(appletUid: string): Promise<void> {

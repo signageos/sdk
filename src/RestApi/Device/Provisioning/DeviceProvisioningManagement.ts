@@ -1,11 +1,11 @@
 import { putResource } from "../../requester";
-import DeviceManagement from "../DeviceManagement";
+import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IOptions from "../../IOptions";
 
 export default class DeviceProvisioningManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DeviceManagement.RESOURCE}/${deviceUid}/deprovision`;
+		return `${DEVICE}/${deviceUid}/deprovision`;
 	}
 
 	constructor(private options: IOptions) {

@@ -1,5 +1,5 @@
 import {getResource, parseJSONResponse, postResource} from "../../requester";
-import DeviceManagement from "../DeviceManagement";
+import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IOptions from "../../IOptions";
 import IReportFile from "./ReportFile/IReportFile";
 import ReportFile from "./ReportFile/ReportFile";
@@ -16,7 +16,7 @@ import Screenshot from "./Screenshot/Screenshot";
 export default class DeviceMonitoringManagement {
 
 	private static getUrl(deviceUid: string, resource: string): string {
-		return `${DeviceManagement.RESOURCE}/${deviceUid}/${resource}`;
+		return `${DEVICE}/${deviceUid}/${resource}`;
 	}
 
 	constructor(private options: IOptions) {
