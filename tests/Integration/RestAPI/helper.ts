@@ -1,15 +1,20 @@
 import IOptions from "../../../src/RestApi/IOptions";
 
+const parameters = require('../../../config/parameters');
+
+// api host
+const host = parameters.apiUrl;
+const version = 'v1';
 // client credentials
-const clientId = process.env.CLIENT_ID || '';
-const secret = process.env.CLIENT_SECRET || '';
+const clientId = parameters.auth.clientId;
+const secret = parameters.auth.secret;
 // account credentials
-const accountId = process.env.ACCOUNT_ID || '';
-const accountSecret = process.env.ACCOUNT_SECRET || '';
+const accountId = parameters.accountAuth.clientId;
+const accountSecret = parameters.accountAuth.secret;
 
 export const opts: IOptions = {
-	url: 'https://api.signageos.io',
-	version: 'v1',
+	url: host,
+	version: version,
 	auth: {
 		clientId,
 		secret
@@ -17,8 +22,8 @@ export const opts: IOptions = {
 };
 
 export const accountOpts: IOptions = {
-	url: 'https://api.signageos.io',
-	version: 'v1',
+	url: host,
+	version: version,
 	auth: {
 		clientId: accountId,
 		secret: accountSecret

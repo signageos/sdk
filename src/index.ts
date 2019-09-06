@@ -12,6 +12,7 @@ export const CURRENT_DEVICE_UID = Symbol('CURRENT_DEVICE_UID');
 export const CURRENT_APPLET_UID = Symbol('CURRENT_APPLET_UID');
 export const CURRENT_APPLET_VERSION = Symbol('CURRENT_APPLET_VERSION');
 
+export const api = rest;
 export const timing = rest.timing;
 export const timingCommand = rest.timingCommand;
 
