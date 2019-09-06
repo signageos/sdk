@@ -71,7 +71,8 @@ The most useful documentation pages:
 This SDK library contains several unit and integration tests,
 You may locate inside the `sdk` root directory and run `npm run test` command. 
 
-If you properly configured all the mandatory environment variables either in `.env` file inside the sdk root or on your machine, 
+If you properly configured all the mandatory environment variables either in `.env` file inside the sdk root or on your machine,
+and you set  
 the integration tests will be launched too. Otherwise only unit test would be run and integrations tests would be skipped.
 
 Tip: you may use existing `.env.dist` file for creating the `.env`.

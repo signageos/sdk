@@ -2,6 +2,8 @@ import IOptions from "../../../src/RestApi/IOptions";
 
 const parameters = require('../../../config/parameters');
 
+export const RUN_INTEGRATION_TESTS = process.env.RUN_INTEGRATION_TESTS === 'true';
+
 // api host
 const host = parameters.apiUrl;
 const version = 'v1';

@@ -2,7 +2,7 @@ import * as should from 'should';
 import RestApi from "../../../../src/RestApi/RestApi";
 import IOrganization from "../../../../src/RestApi/Organization/IOrganization";
 import Organization from "../../../../src/RestApi/Organization/Organization";
-import {accountOpts, opts} from "../helper";
+import { accountOpts, opts, RUN_INTEGRATION_TESTS } from "../helper";
 
 const allowedTimeout = 10000;
 const api = new RestApi(opts, accountOpts);
@@ -10,8 +10,8 @@ const api = new RestApi(opts, accountOpts);
 describe('RestAPI - Organization', () => {
 
 	before(function () {
-		// in order to run these tests, fill in to mandatory ENV variables (please see ../helper file)
-		if (accountOpts.auth.clientId === '' || accountOpts.auth.secret === '') {
+		// in order to run these tests, fill in auth and RUN_INTEGRATION_TESTS environment variables (please see '../helper.ts' file)
+		if (!RUN_INTEGRATION_TESTS || accountOpts.auth.clientId === '' || accountOpts.auth.secret === '') {
 			this.test.skip('you must set account auth details in order to run this test');
 		}
 	});

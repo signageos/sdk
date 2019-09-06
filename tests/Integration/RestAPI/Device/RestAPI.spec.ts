@@ -1,6 +1,6 @@
 import * as should from 'should';
 import RestApi from "../../../../src/RestApi/RestApi";
-import { accountOpts, opts } from "../helper";
+import { accountOpts, opts, RUN_INTEGRATION_TESTS } from "../helper";
 import IDevice, { IDeviceUpdatable } from "../../../../src/RestApi/Device/IDevice";
 import IDeviceResolution, {
 	DeviceResolutionOrientation,
@@ -14,8 +14,8 @@ const api = new RestApi(opts, accountOpts);
 describe('RestAPI - Device', () => {
 
 	before(function () {
-		// in order to run these tests, fill in to mandatory ENV variables (please see '../helper.ts' file)
-		if (opts.auth.clientId === '' || opts.auth.secret === '') {
+		// in order to run these tests, fill in auth and RUN_INTEGRATION_TESTS environment variables (please see '../helper.ts' file)
+		if (!RUN_INTEGRATION_TESTS || opts.auth.clientId === '' || opts.auth.secret === '') {
 			this.test.skip('you must set auth details in order to run this test');
 		}
 	});
