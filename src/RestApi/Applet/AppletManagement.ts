@@ -5,21 +5,24 @@ import {postResource} from "../requester";
 import Applet from "./Applet";
 import AppletVersionManagement from "./Version/AppletVersionManagement";
 import AppletCommandManagement from "./Command/AppletCommandManagement";
+import AppletTestSuiteManagement from "./Version/AppletTestSuiteManagement";
 
 export const RESOURCE: string = 'applet';
 
 export default class AppletManagement {
 
-	public version: AppletVersionManagement;
 	public command: AppletCommandManagement;
+	public version: AppletVersionManagement;
+	public tests: AppletTestSuiteManagement;
 
 	private static getUrl(appletUid: string): string {
 		return `${RESOURCE}/${appletUid}/`;
 	}
 
 	constructor(private options: IOptions) {
-		this.version = new AppletVersionManagement(options);
 		this.command = new AppletCommandManagement(options);
+		this.version = new AppletVersionManagement(options);
+		this.tests = new AppletTestSuiteManagement(options);
 	}
 
 	public async list(): Promise<IApplet[]> {
