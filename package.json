@@ -20,7 +20,9 @@
     "prebuild": "rm -rf dist/*",
     "prepare": "npm run prebuild && npm run build",
     "test": "NODE_ENV=test mocha --opts mocha.opts",
-    "watch": "tsc --watch"
+    "ci": "npm run lint && npm run test",
+    "watch": "tsc --watch",
+    "docs": "typedoc ./src/RestApi"
   },
   "author": "Michael Zabka <zabka.michael@gmail.com>",
   "license": "MIT",
@@ -37,15 +39,18 @@
     "@types/lodash": "^4.14.116",
     "@types/mocha": "^2.2.41",
     "@types/moment-timezone": "^0.5.4",
+    "@types/nock": "^10.0.3",
     "@types/node": "8.5.0",
     "@types/node-fetch": "^2.1.2",
     "@types/should": "^8.3.0",
     "@types/webpack": "^3.8.1",
     "hugport-codestyle": "^0.0.8",
     "mocha": "^3.3.0",
+    "nock": "^10.0.6",
     "should": "^11.2.1",
     "ts-node": "^7.0.1",
     "tslint": "^5.1.0",
+    "typedoc": "^0.15.0",
     "typescript": "^2.9.2"
   },
   "dependencies": {
