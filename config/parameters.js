@@ -21,4 +21,8 @@ module.exports = {
 		clientId: process.env.SOS_AUTH_CLIENT_ID,
 		secret: process.env.SOS_AUTH_SECRET,
 	},
+	accountAuth: {
+		clientId: process.env.SOS_API_IDENTIFICATION,
+		secret: process.env.SOS_API_SECURITY_TOKEN,
+	},
 };
