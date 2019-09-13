@@ -32,7 +32,8 @@ describe('AppletTestSuiteManagement', () => {
 		.get('/v1/applet/appletUid/version/1.0.1/test').reply(200, validListResp)
 		.post('/v1/applet/appletUid/version/1.0.1/test/testName', validCreateReq).reply(200, successRes)
 		.get('/v1/applet/appletUid/version/1.0.1/test/testName').reply(200, validGetResp)
-		.put('/v1/applet/appletUid/version/1.0.1/test/testName').reply(200, successRes);
+		.put('/v1/applet/appletUid/version/1.0.1/test/testName').reply(200, successRes)
+		.delete('/v1/applet/appletUid/version/1.0.1/test/testName').reply(200, successRes);
 
 	const atsm = new AppletTestSuiteManagement(nockOpts);
 
@@ -60,6 +61,11 @@ describe('AppletTestSuiteManagement', () => {
 
 	it('should update existing applet test suite', async () => {
 		await atsm.update('appletUid', '1.0.1', 'testName', validUpdateReq);
+		should(true).true();
+	});
+
+	it('should delete existing applet test suite', async () => {
+		await atsm.delete('appletUid', '1.0.1', 'testName');
 		should(true).true();
 	});
 

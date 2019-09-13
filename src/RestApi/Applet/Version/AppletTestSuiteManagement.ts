@@ -1,4 +1,4 @@
-import { getResource, parseJSONResponse, postResource, putResource } from "../../requester";
+import { deleteResource, getResource, parseJSONResponse, postResource, putResource } from "../../requester";
 import IOptions from "../../IOptions";
 import { RESOURCE as APPLET } from "../AppletManagement";
 import IAppletTestSuite, { IAppletTestSuiteCreatable, IAppletTestSuiteUpdatable } from "./IAppletTestSuite";
@@ -8,6 +8,10 @@ export default class AppletTestSuiteManagement {
 
 	private static getResource(appletUid: string, appletVersion: string): string {
 		return `${APPLET}/${appletUid}/version/${appletVersion}/test`;
+	}
+
+	private static getDetailResource(appletUid: string, appletVersion: string, identifier: string): string {
+		return `${APPLET}/${appletUid}/version/${appletVersion}/test/${identifier}`;
 	}
 
 	constructor(private options: IOptions) {
@@ -34,7 +38,7 @@ export default class AppletTestSuiteManagement {
 		identifier: string,
 		settings: IAppletTestSuiteCreatable
 	): Promise<void> {
-		const url = AppletTestSuiteManagement.getResource(appletUid, appletVersion) + '/' + identifier;
+		const url = AppletTestSuiteManagement.getDetailResource(appletUid, appletVersion, identifier);
 		await postResource(this.options, url, settings);
 	}
 
@@ -44,8 +48,17 @@ export default class AppletTestSuiteManagement {
 		identifier: string,
 		settings: IAppletTestSuiteUpdatable
 	): Promise<void> {
-		const url = AppletTestSuiteManagement.getResource(appletUid, appletVersion) + '/' + identifier;
+		const url = AppletTestSuiteManagement.getDetailResource(appletUid, appletVersion, identifier);
 		await putResource(this.options, url, settings);
+	}
+
+	public async delete(
+		appletUid: string,
+		appletVersion: string,
+		identifier: string,
+	): Promise<void> {
+		const url = AppletTestSuiteManagement.getDetailResource(appletUid, appletVersion, identifier);
+		await deleteResource(this.options, url);
 	}
 
 }
