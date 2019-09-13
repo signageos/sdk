@@ -22,7 +22,7 @@ module.exports = {
 		secret: process.env.SOS_AUTH_SECRET,
 	},
 	accountAuth: {
-		clientId: process.env.SOS_ACCOUNT_AUTH_CLIENT_ID,
-		secret: process.env.SOS_ACCOUNT_AUTH_SECRET,
+		clientId: process.env.SOS_API_IDENTIFICATION,
+		secret: process.env.SOS_API_SECURITY_TOKEN,
 	},
 };

@@ -39,7 +39,7 @@ describe('DevicePackageManagement', () => {
 
 	describe('get device package installs', () => {
 		it('should parse the response', async () => {
-			const pkg = await dpm.get('someUid');
+			const pkg = await dpm.list('someUid');
 			should.equal(1, pkg.length);
 			should.equal(dPkg.uid, pkg[0].uid);
 			should.equal(dPkg.packageName, pkg[0].packageName);
@@ -49,7 +49,7 @@ describe('DevicePackageManagement', () => {
 
 		it('should throw error', async () => {
 			try {
-				await dpm.get('shouldFail');
+				await dpm.list('shouldFail');
 			} catch (e) {
 				should(e.message).equal(errorRespMessage(500));
 			}

@@ -38,7 +38,7 @@ describe('DeviceResolutionManagement', () => {
 	const drm = new DeviceResolutionManagement(nockOpts);
 
 	it('should get the resolution info', async () => {
-		const res = await drm.get('someUid');
+		const res = await drm.list('someUid');
 		should.equal(1, res.length);
 		const r = res[0];
 

@@ -13,7 +13,7 @@ export default class DeviceAudioManagement {
 	constructor(private options: IOptions) {
 	}
 
-	public async get(deviceUid: string): Promise<IDeviceAudio[]> {
+	public async list(deviceUid: string): Promise<IDeviceAudio[]> {
 		const response = await getResource(this.options, DeviceAudioManagement.getUrl(deviceUid));
 		const data: IDeviceAudio[] = await parseJSONResponse(response);
 

@@ -13,7 +13,7 @@ export default class DeviceRemoteControlManagement {
 	constructor(private options: IOptions) {
 	}
 
-	public async get(deviceUid: string): Promise<IDeviceRemoteControl[]> {
+	public async list(deviceUid: string): Promise<IDeviceRemoteControl[]> {
 		const response = await getResource(this.options, DeviceRemoteControlManagement.getUrl(deviceUid));
 		const data: IDeviceRemoteControl[] = await parseJSONResponse(response);
 

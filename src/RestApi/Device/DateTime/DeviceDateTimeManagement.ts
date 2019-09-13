@@ -13,7 +13,7 @@ export default class DeviceDateTimeManagement {
 	constructor(private options: IOptions) {
 	}
 
-	public async get(deviceUid: string): Promise<IDeviceDateTime[]> {
+	public async list(deviceUid: string): Promise<IDeviceDateTime[]> {
 		const response = await getResource(this.options, DeviceDateTimeManagement.getUrl(deviceUid));
 		const data: IDeviceDateTime[] = await parseJSONResponse(response);
 

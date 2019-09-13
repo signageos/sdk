@@ -31,7 +31,7 @@ describe('DeviceRemoteControlManagement', () => {
 	const drcm = new DeviceRemoteControlManagement(nockOpts);
 
 	it('should get the remote control information', async () => {
-		const rc = await drcm.get('someUid');
+		const rc = await drcm.list('someUid');
 		should.equal(1, rc.length);
 		should.equal(dcr.uid, rc[0].uid);
 		should.equal(dcr.deviceUid, rc[0].deviceUid);

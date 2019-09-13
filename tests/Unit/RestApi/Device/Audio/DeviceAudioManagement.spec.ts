@@ -31,9 +31,9 @@ describe('DeviceAudioManagement', () => {
 
 	const dvm = new DeviceAudioManagement(nockOpts);
 
-	describe('get device volume', () => {
+	describe('get device volume settings', () => {
 		it('should parse the response', async () => {
-			const vols = await dvm.get('someUid');
+			const vols = await dvm.list('someUid');
 			should.equal(1, vols.length);
 			should.equal('someUid', vols[0].uid);
 			should.equal(56, vols[0].volume);
@@ -41,7 +41,7 @@ describe('DeviceAudioManagement', () => {
 
 		it('should throw error', async () => {
 			try {
-				await dvm.get('shouldFail');
+				await dvm.list('shouldFail');
 			} catch (e) {
 				should(e.message).equal(errorRespMessage(500));
 			}

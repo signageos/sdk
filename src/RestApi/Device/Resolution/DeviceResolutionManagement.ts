@@ -13,7 +13,7 @@ export default class DeviceResolutionManagement {
 	constructor(private options: IOptions) {
 	}
 
-	public async get(deviceUid: string): Promise<IDeviceResolution[]> {
+	public async list(deviceUid: string): Promise<IDeviceResolution[]> {
 		const response = await getResource(this.options, DeviceResolutionManagement.getUrl(deviceUid));
 		const data: IDeviceResolution[] = await parseJSONResponse(response);
 

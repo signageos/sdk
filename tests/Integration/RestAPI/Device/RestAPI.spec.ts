@@ -11,7 +11,8 @@ import IDeviceResolution, {
 const allowedTimeout = 30000;
 const api = new RestApi(opts, accountOpts);
 
-describe('RestAPI - Device', () => {
+describe('RestAPI - Device', function () {
+	this.timeout(allowedTimeout);
 
 	before(function () {
 		// in order to run these tests, fill in auth and RUN_INTEGRATION_TESTS environment variables (please see '../helper.ts' file)
@@ -35,7 +36,7 @@ describe('RestAPI - Device', () => {
 		should(device.pinCode.length === 4).true();
 		should(device.organizationUid.length > 0).true();
 		should(device.createdAt.getTime() > 0).true();
-	}).timeout(allowedTimeout);
+	});
 
 	it('should get the device  by its uid', async function () {
 		if (!device || !device.uid) {
@@ -45,7 +46,7 @@ describe('RestAPI - Device', () => {
 		const dvc = await api.device.get(device.uid);
 		should.equal(device.uid, dvc.uid);
 
-	}).timeout(allowedTimeout);
+	});
 
 	it('should update device name', async function () {
 		if (!device || !device.uid || !device.name) {
@@ -65,7 +66,7 @@ describe('RestAPI - Device', () => {
 				should.equal(dvc.name, update.name);
 			}
 		});
-	}).timeout(allowedTimeout);
+	});
 
 	it('should get the device pin code', async function () {
 		if (!device || !device.uid) {
@@ -76,7 +77,7 @@ describe('RestAPI - Device', () => {
 		should.equal(device.uid, pin.deviceUid);
 		should.equal(device.pinCode, pin.pinCode);
 
-	}).timeout(allowedTimeout);
+	});
 
 	it('should set and get the device resolution', async function () {
 		if (!device || !device.uid) {
@@ -89,7 +90,7 @@ describe('RestAPI - Device', () => {
 		};
 		await api.device.resolution.set(device.uid, toSet);
 
-		const res = await api.device.resolution.get(device.uid);
+		const res = await api.device.resolution.list(device.uid);
 		should(Array.isArray(res)).true();
 		should(res.length > 0).true();
 		res.forEach((item: IDeviceResolution) => {
@@ -98,6 +99,6 @@ describe('RestAPI - Device', () => {
 			should(item.uid.length > 0).true();
 		});
 
-	}).timeout(allowedTimeout);
+	});
 
 });

@@ -31,8 +31,8 @@ describe('DeviceDateTimeManagement', () => {
 
 	const dtm = new DeviceDateTimeManagement(nockOpts);
 
-	it('should get the device time', async () => {
-		const t = await dtm.get('someUid');
+	it('should get the device time settings', async () => {
+		const t = await dtm.list('someUid');
 		should.equal(1, t.length);
 		should.equal(datetime.uid, t[0].uid);
 		should.equal(datetime.timestamp, t[0].timestamp);

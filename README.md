@@ -15,8 +15,8 @@ Mandatory ENV variables:
 - SOS_API_URL="https://api.signageos.io"
 - SOS_AUTH_CLIENT_ID="OAuthClientID"
 - SOS_AUTH_SECRET="OAuthSecret"
-- SOS_ACCOUNT_AUTH_CLIENT_ID="accountID"
-- SOS_ACCOUNT_AUTH_SECRET="accountSecret"
+- SOS_API_IDENTIFICATION="apiAccountID"
+- SOS_API_SECURITY_TOKEN="apiAccountSecret"
 
 You may visit the documentation [https://docs.signageos.io/api#rest-api-authentication] where you find out how to get the proper values.
 

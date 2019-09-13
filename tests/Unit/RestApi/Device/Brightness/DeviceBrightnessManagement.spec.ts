@@ -38,9 +38,9 @@ describe('DeviceBrightnessManagement', () => {
 
 	const dbm = new DeviceBrightnessManagement(nockOpts);
 
-	describe('getBrightness', () => {
+	describe('get device brightness settings', () => {
 		it('should parse the response', async () => {
-			const br = await dbm.get('someUid');
+			const br = await dbm.list('someUid');
 			should.equal(1, br.length);
 			should.equal('someUid', br[0].uid);
 			should.equal(86, br[0].brightness1);
@@ -51,7 +51,7 @@ describe('DeviceBrightnessManagement', () => {
 
 		it('should throw error', async () => {
 			try {
-				await dbm.get('shouldFail');
+				await dbm.list('shouldFail');
 			} catch (e) {
 				should(e.message).equal(errorRespMessage(500));
 			}

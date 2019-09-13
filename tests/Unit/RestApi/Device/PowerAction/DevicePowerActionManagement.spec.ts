@@ -33,8 +33,8 @@ describe('DevicePowerActionManagement', () => {
 
 	const dpam = new DevicePowerActionManagement(nockOpts);
 
-	it('should get the device power action', async () => {
-		const pwr = await dpam.get('someUid');
+	it('should get the device power actions', async () => {
+		const pwr = await dpam.list('someUid');
 		should.equal(1, pwr.length);
 		should.equal(pa.uid, pwr[0].uid);
 		should.equal(pa.powerType, pwr[0].powerType);

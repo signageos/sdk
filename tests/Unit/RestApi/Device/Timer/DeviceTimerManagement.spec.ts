@@ -48,8 +48,8 @@ describe('DeviceTimerManagement', () => {
 
 	const dtm = new DeviceTimerManagement(nockOpts);
 
-	it('should get the device timer', async () => {
-		const timers = await dtm.get('someUid');
+	it('should get the device timers', async () => {
+		const timers = await dtm.list('someUid');
 		should.equal(1, timers.length);
 
 		const t = timers[0];

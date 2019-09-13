@@ -34,7 +34,7 @@ describe('DeviceDebugManagement', () => {
 
 	describe('get debug settings', () => {
 		it('should parse the response', async () => {
-			const debug = await ddm.get('someUid');
+			const debug = await ddm.list('someUid');
 			should.equal(1, debug.length);
 			should.equal('someUid', debug[0].uid);
 			should(debug[0].appletEnabled).true();

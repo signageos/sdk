@@ -13,7 +13,7 @@ export default class DevicePackageManagement {
 	constructor(private options: IOptions) {
 	}
 
-	public async get(deviceUid: string): Promise<IDevicePackage[]> {
+	public async list(deviceUid: string): Promise<IDevicePackage[]> {
 		const response = await getResource(this.options, DevicePackageManagement.getUrl(deviceUid));
 		const data: IDevicePackage[] = await parseJSONResponse(response);
 

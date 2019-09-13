@@ -13,7 +13,7 @@ export default class DeviceBrightnessManagement {
 	constructor(private options: IOptions) {
 	}
 
-	public async get(deviceUid: string): Promise<IDeviceBrightness[]> {
+	public async list(deviceUid: string): Promise<IDeviceBrightness[]> {
 		const response = await getResource(this.options, DeviceBrightnessManagement.getUrl(deviceUid));
 		const data: IDeviceBrightness[] = await parseJSONResponse(response);
 

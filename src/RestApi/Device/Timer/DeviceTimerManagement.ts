@@ -13,7 +13,7 @@ export default class DeviceTimerManagement {
 	constructor(private options: IOptions) {
 	}
 
-	public async get(deviceUid: string): Promise<IDeviceTimer[]> {
+	public async list(deviceUid: string): Promise<IDeviceTimer[]> {
 		const response = await getResource(this.options, DeviceTimerManagement.getUrl(deviceUid));
 		const data: IDeviceTimer[] = await parseJSONResponse(response);
 

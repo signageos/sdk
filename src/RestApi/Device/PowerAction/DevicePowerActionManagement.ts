@@ -13,7 +13,7 @@ export default class DevicePowerActionManagement {
 	constructor(private options: IOptions) {
 	}
 
-	public async get(deviceUid: string): Promise<IPowerAction[]> {
+	public async list(deviceUid: string): Promise<IPowerAction[]> {
 		const response = await getResource(this.options, DevicePowerActionManagement.getUrl(deviceUid));
 		const data: IPowerAction[] = await parseJSONResponse(response);
 
