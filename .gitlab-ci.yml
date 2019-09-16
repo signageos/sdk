@@ -84,6 +84,20 @@ publish:npm-public:
     - node -e 'require("fs").writeFileSync("./package.json", JSON.stringify({ ...require("./package"), "publishConfig":{"registry":"https://registry.npmjs.org/","access":"public" } }, undefined, 2) + "\n")'
     - npm publish --ignore-scripts --tag $TAG
 
+publish:docs:
+  stage: publish
+  only:
+    - tags
+  dependencies:
+    - prepare
+    - build
+  script:
+    - if [ -x "$(command -v aws)"  ]; then echo "AWS CLI already present"; else make getaws; fi
+    - npm i && npm run docs
+    - echo $AWS_ALPINE_REPO_S3_PATH
+    - aws s3 cp ./docs "s3://signageos-documentation/sdk/$TAG" --recursive
+    - rm -rf ./docs
+
 release:tag:
   stage: release
   only:
