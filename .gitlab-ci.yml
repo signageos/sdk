@@ -79,8 +79,9 @@ publish:npm-public:
     - prepare
     - build
   script:
-    - NPM_REGISTRY_URL=https://registry.npmjs.org/
-    - NPM_AUTH_TOKEN=$PUBLIC_NPM_AUTH_TOKEN
+    - export NPM_REGISTRY_URL=https://registry.npmjs.org/
+    - export NPM_REGISTRY_HOST=registry.npmjs.org
+    - export NPM_AUTH_TOKEN=$PUBLIC_NPM_AUTH_TOKEN
     - node -e 'require("fs").writeFileSync("./package.json", JSON.stringify({ ...require("./package"), "publishConfig":{"registry":"https://registry.npmjs.org/","access":"public" } }, undefined, 2) + "\n")'
     - npm publish --ignore-scripts --tag $TAG
 
