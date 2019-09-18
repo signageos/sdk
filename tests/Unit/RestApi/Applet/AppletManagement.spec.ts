@@ -22,6 +22,7 @@ describe('AppletManagement', () => {
 				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
 			},
 		})
+		.persist()
 		.get('/v1/applet').reply(200, validListResp)
 		.post('/v1/applet', validCreateReq).reply(200, successRes)
 		.get('/v1/applet/someUid/').reply(200, validGetResp)
@@ -45,8 +46,10 @@ describe('AppletManagement', () => {
 	});
 
 	it('should create new applet', async () => {
-		await am.create(validCreateReq);
-		should(true).true();
+		const applet = await am.create(validCreateReq);
+		should.equal('someUid', applet.uid);
+		should.equal('signageOS Sample', applet.name);
+		should.equal('2018-03-06T09:57:48.183Z', applet.createdAt.toISOString());
 	});
 
 	it('should delete existing applet', async () => {
