@@ -21,7 +21,7 @@ export default class DeviceTimerManagement {
 	}
 
 	public async set(deviceUid: string, settings: IDeviceTimerUpdatable): Promise<void> {
-		await putResource(this.options, DeviceTimerManagement.getUrl(deviceUid), settings);
+		await putResource(this.options, DeviceTimerManagement.getUrl(deviceUid), JSON.stringify(settings));
 	}
 
 }

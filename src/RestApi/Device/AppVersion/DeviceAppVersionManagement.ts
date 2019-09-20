@@ -20,7 +20,7 @@ export default class DeviceAppVersionManagement {
 	}
 
 	public async set(deviceUid: string, settings: IDeviceAppVersionUpdatable): Promise<void> {
-		await putResource(this.options, DeviceAppVersionManagement.getUrl(deviceUid), settings);
+		await putResource(this.options, DeviceAppVersionManagement.getUrl(deviceUid), JSON.stringify(settings));
 	}
 
 }

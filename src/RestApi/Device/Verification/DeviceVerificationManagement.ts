@@ -17,7 +17,7 @@ export default class DeviceVerificationManagement {
 	}
 
 	public async set(settings: IDeviceVerificationUpdatable): Promise<void> {
-		await putResource(this.options, RESOURCE, settings);
+		await putResource(this.options, RESOURCE, JSON.stringify(settings));
 	}
 
 }

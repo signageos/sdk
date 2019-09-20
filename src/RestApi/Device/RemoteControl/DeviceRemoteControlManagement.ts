@@ -21,7 +21,7 @@ export default class DeviceRemoteControlManagement {
 	}
 
 	public async set(deviceUid: string, settings: IDeviceRemoteControlUpdatable): Promise<void> {
-		await putResource(this.options, DeviceRemoteControlManagement.getUrl(deviceUid), settings);
+		await putResource(this.options, DeviceRemoteControlManagement.getUrl(deviceUid), JSON.stringify(settings));
 	}
 
 }

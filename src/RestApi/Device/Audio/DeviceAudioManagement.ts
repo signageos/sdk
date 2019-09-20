@@ -21,7 +21,7 @@ export default class DeviceAudioManagement {
 	}
 
 	public async set(deviceUid: string, settings: IDeviceAudioUpdatable): Promise<void> {
-		await putResource(this.options, DeviceAudioManagement.getUrl(deviceUid), settings);
+		await putResource(this.options, DeviceAudioManagement.getUrl(deviceUid), JSON.stringify(settings));
 	}
 
 }

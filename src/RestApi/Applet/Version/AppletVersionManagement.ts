@@ -34,11 +34,11 @@ export default class AppletVersionManagement {
 	}
 
 	public async create(appletUid: string, settings: IAppletVersionCreatable): Promise<void> {
-		await postResource(this.options, AppletVersionManagement.getResource(appletUid), settings);
+		await postResource(this.options, AppletVersionManagement.getResource(appletUid), JSON.stringify(settings));
 	}
 
 	public async update(appletUid: string, version: string, settings: IAppletVersionUpdatable): Promise<void> {
-		await putResource(this.options, AppletVersionManagement.getUrl(appletUid, version), settings);
+		await putResource(this.options, AppletVersionManagement.getUrl(appletUid, version), JSON.stringify(settings));
 	}
 
 }

@@ -40,7 +40,7 @@ export default class AppletManagement {
 	}
 
 	public async create(settings: IAppletCreatable): Promise<Applet> {
-		const { headers } = await postResource(this.options, RESOURCE, settings);
+		const { headers } = await postResource(this.options, RESOURCE, JSON.stringify(settings));
 		const headerLink = headers.get('link');
 
 		if (!headerLink) {

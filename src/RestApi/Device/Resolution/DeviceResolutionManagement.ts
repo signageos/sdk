@@ -21,7 +21,7 @@ export default class DeviceResolutionManagement {
 	}
 
 	public async set(deviceUid: string, settings: IDeviceResolutionUpdatable): Promise<void> {
-		await putResource(this.options, DeviceResolutionManagement.getUrl(deviceUid), settings);
+		await putResource(this.options, DeviceResolutionManagement.getUrl(deviceUid), JSON.stringify(settings));
 	}
 
 }

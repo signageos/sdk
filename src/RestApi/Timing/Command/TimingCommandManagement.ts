@@ -70,7 +70,7 @@ export default class TimingCommandManagement {
 					+ '/' + TimingCommandManagement.RESOURCE[1]
 					+ '/' + timingCommandData.appletUid
 					+ '/' + TimingCommandManagement.RESOURCE[2],
-				timingCommandData,
+				JSON.stringify(timingCommandData),
 			);
 			const body = await response.text();
 			if (response.status === 202) {

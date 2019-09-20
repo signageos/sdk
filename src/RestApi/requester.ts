@@ -16,7 +16,7 @@ export function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options
 			'X-Auth': options.auth.clientId + ':' + options.auth.secret,
 		},
 		method,
-		body: typeof data !== 'undefined' ? JSON.stringify(data) : undefined,
+		body: data,
 	};
 }
 

@@ -21,7 +21,7 @@ export default class DevicePackageManagement {
 	}
 
 	public async install(deviceUid: string, settings: IDevicePackageUpdatable): Promise<void> {
-		await putResource(this.options, DevicePackageManagement.getUrl(deviceUid), settings);
+		await putResource(this.options, DevicePackageManagement.getUrl(deviceUid), JSON.stringify(settings));
 	}
 
 }

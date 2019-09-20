@@ -22,7 +22,7 @@ export default class DeviceFirmwareManagement {
 	}
 
 	public async set(deviceUid: string, settings: IDeviceFirmwareUpdatable): Promise<IDeviceChangeResponse> {
-		const response = await putResource(this.options, DeviceFirmwareManagement.getUrl(deviceUid), settings);
+		const response = await putResource(this.options, DeviceFirmwareManagement.getUrl(deviceUid), JSON.stringify(settings));
 
 		return new DeviceChangeResponse(await parseJSONResponse(response));
 	}

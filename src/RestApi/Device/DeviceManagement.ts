@@ -77,7 +77,7 @@ export default class DeviceManagement {
 	}
 
 	public async set(deviceUid: string, settings: IDeviceUpdatable): Promise<void> {
-		await putResource(this.options, RESOURCE + '/' + deviceUid, settings);
+		await putResource(this.options, RESOURCE + '/' + deviceUid, JSON.stringify(settings));
 	}
 
 }
