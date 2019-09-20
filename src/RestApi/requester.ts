@@ -12,7 +12,7 @@ import InternalApiError from "./Error/InternalApiError";
 export function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options: IOptions, data?: any): RequestInit {
 	return {
 		headers: {
-			'Content-Type': 'application/json',
+			'Content-Type': options.contentType ? options.contentType : 'application/json',
 			'X-Auth': options.auth.clientId + ':' + options.auth.secret,
 		},
 		method,

@@ -22,15 +22,17 @@ describe('AppletVersionManagement', () => {
 
 	};
 	const validListResp: IAppletVersion[] = [validGetResp];
-	const validCreateReq: IAppletVersionCreatable = {
+	const validCreateClientReq: IAppletVersionCreatable = {
 		version: "1.1.0",
 		frontAppletVersion: "1.1.1",
 		binary: "some binary data",
 	};
+	const validCreateReqBody = "some binary data";
 	const validUpdateReq: IAppletVersionUpdatable = {
 		frontAppletVersion: "1.1.1",
-		binary: "some binary data",
+		binary: "some updated binary data",
 	};
+	const validUpdateReqBody = "some updated binary data";
 
 	nock(
 		nockOpts.url, {
@@ -39,9 +41,9 @@ describe('AppletVersionManagement', () => {
 			},
 		})
 		.get('/v1/applet/appletUid/version/').reply(200, validListResp)
-		.post('/v1/applet/appletUid/version/', validCreateReq).reply(200, successRes)
+		.post('/v1/applet/appletUid/version/?frontAppletVersion=1.1.1&version=1.1.0', validCreateReqBody).reply(200, successRes)
 		.get('/v1/applet/appletUid/version/1.1.0/').reply(200, validGetResp)
-		.put('/v1/applet/appletUid/version/1.1.0/').reply(200, successRes);
+		.put('/v1/applet/appletUid/version/1.1.0/?frontAppletVersion=1.1.1', validUpdateReqBody).reply(200, successRes);
 
 	const avm = new AppletVersionManagement(nockOpts);
 
@@ -61,7 +63,7 @@ describe('AppletVersionManagement', () => {
 	});
 
 	it('should create new applet version', async () => {
-		await avm.create('appletUid', validCreateReq);
+		await avm.create('appletUid', validCreateClientReq);
 		should(true).true();
 	});
 

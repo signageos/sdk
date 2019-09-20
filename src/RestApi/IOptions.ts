@@ -1,6 +1,7 @@
 
 interface IOptions {
 	url: string;
+	contentType?: string;
 	auth: {
 		clientId: string;
 		secret: string;

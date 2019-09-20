@@ -34,11 +34,30 @@ export default class AppletVersionManagement {
 	}
 
 	public async create(appletUid: string, settings: IAppletVersionCreatable): Promise<void> {
-		await postResource(this.options, AppletVersionManagement.getResource(appletUid), JSON.stringify(settings));
+		const options: IOptions = {
+			...this.options,
+			contentType: 'text/html'
+		};
+
+		const path = AppletVersionManagement.getResource(appletUid);
+		const versionParam = `version=${settings.version}`;
+		const frontAppletVersionParam = `frontAppletVersion=${settings.frontAppletVersion}`;
+		const pathWithParameters = `${path}?${frontAppletVersionParam}&${versionParam}`;
+
+		await postResource(options, pathWithParameters, settings.binary);
 	}
 
 	public async update(appletUid: string, version: string, settings: IAppletVersionUpdatable): Promise<void> {
-		await putResource(this.options, AppletVersionManagement.getUrl(appletUid, version), JSON.stringify(settings));
+		const options: IOptions = {
+			...this.options,
+			contentType: 'text/html'
+		};
+
+		const path = AppletVersionManagement.getUrl(appletUid, version);
+		const frontAppletVersionParam = `frontAppletVersion=${settings.frontAppletVersion}`;
+		const pathWithParameters = `${path}?${frontAppletVersionParam}`;
+
+		await putResource(options, pathWithParameters, settings.binary);
 	}
 
 }
