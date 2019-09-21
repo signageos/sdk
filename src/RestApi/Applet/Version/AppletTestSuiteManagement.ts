@@ -39,7 +39,7 @@ export default class AppletTestSuiteManagement {
 		settings: IAppletTestSuiteCreatable
 	): Promise<void> {
 		const url = AppletTestSuiteManagement.getDetailResource(appletUid, appletVersion, identifier);
-		await postResource(this.options, url, settings);
+		await postResource(this.options, url, JSON.stringify(settings));
 	}
 
 	public async update(
@@ -49,7 +49,7 @@ export default class AppletTestSuiteManagement {
 		settings: IAppletTestSuiteUpdatable
 	): Promise<void> {
 		const url = AppletTestSuiteManagement.getDetailResource(appletUid, appletVersion, identifier);
-		await putResource(this.options, url, settings);
+		await putResource(this.options, url, JSON.stringify(settings));
 	}
 
 	public async delete(

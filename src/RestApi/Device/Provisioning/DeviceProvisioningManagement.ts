@@ -12,7 +12,7 @@ export default class DeviceProvisioningManagement {
 	}
 
 	public async deprovision(deviceUid: string): Promise<void> {
-		await putResource(this.options, DeviceProvisioningManagement.getUrl(deviceUid), {});
+		await putResource(this.options, DeviceProvisioningManagement.getUrl(deviceUid), JSON.stringify({}));
 	}
 
 }

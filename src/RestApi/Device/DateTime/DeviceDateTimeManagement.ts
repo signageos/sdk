@@ -21,7 +21,7 @@ export default class DeviceDateTimeManagement {
 	}
 
 	public async set(deviceUid: string, settings: IDeviceDateTimeUpdatable): Promise<void> {
-		await putResource(this.options, DeviceDateTimeManagement.getUrl(deviceUid), settings);
+		await putResource(this.options, DeviceDateTimeManagement.getUrl(deviceUid), JSON.stringify(settings));
 	}
 
 }

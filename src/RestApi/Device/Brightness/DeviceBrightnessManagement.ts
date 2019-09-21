@@ -21,7 +21,7 @@ export default class DeviceBrightnessManagement {
 	}
 
 	public async set(deviceUid: string, settings: IDeviceBrightnessUpdatable): Promise<void> {
-		await putResource(this.options, DeviceBrightnessManagement.getUrl(deviceUid), settings);
+		await putResource(this.options, DeviceBrightnessManagement.getUrl(deviceUid), JSON.stringify(settings));
 	}
 
 }

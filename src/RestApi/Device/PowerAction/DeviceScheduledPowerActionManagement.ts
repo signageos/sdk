@@ -25,7 +25,7 @@ export default class DeviceScheduledPowerActionManagement {
 	}
 
 	public async create(deviceUid: string, settings: IScheduledPowerActionCreatable): Promise<void> {
-		await postResource(this.options, DeviceScheduledPowerActionManagement.getUrl(deviceUid), settings);
+		await postResource(this.options, DeviceScheduledPowerActionManagement.getUrl(deviceUid), JSON.stringify(settings));
 	}
 
 	public async get(deviceUid: string, sPowerActionId: string): Promise<IScheduledPowerAction> {

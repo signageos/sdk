@@ -30,7 +30,7 @@ export default class AppletCommandManagement {
 	}
 
 	public async send(deviceUid: string, appletUid: string, settings: IAppletCommandSendable): Promise<void> {
-		await postResource(this.options, AppletCommandManagement.getResource(deviceUid, appletUid), settings);
+		await postResource(this.options, AppletCommandManagement.getResource(deviceUid, appletUid), JSON.stringify(settings));
 	}
 
 }

@@ -23,7 +23,7 @@ export default class TimingManagement {
 	public async create(data: ITimingCreateOnly & ITimingUpdatable): Promise<Timing> {
 		this.assertV1();
 
-		await postResource(this.options, TimingManagement.RESOURCE, data);
+		await postResource(this.options, TimingManagement.RESOURCE, JSON.stringify(data));
 		// v1 does not respond created uid
 		let timing: Timing | undefined;
 		do {
@@ -38,7 +38,7 @@ export default class TimingManagement {
 	public async update(timingUid: string, data: ITimingUpdatable): Promise<Timing> {
 		this.assertV1();
 
-		await putResource(this.options, TimingManagement.RESOURCE + '/' + timingUid, data);
+		await putResource(this.options, TimingManagement.RESOURCE + '/' + timingUid, JSON.stringify(data));
 		// v1 does not respond created uid
 		let timing: Timing;
 		do {

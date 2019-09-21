@@ -15,6 +15,9 @@ describe('AppletManagement', () => {
 	const validCreateReq: IAppletCreatable = {
 		name: "signageOS Sample",
 	};
+	const successResHeaders = {
+		Link: `<${nockOpts.url}/v1/applet/someUid>`,
+	};
 
 	nock(
 		nockOpts.url, {
@@ -24,7 +27,7 @@ describe('AppletManagement', () => {
 		})
 		.persist()
 		.get('/v1/applet').reply(200, validListResp)
-		.post('/v1/applet', validCreateReq).reply(200, successRes)
+		.post('/v1/applet', validCreateReq).reply(200, successRes, successResHeaders)
 		.get('/v1/applet/someUid/').reply(200, validGetResp)
 		.delete('/v1/applet/someUid/').reply(200, successRes);
 

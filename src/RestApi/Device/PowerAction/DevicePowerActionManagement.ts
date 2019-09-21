@@ -21,7 +21,7 @@ export default class DevicePowerActionManagement {
 	}
 
 	public async set(deviceUid: string, settings: IPowerActionUpdatable): Promise<void> {
-		await putResource(this.options, DevicePowerActionManagement.getUrl(deviceUid), settings);
+		await putResource(this.options, DevicePowerActionManagement.getUrl(deviceUid), JSON.stringify(settings));
 	}
 
 }

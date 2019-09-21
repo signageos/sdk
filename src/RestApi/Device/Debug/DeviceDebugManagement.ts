@@ -21,7 +21,7 @@ export default class DeviceDebugManagement {
 	}
 
 	public async set(deviceUid: string, settings: IDeviceDebugUpdatable): Promise<void> {
-		await putResource(this.options, DeviceDebugManagement.getUrl(deviceUid), settings);
+		await putResource(this.options, DeviceDebugManagement.getUrl(deviceUid), JSON.stringify(settings));
 	}
 
 }

@@ -23,7 +23,7 @@ export default class DeviceMonitoringManagement {
 	}
 
 	public async takeScreenshot(deviceUid: string): Promise<void> {
-		await postResource(this.options, DeviceMonitoringManagement.getUrl(deviceUid, 'screenshot'), {});
+		await postResource(this.options, DeviceMonitoringManagement.getUrl(deviceUid, 'screenshot'), JSON.stringify({}));
 	}
 
 	public async screenshots(deviceUid: string, filter: ITakenDateRangeFilter = {}): Promise<IScreenshot[]> {

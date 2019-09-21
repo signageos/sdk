@@ -26,7 +26,7 @@ export default class OrganizationManagement {
 	}
 
 	public async create(settings: IOrganizationCreatable): Promise<void> {
-		await postResource(this.options, OrganizationManagement.RESOURCE, settings);
+		await postResource(this.options, OrganizationManagement.RESOURCE, JSON.stringify(settings));
 	}
 
 }

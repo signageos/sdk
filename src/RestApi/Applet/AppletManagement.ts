@@ -1,3 +1,4 @@
+import * as path from 'path';
 import {deleteResource, getResource, parseJSONResponse} from "../requester";
 import IOptions from "../IOptions";
 import IApplet, {IAppletCreatable} from "./IApplet";
@@ -6,8 +7,6 @@ import Applet from "./Applet";
 import AppletVersionManagement from "./Version/AppletVersionManagement";
 import AppletCommandManagement from "./Command/AppletCommandManagement";
 import AppletTestSuiteManagement from "./Version/AppletTestSuiteManagement";
-import UnsupportedError from '../Error/UnsupportedError';
-import wait from '../../Timer/wait';
 
 export const RESOURCE: string = 'applet';
 
@@ -41,27 +40,20 @@ export default class AppletManagement {
 	}
 
 	public async create(settings: IAppletCreatable): Promise<Applet> {
-		this.assertV1();
+		const { headers } = await postResource(this.options, RESOURCE, JSON.stringify(settings));
+		const headerLink = headers.get('link');
 
-		await postResource(this.options, RESOURCE, settings);
-		// v1 does not respond created uid
-		let applet: Applet | undefined;
-		do {
-			await wait(500);
-			const applets = await this.list();
-			applet = applets.find((a: Applet) => a.name === settings.name);
-		} while (!applet);
+		if (!headerLink) {
+			throw new Error(`Api didn't return link header to created ${RESOURCE}.`);
+		}
+
+		const appletUid = path.basename(headerLink.substr(1, headerLink.length - 2));
+		const applet = this.get(appletUid);
 
 		return applet;
 	}
 
 	public async delete(appletUid: string): Promise<void> {
 		await deleteResource(this.options, AppletManagement.getUrl(appletUid));
-	}
-
-	private assertV1(): void {
-		if (this.options.version !== 'v1') {
-			throw new UnsupportedError(`API version ${this.options.version} is not implemented`);
-		}
 	}
 }
