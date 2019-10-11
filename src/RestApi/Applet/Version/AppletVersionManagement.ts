@@ -4,6 +4,7 @@ import { RESOURCE as APPLET } from "../AppletManagement";
 import IAppletVersion, { IAppletVersionCreatable, IAppletVersionUpdatable } from "./IAppletVersion";
 import AppletVersion from "./AppletVersion";
 import IAppletVersionFilter, { IAppletVersionListFilter } from "./IAppletVersionFilter";
+import AppletVersionFileManagement from "./File/AppletVersionFileManagement";
 
 export default class AppletVersionManagement {
 
@@ -34,30 +35,40 @@ export default class AppletVersionManagement {
 	}
 
 	public async create(appletUid: string, settings: IAppletVersionCreatable): Promise<void> {
+		const contentType = settings.entryFile ? 'application/json' : 'text/html';
 		const options: IOptions = {
 			...this.options,
-			contentType: 'text/html'
+			contentType,
 		};
 
-		const path = AppletVersionManagement.getResource(appletUid);
 		const versionParam = `version=${settings.version}`;
 		const frontAppletVersionParam = `frontAppletVersion=${settings.frontAppletVersion}`;
-		const pathWithParameters = `${path}?${frontAppletVersionParam}&${versionParam}`;
 
-		await postResource(options, pathWithParameters, settings.binary);
+		const pathWithoutParameters = AppletVersionManagement.getResource(appletUid);
+		const pathWithParameters = `${pathWithoutParameters}?${frontAppletVersionParam}&${versionParam}`;
+		const path = settings.entryFile ? pathWithoutParameters : pathWithParameters;
+
+		const data = settings.entryFile ? JSON.stringify(settings) : settings.binary;
+
+		await postResource(options, path, data);
 	}
 
 	public async update(appletUid: string, version: string, settings: IAppletVersionUpdatable): Promise<void> {
+		const contentType = settings.entryFile ? 'application/json' : 'text/html';
 		const options: IOptions = {
 			...this.options,
-			contentType: 'text/html'
+			contentType,
 		};
 
-		const path = AppletVersionManagement.getUrl(appletUid, version);
 		const frontAppletVersionParam = `frontAppletVersion=${settings.frontAppletVersion}`;
-		const pathWithParameters = `${path}?${frontAppletVersionParam}`;
 
-		await putResource(options, pathWithParameters, settings.binary);
+		const pathWithoutParameters = AppletVersionManagement.getUrl(appletUid, version);
+		const pathWithParameters = `${pathWithoutParameters}?${frontAppletVersionParam}`;
+		const path = settings.entryFile ? pathWithoutParameters : pathWithParameters;
+
+		const data = settings.entryFile ? JSON.stringify(settings) : settings.binary;
+
+		await putResource(options, path, data);
 	}
 
 }

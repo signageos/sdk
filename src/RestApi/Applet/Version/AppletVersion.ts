@@ -12,6 +12,7 @@ export default class AppletVersion implements IAppletVersion {
 	public readonly publishedSince: IAppletVersion['publishedSince'];
 	public readonly deprecatedSince: IAppletVersion['deprecatedSince'];
 	public readonly builtSince: IAppletVersion['builtSince'];
+	public readonly entryFile: IAppletVersion['entryFile'];
 
 	constructor(data: IAppletVersion) {
 		for (const key in data) {

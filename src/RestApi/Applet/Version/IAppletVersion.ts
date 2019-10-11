@@ -2,6 +2,7 @@
 export interface IAppletVersionUpdatable {
 	binary: string | NodeJS.ReadableStream;
 	frontAppletVersion: string;
+	entryFile?: string;
 }
 
 export interface IAppletVersionCreatable extends IAppletVersionUpdatable {
