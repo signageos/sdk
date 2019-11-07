@@ -41,7 +41,7 @@ export default class DeviceMonitoringManagement {
 	}
 
 	public async temperatures(deviceUid: string, filter: ICreatedDateRangeFilter = {}): Promise<ITemperature[]> {
-		const response = await getResource(this.options, DeviceMonitoringManagement.getUrl(deviceUid, 'temperatures'), filter);
+		const response = await getResource(this.options, DeviceMonitoringManagement.getUrl(deviceUid, 'temperature'), filter);
 		const data: ITemperature[] = await parseJSONResponse(response);
 
 		return data.map((item: ITemperature) => new Temperature(item));
@@ -54,7 +54,7 @@ export default class DeviceMonitoringManagement {
 	}
 
 	public async reports(deviceUid: string, filter: ICreatedDateRangeFilter = {}): Promise<IReportFile[]> {
-		const response = await getResource(this.options, DeviceMonitoringManagement.getUrl(deviceUid, 'reports'), filter);
+		const response = await getResource(this.options, DeviceMonitoringManagement.getUrl(deviceUid, 'report'), filter);
 		const data: IReportFile[] = await parseJSONResponse(response);
 
 		return data.map((item: IReportFile) => new ReportFile(item));

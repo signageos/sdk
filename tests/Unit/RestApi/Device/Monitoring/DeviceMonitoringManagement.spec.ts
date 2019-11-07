@@ -129,8 +129,8 @@ describe('DeviceMonitoringManagement', () => {
 					'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
 				},
 			})
-			.get('/v1/device/someUid/temperatures').reply(200, tempResp)
-			.get('/v1/device/someUid/temperatures?' + reportFilterUri).reply(200, tempResp);
+			.get('/v1/device/someUid/temperature').reply(200, tempResp)
+			.get('/v1/device/someUid/temperature?' + reportFilterUri).reply(200, tempResp);
 
 		const dmm = new DeviceMonitoringManagement(nockOpts);
 
@@ -205,8 +205,8 @@ describe('DeviceMonitoringManagement', () => {
 					'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
 				},
 			})
-			.get('/v1/device/someUid/reports').reply(200, reportResp)
-			.get('/v1/device/someUid/reports?' + filterUri).reply(200, reportResp);
+			.get('/v1/device/someUid/report').reply(200, reportResp)
+			.get('/v1/device/someUid/report?' + filterUri).reply(200, reportResp);
 
 		const dmm = new DeviceMonitoringManagement(nockOpts);
 
