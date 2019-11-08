@@ -1,5 +1,5 @@
 
-import fetch, {Request, Response} from 'node-fetch';
+import fetch, { Request, Response } from 'node-fetch';
 import { stringify } from 'querystring';
 import { RequestInit } from "node-fetch";
 import IOptions from "./IOptions";
@@ -69,9 +69,9 @@ function prepareQueryParams(qp: any): string {
 	return '?' + stringify(qp);
 }
 
-async function doRequest(url: string | Request, init?: RequestInit): Promise<Response> {
+export async function doRequest(url: string | Request, init?: RequestInit): Promise<Response> {
 	const resp = await fetch(url, init);
-	if (resp.status === 200 || resp.status === 201) {
+	if (resp.status === 200 || resp.status === 201 || resp.status === 204) {
 		return resp;
 	}
 
