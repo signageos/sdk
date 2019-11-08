@@ -6,12 +6,14 @@ import AppletVersion from "./AppletVersion";
 import IAppletVersionFilter, { IAppletVersionListFilter } from "./IAppletVersionFilter";
 import AppletVersionFileManagement from "./File/AppletVersionFileManagement";
 
+export const RESOURCE: string = 'version';
+
 export default class AppletVersionManagement {
 
-	private static readonly RESOURCE: string = 'version';
+	public file: AppletVersionFileManagement;
 
 	private static getResource(appletUid: string): string {
-		return `${APPLET}/${appletUid}/${AppletVersionManagement.RESOURCE}/`;
+		return `${APPLET}/${appletUid}/${RESOURCE}/`;
 	}
 
 	private static getUrl(appletUid: string, version: string): string {
@@ -19,6 +21,7 @@ export default class AppletVersionManagement {
 	}
 
 	constructor(private options: IOptions) {
+		this.file = new AppletVersionFileManagement(options);
 	}
 
 	public async list(appletUid: string, filter: IAppletVersionListFilter = {}): Promise<IAppletVersion[]> {
