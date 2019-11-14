@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Create applet version with multiple files
 - Applet version files management
 
+### Fixed
+- Create applet test suite (uses correct POST resource)
+
 ## [1.1.0] - 2019-09-21
 ### Added
 - Create applet returns applet uid

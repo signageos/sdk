@@ -4,6 +4,7 @@ export interface IAppletTestSuiteUpdatable {
 }
 
 export interface IAppletTestSuiteCreatable extends IAppletTestSuiteUpdatable {
+	identifier: string;
 }
 
 interface IAppletTestSuite extends IAppletTestSuiteCreatable {

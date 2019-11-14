@@ -35,10 +35,9 @@ export default class AppletTestSuiteManagement {
 	public async create(
 		appletUid: string,
 		appletVersion: string,
-		identifier: string,
 		settings: IAppletTestSuiteCreatable
 	): Promise<void> {
-		const url = AppletTestSuiteManagement.getDetailResource(appletUid, appletVersion, identifier);
+		const url = AppletTestSuiteManagement.getResource(appletUid, appletVersion);
 		await postResource(this.options, url, JSON.stringify(settings));
 	}
 

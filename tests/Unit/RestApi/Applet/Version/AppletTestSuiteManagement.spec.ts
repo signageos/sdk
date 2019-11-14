@@ -17,6 +17,7 @@ describe('AppletTestSuiteManagement', () => {
 	};
 	const validListResp: IAppletTestSuite[] = [validGetResp];
 	const validCreateReq: IAppletTestSuiteCreatable = {
+		identifier: 'testName',
 		binary: "some binary data",
 	};
 	const validUpdateReq: IAppletTestSuiteUpdatable = {
@@ -30,7 +31,7 @@ describe('AppletTestSuiteManagement', () => {
 			},
 		})
 		.get('/v1/applet/appletUid/version/1.0.1/test').reply(200, validListResp)
-		.post('/v1/applet/appletUid/version/1.0.1/test/testName', validCreateReq).reply(200, successRes)
+		.post('/v1/applet/appletUid/version/1.0.1/test', validCreateReq).reply(200, successRes)
 		.get('/v1/applet/appletUid/version/1.0.1/test/testName').reply(200, validGetResp)
 		.put('/v1/applet/appletUid/version/1.0.1/test/testName').reply(200, successRes)
 		.delete('/v1/applet/appletUid/version/1.0.1/test/testName').reply(200, successRes);
@@ -55,7 +56,7 @@ describe('AppletTestSuiteManagement', () => {
 	});
 
 	it('should create new applet test suite', async () => {
-		await atsm.create('appletUid', '1.0.1', 'testName', validCreateReq);
+		await atsm.create('appletUid', '1.0.1', validCreateReq);
 		should(true).true();
 	});
 
