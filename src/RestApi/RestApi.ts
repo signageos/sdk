@@ -4,11 +4,12 @@ import TimingCommandManagement from './Timing/Command/TimingCommandManagement';
 import DeviceManagement from "./Device/DeviceManagement";
 import AppletManagement from "./Applet/AppletManagement";
 import OrganizationManagement from "./Organization/OrganizationManagement";
-
+import FirmwareVersionManagement from "./Firmware/Version/FirmwareVersionManagement";
 export default class RestApi {
 
 	// Note: We use different authentication here
 	public readonly organization: OrganizationManagement = new OrganizationManagement(this.accountOptions);
+	public readonly firmwareVersion: FirmwareVersionManagement = new FirmwareVersionManagement(this.accountOptions);
 
 	public readonly timing: TimingManagement = new TimingManagement(this.options);
 	public readonly timingCommand: TimingCommandManagement = new TimingCommandManagement(this.options);
