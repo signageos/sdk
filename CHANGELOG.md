@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
+- Create firmware version with multiple files
+- Firmware version files management
 - Create applet version with multiple files
 - Applet version files management
 

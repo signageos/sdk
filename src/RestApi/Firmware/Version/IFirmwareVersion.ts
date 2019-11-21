@@ -1,12 +1,17 @@
+export interface IFile {
+	hash: string;
+	content: NodeJS.ReadableStream;
+	size: number;
+}
 
 export interface IFirmwareVersionUpdatable {
-	confirmed: boolean;
+	uploaded: boolean;
 }
 
 export interface IFirmwareVersionCreatable {
 	applicationType: string;
 	version: string;
-	hash: string;
+	files: Array<IFile>;
 }
 
 export interface IFirmwareVersion extends IFirmwareVersionUpdatable, IFirmwareVersionCreatable {

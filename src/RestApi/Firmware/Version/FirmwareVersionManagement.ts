@@ -1,7 +1,9 @@
 import {getResource, parseJSONResponse, putResource, postResource} from "../../requester";
-import IFirmwareVersion, {IFirmwareVersionUpdatable, IFirmwareVersionCreatable} from "./IFirmwareVersion";
+import IFirmwareVersion, {IFirmwareVersionUpdatable, IFirmwareVersionCreatable, IFile} from "./IFirmwareVersion";
 import IOptions from "../../IOptions";
 import FirmwareVersion from "./FirmwareVersion";
+import { postStorage } from "../../storageRequester";
+import * as _ from 'lodash';
 
 export default class FirmwareVersionManagement {
 
@@ -26,6 +28,27 @@ export default class FirmwareVersionManagement {
 	}
 
 	public async create(settings: IFirmwareVersionCreatable): Promise<void> {
-		await postResource(this.options, FirmwareVersionManagement.RESOURCE, JSON.stringify(settings));
+		const response = await postResource(this.options, FirmwareVersionManagement.RESOURCE, JSON.stringify({
+			applicationType: settings.applicationType,
+			version: settings.version,
+			hashes: settings.files.map((file: IFile) => file.hash),
+		}));
+
+		const bodyArr = await response.json();
+
+		await Promise.all( bodyArr.map((bodyItem: any) => {
+			const file = _.find( settings.files, (item: IFile) => item.hash === bodyItem.upload.request.fields['Content-MD5'] );
+			if (!file) {
+				throw new Error('File not found');
+			}
+			return postStorage(
+				bodyItem.upload.request.url,
+				bodyItem.upload.request.fields,
+				file.content,
+				file.size,
+			);
+		}));
+
+		await this.set(settings.applicationType, settings.version, { uploaded: true });
 	}
 }

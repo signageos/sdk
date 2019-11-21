@@ -2,42 +2,81 @@ import * as should from 'should';
 import * as nock from 'nock';
 import { nockOpts, successRes } from '../helper';
 import IFirmwareVersion, {
-	IFirmwareVersionCreatable,
 	IFirmwareVersionUpdatable,
+	IFirmwareVersionCreatable,
 } from '../../../../src/RestApi/Firmware/Version/IFirmwareVersion';
 import FirmwareVersionManagement from "../../../../src/RestApi/Firmware/Version/FirmwareVersionManagement";
+import { createReadableStream } from '../Applet/Version/File/helper';
 
 describe('FirmwareVersionManagement', () => {
-
 	const firmwareVersion: IFirmwareVersion = {
 		'uid': 'someUid',
 		'applicationType': 'webos',
 		'version': '04.01.74',
 		'createdAt': new Date('2017-05-24T08:56:52.550Z'),
-		'hash': '8e9c3ded774d7b021be452570e0aba10',
-		'confirmed': false,
+		'uploaded': false,
+		'files': [],
 	};
 
 	const validGetResp: IFirmwareVersion = firmwareVersion;
 	const validListResp: IFirmwareVersion[] = [firmwareVersion];
-	const validCreateReq: IFirmwareVersionCreatable = {
+	const validCreateReq = {
 		"applicationType": "webos",
 		"version": "04.01.74",
-		"hash": "8e9c3ded774d7b021be452570e0aba10",
+		'hashes': ['8e9c3ded774d7b021be452570e0aba10', '8e9c3ded774d7b021be452570e0aba11'],
 	};
 	const validUpdateReqBody: IFirmwareVersionUpdatable = {
-		"confirmed": true,
+		"uploaded": true,
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+	const successCreateRes = [
+		{
+			upload: {
+				request: {
+					url: 'http://myNiceStorage/create',
+					fields: {
+						'Key': 'test/file/path/testFileName',
+						'Content-Type': 'valid/type',
+						'Content-MD5': '8e9c3ded774d7b021be452570e0aba10',
+					},
+				},
 			},
-		})
-		.get('/v1/firmware/version').reply(200, validListResp)
-		.post('/v1/firmware/version', validCreateReq).reply(200, 'Created')
-		.put('/v1/firmware/version/webos/04.01.74', validUpdateReqBody).reply(204, successRes);
+			file: {
+				url: 'final uploaded test file url',
+			},
+		},
+		{
+			upload: {
+				request: {
+					url: 'http://myNiceStorage/create',
+					fields: {
+						'Key': 'test/file/path/testFileName',
+						'Content-Type': 'valid/type',
+						'Content-MD5': '8e9c3ded774d7b021be452570e0aba11',
+					},
+				},
+			},
+			file: {
+				url: 'final uploaded test file url N2',
+			},
+		},
+];
+
+	beforeEach(function() {
+		nock(
+			nockOpts.url, {
+				reqheaders: {
+					'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+				},
+			})
+			.get('/v1/firmware/version').reply(200, validListResp)
+			.put('/v1/firmware/version/webos/04.01.74', validUpdateReqBody).reply( 200, successRes )
+			.post('/v1/firmware/version', validCreateReq).reply(200, successCreateRes);
+
+		nock('http://myNiceStorage')
+		.post('/create').reply(204)
+		.post('/update').reply(204);
+	});
 
 	const fm = new FirmwareVersionManagement(nockOpts);
 	const assertFwv = (fwv: IFirmwareVersion) => {
@@ -45,8 +84,7 @@ describe('FirmwareVersionManagement', () => {
 		should.equal(validGetResp.applicationType, fwv.applicationType);
 		should.equal(validGetResp.version, fwv.version);
 		should.deepEqual(validGetResp.createdAt, fwv.createdAt);
-		should.equal(validGetResp.hash, fwv.hash);
-		should.equal(validGetResp.confirmed, fwv.confirmed);
+		should.equal(validGetResp.uploaded, fwv.uploaded);
 	};
 
 	it('should get the organization list', async () => {
@@ -56,12 +94,32 @@ describe('FirmwareVersionManagement', () => {
 	});
 
 	it('should create new firmware for upload', async () => {
-		await fm.create(validCreateReq);
+
+		const validCreateClientReq: IFirmwareVersionCreatable = {
+			applicationType: 'webos',
+			version: '04.01.74',
+			files: [
+				{
+					hash: '8e9c3ded774d7b021be452570e0aba10',
+					content: createReadableStream('this is create file req content'),
+					size: 12345,
+				},
+				{
+					hash: '8e9c3ded774d7b021be452570e0aba11',
+					content: createReadableStream('this is create file req content asdf'),
+					size: 12345,
+				},
+		],
+		};
+		await fm.create( validCreateClientReq );
 		should(true).true();
 	});
 
 	it('should set confirmed true after firmware upload', async () => {
-		await fm.set('webos', '04.01.74', validUpdateReqBody);
+		const validClientUpdateReq: IFirmwareVersionUpdatable = {
+			uploaded: true,
+		};
+		await fm.set('webos', '04.01.74', validClientUpdateReq);
 		should(true).true();
 	});
 
