@@ -92,21 +92,25 @@ describe('AppletVersionFileManagement', function () {
 	});
 
 	it('should create new applet version file', async function () {
+		const data = 'this is create file req content';
 		const validCreateClientReq: IAppletVersionFileCreatable = {
 			name: 'testFileName',
 			path: 'test/file/path/testFileName',
 			type: 'valid/type',
 			hash: 'hYljADUvYpAd2Q9JHCWkAA==',
-			content: createReadableStream('this is create file req content'),
+			content: createReadableStream(data),
+			size: data.length,
 		};
 		await avfm.create('appletUid', '1.1.0', validCreateClientReq);
 		should(true).true();
 	});
 
 	it('should update existing applet version file', async function () {
+		const data = 'this is updated file req content';
 		const validUpdateClientReq: IAppletVersionFileUpdatable = {
 			hash: 'My3muxmv1aNG/7bjGztoBw==',
-			content: createReadableStream('this is updated file req content'),
+			content: createReadableStream(data),
+			size: data.length,
 		};
 		await avfm.update('appletUid', '1.1.0', 'path/testFile', validUpdateClientReq);
 		should(true).true();

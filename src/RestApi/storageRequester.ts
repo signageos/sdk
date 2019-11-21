@@ -15,12 +15,12 @@ export namespace StorageResponse {
 type StorageType = 's3';
 type ParseObject = typeof IAppletVersionFile;
 
-export async function postStorage(url: string | Request, fields: any, data: NodeJS.ReadableStream): Promise<Response> {
+export async function postStorage(url: string | Request, fields: any, data: NodeJS.ReadableStream, size: number): Promise<Response> {
 	const form = new FormData();
 	Object.entries<string>(fields).forEach(([k, v]: [string, string]) => {
 		form.append(k, v);
 	});
-	form.append('file', data);
+	form.append('file', data, { knownLength: size });
 
 	const init: RequestInit = {
 		method: 'POST',

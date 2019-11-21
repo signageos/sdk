@@ -64,6 +64,7 @@ export default class AppletVersionFileManagement {
 		const response = await postResource(this.options, path, JSON.stringify({
 			...settings,
 			content: undefined,
+			size: undefined,
 		}));
 		const body = await response.json();
 
@@ -71,6 +72,7 @@ export default class AppletVersionFileManagement {
 			body.upload.request.url,
 			body.upload.request.fields,
 			settings.content,
+			settings.size,
 		);
 	}
 
@@ -80,6 +82,7 @@ export default class AppletVersionFileManagement {
 		const response = await putResource(this.options, path, JSON.stringify({
 			...settings,
 			content: undefined,
+			size: undefined,
 		}));
 		const body = await response.json();
 
@@ -87,6 +90,7 @@ export default class AppletVersionFileManagement {
 			body.upload.request.url,
 			body.upload.request.fields,
 			settings.content,
+			settings.size,
 		);
 	}
 
