@@ -19,7 +19,7 @@
     "lint": "tslint --config node_modules/hugport-codestyle/tslint.json {src,tests}/**/*.{ts,tsx}",
     "prebuild": "rm -rf dist/*",
     "prepare": "npm run prebuild && npm run build",
-    "test": "NODE_ENV=test mocha --opts mocha.opts",
+    "test": "env NODE_ENV=test mocha --opts mocha.opts",
     "ci": "npm run lint && npm run test",
     "watch": "tsc --watch",
     "docs": "typedoc ./src/RestApi"
@@ -39,7 +39,7 @@
     "@types/form-data": "2.5.0",
     "@types/jsdom": "^11.0.6",
     "@types/lodash": "^4.14.116",
-    "@types/mocha": "^2.2.41",
+    "@types/mocha": "^2.2.48",
     "@types/moment-timezone": "^0.5.4",
     "@types/nock": "^10.0.3",
     "@types/node": "10.14.2",
