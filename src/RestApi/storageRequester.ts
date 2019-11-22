@@ -8,6 +8,8 @@ export namespace StorageResponse {
 		export interface IAppletVersionFile {
 			content: NodeJS.ReadableStream;
 			type: string;
+			hash?: string;
+			size?: number;
 		}
 	}
 }
@@ -56,7 +58,15 @@ function createS3ResponseParser(parse: ParseObject) {
 		case IAppletVersionFile:
 			return (response: Response) => ({
 				content: response.body,
-				type: response.headers.get('Content-Type'),
+				type: response.headers.get('Content-Type')
+					? response.headers.get('Content-Type')
+					: 'application/octet-stream',
+				hash: response.headers.get('x-amz-meta-content_md5')
+					? response.headers.get('x-amz-meta-content_md5')
+					: undefined,
+				size: response.headers.get('Content-Length')
+					? parseInt(response.headers.get('Content-Length') as string)
+					: undefined,
 			}) as StorageResponse.S3.IAppletVersionFile;
 
 		default:

@@ -7,6 +7,8 @@ export default class AppletVersionFile implements IAppletVersionFile {
 	public readonly name: IAppletVersionFile['name'];
 	public readonly path: IAppletVersionFile['path'];
 	public readonly type: IAppletVersionFile['type'];
+	public readonly hash: IAppletVersionFile['hash'];
+	public readonly size: IAppletVersionFile['size'];
 
 	constructor(data: IAppletVersionFile) {
 		for (const key in data) {
