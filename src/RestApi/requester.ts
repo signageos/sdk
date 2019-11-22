@@ -44,6 +44,10 @@ export async function parseJSONResponse(resp: Response): Promise<any> {
 	return JSON.parse(await resp.text(), deserializeJSON);
 }
 
+export async function parseJSON(text: string): Promise<any> {
+	return JSON.parse(text, deserializeJSON);
+}
+
 function deserializeJSON(_key: string, value: any) {
 	if (typeof value === 'string') {
 		const regexp = /^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ$/.exec(value);
@@ -75,7 +79,14 @@ export async function doRequest(url: string | Request, init?: RequestInit): Prom
 		return resp;
 	}
 
-	const body = await parseJSONResponse(resp);
+	let body: any = await resp.text();
+
+	try {
+		body = await parseJSON(body);
+	} catch (error) {
+		//Nothing
+	}
+
 	switch (resp.status) {
 		case 403:
 			throw new AuthenticationError(resp.status, body);
