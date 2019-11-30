@@ -15,7 +15,7 @@ describe('RestAPI - FirmwareVersion', () => {
 		'version': '04.01.74',
 		'createdAt': new Date('2017-05-24T08:56:52.550Z'),
 		'hash': '8e9c3ded774d7b021be452570e0aba10',
-		'confirmed': false // TODO: ask misak
+		'confirmed': false, // TODO: ask misak
 	};
 
 	before (function() {
@@ -47,7 +47,7 @@ describe('RestAPI - FirmwareVersion', () => {
 		await api.firmwareVersion.create({
 			applicationType: `webos`,
 			version: `04.01.74`,
-			hash: `8e9c3ded774d7b021be452570e0aba10`
+			hash: `8e9c3ded774d7b021be452570e0aba10`,
 		});
 		should(true).true();
 

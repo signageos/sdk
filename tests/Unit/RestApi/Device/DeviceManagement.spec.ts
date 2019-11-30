@@ -23,19 +23,19 @@ describe('DeviceManagement', () => {
 		'organizationUid': 'f4dc88XXXXXXfba4c',
 		'networkInterfaces': {
 			'ethernet': {
-				'macAddress': '80:38:96:C9:8C:80'
-			}
+				'macAddress': '80:38:96:C9:8C:80',
+			},
 		},
 		'storageStatus': {
 			'internal': {
 				'capacity': 6128599040,
-				'freeSpace': 5961768960
+				'freeSpace': 5961768960,
 			},
 			'removable': {
 				'capacity': 0,
-				'freeSpace': 0
+				'freeSpace': 0,
 			},
-			'updatedAt': new Date('2018-09-04T08:47:45.866Z')
+			'updatedAt': new Date('2018-09-04T08:47:45.866Z'),
 		},
 		'connections': [],
 		'batteryStatus': {
@@ -43,13 +43,13 @@ describe('DeviceManagement', () => {
 			'isCharging': true,
 			'lastChargingTime': new Date('2018-09-04T08:47:26.142Z'),
 			'percentage': 50,
-			'updatedAt': new Date('2018-09-04T08:47:45.870Z')
+			'updatedAt': new Date('2018-09-04T08:47:45.870Z'),
 		},
 		'currentTime': {
 			'time': new Date('2018-09-04T10:19:08.145Z'),
 			'timezone': 'Europe/Prague',
-			'updatedAt': new Date('2018-09-04T08:47:07.288Z')
-		}
+			'updatedAt': new Date('2018-09-04T08:47:07.288Z'),
+		},
 	};
 	const validListResp: IDevice[] = [validGetResp];
 	const validSetReq: IDeviceUpdatable = {

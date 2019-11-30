@@ -4,7 +4,7 @@ import { nockOpts, successRes } from "../../helper";
 import IDeviceResolution, {
 	DeviceResolutionOrientation as Orientation,
 	DeviceResolutionResolution as Resolution,
-	IDeviceResolutionUpdatable
+	IDeviceResolutionUpdatable,
 } from "../../../../../src/RestApi/Device/Resolution/IDeviceResolution";
 import DeviceResolutionManagement from "../../../../../src/RestApi/Device/Resolution/DeviceResolutionManagement";
 
@@ -18,7 +18,7 @@ describe('DeviceResolutionManagement', () => {
 		videoOrientation: null,
 		createdAt: new Date('2018-05-23T14:37:07.362Z'),
 		succeededAt: null,
-		failedAt: null
+		failedAt: null,
 	};
 	const validGetResp: IDeviceResolution[] = [resol];
 	const validSetReq: IDeviceResolutionUpdatable = {

@@ -6,7 +6,7 @@ import DeviceScheduledPowerActionManagement
 	from "../../../../../src/RestApi/Device/PowerAction/DeviceScheduledPowerActionManagement";
 import IScheduledPowerAction, {
 	IScheduledPowerActionCreatable,
-	SheduledActionDay
+	SheduledActionDay,
 } from "../../../../../src/RestApi/Device/PowerAction/IScheduledPowerAction";
 
 describe('DeviceScheduledPowerActionManagement', () => {
@@ -23,7 +23,7 @@ describe('DeviceScheduledPowerActionManagement', () => {
 	const validCreateReq: IScheduledPowerActionCreatable = {
 		powerAction: DevicePowerAction.DisplayPowerOff,
 		weekdays: [SheduledActionDay.Saturday],
-		time: '12:00:00'
+		time: '12:00:00',
 	};
 
 	nock(

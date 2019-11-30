@@ -5,7 +5,7 @@ import IDevice, { IDeviceUpdatable } from "../../../../src/RestApi/Device/IDevic
 import IDeviceResolution, {
 	DeviceResolutionOrientation,
 	DeviceResolutionResolution,
-	IDeviceResolutionUpdatable
+	IDeviceResolutionUpdatable,
 } from "../../../../src/RestApi/Device/Resolution/IDeviceResolution";
 
 const allowedTimeout = 30000;

@@ -3,7 +3,7 @@ import * as nock from 'nock';
 import { nockOpts, successRes } from '../../helper';
 import IPowerAction, {
 	DevicePowerAction,
-	IPowerActionUpdatable
+	IPowerActionUpdatable,
 } from "../../../../../src/RestApi/Device/PowerAction/IPowerAction";
 import DevicePowerActionManagement from "../../../../../src/RestApi/Device/PowerAction/DevicePowerActionManagement";
 
@@ -15,7 +15,7 @@ describe('DevicePowerActionManagement', () => {
 		powerType: DevicePowerAction.DisplayPowerOn,
 		createdAt: new Date('2018-07-26T17:13:36.160Z'),
 		succeededAt: new Date('2018-07-26T17:13:42.054Z'),
-		failedAt: null
+		failedAt: null,
 	};
 	const validGetResp: IPowerAction[] = [pa];
 	const validSetReq: IPowerActionUpdatable = {

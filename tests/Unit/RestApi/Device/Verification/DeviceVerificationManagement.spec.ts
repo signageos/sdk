@@ -32,7 +32,7 @@ describe('DeviceVerificationManagement', () => {
 		.put('/v1/device/verification', validSetReq).reply(200, successRes)
 		.put('/v1/device/verification', invalidSetReq).reply(
 			404,
-			{ message: "Device verification was not found by hash cc5d2c: undefined", "data": {}}
+			{ message: "Device verification was not found by hash cc5d2c: undefined", "data": {}},
 		);
 
 	describe('get device verification', () => {

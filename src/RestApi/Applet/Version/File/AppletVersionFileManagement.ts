@@ -4,7 +4,7 @@ import {
 	parseJSONResponse,
 	postResource,
 	putResource,
-	deleteResource
+	deleteResource,
 } from "../../../requester";
 import IOptions from "../../../IOptions";
 import { RESOURCE as APPLET } from "../../AppletManagement";
@@ -63,7 +63,7 @@ export default class AppletVersionFileManagement {
 
 		const response = await postResource(this.options, path, JSON.stringify({
 			...settings,
-			content: undefined
+			content: undefined,
 		}));
 		const body = await response.json();
 
@@ -79,7 +79,7 @@ export default class AppletVersionFileManagement {
 
 		const response = await putResource(this.options, path, JSON.stringify({
 			...settings,
-			content: undefined
+			content: undefined,
 		}));
 		const body = await response.json();
 

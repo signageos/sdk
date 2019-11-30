@@ -8,7 +8,7 @@ describe('DevicePinCodeManagement', () => {
 
 	const validResp: IDevicePin = {
 		deviceUid: 'someUid',
-		pinCode: '1234'
+		pinCode: '1234',
 	};
 
 	nock(

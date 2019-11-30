@@ -15,7 +15,7 @@ describe('DeviceBrightnessManagement', () => {
 		timeFrom2: '23:00:00',
 		createdAt: new Date('2018-05-23T14:37:07.362Z'),
 		succeededAt: null,
-		failedAt: null
+		failedAt: null,
 	};
 	const validGetResp: IDeviceBrightness[] = [brightness];
 	const validSetReq: IDeviceBrightnessUpdatable = {

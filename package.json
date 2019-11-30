@@ -16,13 +16,14 @@
   },
   "scripts": {
     "build": "tsc",
-    "lint": "tslint --config node_modules/hugport-codestyle/tslint.json {src,tests}/**/*.{ts,tsx}",
+    "lint": "tslint --config node_modules/@signageos/codestyle/tslint.json {src,tests}/**/*.{ts,tsx}",
     "prebuild": "rm -rf dist/*",
     "prepare": "npm run prebuild && npm run build",
     "test": "env NODE_ENV=test mocha --opts mocha.opts",
     "ci": "npm run lint && npm run test",
     "watch": "tsc --watch",
-    "docs": "typedoc ./src/RestApi"
+    "docs": "typedoc ./src/RestApi",
+    "check": "depcheck --specials=tslint,webpack,mocha --parsers='*.ts:typescript,*.tsx:typescript,*.js:es6' --detectors='requireCallExpression,importDeclaration' --ignore-dirs='dist' --ignores='@types/*,@signageos/codestyle,ts-node,source-map-support,mocha,depcheck,webpack-cli,typedoc'"
   },
   "author": "Michael Zabka <zabka.michael@gmail.com>",
   "license": "MIT",
@@ -36,6 +37,7 @@
     "access": "public"
   },
   "devDependencies": {
+    "@signageos/codestyle": "0.0.12",
     "@types/form-data": "2.5.0",
     "@types/jsdom": "^11.0.6",
     "@types/lodash": "^4.14.116",
@@ -46,7 +48,7 @@
     "@types/node-fetch": "^2.1.2",
     "@types/should": "^8.3.0",
     "@types/webpack": "^3.8.1",
-    "hugport-codestyle": "^0.0.8",
+    "depcheck": "0.9.1",
     "mocha": "^3.3.0",
     "nock": "^10.0.6",
     "should": "^11.2.1",

@@ -3,7 +3,7 @@ import * as nock from "nock";
 import { nockOpts, successRes } from "../../helper";
 import IAppletTestSuite, {
 	IAppletTestSuiteCreatable,
-	IAppletTestSuiteUpdatable
+	IAppletTestSuiteUpdatable,
 } from "../../../../../src/RestApi/Applet/Version/IAppletTestSuite";
 import AppletTestSuiteManagement from "../../../../../src/RestApi/Applet/Version/AppletTestSuiteManagement";
 
@@ -13,7 +13,7 @@ describe('AppletTestSuiteManagement', () => {
 		appletUid: "appletUid",
 		appletVersion: "1.0.1",
 		binary: "some binary data",
-		identifier: "testName"
+		identifier: "testName",
 	};
 	const validListResp: IAppletTestSuite[] = [validGetResp];
 	const validCreateReq: IAppletTestSuiteCreatable = {

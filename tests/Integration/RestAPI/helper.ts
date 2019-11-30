@@ -19,7 +19,7 @@ export const opts: IOptions = {
 	version: version,
 	auth: {
 		clientId,
-		secret
+		secret,
 	},
 };
 
@@ -28,6 +28,6 @@ export const accountOpts: IOptions = {
 	version: version,
 	auth: {
 		clientId: accountId,
-		secret: accountSecret
-	}
+		secret: accountSecret,
+	},
 };

@@ -3,7 +3,7 @@ import * as nock from 'nock';
 import { nockOpts, successRes } from '../helper';
 import IFirmwareVersion, {
 	IFirmwareVersionCreatable,
-	IFirmwareVersionUpdatable
+	IFirmwareVersionUpdatable,
 } from '../../../../src/RestApi/Firmware/Version/IFirmwareVersion';
 import FirmwareVersionManagement from "../../../../src/RestApi/Firmware/Version/FirmwareVersionManagement";
 
@@ -15,7 +15,7 @@ describe('FirmwareVersionManagement', () => {
 		'version': '04.01.74',
 		'createdAt': new Date('2017-05-24T08:56:52.550Z'),
 		'hash': '8e9c3ded774d7b021be452570e0aba10',
-		'confirmed': false
+		'confirmed': false,
 	};
 
 	const validGetResp: IFirmwareVersion = firmwareVersion;
@@ -23,10 +23,10 @@ describe('FirmwareVersionManagement', () => {
 	const validCreateReq: IFirmwareVersionCreatable = {
 		"applicationType": "webos",
 		"version": "04.01.74",
-		"hash": "8e9c3ded774d7b021be452570e0aba10"
+		"hash": "8e9c3ded774d7b021be452570e0aba10",
 	};
 	const validUpdateReqBody: IFirmwareVersionUpdatable = {
-		"confirmed": true
+		"confirmed": true,
 	};
 
 	nock(

@@ -3,7 +3,7 @@ import * as nock from "nock";
 import { nockOpts, successRes } from "../../helper";
 import IAppletVersion, {
 	IAppletVersionCreatable,
-	IAppletVersionUpdatable
+	IAppletVersionUpdatable,
 } from "../../../../../src/RestApi/Applet/Version/IAppletVersion";
 import AppletVersionManagement from "../../../../../src/RestApi/Applet/Version/AppletVersionManagement";
 

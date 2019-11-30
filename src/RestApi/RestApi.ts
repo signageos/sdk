@@ -19,7 +19,7 @@ export default class RestApi {
 
 	constructor(
 		private options: IOptions,
-		private accountOptions: IOptions
+		private accountOptions: IOptions,
 	) {
 	}
 }

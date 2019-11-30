@@ -8,7 +8,7 @@ import ITemperature from '../../../../../src/RestApi/Device/Monitoring/Temperatu
 import IHourlyStatus from "../../../../../src/RestApi/Device/Monitoring/HourlyStatus/IHourlyStatus";
 import {
 	ICreatedDateRangeFilter,
-	IDateRangeFilter, ITakenDateRangeFilter
+	IDateRangeFilter, ITakenDateRangeFilter,
 } from "../../../../../src/RestApi/Device/Monitoring/ICreatedDateRangeFilter";
 import IScreenshot from "../../../../../src/RestApi/Device/Monitoring/Screenshot/IScreenshot";
 
@@ -158,13 +158,13 @@ describe('DeviceMonitoringManagement', () => {
 		const storageResp: IStorageStatus = {
 			'internal': {
 				'capacity': 4780195840,
-				'freeSpace': 2758709248
+				'freeSpace': 2758709248,
 			},
 			'removable': {
 				'capacity': 0,
-				'freeSpace': 0
+				'freeSpace': 0,
 			},
-			'updatedAt': new Date('2018-09-07T11:41:28.573Z')
+			'updatedAt': new Date('2018-09-07T11:41:28.573Z'),
 		};
 
 		nock(

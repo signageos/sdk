@@ -76,7 +76,7 @@ export default class Timing implements ITiming {
 				appletUid: this.appletUid,
 				commandPayload: {
 					type: TakeHtmlSnapshot,
-				}
+				},
 			});
 			while (true) {
 				const timingCommands = await this.timingCommandManagement.getList<HtmlSnapshotTaken>({
@@ -109,7 +109,7 @@ export default class Timing implements ITiming {
 						(timingCommand: TimingCommand<ConsoleLogged>) => timingCommand.commandPayload.messages,
 					);
 				},
-			}
+			},
 		}),
 		{},
 	);
@@ -121,7 +121,7 @@ export default class Timing implements ITiming {
 					appletUid: this.appletUid,
 					commandPayload: {
 						type: OfflineCacheListFiles,
-					}
+					},
 				});
 				while (true) {
 					const filesListedCommands = await this.timingCommandManagement.getList<OfflineCacheFilesListed>({
@@ -143,7 +143,7 @@ export default class Timing implements ITiming {
 					commandPayload: {
 						type: OfflineCacheLoadFile,
 						uid,
-					}
+					},
 				});
 				while (true) {
 					const fileLoadedCommands = await this.timingCommandManagement.getList<OfflineCacheFileLoaded>({
@@ -183,11 +183,11 @@ export default class Timing implements ITiming {
 							'y',
 							'width',
 							'height',
-						)
+						),
 					);
 					return videosOfCurrentState;
 				},
-			}
+			},
 		}),
 		{},
 	);

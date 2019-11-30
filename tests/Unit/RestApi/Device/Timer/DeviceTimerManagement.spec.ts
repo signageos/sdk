@@ -5,7 +5,7 @@ import {
 	DeviceTimerLevel,
 	DeviceTimerType,
 	DeviceTimerWeekday as day,
-	IDeviceTimerUpdatable
+	IDeviceTimerUpdatable,
 } from '../../../../../src/RestApi/Device/Timer/IDeviceTimer';
 import DeviceTimerManagement from '../../../../../src/RestApi/Device/Timer/DeviceTimerManagement';
 
@@ -25,7 +25,7 @@ describe('DeviceTimerManagement', () => {
 		'volume': 55,
 		'createdAt': new Date('2017-08-07T16:03:55.825Z'),
 		'succeededAt': new Date('2017-08-07T16:03:57.563Z'),
-		'failedAt': null
+		'failedAt': null,
 	};
 	const validGetResp: any[] = [tmr];
 	const validSetReq: IDeviceTimerUpdatable = {

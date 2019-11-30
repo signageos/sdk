@@ -32,7 +32,7 @@ describe('RestAPI - Organization', () => {
 		const now = new Date();
 		await api.organization.create({
 			name: `SDK${now.getTime()}`,
-			title: `Integration test organization created on ${now.toISOString()}`
+			title: `Integration test organization created on ${now.toISOString()}`,
 		});
 		should(true).true();
 	}).timeout(allowedTimeout);
