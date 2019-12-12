@@ -5,6 +5,7 @@ import IAppletVersion, { IAppletVersionCreatable, IAppletVersionUpdatable } from
 import AppletVersion from "./AppletVersion";
 import IAppletVersionFilter, { IAppletVersionListFilter } from "./IAppletVersionFilter";
 import AppletVersionFileManagement from "./File/AppletVersionFileManagement";
+import { checkAppletVersionUpdatable, checkAppletVersionCreatable } from './AppletVersionValidator';
 
 export const RESOURCE: string = 'version';
 
@@ -38,6 +39,8 @@ export default class AppletVersionManagement {
 	}
 
 	public async create(appletUid: string, settings: IAppletVersionCreatable): Promise<void> {
+		checkAppletVersionCreatable(settings);
+
 		const contentType = settings.entryFile ? 'application/json' : 'text/html';
 		const options: IOptions = {
 			...this.options,
@@ -57,6 +60,8 @@ export default class AppletVersionManagement {
 	}
 
 	public async update(appletUid: string, version: string, settings: IAppletVersionUpdatable): Promise<void> {
+		checkAppletVersionUpdatable(settings);
+
 		const contentType = settings.entryFile ? 'application/json' : 'text/html';
 		const options: IOptions = {
 			...this.options,
