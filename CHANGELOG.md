@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Firmware version files management
 - Create applet version with multiple files
 - Applet version files management
+- Get device authentication by authHash
 
 ### Fixed
 - Create applet test suite (uses correct POST resource)
