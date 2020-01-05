@@ -75,7 +75,7 @@ function prepareQueryParams(qp: any): string {
 
 export async function doRequest(url: string | Request, init?: RequestInit): Promise<Response> {
 	const resp = await fetch(url, init);
-	if (resp.status === 200 || resp.status === 201 || resp.status === 204) {
+	if (resp.ok) {
 		return resp;
 	}
 

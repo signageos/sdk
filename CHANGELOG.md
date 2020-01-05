@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Create applet test suite (uses correct POST resource)
 - Process non JSON api answers
+- Timing command create (status code 202)
 
 ## [1.1.0] - 2019-09-21
 ### Added
