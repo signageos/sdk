@@ -31,7 +31,8 @@ describe('OrganizationManagement', () => {
 		.get('/v1/organization').reply(200, validListResp)
 		.get('/v1/organization/someUid').reply(200, validGetResp)
 		.get('/v1/organization/someUid?name=signageos').reply(200, validGetResp)
-		.post('/v1/organization', validCreateReq).reply(200, 'Created');
+		.post('/v1/organization', validCreateReq).reply(200, 'Created')
+		.put('/v1/organization/someUid/subscriptionType/medium').reply(200, '');
 
 	const om = new OrganizationManagement(nockOpts);
 	const assertOrg = (org: IOrganization) => {
@@ -61,6 +62,11 @@ describe('OrganizationManagement', () => {
 
 	it('should create new organization', async () => {
 		await om.create(validCreateReq);
+		should(true).true();
+	});
+
+	it('should set subscription type', async () => {
+		await om.setSubscriptionType('someUid', 'medium');
 		should(true).true();
 	});
 });

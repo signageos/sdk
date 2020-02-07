@@ -1,6 +1,6 @@
-import {getResource, parseJSONResponse} from "../requester";
+import { getResource, parseJSONResponse, putResource } from '../requester';
 import IOptions from "../IOptions";
-import IOrganization, {IOrganizationCreatable} from "./IOrganization";
+import IOrganization, { IOrganizationCreatable, SubscriptionType } from './IOrganization';
 import {postResource} from "../requester";
 import Organization from "./Organization";
 import {IOrganizationFilter} from "./IOrganizationFilter";
@@ -27,6 +27,14 @@ export default class OrganizationManagement {
 
 	public async create(settings: IOrganizationCreatable): Promise<void> {
 		await postResource(this.options, OrganizationManagement.RESOURCE, JSON.stringify(settings));
+	}
+
+	public async setSubscriptionType(organizationUid: string, subscription: SubscriptionType): Promise<void> {
+		await putResource(
+			this.options,
+			`${OrganizationManagement.RESOURCE}/${organizationUid}/subscriptionType/${subscription}`,
+			JSON.stringify({}),
+		);
 	}
 
 }
