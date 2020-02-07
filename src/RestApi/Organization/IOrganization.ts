@@ -11,4 +11,6 @@ interface IOrganization extends IOrganizationCreatable {
 	oauthClientSecret: string;
 }
 
+export type SubscriptionType = 'open' | 'basic' | 'medium' | 'all';
+
 export default IOrganization;
