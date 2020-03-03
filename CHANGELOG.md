@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Companies listing and their billing plan settings, organization's subscription type settings
 
+### Fixed
+- Audit npm dependencies
+
 ## [1.2.0] - 2020-01-05
 ### Added
 - Create firmware version with multiple files
