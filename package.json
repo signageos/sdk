@@ -11,7 +11,7 @@
     "package-lock.json"
   ],
   "repository": {
-    "url": "git@github.com:signageos/sdk",
+    "url": "https://github.com/signageos/sdk",
     "type": "git"
   },
   "scripts": {
