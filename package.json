@@ -28,8 +28,8 @@
   "author": "Michael Zabka <zabka.michael@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": "^10.14.2",
-    "npm": "^6.4.1"
+    "node": ">=12.0.0",
+    "npm": ">=6.0.0"
   },
   "engineStrict": false,
   "publishConfig": {
