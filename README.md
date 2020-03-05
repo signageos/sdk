@@ -55,14 +55,14 @@ Once generated, the `docs` directory will contain the generated documentation.
 
 The most useful documentation pages:
 
-- [index](./docs/index.html) 
+- [index](https://signageos-documentation.s3.eu-central-1.amazonaws.com/sdk/latest/index.html) 
 
 
-- [Organization management](./docs/classes/organizationmanagement.html) 
-- [Device management](./docs/classes/devicemanagement.html)
-- [Applet management](./docs/classes/appletmanagement.html)
-- [Timing management](./docs/classes/timingmanagement.html)
-- [Timing Command management](./docs/classes/timingcommandmanagement.html)
+- [Organization management](https://signageos-documentation.s3.eu-central-1.amazonaws.com/sdk/latest/classes/organizationmanagement.html) 
+- [Device management](https://signageos-documentation.s3.eu-central-1.amazonaws.com/sdk/latest/classes/devicemanagement.html)
+- [Applet management](https://signageos-documentation.s3.eu-central-1.amazonaws.com/sdk/latest/classes/appletmanagement.html)
+- [Timing management](https://signageos-documentation.s3.eu-central-1.amazonaws.com/sdk/latest/classes/timingmanagement.html)
+- [Timing Command management](https://signageos-documentation.s3.eu-central-1.amazonaws.com/sdk/latest/classes/timingcommandmanagement.html)
 
 ## Development
 
