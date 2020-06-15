@@ -2,6 +2,7 @@
 export interface IAppletVersionFileUpdatable {
 	hash: string;
 	size: number;
+	type: string;
 	content: NodeJS.ReadableStream;
 }
 
