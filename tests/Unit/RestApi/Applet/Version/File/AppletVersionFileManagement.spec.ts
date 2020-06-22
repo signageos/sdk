@@ -42,6 +42,7 @@ describe('AppletVersionFileManagement', function () {
 	};
 	const validUpdateReqBody: Partial<IAppletVersionFileUpdatable> & { hash: string } = {
 		hash: 'My3muxmv1aNG/7bjGztoBw==',
+		type: 'valid/type',
 	};
 	const successUpdateRes = {
 		upload: {
@@ -49,6 +50,7 @@ describe('AppletVersionFileManagement', function () {
 				url: 'http://storage/update',
 				fields: {
 					'Key': 'test/file/path/testFileName',
+					'Content-Type': 'valid/type',
 					'Content-MD5': 'testMD5',
 				},
 			},
@@ -110,6 +112,7 @@ describe('AppletVersionFileManagement', function () {
 		const validUpdateClientReq: IAppletVersionFileUpdatable = {
 			hash: 'My3muxmv1aNG/7bjGztoBw==',
 			content: createReadableStream(data),
+			type: 'valid/type',
 			size: data.length,
 		};
 		await avfm.update('appletUid', '1.1.0', 'path/testFile', validUpdateClientReq);
