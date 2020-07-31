@@ -1,4 +1,4 @@
-import {getResource, parseJSONResponse, putResource} from "../../requester";
+import {getResource, parseJSONResponse, postResource} from "../../requester";
 import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IOptions from "../../IOptions";
 import IPowerAction, {IPowerActionUpdatable} from "./IPowerAction";
@@ -21,7 +21,7 @@ export default class DevicePowerActionManagement {
 	}
 
 	public async set(deviceUid: string, settings: IPowerActionUpdatable): Promise<void> {
-		await putResource(this.options, DevicePowerActionManagement.getUrl(deviceUid), JSON.stringify(settings));
+		await postResource(this.options, DevicePowerActionManagement.getUrl(deviceUid), JSON.stringify(settings));
 	}
 
 }
