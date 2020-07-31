@@ -63,7 +63,7 @@
     "dotenv": "8.0.0",
     "form-data": "2.5.1",
     "jsdom": "16.2.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "node-fetch": "2.2.0"
   }
 }
