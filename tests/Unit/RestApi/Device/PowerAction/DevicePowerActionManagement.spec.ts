@@ -29,7 +29,7 @@ describe('DevicePowerActionManagement', () => {
 			},
 		})
 		.get('/v1/device/someUid/power-action').reply(200, validGetResp)
-		.put('/v1/device/someUid/power-action', validSetReq).reply(200, successRes);
+		.post('/v1/device/someUid/power-action', validSetReq).reply(200, successRes);
 
 	const dpam = new DevicePowerActionManagement(nockOpts);
 
