@@ -17,7 +17,7 @@ describe('DeviceMonitoringManagement', () => {
 	describe('screenshot', () => {
 		const scr: IScreenshot = {
 			deviceUid: '3ca8a8XXXXbe589b',
-			uri: 'https://hugstatic.blob.core.windows.net/upload/screenshot/75be42f304756aa4e13b3c4d8fd618145c839cacd61ec8ff53',
+			uri: 'https://2.signageos.io/upload/screenshot/75be42f304756aa4e13b3c4d8fd618145c839cacd61ec8ff53',
 			takenAt: new Date('2018-06-12T17:49:32.824Z'),
 		};
 		const scrResp = [scr];
@@ -190,7 +190,7 @@ describe('DeviceMonitoringManagement', () => {
 			deviceUid: '6496XXXcadeb',
 			createdAt: new Date('2018-08-16T00:11:44.777Z'),
 			urn: '/reports/6496XXXXXacadeb/Applet.ActiveAppletDispatchCommand_Applet.Command/2018-08-16.csv',
-			uri: 'https://hugstatic.blob.core.windows.net/reports/6496XXXXcadeb/Applet.ActiveAppletDispatchCommand_Applet.Command/2018-08-16.csv',
+			uri: 'https://2.signageos.io/reports/6496XXXXcadeb/Applet.ActiveAppletDispatchCommand_Applet.Command/2018-08-16.csv',
 			type: 'Applet.ActiveAppletDispatchCommand_Applet.Command',
 		};
 		const reportResp = [report];
