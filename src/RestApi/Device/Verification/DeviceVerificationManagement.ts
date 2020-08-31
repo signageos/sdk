@@ -16,8 +16,17 @@ export default class DeviceVerificationManagement {
 		return new DeviceVerification(await parseJSONResponse(response));
 	}
 
-	public async set(settings: IDeviceVerificationUpdatable): Promise<void> {
-		await putResource(this.options, RESOURCE, JSON.stringify(settings));
+	public async set(settings: IDeviceVerificationUpdatable): Promise<IDeviceVerification> {
+		const { headers } = await putResource(this.options, RESOURCE, JSON.stringify(settings));
+		const headerLocation = headers.get('location');
+
+		if (!headerLocation) {
+			throw new Error(`Api didn't return location header to created ${RESOURCE}.`);
+		}
+
+		const locationParts = headerLocation.split('/');
+		const organizationUid = locationParts[locationParts.length - 1];
+		return await this.get(organizationUid);
 	}
 
 }

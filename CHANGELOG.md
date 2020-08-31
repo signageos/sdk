@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Fixed
 - RestApi (Api) interface is exported from index file
+- Organization and Device Verification create API resolves with created object
 
 ## [1.3.2] - 2020-07-31
 ### Fixed

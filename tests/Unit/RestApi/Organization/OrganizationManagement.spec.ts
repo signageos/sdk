@@ -6,6 +6,9 @@ import OrganizationManagement from "../../../../src/RestApi/Organization/Organiz
 
 describe('OrganizationManagement', () => {
 
+	const validPostRespHeaders: nock.HttpHeaders = {
+		'Location': 'https://example.com/v1/organization/someUid',
+	};
 	const organization: IOrganization = {
 		'uid': 'someUid',
 		'name': 'signageos',
@@ -31,7 +34,8 @@ describe('OrganizationManagement', () => {
 		.get('/v1/organization').reply(200, validListResp)
 		.get('/v1/organization/someUid').reply(200, validGetResp)
 		.get('/v1/organization/someUid?name=signageos').reply(200, validGetResp)
-		.post('/v1/organization', validCreateReq).reply(200, 'Created')
+		.post('/v1/organization', validCreateReq).reply(200, 'Created', validPostRespHeaders)
+		.get('/v1/organization/someUid').reply(200, validGetResp)
 		.put('/v1/organization/someUid/subscriptionType/medium').reply(200, '');
 
 	const om = new OrganizationManagement(nockOpts);

@@ -6,6 +6,9 @@ import DeviceVerificationManagement from "../../../../../src/RestApi/Device/Veri
 
 describe('DeviceVerificationManagement', () => {
 
+	const validPutRespHeaders: nock.HttpHeaders = {
+		'Location': 'https://example.com/v1/device/verification/someUid',
+	};
 	const validGetResp: IDeviceVerification = {
 		uid: 'someUid',
 		deviceUid: '3caXXX589b',
@@ -29,7 +32,8 @@ describe('DeviceVerificationManagement', () => {
 			},
 		})
 		.get('/v1/device/verification/someUid').reply(200, validGetResp)
-		.put('/v1/device/verification', validSetReq).reply(200, successRes)
+		.put('/v1/device/verification', validSetReq).reply(200, successRes, validPutRespHeaders)
+		.get('/v1/device/verification/someUid').reply(200, validGetResp)
 		.put('/v1/device/verification', invalidSetReq).reply(
 			404,
 			{ message: "Device verification was not found by hash cc5d2c: undefined", "data": {}},
