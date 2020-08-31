@@ -24,6 +24,7 @@ Please see the `.env.dist` file where all mandatory ENV variables, required for 
 
 ## REST API
 
+### Singleton
 Just by setting ENV variables properly, you are ready to go and may usage the api.
 
 ```ecmascript 6
@@ -40,6 +41,35 @@ await api.device.audio.set('deviceUid', {volume: 40});
 
 // retrieves the list of all applets
 const applets = await api.applet.list();
+
+// ...
+```
+
+### Instantiating
+```ecmascript 6
+import {Api} from "@signageos/sdk";
+
+const api = new Api(
+	{
+		url: 'https://api.signageos.io',
+		auth: {
+			clientId: 'OAuthClientID',
+			secret: 'OAuthSecret',
+		},
+		version: 'v1',
+	},
+	{
+		url: 'https://api.signageos.io',
+		auth: {
+			clientId: 'apiAccountID',
+			secret: 'apiAccountSecret',
+		},
+		version: 'v1',
+	},
+);
+
+// retrieves the list of all devices
+const devices = await api.device.list();
 
 // ...
 ```
