@@ -25,7 +25,7 @@ Please see the `.env.dist` file where all mandatory ENV variables, required for 
 ## REST API
 
 ### Singleton
-Just by setting ENV variables properly, you are ready to go and may usage the api.
+Just by setting ENV variables properly, you are ready to go and may use the api.
 
 ```ecmascript 6
 import {api} from "@signageos/sdk";
