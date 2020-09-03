@@ -1,4 +1,4 @@
-import { getResource, parseJSONResponse, putResource } from "../../requester";
+import { getResource, parseJSONResponse, postResource } from "../../requester";
 import IOptions from "../../IOptions";
 import DeviceVerification from "./DeviceVerification";
 import IDeviceVerification, { IDeviceVerificationUpdatable } from "./IDeviceVerification";
@@ -17,7 +17,7 @@ export default class DeviceVerificationManagement {
 	}
 
 	public async set(settings: IDeviceVerificationUpdatable): Promise<IDeviceVerification> {
-		const { headers } = await putResource(this.options, RESOURCE, JSON.stringify(settings));
+		const { headers } = await postResource(this.options, RESOURCE, JSON.stringify(settings));
 		const headerLocation = headers.get('location');
 
 		if (!headerLocation) {
