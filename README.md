@@ -51,20 +51,16 @@ import {Api} from "@signageos/sdk";
 
 const api = new Api(
 	{
-		url: 'https://api.signageos.io',
-		auth: {
+		url: 'https://api.signageos.io', // Optional
+		organizationAuth: {
 			clientId: 'OAuthClientID',
 			secret: 'OAuthSecret',
 		},
-		version: 'v1',
-	},
-	{
-		url: 'https://api.signageos.io',
-		auth: {
-			clientId: 'apiAccountID',
-			secret: 'apiAccountSecret',
+		accountAuth: {
+			accountId: 'apiAccountID',
+			securityToken: 'apiAccountSecret',
 		},
-		version: 'v1',
+		version: 'v1', // Optional
 	},
 );
 

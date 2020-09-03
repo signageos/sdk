@@ -1,17 +1,17 @@
 import * as should from 'should';
-import RestApi from "../../../../src/RestApi/RestApi";
+import { Api } from "../../../../src/index";
 import IOrganization from "../../../../src/RestApi/Organization/IOrganization";
 import Organization from "../../../../src/RestApi/Organization/Organization";
-import { accountOpts, opts, RUN_INTEGRATION_TESTS } from "../helper";
+import { opts, RUN_INTEGRATION_TESTS } from "../helper";
 
 const allowedTimeout = 10000;
-const api = new RestApi(opts, accountOpts);
+const api = new Api(opts);
 
 describe('RestAPI - Organization', () => {
 
 	before(function () {
 		// in order to run these tests, fill in auth and RUN_INTEGRATION_TESTS environment variables (please see '../helper.ts' file)
-		if (!RUN_INTEGRATION_TESTS || accountOpts.auth.clientId === '' || accountOpts.auth.secret === '') {
+		if (!RUN_INTEGRATION_TESTS || opts.accountAuth?.accountId === '' || opts.accountAuth?.securityToken === '') {
 			console.warn('you must set auth details in order to run this test');
 			this.skip();
 		}
