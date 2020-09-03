@@ -25,8 +25,17 @@ export default class OrganizationManagement {
 		return new Organization(await parseJSONResponse(response));
 	}
 
-	public async create(settings: IOrganizationCreatable): Promise<void> {
-		await postResource(this.options, OrganizationManagement.RESOURCE, JSON.stringify(settings));
+	public async create(settings: IOrganizationCreatable): Promise<IOrganization> {
+		const { headers } = await postResource(this.options, OrganizationManagement.RESOURCE, JSON.stringify(settings));
+		const headerLocation = headers.get('location');
+
+		if (!headerLocation) {
+			throw new Error(`Api didn't return location header to created ${OrganizationManagement.RESOURCE}.`);
+		}
+
+		const locationParts = headerLocation.split('/');
+		const organizationUid = locationParts[locationParts.length - 1];
+		return await this.get(organizationUid);
 	}
 
 	public async setSubscriptionType(organizationUid: string, subscription: SubscriptionType): Promise<void> {

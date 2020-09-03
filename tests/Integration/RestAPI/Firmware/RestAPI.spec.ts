@@ -1,12 +1,12 @@
 import * as should from 'should';
-import RestApi from "../../../../src/RestApi/RestApi";
-import { accountOpts, opts, RUN_INTEGRATION_TESTS } from "../helper";
+import { Api } from "../../../../src/index";
+import { opts, RUN_INTEGRATION_TESTS } from "../helper";
 import IFirmwareVersion, { IFirmwareVersionUpdatable } from '../../../../src/RestApi/Firmware/Version/IFirmwareVersion';
 import FirmwareVersion from '../../../../src/RestApi/Firmware/Version/FirmwareVersion';
 import { createReadableStream } from '../../../Unit/RestApi/Applet/Version/File/helper';
 
 const allowedTimeout = 10000;
-const api = new RestApi(opts, accountOpts);
+const api = new Api(opts);
 
 describe('RestAPI - FirmwareVersion', () => {
 
@@ -26,7 +26,7 @@ describe('RestAPI - FirmwareVersion', () => {
 	};
 
 	before (function() {
-		if (!RUN_INTEGRATION_TESTS || accountOpts.auth.clientId === '' || accountOpts.auth.secret === '') {
+		if (!RUN_INTEGRATION_TESTS || opts.accountAuth?.accountId === '' || opts.accountAuth?.securityToken === '') {
 			console.warn('you must set auth details in order to run this test');
 			this.skip();
 		}

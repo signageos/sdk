@@ -1,11 +1,11 @@
 import TimingManagement from './Timing/TimingManagement';
-import IOptions from './IOptions';
 import TimingCommandManagement from './Timing/Command/TimingCommandManagement';
 import DeviceManagement from "./Device/DeviceManagement";
 import AppletManagement from "./Applet/AppletManagement";
 import OrganizationManagement from "./Organization/OrganizationManagement";
 import FirmwareVersionManagement from "./Firmware/Version/FirmwareVersionManagement";
 import CompanyManagement from './Company/CompanyManagement';
+import IOptions from './IOptions';
 
 export default class RestApi {
 
@@ -14,15 +14,14 @@ export default class RestApi {
 	public readonly company: CompanyManagement = new CompanyManagement(this.accountOptions);
 	public readonly firmwareVersion: FirmwareVersionManagement = new FirmwareVersionManagement(this.accountOptions);
 
-	public readonly timing: TimingManagement = new TimingManagement(this.options);
-	public readonly timingCommand: TimingCommandManagement = new TimingCommandManagement(this.options);
+	public readonly timing: TimingManagement = new TimingManagement(this.organizationOptions);
+	public readonly timingCommand: TimingCommandManagement = new TimingCommandManagement(this.organizationOptions);
 
-	public readonly applet: AppletManagement = new AppletManagement(this.options);
-	public readonly device: DeviceManagement = new DeviceManagement(this.options);
+	public readonly applet: AppletManagement = new AppletManagement(this.organizationOptions);
+	public readonly device: DeviceManagement = new DeviceManagement(this.organizationOptions);
 
 	constructor(
-		private options: IOptions,
-		private accountOptions: IOptions,
-	) {
-	}
+		public readonly accountOptions: IOptions,
+		public readonly organizationOptions: IOptions,
+	) {}
 }
