@@ -8,6 +8,9 @@ import NotFoundError from "./Error/NotFoundError";
 import TooMAnyRequestsError from "./Error/TooMAnyRequestsError";
 import AuthenticationError from "./Error/AuthenticationError";
 import InternalApiError from "./Error/InternalApiError";
+import GatewayError from './Error/GatewayError';
+
+const parameters = require('../../config/parameters');
 
 export function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options: IOptions, data?: any): RequestInit {
 	return {
@@ -73,7 +76,7 @@ function prepareQueryParams(qp: any): string {
 	return '?' + stringify(qp);
 }
 
-export async function doRequest(url: string | Request, init?: RequestInit): Promise<Response> {
+export async function doFetch(url: string | Request, init?: RequestInit): Promise<Response> {
 	const resp = await fetch(url, init);
 	if (resp.ok) {
 		return resp;
@@ -96,7 +99,36 @@ export async function doRequest(url: string | Request, init?: RequestInit): Prom
 			throw new TooMAnyRequestsError(resp.status, body);
 		case 500:
 			throw new InternalApiError(resp.status, body);
+		case 502:
+		case 504:
+			throw new GatewayError(resp.status, body);
 		default:
 			throw new RequestError(resp.status, body);
+	}
+}
+
+export async function doRequest(
+	url: string | Request,
+	init?: RequestInit,
+): Promise<Response> {
+	return doRequestHelper(
+		() => doFetch(url, init),
+		parameters.requestMaxAttempts,
+	);
+}
+
+export async function doRequestHelper(
+	toRetry: () => Promise<Response>,
+	retryCount: number,
+	lastError: Error | null = null,
+): Promise<Response> {
+	if (retryCount <= 0) {
+		throw lastError;
+	}
+	try {
+		return toRetry();
+	} catch (e) {
+		//TODO: wait - copy progressive wait from lib??
+		return doRequestHelper(toRetry, retryCount - 1, e);
 	}
 }
