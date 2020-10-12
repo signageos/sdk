@@ -28,19 +28,19 @@ export function createUri(options: IOptions, resource: string, queryParams?: any
 }
 
 export function getResource(options: IOptions, path: string, query?: any) {
-	return doRequest(createUri(options, path, query), createOptions('GET', options));
+	return doRequest(doFetch, wait, createUri(options, path, query), createOptions('GET', options));
 }
 
 export function postResource(options: IOptions, path: string, data: any) {
-	return doRequest(createUri(options, path), createOptions('POST', options, data));
+	return doRequest(doFetch, wait, createUri(options, path), createOptions('POST', options, data));
 }
 
 export function putResource(options: IOptions, path: string, data: any) {
-	return doRequest(createUri(options, path), createOptions('PUT', options, data));
+	return doRequest(doFetch, wait, createUri(options, path), createOptions('PUT', options, data));
 }
 
 export function deleteResource(options: IOptions, path: string) {
-	return doRequest(createUri(options, path), createOptions('DELETE', options));
+	return doRequest(doFetch, wait, createUri(options, path), createOptions('DELETE', options));
 }
 
 export async function parseJSONResponse(resp: Response): Promise<any> {
@@ -107,28 +107,33 @@ export async function doFetch(url: string | Request, init?: RequestInit): Promis
 	}
 }
 
+// Copied from @signageos/lib, we can add this lib to dependencies ?
+function wait(timeout: number) {
+	return new Promise<void>((resolve: () => void) => setTimeout(() => resolve(), timeout));
+}
+
 export async function doRequest(
+	fetchFn: (url: string | Request, init?: RequestInit) => Promise<Response>,
+	waitFn: (timeout: number) => Promise<void>,
 	url: string | Request,
 	init?: RequestInit,
 ): Promise<Response> {
-	return doRequestHelper(
-		() => doFetch(url, init),
-		parameters.requestMaxAttempts,
-	);
-}
-
-export async function doRequestHelper(
-	toRetry: () => Promise<Response>,
-	retryCount: number,
-	lastError: Error | null = null,
-): Promise<Response> {
-	if (retryCount <= 0) {
-		throw lastError;
-	}
-	try {
-		return toRetry();
-	} catch (e) {
-		//TODO: wait - copy progressive wait from lib??
-		return doRequestHelper(toRetry, retryCount - 1, e);
-	}
+	let tries = parameters.requestMaxAttempts;
+	let currentTimeout = 1000;
+	let lastError: Error | null = null;
+	do {
+		try {
+			return await fetchFn(url, init);
+		} catch (e) {
+			lastError = e;
+			if (lastError instanceof GatewayError) {
+				tries--;
+				currentTimeout = currentTimeout * 2;
+				await waitFn(currentTimeout);
+			} else {
+				break;
+			}
+		}
+	} while (tries > 0);
+	throw lastError;
 }
