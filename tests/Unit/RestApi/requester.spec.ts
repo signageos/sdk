@@ -14,7 +14,7 @@ describe('requester', function () {
 			throw new GatewayError(502, 'Bad Gateway');
 		};
 		const spiedWait = sinon.spy(wait);
-		await should(doRequest(doFetch, spiedWait, 'url')).rejectedWith(GatewayError);
+		await should(doRequest('url', undefined, doFetch, spiedWait)).rejectedWith(GatewayError);
 		should(spiedWait.calledOnce).equal(true);
 	});
 
@@ -23,13 +23,13 @@ describe('requester', function () {
 			throw new NotFoundError(404, 'Not Found');
 		};
 		const spiedWait = sinon.spy(wait);
-		await should(doRequest(doFetch, spiedWait, 'url')).rejectedWith(NotFoundError);
+		await should(doRequest('url', undefined, doFetch, spiedWait)).rejectedWith(NotFoundError);
 		should(spiedWait.notCalled).equal(true);
 	});
 
 	it('should return valid response', async function () {
 		const response = {} as Response;
 		const doFetch = async (_: string) => response;
-		await should(doRequest(doFetch, wait, 'url')).fulfilledWith(response);
+		await should(doRequest('url', undefined, doFetch, wait)).fulfilledWith(response);
 	});
 });
