@@ -1,7 +1,7 @@
 import * as should from 'should';
 import * as nock from "nock";
 import { nockOpts, successRes } from "../../helper";
-import IDeviceRemoteControl, {IDeviceRemoteControlUpdatable} from "../../../../../src/RestApi/Device/RemoteControl/IDeviceRemoteControl";
+import IDeviceRemoteControl, { IDeviceRemoteControlUpdatable } from "../../../../../src/RestApi/Device/RemoteControl/IDeviceRemoteControl";
 import DeviceRemoteControlManagement from "../../../../../src/RestApi/Device/RemoteControl/DeviceRemoteControlManagement";
 
 describe('DeviceRemoteControlManagement', () => {

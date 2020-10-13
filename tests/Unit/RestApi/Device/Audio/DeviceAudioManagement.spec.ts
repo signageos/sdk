@@ -1,7 +1,7 @@
 import * as should from 'should';
 import * as nock from "nock";
 import { errorResp, errorRespMessage, nockOpts, successRes } from "../../helper";
-import IDeviceAudio, {IDeviceAudioUpdatable} from "../../../../../src/RestApi/Device/Audio/IDeviceAudio";
+import IDeviceAudio, { IDeviceAudioUpdatable } from "../../../../../src/RestApi/Device/Audio/IDeviceAudio";
 import DeviceAudioManagement from "../../../../../src/RestApi/Device/Audio/DeviceAudioManagement";
 
 describe('DeviceAudioManagement', () => {

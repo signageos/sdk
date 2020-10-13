@@ -1,7 +1,7 @@
 import * as should from 'should';
 import * as nock from "nock";
 import { nockOpts, successRes } from "../../helper";
-import IDeviceDebug, {IDeviceDebugUpdatable} from "../../../../../src/RestApi/Device/Debug/IDeviceDebug";
+import IDeviceDebug, { IDeviceDebugUpdatable } from "../../../../../src/RestApi/Device/Debug/IDeviceDebug";
 import DeviceDebugManagement from "../../../../../src/RestApi/Device/Debug/DeviceDebugManagement";
 
 describe('DeviceDebugManagement', () => {

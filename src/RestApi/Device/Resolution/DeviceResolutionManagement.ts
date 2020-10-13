@@ -1,6 +1,6 @@
-import {getResource, parseJSONResponse, putResource} from "../../requester";
+import { getResource, parseJSONResponse, putResource } from "../../requester";
 import { RESOURCE as DEVICE } from "../DeviceManagement";
-import IDeviceResolution, {IDeviceResolutionUpdatable} from "./IDeviceResolution";
+import IDeviceResolution, { IDeviceResolutionUpdatable } from "./IDeviceResolution";
 import DeviceResolution from "./DeviceResolution";
 import IOptions from "../../IOptions";
 

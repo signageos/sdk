@@ -1,8 +1,8 @@
 import * as should from 'should';
 import * as nock from "nock";
-import {nockOpts} from "../../helper";
+import { nockOpts } from "../../helper";
 import AppletCommandManagement from "../../../../../src/RestApi/Applet/Command/AppletCommandManagement";
-import IAppletCommand, {IAppletCommandSendable} from "../../../../../src/RestApi/Applet/Command/IAppletCommand";
+import IAppletCommand, { IAppletCommandSendable } from "../../../../../src/RestApi/Applet/Command/IAppletCommand";
 
 describe('AppletCommandManagement', () => {
 

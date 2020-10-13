@@ -48,7 +48,7 @@ export default class AppletVersionFileManagement {
 				storage: 's3',
 				parse: IAppletVersionFile,
 			},
-		) as StorageResponse.S3.IAppletVersionFile;
+		) as StorageResponse.S3.AppletVersionFile;
 
 		const data: IAppletVersionFile = {
 			...storageResponse,
@@ -59,9 +59,9 @@ export default class AppletVersionFileManagement {
 	}
 
 	public async create(appletUid: string, appletVersion: string, settings: IAppletVersionFileCreatable): Promise<void> {
-		const path = AppletVersionFileManagement.getResource(appletUid, appletVersion);
+		const appletVersionPath = AppletVersionFileManagement.getResource(appletUid, appletVersion);
 
-		const response = await postResource(this.options, path, JSON.stringify({
+		const response = await postResource(this.options, appletVersionPath, JSON.stringify({
 			...settings,
 			content: undefined,
 			size: undefined,
@@ -77,9 +77,9 @@ export default class AppletVersionFileManagement {
 	}
 
 	public async update(appletUid: string, appletVersion: string, filePath: string, settings: IAppletVersionFileUpdatable): Promise<void> {
-		const path = AppletVersionFileManagement.getUrl(appletUid, appletVersion, filePath);
+		const appletVersionPath = AppletVersionFileManagement.getUrl(appletUid, appletVersion, filePath);
 
-		const response = await putResource(this.options, path, JSON.stringify({
+		const response = await putResource(this.options, appletVersionPath, JSON.stringify({
 			...settings,
 			content: undefined,
 			size: undefined,
@@ -95,8 +95,8 @@ export default class AppletVersionFileManagement {
 	}
 
 	public async remove(appletUid: string, appletVersion: string, filePath: string): Promise<void> {
-		const path = AppletVersionFileManagement.getUrl(appletUid, appletVersion, filePath);
+		const appletVersionPath = AppletVersionFileManagement.getUrl(appletUid, appletVersion, filePath);
 
-		await deleteResource(this.options, path);
+		await deleteResource(this.options, appletVersionPath);
 	}
 }

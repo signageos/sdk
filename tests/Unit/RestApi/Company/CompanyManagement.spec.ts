@@ -1,6 +1,6 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import {nockOpts} from '../helper';
+import { nockOpts } from '../helper';
 import IOrganization from '../../../../src/RestApi/Organization/IOrganization';
 import CompanyManagement, { ICompany } from '../../../../src/RestApi/Company/CompanyManagement';
 

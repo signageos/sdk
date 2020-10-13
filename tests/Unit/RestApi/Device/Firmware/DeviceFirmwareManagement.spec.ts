@@ -1,9 +1,9 @@
 import * as should from 'should';
 import * as nock from "nock";
-import {nockOpts} from "../../helper";
+import { nockOpts } from "../../helper";
 import IDeviceChangeResponse from "../../../../../src/RestApi/Device/IDeviceChangeResponse";
 import DeviceFirmwareManagement from "../../../../../src/RestApi/Device/Firmware/DeviceFirmwareManagement";
-import IDeviceFirmware, {IDeviceFirmwareUpdatable} from "../../../../../src/RestApi/Device/Firmware/IDeviceFirmware";
+import IDeviceFirmware, { IDeviceFirmwareUpdatable } from "../../../../../src/RestApi/Device/Firmware/IDeviceFirmware";
 
 describe('DeviceFirmwareManagement', () => {
 
