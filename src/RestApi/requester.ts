@@ -8,6 +8,9 @@ import NotFoundError from "./Error/NotFoundError";
 import TooMAnyRequestsError from "./Error/TooMAnyRequestsError";
 import AuthenticationError from "./Error/AuthenticationError";
 import InternalApiError from "./Error/InternalApiError";
+import GatewayError from './Error/GatewayError';
+
+const parameters = require('../../config/parameters');
 
 export function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options: IOptions, data?: any): RequestInit {
 	return {
@@ -25,19 +28,19 @@ export function createUri(options: IOptions, resource: string, queryParams?: any
 }
 
 export function getResource(options: IOptions, path: string, query?: any) {
-	return doRequest(createUri(options, path, query), createOptions('GET', options));
+	return doRequest(createUri(options, path, query), createOptions('GET', options), doFetch, wait);
 }
 
 export function postResource(options: IOptions, path: string, data: any) {
-	return doRequest(createUri(options, path), createOptions('POST', options, data));
+	return doRequest(createUri(options, path), createOptions('POST', options, data), doFetch, wait);
 }
 
 export function putResource(options: IOptions, path: string, data: any) {
-	return doRequest(createUri(options, path), createOptions('PUT', options, data));
+	return doRequest(createUri(options, path), createOptions('PUT', options, data), doFetch, wait);
 }
 
 export function deleteResource(options: IOptions, path: string) {
-	return doRequest(createUri(options, path), createOptions('DELETE', options));
+	return doRequest(createUri(options, path), createOptions('DELETE', options), doFetch, wait);
 }
 
 export async function parseJSONResponse(resp: Response): Promise<any> {
@@ -73,7 +76,7 @@ function prepareQueryParams(qp: any): string {
 	return '?' + stringify(qp);
 }
 
-export async function doRequest(url: string | Request, init?: RequestInit): Promise<Response> {
+export async function doFetch(url: string | Request, init?: RequestInit): Promise<Response> {
 	const resp = await fetch(url, init);
 	if (resp.ok) {
 		return resp;
@@ -96,7 +99,49 @@ export async function doRequest(url: string | Request, init?: RequestInit): Prom
 			throw new TooMAnyRequestsError(resp.status, body);
 		case 500:
 			throw new InternalApiError(resp.status, body);
+		case 502:
+		case 504:
+			throw new GatewayError(resp.status, body);
 		default:
 			throw new RequestError(resp.status, body);
 	}
+}
+
+// Copied from @signageos/lib, we can add this lib to dependencies ?
+function wait(timeout: number) {
+	return new Promise<void>((resolve: () => void) => setTimeout(() => resolve(), timeout));
+}
+
+export async function doRequest(
+	url: string | Request,
+	init?: RequestInit,
+	fetchFn?: (url: string | Request, init?: RequestInit) => Promise<Response>,
+	waitFn?: (timeout: number) => Promise<void>,
+): Promise<Response> {
+	let tries = parameters.requestMaxAttempts;
+	let currentTimeout = 1000;
+	let lastError: Error | null = null;
+	do {
+		try {
+			if (typeof fetchFn !== 'undefined') {
+				return await fetchFn(url, init);
+			} else {
+				return await doFetch(url, init);
+			}
+		} catch (e) {
+			lastError = e;
+			if (lastError instanceof GatewayError) {
+				tries--;
+				currentTimeout = currentTimeout * 2;
+				if (typeof waitFn !== 'undefined') {
+					await waitFn(currentTimeout);
+				} else {
+					await wait(currentTimeout);
+				}
+			} else {
+				break;
+			}
+		}
+	} while (tries > 0);
+	throw lastError;
 }
