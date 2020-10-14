@@ -1,4 +1,4 @@
-import {getResource, parseJSONResponse} from "../../requester";
+import { getResource, parseJSONResponse } from "../../requester";
 import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IOptions from "../../IOptions";
 import IDeviceAuthentication from "./IDeviceAuthentication";

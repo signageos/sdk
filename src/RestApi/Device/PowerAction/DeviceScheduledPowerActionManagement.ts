@@ -1,7 +1,7 @@
-import {deleteResource, getResource, parseJSONResponse, postResource} from "../../requester";
+import { deleteResource, getResource, parseJSONResponse, postResource } from "../../requester";
 import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IOptions from "../../IOptions";
-import IScheduledPowerAction, {IScheduledPowerActionCreatable} from "./IScheduledPowerAction";
+import IScheduledPowerAction, { IScheduledPowerActionCreatable } from "./IScheduledPowerAction";
 import ScheduledPowerAction from "./ScheduledPowerAction";
 
 export default class DeviceScheduledPowerActionManagement {

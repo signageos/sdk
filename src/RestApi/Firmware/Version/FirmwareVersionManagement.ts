@@ -1,5 +1,5 @@
-import {getResource, parseJSONResponse, putResource, postResource} from "../../requester";
-import IFirmwareVersion, {IFirmwareVersionUpdatable, IFirmwareVersionCreatable, IFile} from "./IFirmwareVersion";
+import { getResource, parseJSONResponse, putResource, postResource } from "../../requester";
+import IFirmwareVersion, { IFirmwareVersionUpdatable, IFirmwareVersionCreatable, IFile } from "./IFirmwareVersion";
 import IOptions from "../../IOptions";
 import FirmwareVersion from "./FirmwareVersion";
 import { postStorage } from "../../storageRequester";

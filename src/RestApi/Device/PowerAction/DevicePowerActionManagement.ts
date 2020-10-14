@@ -1,7 +1,7 @@
-import {getResource, parseJSONResponse, postResource} from "../../requester";
+import { getResource, parseJSONResponse, postResource } from "../../requester";
 import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IOptions from "../../IOptions";
-import IPowerAction, {IPowerActionUpdatable} from "./IPowerAction";
+import IPowerAction, { IPowerActionUpdatable } from "./IPowerAction";
 import PowerAction from "./PowerAction";
 
 export default class DevicePowerActionManagement {

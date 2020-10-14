@@ -1,7 +1,7 @@
 import * as should from 'should';
 import * as nock from 'nock';
 import { nockOpts, successRes } from '../../helper';
-import {DevicePowerAction} from "../../../../../src/RestApi/Device/PowerAction/IPowerAction";
+import { DevicePowerAction } from "../../../../../src/RestApi/Device/PowerAction/IPowerAction";
 import DeviceScheduledPowerActionManagement
 	from "../../../../../src/RestApi/Device/PowerAction/DeviceScheduledPowerActionManagement";
 import IScheduledPowerAction, {

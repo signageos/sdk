@@ -1,8 +1,8 @@
 import * as path from 'path';
-import {deleteResource, getResource, parseJSONResponse} from "../requester";
+import { deleteResource, getResource, parseJSONResponse } from "../requester";
 import IOptions from "../IOptions";
-import IApplet, {IAppletCreatable} from "./IApplet";
-import {postResource} from "../requester";
+import IApplet, { IAppletCreatable } from "./IApplet";
+import { postResource } from "../requester";
 import Applet from "./Applet";
 import AppletVersionManagement from "./Version/AppletVersionManagement";
 import AppletCommandManagement from "./Command/AppletCommandManagement";

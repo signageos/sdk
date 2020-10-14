@@ -1,7 +1,7 @@
 import * as should from 'should';
 import * as nock from "nock";
 import { nockOpts, successRes } from "../helper";
-import IApplet, {IAppletCreatable} from "../../../../src/RestApi/Applet/IApplet";
+import IApplet, { IAppletCreatable } from "../../../../src/RestApi/Applet/IApplet";
 import AppletManagement from "../../../../src/RestApi/Applet/AppletManagement";
 
 describe('AppletManagement', () => {

@@ -1,6 +1,6 @@
 
 import wait from '../../Timer/wait';
-import {postResource, putResource, deleteResource, getResource, parseJSONResponse} from '../requester';
+import { postResource, putResource, deleteResource, getResource, parseJSONResponse } from '../requester';
 import IOptions from "../IOptions";
 import ITiming, { ITimingUpdatable, ITimingCreateOnly } from "./ITiming";
 import UnsupportedError from '../Error/UnsupportedError';

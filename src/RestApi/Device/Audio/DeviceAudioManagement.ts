@@ -1,6 +1,6 @@
-import {getResource, parseJSONResponse, putResource} from "../../requester";
+import { getResource, parseJSONResponse, putResource } from "../../requester";
 import { RESOURCE as DEVICE } from "../DeviceManagement";
-import IDeviceAudio, {IDeviceAudioUpdatable} from "./IDeviceAudio";
+import IDeviceAudio, { IDeviceAudioUpdatable } from "./IDeviceAudio";
 import DeviceVolume from "./DeviceAudio";
 import IOptions from "../../IOptions";
 

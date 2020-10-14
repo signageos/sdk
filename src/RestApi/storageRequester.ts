@@ -5,7 +5,7 @@ import IAppletVersionFile from './Applet/Version/File/IAppletVersionFile';
 
 export namespace StorageResponse {
 	export namespace S3 {
-		export interface IAppletVersionFile {
+		export interface AppletVersionFile {
 			content: NodeJS.ReadableStream;
 			type: string;
 			hash?: string;
@@ -67,7 +67,7 @@ function createS3ResponseParser(parse: ParseObject) {
 				size: response.headers.get('Content-Length')
 					? parseInt(response.headers.get('Content-Length') as string)
 					: undefined,
-			}) as StorageResponse.S3.IAppletVersionFile;
+			}) as StorageResponse.S3.AppletVersionFile;
 
 		default:
 			return createDefaultParser();

@@ -1,8 +1,8 @@
-import {getResource, parseJSONResponse, postResource} from "../../requester";
+import { getResource, parseJSONResponse, postResource } from "../../requester";
 import IOptions from "../../IOptions";
 import { RESOURCE as APPLET } from "../AppletManagement";
 import IAppletCommandFilter from "./IAppletCommandFilter";
-import IAppletCommand, {IAppletCommandSendable} from "./IAppletCommand";
+import IAppletCommand, { IAppletCommandSendable } from "./IAppletCommand";
 import { RESOURCE as DEVICE } from "../../Device/DeviceManagement";
 import AppletCommand from "./AppletCommand";
 

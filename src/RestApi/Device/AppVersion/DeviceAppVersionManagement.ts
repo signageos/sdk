@@ -1,8 +1,8 @@
-import {getResource, parseJSONResponse, putResource} from "../../requester";
+import { getResource, parseJSONResponse, putResource } from "../../requester";
 import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IOptions from "../../IOptions";
 import DeviceAppVersion from "./DeviceAppVersion";
-import IDeviceAppVersion, {IDeviceAppVersionUpdatable} from "./IDeviceAppVersion";
+import IDeviceAppVersion, { IDeviceAppVersionUpdatable } from "./IDeviceAppVersion";
 
 export default class DeviceAppVersionManagement {
 

@@ -1,4 +1,4 @@
-import {getResource, parseJSONResponse, postResource} from "../../requester";
+import { getResource, parseJSONResponse, postResource } from "../../requester";
 import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IOptions from "../../IOptions";
 import IReportFile from "./ReportFile/IReportFile";
@@ -9,7 +9,7 @@ import ITemperature from "./Temperature/ITemperature";
 import Temperature from "./Temperature/Temperature";
 import IHourlyStatus from "./HourlyStatus/IHourlyStatus";
 import HourlyStatus from "./HourlyStatus/HourlyStatus";
-import {ICreatedDateRangeFilter, IDateRangeFilter, ITakenDateRangeFilter} from "./ICreatedDateRangeFilter";
+import { ICreatedDateRangeFilter, IDateRangeFilter, ITakenDateRangeFilter } from "./ICreatedDateRangeFilter";
 import IScreenshot from "./Screenshot/IScreenshot";
 import Screenshot from "./Screenshot/Screenshot";
 

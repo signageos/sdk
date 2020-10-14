@@ -1,8 +1,8 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import {errorResp, errorRespMessage, nockOpts} from '../helper';
+import { errorResp, errorRespMessage, nockOpts } from '../helper';
 import DeviceManagement from '../../../../src/RestApi/Device/DeviceManagement';
-import IDevice, {IDeviceUpdatable} from '../../../../src/RestApi/Device/IDevice';
+import IDevice, { IDeviceUpdatable } from '../../../../src/RestApi/Device/IDevice';
 import Device from "../../../../src/RestApi/Device/Device";
 
 describe('DeviceManagement', () => {

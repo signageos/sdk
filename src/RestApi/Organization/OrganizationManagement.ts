@@ -1,9 +1,9 @@
 import { getResource, parseJSONResponse, putResource } from '../requester';
 import IOptions from "../IOptions";
 import IOrganization, { IOrganizationCreatable, SubscriptionType } from './IOrganization';
-import {postResource} from "../requester";
+import { postResource } from "../requester";
 import Organization from "./Organization";
-import {IOrganizationFilter} from "./IOrganizationFilter";
+import { IOrganizationFilter } from "./IOrganizationFilter";
 
 export default class OrganizationManagement {
 

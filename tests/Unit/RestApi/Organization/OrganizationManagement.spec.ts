@@ -1,7 +1,7 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import {nockOpts} from '../helper';
-import IOrganization, {IOrganizationCreatable} from '../../../../src/RestApi/Organization/IOrganization';
+import { nockOpts } from '../helper';
+import IOrganization, { IOrganizationCreatable } from '../../../../src/RestApi/Organization/IOrganization';
 import OrganizationManagement from "../../../../src/RestApi/Organization/OrganizationManagement";
 
 describe('OrganizationManagement', () => {

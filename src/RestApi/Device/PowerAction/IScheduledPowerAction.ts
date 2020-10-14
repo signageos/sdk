@@ -1,4 +1,4 @@
-import {DevicePowerAction} from "./IPowerAction";
+import { DevicePowerAction } from "./IPowerAction";
 
 export enum SheduledActionDay {
 	Monday = 'MONDAY',

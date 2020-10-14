@@ -1,5 +1,5 @@
 
-import {getResource, postResource, parseJSONResponse} from '../../requester';
+import { getResource, postResource, parseJSONResponse } from '../../requester';
 import IOptions from "../../IOptions";
 import ITimingCommand, { ITimingCommandPayload, ITimingCommandCreateOnly } from "./ITimingCommand";
 import RequestError from '../../Error/RequestError';

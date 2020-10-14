@@ -1,6 +1,6 @@
-import {getResource, parseJSONResponse, putResource} from "../../requester";
+import { getResource, parseJSONResponse, putResource } from "../../requester";
 import { RESOURCE as DEVICE } from "../DeviceManagement";
-import IDeviceBrightness, {IDeviceBrightnessUpdatable} from "./IDeviceBrightness";
+import IDeviceBrightness, { IDeviceBrightnessUpdatable } from "./IDeviceBrightness";
 import DeviceBrightness from "./DeviceBrightness";
 import IOptions from "../../IOptions";
 
