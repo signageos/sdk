@@ -65,4 +65,17 @@ describe('RestAPI - Organization', () => {
 
 	}).timeout(allowedTimeout);
 
+	it('should delete the organizations by Uid', async () => {
+		if (!pickedOrg) { // there is no organization, we can't test getting by Uid
+			should(true).true();
+			return;
+		}
+
+		await api.organization.delete(pickedOrg.uid);
+
+		const org = await api.organization.get(pickedOrg.uid);
+		should(org).be.null();
+
+	}).timeout(allowedTimeout);
+
 });
