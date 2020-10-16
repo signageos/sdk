@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Attempts to retry if API request failed with 502, 504 http codes
 
+### Added
+- - Added method for deleting existing organization
+
 ## [1.3.5] - 2020-10-13
 ### Security
 - Fix dependabot alerts

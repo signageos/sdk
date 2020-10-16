@@ -1,4 +1,4 @@
-import { getResource, parseJSONResponse, putResource } from '../requester';
+import { getResource, parseJSONResponse, putResource, deleteResource } from '../requester';
 import IOptions from "../IOptions";
 import IOrganization, { IOrganizationCreatable, SubscriptionType } from './IOrganization';
 import { postResource } from "../requester";
@@ -43,6 +43,13 @@ export default class OrganizationManagement {
 			this.options,
 			`${OrganizationManagement.RESOURCE}/${organizationUid}/subscriptionType/${subscription}`,
 			JSON.stringify({}),
+		);
+	}
+
+	public async delete(organizationUid: string): Promise<void> {
+		await deleteResource(
+			this.options,
+			`${OrganizationManagement.RESOURCE}/${organizationUid}`,
 		);
 	}
 
