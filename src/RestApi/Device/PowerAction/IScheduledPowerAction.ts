@@ -20,6 +20,8 @@ export interface IScheduledPowerAction extends IScheduledPowerActionCreatable {
 	uid: string;
 	deviceUid: string;
 	createdAt: Date;
+	succeededAt: Date | null;
+	failedAt: Date | null;
 }
 
 export default IScheduledPowerAction;

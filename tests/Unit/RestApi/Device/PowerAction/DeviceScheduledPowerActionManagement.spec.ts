@@ -18,6 +18,8 @@ describe('DeviceScheduledPowerActionManagement', () => {
 		weekdays: [SheduledActionDay.Monday],
 		time: '08:00:00',
 		createdAt: new Date('2018-07-26T17:13:36.160Z'),
+		succeededAt: null,
+		failedAt: null,
 	};
 	const validGetResp: IScheduledPowerAction[] = [pa];
 	const validCreateReq: IScheduledPowerActionCreatable = {

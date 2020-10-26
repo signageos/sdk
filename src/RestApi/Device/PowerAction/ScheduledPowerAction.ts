@@ -9,6 +9,8 @@ export default class ScheduledPowerAction implements IScheduledPowerAction {
 	public readonly weekdays: IScheduledPowerAction['weekdays'];
 	public readonly time: IScheduledPowerAction['time'];
 	public readonly createdAt: IScheduledPowerAction['createdAt'];
+	public readonly succeededAt: IScheduledPowerAction['succeededAt'];
+	public readonly failedAt: IScheduledPowerAction['failedAt'];
 
 	constructor(data: IScheduledPowerAction) {
 		for (const key in data) {
