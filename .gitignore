@@ -4,5 +4,4 @@ node_modules/
 config/env.*.json
 src/**/*.js
 tests/**/*.js
-.env
 docs/*

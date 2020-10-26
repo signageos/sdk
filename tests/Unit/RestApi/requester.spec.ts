@@ -15,7 +15,7 @@ describe('requester', function () {
 		};
 		const spiedWait = sinon.spy(wait);
 		await should(doRequest('url', undefined, doFetch, spiedWait)).rejectedWith(GatewayError);
-		should(spiedWait.calledOnce).equal(true);
+		should(spiedWait.callCount).equal(3);
 	});
 
 	it('should fail on not found', async function () {

@@ -5,6 +5,7 @@
   "files": [
     "dist",
     "config",
+    ".env",
     "README.md",
     "package.json",
     "package-lock.json"

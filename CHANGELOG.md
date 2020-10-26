@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Fixed
 - Update interface of device schedule power actions with missing `succeededAt` and `failedAt` properties
+- Default values for sdk imported `api` default singleton instance
+- 3 attempts to call api in background, then throw error (adjustable by env var `SOS_REQUEST_MAX_ATTEMPTS`).
 
 ## [1.4.0] - 2020-10-22
 ### Fixed
