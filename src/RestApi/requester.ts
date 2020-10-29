@@ -28,19 +28,19 @@ function createUri(options: IOptions, resource: string, queryParams?: any) {
 }
 
 export function getResource(options: IOptions, path: string, query?: any) {
-	return doRequest(createUri(options, path, query), createOptions('GET', options), doFetch, wait);
+	return doRequest(createUri(options, path, query), createOptions('GET', options));
 }
 
 export function postResource(options: IOptions, path: string, data: any) {
-	return doRequest(createUri(options, path), createOptions('POST', options, data), doFetch, wait);
+	return doRequest(createUri(options, path), createOptions('POST', options, data));
 }
 
 export function putResource(options: IOptions, path: string, data: any) {
-	return doRequest(createUri(options, path), createOptions('PUT', options, data), doFetch, wait);
+	return doRequest(createUri(options, path), createOptions('PUT', options, data));
 }
 
 export function deleteResource(options: IOptions, path: string) {
-	return doRequest(createUri(options, path), createOptions('DELETE', options), doFetch, wait);
+	return doRequest(createUri(options, path), createOptions('DELETE', options));
 }
 
 export async function parseJSONResponse(resp: Response): Promise<any> {
@@ -115,29 +115,21 @@ function wait(timeout: number) {
 export async function doRequest(
 	url: string | Request,
 	init?: RequestInit,
-	fetchFn?: (url: string | Request, init?: RequestInit) => Promise<Response>,
-	waitFn?: (timeout: number) => Promise<void>,
+	fetchFn: (url: string | Request, init?: RequestInit) => Promise<Response> = doFetch,
+	waitFn: (timeout: number) => Promise<void> = wait,
 ): Promise<Response> {
 	let tries = parameters.requestMaxAttempts;
 	let currentTimeout = 1000;
 	let lastError: Error | null = null;
 	do {
 		try {
-			if (typeof fetchFn !== 'undefined') {
-				return await fetchFn(url, init);
-			} else {
-				return await doFetch(url, init);
-			}
+			return await fetchFn(url, init);
 		} catch (e) {
 			lastError = e;
 			if (lastError instanceof GatewayError) {
 				tries--;
 				currentTimeout = currentTimeout * 2;
-				if (typeof waitFn !== 'undefined') {
-					await waitFn(currentTimeout);
-				} else {
-					await wait(currentTimeout);
-				}
+				await waitFn(currentTimeout);
 			} else {
 				break;
 			}
