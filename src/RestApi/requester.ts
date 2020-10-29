@@ -9,6 +9,7 @@ import TooMAnyRequestsError from "./Error/TooMAnyRequestsError";
 import AuthenticationError from "./Error/AuthenticationError";
 import InternalApiError from "./Error/InternalApiError";
 import GatewayError from './Error/GatewayError';
+import ResponseBodyFormatError from './Error/ResponseBodyFormatError';
 
 const parameters = require('../../config/parameters');
 
@@ -44,11 +45,16 @@ export function deleteResource(options: IOptions, path: string) {
 }
 
 export async function parseJSONResponse(resp: Response): Promise<any> {
-	return JSON.parse(await resp.text(), deserializeJSON);
+	const responseText = await resp.text();
+	return parseJSON(responseText);
 }
 
 async function parseJSON(text: string): Promise<any> {
-	return JSON.parse(text, deserializeJSON);
+	try {
+		return JSON.parse(text, deserializeJSON);
+	} catch (error) {
+		throw new ResponseBodyFormatError(text);
+	}
 }
 
 function deserializeJSON(_key: string, value: any) {
@@ -82,12 +88,10 @@ async function doFetch(url: string | Request, init?: RequestInit): Promise<Respo
 		return resp;
 	}
 
-	let body: any = await resp.text();
+	let body = await resp.text();
 
-	try {
+	if (body) {
 		body = await parseJSON(body);
-	} catch (error) {
-		//Nothing
 	}
 
 	switch (resp.status) {

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Singleton `api` instance account authentication using environment variables: `SOS_API_IDENTIFICATION`, `SOS_API_SECURITY_TOKEN`
+- Throw unknown errors when server response format is invalid
 
 ## [1.4.1] - 2020-10-26
 ### Fixed
