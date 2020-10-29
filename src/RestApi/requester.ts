@@ -12,7 +12,7 @@ import GatewayError from './Error/GatewayError';
 
 const parameters = require('../../config/parameters');
 
-export function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options: IOptions, data?: any): RequestInit {
+function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options: IOptions, data?: any): RequestInit {
 	return {
 		headers: {
 			'Content-Type': options.contentType ? options.contentType : 'application/json',
@@ -23,7 +23,7 @@ export function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options
 	};
 }
 
-export function createUri(options: IOptions, resource: string, queryParams?: any) {
+function createUri(options: IOptions, resource: string, queryParams?: any) {
 	return [options.url, options.version, resource].join('/') + prepareQueryParams(queryParams);
 }
 
@@ -47,7 +47,7 @@ export async function parseJSONResponse(resp: Response): Promise<any> {
 	return JSON.parse(await resp.text(), deserializeJSON);
 }
 
-export async function parseJSON(text: string): Promise<any> {
+async function parseJSON(text: string): Promise<any> {
 	return JSON.parse(text, deserializeJSON);
 }
 
@@ -76,7 +76,7 @@ function prepareQueryParams(qp: any): string {
 	return '?' + stringify(qp);
 }
 
-export async function doFetch(url: string | Request, init?: RequestInit): Promise<Response> {
+async function doFetch(url: string | Request, init?: RequestInit): Promise<Response> {
 	const resp = await fetch(url, init);
 	if (resp.ok) {
 		return resp;
