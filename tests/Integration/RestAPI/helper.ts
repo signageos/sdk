@@ -11,8 +11,8 @@ const version = 'v1';
 const clientId = parameters.organizationAuth.clientId;
 const secret = parameters.organizationAuth.secret;
 // account credentials
-const accountId = parameters.accountAuth.clientId;
-const securityToken = parameters.accountAuth.secret;
+const tokenId = parameters.accountAuth.tokenId;
+const token = parameters.accountAuth.token;
 
 export const opts: IOptions = {
 	url: host,
@@ -22,7 +22,7 @@ export const opts: IOptions = {
 		secret,
 	},
 	accountAuth: {
-		accountId,
-		securityToken,
+		tokenId,
+		token,
 	},
 };

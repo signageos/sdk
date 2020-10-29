@@ -26,7 +26,7 @@ describe('RestAPI - FirmwareVersion', () => {
 	};
 
 	before (function() {
-		if (!RUN_INTEGRATION_TESTS || opts.accountAuth?.accountId === '' || opts.accountAuth?.securityToken === '') {
+		if (!RUN_INTEGRATION_TESTS || (opts.accountAuth as any).tokenId === '' || (opts.accountAuth as any).token === '') {
 			console.warn('you must set auth details in order to run this test');
 			this.skip();
 		}

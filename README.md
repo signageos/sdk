@@ -12,10 +12,10 @@ npm install @signageos/sdk
 
 Mandatory ENV variables:
 
-- SOS_AUTH_CLIENT_ID="OAuthClientID"
-- SOS_AUTH_SECRET="OAuthSecret"
-- SOS_API_IDENTIFICATION="apiAccountID"
-- SOS_API_SECURITY_TOKEN="apiAccountSecret"
+- SOS_AUTH_CLIENT_ID="...OAuthClientID..."
+- SOS_AUTH_SECRET="...OAuthSecret..."
+- SOS_API_IDENTIFICATION="...apiSecurityTokenID..."
+- SOS_API_SECURITY_TOKEN="...apiSecurityToken..."
 
 Optional ENV variable adjustment (with default values):
 
@@ -57,12 +57,12 @@ const api = new Api(
 	{
 		url: 'https://api.signageos.io', // Optional
 		organizationAuth: {
-			clientId: 'OAuthClientID',
-			secret: 'OAuthSecret',
+			clientId: '...OAuthClientID...',
+			secret: '...OAuthSecret...',
 		},
 		accountAuth: {
-			accountId: 'apiAccountID',
-			securityToken: 'apiAccountSecret',
+			tokenId: '...apiSecurityTokenID...',
+			token: '...apiSecurityToken...',
 		},
 		version: 'v1', // Optional
 	},
