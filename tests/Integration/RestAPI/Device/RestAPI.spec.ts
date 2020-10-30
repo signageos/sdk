@@ -16,7 +16,7 @@ describe('RestAPI - Device', function () {
 
 	before(function () {
 		// in order to run these tests, fill in auth and RUN_INTEGRATION_TESTS environment variables (please see '../helper.ts' file)
-		if (!RUN_INTEGRATION_TESTS || opts.organizationAuth?.clientId === '' || opts.organizationAuth?.secret === '') {
+		if (!RUN_INTEGRATION_TESTS || (opts.accountAuth as any).tokenId === '' || (opts.accountAuth as any).token === '') {
 			console.warn('you must set auth details in order to run this test');
 			this.skip();
 		}

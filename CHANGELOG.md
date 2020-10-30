@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Deprecated
+- `Api` constructor options was renamed. `accountAuth.accountId` => `accountAuth.tokenId` & `accountAuth.secret` => `accountAuth.token`.
+
+### Fixed
+- Singleton `api` instance account authentication using environment variables: `SOS_API_IDENTIFICATION`, `SOS_API_SECURITY_TOKEN`
+- Throw unknown errors when server response format is invalid
+
 ## [1.4.1] - 2020-10-26
 ### Fixed
 - Update interface of device schedule power actions with missing `succeededAt` and `failedAt` properties

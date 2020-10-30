@@ -9,10 +9,11 @@ import TooMAnyRequestsError from "./Error/TooMAnyRequestsError";
 import AuthenticationError from "./Error/AuthenticationError";
 import InternalApiError from "./Error/InternalApiError";
 import GatewayError from './Error/GatewayError';
+import ResponseBodyFormatError from './Error/ResponseBodyFormatError';
 
 const parameters = require('../../config/parameters');
 
-export function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options: IOptions, data?: any): RequestInit {
+function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options: IOptions, data?: any): RequestInit {
 	return {
 		headers: {
 			'Content-Type': options.contentType ? options.contentType : 'application/json',
@@ -23,32 +24,37 @@ export function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options
 	};
 }
 
-export function createUri(options: IOptions, resource: string, queryParams?: any) {
+function createUri(options: IOptions, resource: string, queryParams?: any) {
 	return [options.url, options.version, resource].join('/') + prepareQueryParams(queryParams);
 }
 
 export function getResource(options: IOptions, path: string, query?: any) {
-	return doRequest(createUri(options, path, query), createOptions('GET', options), doFetch, wait);
+	return doRequest(createUri(options, path, query), createOptions('GET', options));
 }
 
 export function postResource(options: IOptions, path: string, data: any) {
-	return doRequest(createUri(options, path), createOptions('POST', options, data), doFetch, wait);
+	return doRequest(createUri(options, path), createOptions('POST', options, data));
 }
 
 export function putResource(options: IOptions, path: string, data: any) {
-	return doRequest(createUri(options, path), createOptions('PUT', options, data), doFetch, wait);
+	return doRequest(createUri(options, path), createOptions('PUT', options, data));
 }
 
 export function deleteResource(options: IOptions, path: string) {
-	return doRequest(createUri(options, path), createOptions('DELETE', options), doFetch, wait);
+	return doRequest(createUri(options, path), createOptions('DELETE', options));
 }
 
 export async function parseJSONResponse(resp: Response): Promise<any> {
-	return JSON.parse(await resp.text(), deserializeJSON);
+	const responseText = await resp.text();
+	return parseJSON(responseText);
 }
 
-export async function parseJSON(text: string): Promise<any> {
-	return JSON.parse(text, deserializeJSON);
+async function parseJSON(text: string): Promise<any> {
+	try {
+		return JSON.parse(text, deserializeJSON);
+	} catch (error) {
+		throw new ResponseBodyFormatError(text);
+	}
 }
 
 function deserializeJSON(_key: string, value: any) {
@@ -76,18 +82,16 @@ function prepareQueryParams(qp: any): string {
 	return '?' + stringify(qp);
 }
 
-export async function doFetch(url: string | Request, init?: RequestInit): Promise<Response> {
+async function doFetch(url: string | Request, init?: RequestInit): Promise<Response> {
 	const resp = await fetch(url, init);
 	if (resp.ok) {
 		return resp;
 	}
 
-	let body: any = await resp.text();
+	let body = await resp.text();
 
-	try {
+	if (body) {
 		body = await parseJSON(body);
-	} catch (error) {
-		//Nothing
 	}
 
 	switch (resp.status) {
@@ -115,29 +119,21 @@ function wait(timeout: number) {
 export async function doRequest(
 	url: string | Request,
 	init?: RequestInit,
-	fetchFn?: (url: string | Request, init?: RequestInit) => Promise<Response>,
-	waitFn?: (timeout: number) => Promise<void>,
+	fetchFn: (url: string | Request, init?: RequestInit) => Promise<Response> = doFetch,
+	waitFn: (timeout: number) => Promise<void> = wait,
 ): Promise<Response> {
 	let tries = parameters.requestMaxAttempts;
 	let currentTimeout = 1000;
 	let lastError: Error | null = null;
 	do {
 		try {
-			if (typeof fetchFn !== 'undefined') {
-				return await fetchFn(url, init);
-			} else {
-				return await doFetch(url, init);
-			}
+			return await fetchFn(url, init);
 		} catch (e) {
 			lastError = e;
 			if (lastError instanceof GatewayError) {
 				tries--;
 				currentTimeout = currentTimeout * 2;
-				if (typeof waitFn !== 'undefined') {
-					await waitFn(currentTimeout);
-				} else {
-					await wait(currentTimeout);
-				}
+				await waitFn(currentTimeout);
 			} else {
 				break;
 			}

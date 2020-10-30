@@ -9,8 +9,13 @@ export interface IOptions {
 	url?: string;
 	contentType?: string;
 	accountAuth?: {
+		tokenId: string;
+		token: string;
+	} | {
+		/** @deprecated use tokenId instead */
 		accountId: string;
-		securityToken: string;
+		/** @deprecated use token instead */
+		secret: string;
 	};
 	organizationAuth?: {
 		clientId: string;
@@ -23,13 +28,27 @@ export class Api extends RestApi {
 	constructor(
 		options: IOptions,
 	) {
+		if (options.accountAuth && 'accountId' in options.accountAuth) {
+			console.warn(
+				`Option "accountAuth.accountId" is deprecated and will be removed in next major version. Use "accountAuth.tokenId" instead.`,
+			);
+		}
+		if (options.accountAuth && 'secret' in options.accountAuth) {
+			console.warn(
+				`Option "accountAuth.secret" is deprecated and will be removed in next major version. Use "accountAuth.token" instead.`,
+			);
+		}
+		const accountAuth = options.accountAuth && 'tokenId' in options.accountAuth ? options.accountAuth : {
+			tokenId: options.accountAuth?.accountId ?? INVALID_VALUE,
+			token: options.accountAuth?.secret ?? INVALID_VALUE,
+		};
 		const accountOptions = {
 			url: options.url ?? parameters.apiUrl,
 			version: options.version ?? 'v1',
 			contentType: options.contentType,
 			auth: {
-				clientId: options.accountAuth?.accountId ?? INVALID_VALUE,
-				secret: options.accountAuth?.securityToken ?? INVALID_VALUE,
+				clientId: accountAuth.tokenId,
+				secret: accountAuth.token,
 			},
 		};
 		const organizationOptions = {
