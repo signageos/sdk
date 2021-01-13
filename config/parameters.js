@@ -18,7 +18,9 @@ module.exports = {
 		distPath,
 	},
 	apiUrl: process.env.SOS_API_URL,
+	runIntegrationTests: process.env.RUN_INTEGRATION_TESTS,
 	requestMaxAttempts: process.env.SOS_REQUEST_MAX_ATTEMPTS,
+	organizationUid: process.env.SOS_ORGANIZATION_UID,
 	organizationAuth: {
 		clientId: process.env.SOS_AUTH_CLIENT_ID,
 		secret: process.env.SOS_AUTH_SECRET,

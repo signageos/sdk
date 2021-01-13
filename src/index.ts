@@ -17,6 +17,7 @@ export interface IOptions {
 		/** @deprecated use token instead */
 		secret: string;
 	};
+	organizationUid: string;
 	organizationAuth?: {
 		clientId: string;
 		secret: string;
@@ -69,6 +70,7 @@ const rest = new Api(
 		url: parameters.apiUrl,
 		version: 'v1',
 		accountAuth: parameters.accountAuth,
+		organizationUid: parameters.organizationUid,
 		organizationAuth: parameters.organizationAuth,
 	},
 );
