@@ -1,4 +1,4 @@
-import { getResource, postResource, parseJSONResponse } from '../requester';
+import { getResource, postResource, deleteResource, parseJSONResponse } from '../requester';
 import IOptions from "../IOptions";
 import IEmulator, { IEmulatorCreatable } from './IEmulator';
 import Emulator from './Emulator';
@@ -16,5 +16,9 @@ export default class EmulatorManagement {
 
 	public async create(settings: IEmulatorCreatable): Promise<void> {
 		await postResource(this.options, EmulatorManagement.RESOURCE, JSON.stringify(settings));
+	}
+
+	public async delete(deviceUid: string): Promise<void> {
+		await deleteResource(this.options, EmulatorManagement.RESOURCE + '/' + deviceUid);
 	}
 }

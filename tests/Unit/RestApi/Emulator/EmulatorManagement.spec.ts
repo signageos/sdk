@@ -21,7 +21,8 @@ describe('EmulatorManagement', () => {
 			},
 		},
 	).get('/v1/emulator').reply(200, validListResp)
-	.post('/v1/emulator').reply(201, 'Created');
+	.post('/v1/emulator').reply(201, 'Created')
+	.delete(/v1\/emulator\/[a-zA-Z0-9]+$/).reply(204, 'Deleted');
 
 	const em = new EmulatorManagement(nockOpts);
 	const assertEmulator = (emul: IEmulator) => {
@@ -39,6 +40,11 @@ describe('EmulatorManagement', () => {
 
 	it('should create new emulator', async () => {
 		await em.create(validCreateReq);
+		should(true).be.true();
+	});
+
+	it('should delete old emulator', async () => {
+		await em.delete(emulator.uid);
 		should(true).be.true();
 	});
 });
