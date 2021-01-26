@@ -42,6 +42,8 @@ test:general:
     amqp_dsn: amqp://guest:guest@rabbitmq:5672/
   script:
     - npm test
+  needs:
+    - prepare
 
 test:lint:
   stage: test
@@ -50,6 +52,8 @@ test:lint:
   script:
     - if [ `find test* -type f -print0 | xargs -0 grep "\.only" | wc -l` -gt 0 ]; then echo "You forgot the .only in tests" && exit 1; fi
     - npm run lint
+  needs:
+    - prepare
 
 test:changelog:
   image: $CI_REGISTRY/signageos/docker:master
@@ -59,6 +63,8 @@ test:changelog:
   allow_failure: true
   script:
     - ci-test-changelog
+  needs:
+    - prepare
 
 test:check:
   stage: test
@@ -67,10 +73,12 @@ test:check:
   allow_failure: true
   script:
     - npm run check
+  needs:
+    - prepare
 
 build:
   stage: build
-  dependencies:
+  needs:
     - prepare
   script:
     - npm run prepare --production
@@ -81,7 +89,7 @@ build:
 
 publish:npm:
   stage: publish
-  dependencies:
+  needs:
     - prepare
     - build
   script:
@@ -91,7 +99,7 @@ publish:npm-public:
   stage: publish
   only:
     - tags
-  dependencies:
+  needs:
     - prepare
     - build
   script:
@@ -105,7 +113,7 @@ publish:docs:
   stage: publish
   only:
     - tags
-  dependencies:
+  needs:
     - prepare
     - build
   script:
@@ -125,6 +133,13 @@ release:tag:
   before_script: []
   script:
     - ci-release-tag
+  needs:
+    - prepare
+    - build
+    - test:general
+    - test:lint
+    - test:check
+    - test:changelog
 
 release:notes:
   image: $CI_REGISTRY/signageos/docker:master
@@ -133,3 +148,5 @@ release:notes:
     - tags
   script:
     - ci-release-notes
+  needs:
+    - publish:npm
