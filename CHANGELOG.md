@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- Added method to set device organization
+- Added method to get list of device screenshots and method to take screenshot
+
 ## [1.5.0] - 2021-01-22
 ### Added
 - Helper from CLI for work with `.sosrc`

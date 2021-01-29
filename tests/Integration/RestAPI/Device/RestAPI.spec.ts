@@ -30,7 +30,7 @@ describe('RestAPI - Device', function () {
 		should(devices.length > 0).true();
 
 		// save for later tests
-		device = devices[0];
+		device = devices[0] as IDevice;
 
 		should(device.uid.length > 0).true();
 		should(device.name.length > 0).true();
@@ -67,6 +67,32 @@ describe('RestAPI - Device', function () {
 				should.equal(dvc.name, update.name);
 			}
 		});
+	});
+
+	it('should update device organization', async function () {
+		if (!device || !device.uid) {
+			return this.skip();
+		}
+
+		const update: IDeviceUpdatable = { organizationUid: '7fc1f0cd1b0ae527468fbe6b7a5a98b4cd93872235e11c6aaf' };
+		await api.device.set(device.uid, update);
+	});
+
+	it('should get list of device screenshots', async function () {
+		if (!device || !device.uid) {
+			return this.skip();
+		}
+
+		const screenshots = await api.device.screenshot.getList(device.uid);
+		screenshots.length.should.equal(0);
+	});
+
+	it('should request instant screenshot', async function() {
+		if (!device || !device.uid) {
+			return this.skip();
+		}
+
+		await api.device.screenshot.take(device.uid);
 	});
 
 	it('should get the device pin code', async function () {
