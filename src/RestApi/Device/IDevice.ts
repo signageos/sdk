@@ -1,10 +1,12 @@
 
 export interface IDeviceUpdatable {
-	name: string;
+	name?: string;
+	organizationUid?: string;
 }
 
-export interface IDeviceReadOnly {
+export default interface IDeviceReadOnly {
 	uid: string;
+	name: string;
 	createdAt: Date;
 	aliveAt: Date;
 	pinCode: string;
@@ -14,8 +16,8 @@ export interface IDeviceReadOnly {
 	firmwareVersion: string;
 	model: string;
 	serialNumber: string;
-	timezone: string | null;
 	organizationUid: string;
+	timezone: string | null;
 	networkInterfaces: {
 		[optionName: string]: any;
 	};
@@ -44,9 +46,3 @@ export interface IDeviceReadOnly {
 		updatedAt: Date;
 	};
 }
-
-interface IDevice extends IDeviceReadOnly, IDeviceUpdatable {
-
-}
-
-export default IDevice;

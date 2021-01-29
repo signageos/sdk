@@ -66,9 +66,10 @@ describe('DeviceManagement', () => {
 		.get('/v1/device/someUid').reply(200, validGetResp)
 		.get('/v1/device/shouldFail').reply(500, errorResp)
 		.put('/v1/device/someUid', validSetReq).reply(200, {volume: 90})
-		.put('/v1/device/shouldFail', validSetReq).reply(500, errorResp);
+		.put('/v1/device/shouldFail', validSetReq).reply(500, errorResp)
+		.put('/v1/device/someUid/organization', { organizationUid: 'testOrgUid1' }).reply(204);
 
-	const dm = new DeviceManagement(nockOpts);
+	const dm = new DeviceManagement(nockOpts, nockOpts);
 
 	describe('get device list information', () => {
 		it('should parse the response', async () => {
@@ -103,6 +104,7 @@ describe('DeviceManagement', () => {
 	describe('set device information', () => {
 		it('should set device information correctly', async () => {
 			await dm.set('someUid', validSetReq);
+			await dm.set('someUid', { organizationUid: 'testOrgUid1' });
 			should(true).true();
 		});
 

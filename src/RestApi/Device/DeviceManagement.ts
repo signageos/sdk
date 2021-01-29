@@ -16,6 +16,7 @@ import DevicePackageManagement from "./Package/DevicePackageManagement";
 import DevicePinCodeManagement from "./PinCode/DevicePinCodeManagement";
 import DevicePowerActionManagement from "./PowerAction/DevicePowerActionManagement";
 import DeviceScheduledPowerActionManagement from "./PowerAction/DeviceScheduledPowerActionManagement";
+import DeviceScreenshotManagement from "./Screenshot/DeviceScreenshotManagement";
 import DeviceRemoteControlManagement from "./RemoteControl/DeviceRemoteControlManagement";
 import DeviceResolutionManagement from "./Resolution/DeviceResolutionManagement";
 import DeviceTimerManagement from "./Timer/DeviceTimerManagement";
@@ -40,44 +41,50 @@ export default class DeviceManagement {
 	public resolution: DeviceResolutionManagement;
 	public remoteControl: DeviceRemoteControlManagement;
 	public scheduledPowerAction: DeviceScheduledPowerActionManagement;
+	public screenshot: DeviceScreenshotManagement;
 	public timer: DeviceTimerManagement;
 	public verification: DeviceVerificationManagement;
 
-	constructor(private options: IOptions) {
-		this.appVersion = new DeviceAppVersionManagement(options);
-		this.audio = new DeviceAudioManagement(options);
-		this.authentication = new DeviceAuthenticationManagement(options);
-		this.brightness = new DeviceBrightnessManagement(options);
-		this.dateTime = new DeviceDateTimeManagement(options);
-		this.debug = new DeviceDebugManagement(options);
-		this.provisioning = new DeviceProvisioningManagement(options);
-		this.firmware = new DeviceFirmwareManagement(options);
-		this.monitoring = new DeviceMonitoringManagement(options);
-		this.package = new DevicePackageManagement(options);
-		this.pinCode = new DevicePinCodeManagement(options);
-		this.powerAction = new DevicePowerActionManagement(options);
-		this.scheduledPowerAction = new DeviceScheduledPowerActionManagement(options);
-		this.remoteControl = new DeviceRemoteControlManagement(options);
-		this.resolution = new DeviceResolutionManagement(options);
-		this.timer = new DeviceTimerManagement(options);
-		this.verification = new DeviceVerificationManagement(options);
+	constructor(private accountOptions: IOptions, private organizationOptions: IOptions) {
+		this.appVersion = new DeviceAppVersionManagement(organizationOptions);
+		this.audio = new DeviceAudioManagement(organizationOptions);
+		this.authentication = new DeviceAuthenticationManagement(organizationOptions);
+		this.brightness = new DeviceBrightnessManagement(organizationOptions);
+		this.dateTime = new DeviceDateTimeManagement(organizationOptions);
+		this.debug = new DeviceDebugManagement(organizationOptions);
+		this.provisioning = new DeviceProvisioningManagement(organizationOptions);
+		this.firmware = new DeviceFirmwareManagement(organizationOptions);
+		this.monitoring = new DeviceMonitoringManagement(organizationOptions);
+		this.package = new DevicePackageManagement(organizationOptions);
+		this.pinCode = new DevicePinCodeManagement(organizationOptions);
+		this.powerAction = new DevicePowerActionManagement(organizationOptions);
+		this.scheduledPowerAction = new DeviceScheduledPowerActionManagement(organizationOptions);
+		this.screenshot = new DeviceScreenshotManagement(organizationOptions);
+		this.remoteControl = new DeviceRemoteControlManagement(organizationOptions);
+		this.resolution = new DeviceResolutionManagement(organizationOptions);
+		this.timer = new DeviceTimerManagement(organizationOptions);
+		this.verification = new DeviceVerificationManagement(organizationOptions);
 	}
 
 	public async list(filter: IDeviceFilter = {}): Promise<IDevice[]> {
-		const response = await getResource(this.options, RESOURCE, filter);
+		const response = await getResource(this.organizationOptions, RESOURCE, filter);
 		const data: IDevice[] = await parseJSONResponse(response);
 
 		return data.map((item: IDevice) => new Device(item));
 	}
 
 	public async get(deviceUid: string, filter: IDeviceFilter = {}): Promise<IDevice> {
-		const response = await getResource(this.options, RESOURCE + '/' + deviceUid, filter);
+		const response = await getResource(this.organizationOptions, RESOURCE + '/' + deviceUid, filter);
 
 		return new Device(await parseJSONResponse(response));
 	}
 
 	public async set(deviceUid: string, settings: IDeviceUpdatable): Promise<void> {
-		await putResource(this.options, RESOURCE + '/' + deviceUid, JSON.stringify(settings));
+		if (settings.name) {
+			await putResource(this.organizationOptions, RESOURCE + '/' + deviceUid, JSON.stringify(settings));
+		} else if (settings.organizationUid) {
+			await putResource(this.accountOptions, `${RESOURCE}/${deviceUid}/organization`, JSON.stringify(settings));
+		}
 	}
 
 }
