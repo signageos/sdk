@@ -20,7 +20,7 @@ export default class RestApi {
 	public readonly timingCommand: TimingCommandManagement = new TimingCommandManagement(this.organizationOptions);
 
 	public readonly applet: AppletManagement = new AppletManagement(this.organizationOptions);
-	public readonly device: DeviceManagement = new DeviceManagement(this.organizationOptions);
+	public readonly device: DeviceManagement = new DeviceManagement(this.accountOptions, this.organizationOptions);
 
 	constructor(
 		public readonly accountOptions: IOptions,
