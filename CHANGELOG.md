@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Added method to set device organization
 - Added method to get list of device screenshots and method to take screenshot
+- Added method to get list of emulators for given account and method to create new emulator
+- Added method to delete old emulator
 
 ## [1.5.0] - 2021-01-22
 ### Added
