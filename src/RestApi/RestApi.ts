@@ -3,6 +3,7 @@ import TimingCommandManagement from './Timing/Command/TimingCommandManagement';
 import DeviceManagement from "./Device/DeviceManagement";
 import AppletManagement from "./Applet/AppletManagement";
 import OrganizationManagement from "./Organization/OrganizationManagement";
+import EmulatorManagement from "./Emulator/EmulatorManagement";
 import FirmwareVersionManagement from "./Firmware/Version/FirmwareVersionManagement";
 import CompanyManagement from './Company/CompanyManagement';
 import IOptions from './IOptions';
@@ -12,6 +13,7 @@ export default class RestApi {
 	// Note: We use different authentication here
 	public readonly organization: OrganizationManagement = new OrganizationManagement(this.accountOptions);
 	public readonly company: CompanyManagement = new CompanyManagement(this.accountOptions);
+	public readonly emulator: EmulatorManagement = new EmulatorManagement(this.accountOptions);
 	public readonly firmwareVersion: FirmwareVersionManagement = new FirmwareVersionManagement(this.accountOptions);
 
 	public readonly timing: TimingManagement = new TimingManagement(this.organizationOptions);
