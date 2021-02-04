@@ -13,10 +13,14 @@ describe('RestAPI - Emulator', () => {
 			console.warn('you must set auth details in order to run this test');
 			this.skip();
 		}
+		if (!opts.organizationUid) {
+			console.warn('you must set organizationUid in order to run this test');
+			this.skip();
+		}
 	});
 
 	it('should create new emulator', async () => {
-		await api.emulator.create({ organizationUid: opts.organizationUid });
+		await api.emulator.create({ organizationUid: opts.organizationUid! });
 		should(true).be.true();
 	});
 

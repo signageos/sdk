@@ -17,7 +17,7 @@ export interface IOptions {
 		/** @deprecated use token instead */
 		secret: string;
 	};
-	organizationUid: string;
+	organizationUid?: string;
 	organizationAuth?: {
 		clientId: string;
 		secret: string;
