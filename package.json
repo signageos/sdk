@@ -62,7 +62,7 @@
     "typescript": "3.8.3"
   },
   "dependencies": {
-    "@signageos/front-applet": "4.9.1",
+    "@signageos/front-applet": "4.10.0",
     "@types/fs-extra": "8.1.0",
     "@types/ini": "1.3.30",
     "dotenv": "8.0.0",
