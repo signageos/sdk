@@ -20,7 +20,7 @@ export enum DeviceTimerWeekday {
 	Thursday = 'thu',
 	Friday = 'fri',
 	Saturday = 'sat',
-	Sunday = 'sund',
+	Sunday = 'sun',
 }
 
 export interface IDeviceTimerUpdatable {
