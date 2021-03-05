@@ -9,8 +9,8 @@ export default class FirmwareVersionManagement {
 
 	public static readonly RESOURCE: string = 'firmware/version';
 
-	private static getUrl(applicationType: string, version: string): string {
-		return `${FirmwareVersionManagement.RESOURCE}/${applicationType}/${version}`;
+	private static getUrl(applicationType: string, version: string, type: string | undefined): string {
+		return `${FirmwareVersionManagement.RESOURCE}/${applicationType}/${version}${type ? '/' + type : ''}`;
 	}
 
 	constructor(private options: IOptions) {
@@ -23,14 +23,15 @@ export default class FirmwareVersionManagement {
 		return data.map((item: IFirmwareVersion) => new FirmwareVersion(item));
 	}
 
-	public async set(applicationType: string, version: string , settings: IFirmwareVersionUpdatable): Promise<void> {
-		await putResource(this.options, FirmwareVersionManagement.getUrl(applicationType, version), JSON.stringify(settings));
+	public async set(applicationType: string, version: string, type: string | undefined, settings: IFirmwareVersionUpdatable): Promise<void> {
+		await putResource(this.options, FirmwareVersionManagement.getUrl(applicationType, version, type), JSON.stringify(settings));
 	}
 
 	public async create(settings: IFirmwareVersionCreatable): Promise<void> {
 		const response = await postResource(this.options, FirmwareVersionManagement.RESOURCE, JSON.stringify({
 			applicationType: settings.applicationType,
 			version: settings.version,
+			type: settings.type,
 			hashes: settings.files.map((file: IFile) => file.hash),
 		}));
 
@@ -49,6 +50,6 @@ export default class FirmwareVersionManagement {
 			);
 		}));
 
-		await this.set(settings.applicationType, settings.version, { uploaded: true });
+		await this.set(settings.applicationType, settings.version, settings.type, { uploaded: true });
 	}
 }
