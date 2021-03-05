@@ -72,7 +72,8 @@ describe('FirmwareVersionManagement', () => {
 			.get('/v1/firmware/version').reply(200, validListResp)
 			.put('/v1/firmware/version/webos/04.01.74', validUpdateReqBody).reply( 200, successRes )
 			.post('/v1/firmware/version', validCreateReq).reply(200, successCreateRes)
-			.put('/v1/firmware/version/linux/1.3.0/rpi4', validUpdateReqBody).reply( 200, successRes );
+			.put('/v1/firmware/version/linux/1.3.0/rpi4', validUpdateReqBody).reply( 200, successRes )
+			.put('/v1/firmware/version/linux/1.3.0/rpi5?force=true', validUpdateReqBody).reply( 200, successRes );
 
 		nock('http://myNiceStorage')
 		.post('/create').reply(204)
@@ -129,6 +130,14 @@ describe('FirmwareVersionManagement', () => {
 			uploaded: true,
 		};
 		await fm.set('linux', '1.3.0', 'rpi4', validClientUpdateReq);
+		should(true).true();
+	});
+
+	it('should set confirmed true after firmware upload with type and force', async () => {
+		const validClientUpdateReq: IFirmwareVersionUpdatable = {
+			uploaded: true,
+		};
+		await fm.set('linux', '1.3.0', 'rpi5', validClientUpdateReq, true);
 		should(true).true();
 	});
 

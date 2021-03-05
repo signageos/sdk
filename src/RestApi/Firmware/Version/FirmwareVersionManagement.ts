@@ -23,17 +23,41 @@ export default class FirmwareVersionManagement {
 		return data.map((item: IFirmwareVersion) => new FirmwareVersion(item));
 	}
 
-	public async set(applicationType: string, version: string, type: string | undefined, settings: IFirmwareVersionUpdatable): Promise<void> {
-		await putResource(this.options, FirmwareVersionManagement.getUrl(applicationType, version, type), JSON.stringify(settings));
+	/**
+	 * Finalize the uploaded firmware with settings uploaded: true.
+	 * This method has to be called when successfully FW uploaded files to S3.
+	 * @param force is applicable when FW cannot be uploaded because of non-existent firmware type.
+	 */
+	public async set(
+		applicationType: string,
+		version: string,
+		type: string | undefined,
+		settings: IFirmwareVersionUpdatable,
+		force: boolean = false,
+	): Promise<void> {
+		await putResource(
+			this.options,
+			FirmwareVersionManagement.getUrl(applicationType, version, type),
+			JSON.stringify(settings),
+			force ? { force } : {},
+		);
 	}
 
-	public async create(settings: IFirmwareVersionCreatable): Promise<void> {
-		const response = await postResource(this.options, FirmwareVersionManagement.RESOURCE, JSON.stringify({
-			applicationType: settings.applicationType,
-			version: settings.version,
-			type: settings.type,
-			hashes: settings.files.map((file: IFile) => file.hash),
-		}));
+	/**
+	 * Initiate uploading of firmware files to S3 storage. If successfully uploaded, create FW version in DB.
+	 * @param force is applicable when FW cannot be uploaded because of non-existent firmware type.
+	 */
+	public async create(settings: IFirmwareVersionCreatable, force: boolean = false): Promise<void> {
+		const response = await postResource(
+			this.options,
+			FirmwareVersionManagement.RESOURCE, JSON.stringify({
+				applicationType: settings.applicationType,
+				version: settings.version,
+				type: settings.type,
+				hashes: settings.files.map((file: IFile) => file.hash),
+			}),
+			force ? { force } : {},
+		);
 
 		const bodyArr = await response.json();
 
@@ -50,6 +74,6 @@ export default class FirmwareVersionManagement {
 			);
 		}));
 
-		await this.set(settings.applicationType, settings.version, settings.type, { uploaded: true });
+		await this.set(settings.applicationType, settings.version, settings.type, { uploaded: true }, force);
 	}
 }
