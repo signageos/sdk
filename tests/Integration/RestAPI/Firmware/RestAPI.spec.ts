@@ -70,7 +70,7 @@ describe('RestAPI - FirmwareVersion', () => {
 	it('should set firmwareVersion uploaded', async function () {
 
 		const update: IFirmwareVersionUpdatable = { uploaded: true };
-		await api.firmwareVersion.set('webos', '04.01.74', update);
+		await api.firmwareVersion.set('webos', '04.01.74', undefined, update);
 		const firmwareVersions = await api.firmwareVersion.list();
 		firmwareVersions.forEach((fwv: IFirmwareVersion) => {
 			if (fwv.uid === firmwareVersion.uid) {

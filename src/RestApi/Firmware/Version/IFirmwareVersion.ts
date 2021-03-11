@@ -11,6 +11,7 @@ export interface IFirmwareVersionUpdatable {
 export interface IFirmwareVersionCreatable {
 	applicationType: string;
 	version: string;
+	type?: string;
 	files: Array<IFile>;
 }
 

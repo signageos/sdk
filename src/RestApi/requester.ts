@@ -32,16 +32,16 @@ export function getResource(options: IOptions, path: string, query?: any) {
 	return doRequest(createUri(options, path, query), createOptions('GET', options));
 }
 
-export function postResource(options: IOptions, path: string, data: any) {
-	return doRequest(createUri(options, path), createOptions('POST', options, data));
+export function postResource(options: IOptions, path: string, data: any, query?: any) {
+	return doRequest(createUri(options, path, query), createOptions('POST', options, data));
 }
 
-export function putResource(options: IOptions, path: string, data: any) {
-	return doRequest(createUri(options, path), createOptions('PUT', options, data));
+export function putResource(options: IOptions, path: string, data: any, query?: any) {
+	return doRequest(createUri(options, path, query), createOptions('PUT', options, data));
 }
 
-export function deleteResource(options: IOptions, path: string) {
-	return doRequest(createUri(options, path), createOptions('DELETE', options));
+export function deleteResource(options: IOptions, path: string, query?: any) {
+	return doRequest(createUri(options, path, query), createOptions('DELETE', options));
 }
 
 export async function parseJSONResponse(resp: Response): Promise<any> {
