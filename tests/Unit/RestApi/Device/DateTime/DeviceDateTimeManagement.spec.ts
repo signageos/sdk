@@ -18,7 +18,7 @@ describe('DeviceDateTimeManagement', () => {
 	const validSetReq: IDeviceDateTimeUpdatable = {
 		time: '2018-09-09T09:09:34.001',
 		timezone: 'Europe/Prague',
-		ntpServer: 'pool.ntp.org'
+		ntpServer: 'pool.ntp.org',
 	};
 
 	nock(
