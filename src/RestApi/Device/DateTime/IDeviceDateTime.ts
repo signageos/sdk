@@ -2,6 +2,7 @@
 export interface IDeviceDateTimeUpdatable {
 	time: string;
 	timezone: string;
+	ntpServer?: string;
 }
 
 export interface IDeviceDateTime {
