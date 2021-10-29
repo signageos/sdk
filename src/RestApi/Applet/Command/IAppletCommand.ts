@@ -1,15 +1,14 @@
 
-export interface IAppletCommandSendable {
-	commandPayload: {
-		type: string;
-		payload: {
-			level: string;
-			message: string;
-		};
-	};
+export interface ICommandPayload {
+	type: string;
+	[key: string]: any;
 }
 
-interface IAppletCommand extends IAppletCommandSendable {
+export interface IAppletCommandSendable<P extends ICommandPayload = ICommandPayload> {
+	commandPayload: P;
+}
+
+interface IAppletCommand<P extends ICommandPayload = ICommandPayload> extends IAppletCommandSendable<P> {
 	uid: string;
 	deviceUid: string;
 	appletUid: string;
