@@ -1,7 +1,6 @@
 import RestApi from './RestApi/RestApi';
 import waitUntilTrue from './Timer/waitUntil';
-
-const parameters = require('../config/parameters');
+import { parameters } from './parameters';
 
 const INVALID_VALUE = 'not_specified';
 

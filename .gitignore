@@ -1,7 +1,6 @@
 dist/
 node_modules/
 *.sublime-*
-config/env.*.json
 src/**/*.js
 tests/**/*.js
 docs/*

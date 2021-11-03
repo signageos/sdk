@@ -10,8 +10,7 @@ import AuthenticationError from "./Error/AuthenticationError";
 import InternalApiError from "./Error/InternalApiError";
 import GatewayError from './Error/GatewayError';
 import ResponseBodyFormatError from './Error/ResponseBodyFormatError';
-
-const parameters = require('../../config/parameters');
+import { parameters } from '../parameters';
 
 function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options: IOptions, data?: any): RequestInit {
 	return {
