@@ -78,12 +78,18 @@ const rest = new Api(
 	},
 );
 
-export const CURRENT_DEVICE_UID = Symbol('CURRENT_DEVICE_UID');
-export const CURRENT_APPLET_UID = Symbol('CURRENT_APPLET_UID');
-export const CURRENT_APPLET_VERSION = Symbol('CURRENT_APPLET_VERSION');
+/** @deprecated use process.env.SOS_DEVICE_UID instead */
+export const CURRENT_DEVICE_UID = process.env.SOS_DEVICE_UID ?? Symbol('CURRENT_DEVICE_UID');
+/** @deprecated use process.env.SOS_APPLET_UID instead */
+export const CURRENT_APPLET_UID = process.env.SOS_APPLET_UID ?? Symbol('CURRENT_APPLET_UID');
+/** @deprecated use process.env.SOS_APPLET_VERSION instead */
+export const CURRENT_APPLET_VERSION = process.env.SOS_APPLET_VERSION ?? Symbol('CURRENT_APPLET_VERSION');
 
 export const api = rest;
+
+/** @deprecated use api.timing instead */
 export const timing = rest.timing;
+/** @deprecated use api.timingCommand instead */
 export const timingCommand = rest.timingCommand;
 
 export function now() {
