@@ -12,11 +12,12 @@ import GatewayError from './Error/GatewayError';
 import ResponseBodyFormatError from './Error/ResponseBodyFormatError';
 import { parameters } from '../parameters';
 
-function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options: IOptions, data?: any): RequestInit {
+async function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options: IOptions, data?: any): Promise<RequestInit> {
+	const authOptions = typeof options.auth === 'function' ? await options.auth() : options.auth;
 	return {
 		headers: {
 			'Content-Type': options.contentType ? options.contentType : 'application/json',
-			'X-Auth': options.auth.clientId + ':' + options.auth.secret,
+			'X-Auth': authOptions.clientId + ':' + authOptions.secret,
 		},
 		method,
 		body: data,
@@ -27,20 +28,20 @@ function createUri(options: IOptions, resource: string, queryParams?: any) {
 	return [options.url, options.version, resource].join('/') + prepareQueryParams(queryParams);
 }
 
-export function getResource(options: IOptions, path: string, query?: any) {
-	return doRequest(createUri(options, path, query), createOptions('GET', options));
+export async function getResource(options: IOptions, path: string, query?: any) {
+	return await doRequest(createUri(options, path, query), await createOptions('GET', options));
 }
 
-export function postResource(options: IOptions, path: string, data: any, query?: any) {
-	return doRequest(createUri(options, path, query), createOptions('POST', options, data));
+export async function postResource(options: IOptions, path: string, data: any, query?: any) {
+	return await doRequest(createUri(options, path, query), await createOptions('POST', options, data));
 }
 
-export function putResource(options: IOptions, path: string, data: any, query?: any) {
-	return doRequest(createUri(options, path, query), createOptions('PUT', options, data));
+export async function putResource(options: IOptions, path: string, data: any, query?: any) {
+	return await doRequest(createUri(options, path, query), await createOptions('PUT', options, data));
 }
 
-export function deleteResource(options: IOptions, path: string, query?: any) {
-	return doRequest(createUri(options, path, query), createOptions('DELETE', options));
+export async function deleteResource(options: IOptions, path: string, query?: any) {
+	return await doRequest(createUri(options, path, query), await createOptions('DELETE', options));
 }
 
 export async function parseJSONResponse(resp: Response): Promise<any> {

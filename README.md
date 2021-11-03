@@ -30,6 +30,7 @@ Please see the `.env.dist` file where all mandatory ENV variables, required for 
 
 ### Singleton
 Just by setting ENV variables properly, you are ready to go and may use the api.
+If not ENV variables provided to node.js app, it tries to get values from user's `~/.sosrc` which is configured by [`@signageos/cli`](https://github.com/signageos/cli) dependency.
 
 ```ecmascript 6
 import {api} from "@signageos/sdk";

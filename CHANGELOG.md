@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Interface of applet.command entity payload
 
+### Added
+- Automatic detection of an authentication credentials from `@signageos/cli` tool's config `~/.sosrc`. So, if `SOS_AUTH_*` & `SOS_API_*` are not provided, the default from CLI to be used.
+
 ## [1.6.4] - 2021-05-21
 ### Fixed
 - added missing optional ntpServer field to DeviceDateTimeManagement.set

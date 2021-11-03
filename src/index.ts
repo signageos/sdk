@@ -1,8 +1,12 @@
 import RestApi from './RestApi/RestApi';
 import waitUntilTrue from './Timer/waitUntil';
 import { parameters } from './parameters';
-
-const INVALID_VALUE = 'not_specified';
+import IRestApiOptions from './RestApi/IOptions';
+import {
+	loadAccountAuthOptions,
+	loadOrganizationAuthOptions,
+} from './SosHelper/sosControlHelper';
+import { cacheFunctionResult } from './SosHelper/cache';
 
 export interface IOptions {
 	url?: string;
@@ -39,26 +43,26 @@ export class Api extends RestApi {
 			);
 		}
 		const accountAuth = options.accountAuth && 'tokenId' in options.accountAuth ? options.accountAuth : {
-			tokenId: options.accountAuth?.accountId ?? INVALID_VALUE,
-			token: options.accountAuth?.secret ?? INVALID_VALUE,
+			tokenId: options.accountAuth?.accountId,
+			token: options.accountAuth?.secret,
 		};
-		const accountOptions = {
+		const accountOptions: IRestApiOptions = {
 			url: options.url ?? parameters.apiUrl,
 			version: options.version ?? 'v1',
 			contentType: options.contentType,
-			auth: {
+			auth: accountAuth.tokenId && accountAuth.token ? {
 				clientId: accountAuth.tokenId,
 				secret: accountAuth.token,
-			},
+			} : cacheFunctionResult(loadAccountAuthOptions),
 		};
-		const organizationOptions = {
+		const organizationOptions: IRestApiOptions = {
 			url: options.url ?? parameters.apiUrl,
 			version: options.version ?? 'v1',
 			contentType: options.contentType,
-			auth: {
-				clientId: options.organizationAuth?.clientId ?? INVALID_VALUE,
-				secret: options.organizationAuth?.secret ?? INVALID_VALUE,
-			},
+			auth: options.organizationAuth?.clientId && options.organizationAuth?.secret ? {
+				clientId: options.organizationAuth?.clientId,
+				secret: options.organizationAuth?.secret,
+			} : cacheFunctionResult(() => loadOrganizationAuthOptions(accountOptions, options.organizationUid)),
 		};
 		super(accountOptions, organizationOptions);
 	}
