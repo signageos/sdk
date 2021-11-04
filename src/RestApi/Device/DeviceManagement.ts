@@ -21,6 +21,7 @@ import DeviceRemoteControlManagement from "./RemoteControl/DeviceRemoteControlMa
 import DeviceResolutionManagement from "./Resolution/DeviceResolutionManagement";
 import DeviceTimerManagement from "./Timer/DeviceTimerManagement";
 import DeviceVerificationManagement from "./Verification/DeviceVerificationManagement";
+import DeviceAppletTestManagement from "./AppletTest/DeviceAppletTestManagement";
 
 export const RESOURCE: string = 'device';
 
@@ -44,6 +45,7 @@ export default class DeviceManagement {
 	public screenshot: DeviceScreenshotManagement;
 	public timer: DeviceTimerManagement;
 	public verification: DeviceVerificationManagement;
+	public appletTest: DeviceAppletTestManagement;
 
 	constructor(private accountOptions: IOptions, private organizationOptions: IOptions) {
 		this.appVersion = new DeviceAppVersionManagement(organizationOptions);
@@ -64,6 +66,7 @@ export default class DeviceManagement {
 		this.resolution = new DeviceResolutionManagement(organizationOptions);
 		this.timer = new DeviceTimerManagement(organizationOptions);
 		this.verification = new DeviceVerificationManagement(organizationOptions);
+		this.appletTest = new DeviceAppletTestManagement(organizationOptions);
 	}
 
 	public async list(filter: IDeviceFilter = {}): Promise<IDevice[]> {

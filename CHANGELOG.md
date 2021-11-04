@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 - Automatic detection of an authentication credentials from `@signageos/cli` tool's config `~/.sosrc`. So, if `SOS_AUTH_*` & `SOS_API_*` are not provided, the default from CLI to be used.
+- Resource Device Applet Test. PUT & GET list
 
 ### Deprecated
 - Never used sdk main constants & duplicated timing & timingCommand management exports from index file
