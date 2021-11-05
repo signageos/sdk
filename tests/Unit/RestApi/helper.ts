@@ -1,7 +1,7 @@
-import IOptions from "../../../src/RestApi/IOptions";
+import IOptions, { IAuthOptions } from "../../../src/RestApi/IOptions";
 import RequestError from "../../../src/RestApi/Error/RequestError";
 
-export const nockOpts: IOptions = {
+export const nockOpts: IOptions & { auth: IAuthOptions } = {
 	url: 'http://docs.signageos.io',
 	auth: { clientId: 'clientId', secret: 'secret' },
 	version: 'v1',

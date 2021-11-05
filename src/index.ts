@@ -1,9 +1,12 @@
 import RestApi from './RestApi/RestApi';
 import waitUntilTrue from './Timer/waitUntil';
-
-const parameters = require('../config/parameters');
-
-const INVALID_VALUE = 'not_specified';
+import { parameters } from './parameters';
+import IRestApiOptions from './RestApi/IOptions';
+import {
+	loadAccountAuthOptions,
+	loadOrganizationAuthOptions,
+} from './SosHelper/sosControlHelper';
+import { cacheFunctionResult } from './SosHelper/cache';
 
 export interface IOptions {
 	url?: string;
@@ -40,26 +43,26 @@ export class Api extends RestApi {
 			);
 		}
 		const accountAuth = options.accountAuth && 'tokenId' in options.accountAuth ? options.accountAuth : {
-			tokenId: options.accountAuth?.accountId ?? INVALID_VALUE,
-			token: options.accountAuth?.secret ?? INVALID_VALUE,
+			tokenId: options.accountAuth?.accountId,
+			token: options.accountAuth?.secret,
 		};
-		const accountOptions = {
+		const accountOptions: IRestApiOptions = {
 			url: options.url ?? parameters.apiUrl,
 			version: options.version ?? 'v1',
 			contentType: options.contentType,
-			auth: {
+			auth: accountAuth.tokenId && accountAuth.token ? {
 				clientId: accountAuth.tokenId,
 				secret: accountAuth.token,
-			},
+			} : cacheFunctionResult(loadAccountAuthOptions),
 		};
-		const organizationOptions = {
+		const organizationOptions: IRestApiOptions = {
 			url: options.url ?? parameters.apiUrl,
 			version: options.version ?? 'v1',
 			contentType: options.contentType,
-			auth: {
-				clientId: options.organizationAuth?.clientId ?? INVALID_VALUE,
-				secret: options.organizationAuth?.secret ?? INVALID_VALUE,
-			},
+			auth: options.organizationAuth?.clientId && options.organizationAuth?.secret ? {
+				clientId: options.organizationAuth?.clientId,
+				secret: options.organizationAuth?.secret,
+			} : cacheFunctionResult(() => loadOrganizationAuthOptions(accountOptions, options.organizationUid)),
 		};
 		super(accountOptions, organizationOptions);
 	}
@@ -75,12 +78,18 @@ const rest = new Api(
 	},
 );
 
-export const CURRENT_DEVICE_UID = Symbol('CURRENT_DEVICE_UID');
-export const CURRENT_APPLET_UID = Symbol('CURRENT_APPLET_UID');
-export const CURRENT_APPLET_VERSION = Symbol('CURRENT_APPLET_VERSION');
+/** @deprecated use process.env.SOS_DEVICE_UID instead */
+export const CURRENT_DEVICE_UID = process.env.SOS_DEVICE_UID ?? Symbol('CURRENT_DEVICE_UID');
+/** @deprecated use process.env.SOS_APPLET_UID instead */
+export const CURRENT_APPLET_UID = process.env.SOS_APPLET_UID ?? Symbol('CURRENT_APPLET_UID');
+/** @deprecated use process.env.SOS_APPLET_VERSION instead */
+export const CURRENT_APPLET_VERSION = process.env.SOS_APPLET_VERSION ?? Symbol('CURRENT_APPLET_VERSION');
 
 export const api = rest;
+
+/** @deprecated use api.timing instead */
 export const timing = rest.timing;
+/** @deprecated use api.timingCommand instead */
 export const timingCommand = rest.timingCommand;
 
 export function now() {
