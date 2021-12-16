@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../../mapper";
 import ITemperature from "./ITemperature";
 
 export default class Temperature implements ITemperature {
@@ -9,9 +10,6 @@ export default class Temperature implements ITemperature {
 	public readonly createdAt: ITemperature['createdAt'];
 
 	constructor(data: ITemperature) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IDeviceDateTime from "./IDeviceDateTime";
 
 export default class DeviceVolume implements IDeviceDateTime {
@@ -11,9 +12,6 @@ export default class DeviceVolume implements IDeviceDateTime {
 	public readonly failedAt: IDeviceDateTime['failedAt'];
 
 	constructor(data: IDeviceDateTime) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

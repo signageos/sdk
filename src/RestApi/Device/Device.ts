@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../mapper";
 import IDevice from "./IDevice";
 
 export default class Device implements IDevice {
@@ -22,10 +23,7 @@ export default class Device implements IDevice {
 	public readonly batteryStatus: IDevice['batteryStatus'];
 	public readonly currentTime: IDevice['currentTime'];
 
-	constructor(deviceData: IDevice) {
-		for (const key in deviceData) {
-			// @ts-ignore copy all values
-			this[key] = deviceData[key];
-		}
+	constructor(data: IDevice) {
+		fillDataToEntity(this, data);
 	}
 }

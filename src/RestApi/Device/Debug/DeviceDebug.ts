@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IDeviceDebug from "./IDeviceDebug";
 
 export default class DeviceDebug implements IDeviceDebug {
@@ -12,9 +13,6 @@ export default class DeviceDebug implements IDeviceDebug {
 	public readonly failedAt: IDeviceDebug['failedAt'];
 
 	constructor(data: IDeviceDebug) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IDeviceAuthentication from "./IDeviceAuthentication";
 
 export default class DeviceAuthentication implements IDeviceAuthentication {
@@ -8,9 +9,6 @@ export default class DeviceAuthentication implements IDeviceAuthentication {
 	public readonly createdAt: IDeviceAuthentication['createdAt'];
 
 	constructor(data: IDeviceAuthentication) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

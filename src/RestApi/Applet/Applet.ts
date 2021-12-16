@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../mapper";
 import IApplet from "./IApplet";
 
 export default class Applet implements IApplet {
@@ -8,9 +9,6 @@ export default class Applet implements IApplet {
 	public readonly createdAt: IApplet['createdAt'];
 
 	constructor(data: IApplet) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

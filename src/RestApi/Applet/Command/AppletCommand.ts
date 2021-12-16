@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IAppletCommand, { ICommandPayload } from "./IAppletCommand";
 
 export default class AppletCommand<P extends ICommandPayload = ICommandPayload> implements IAppletCommand<P> {
@@ -11,9 +12,6 @@ export default class AppletCommand<P extends ICommandPayload = ICommandPayload> 
 	public readonly receivedAt: IAppletCommand['receivedAt'];
 
 	constructor(data: IAppletCommand) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

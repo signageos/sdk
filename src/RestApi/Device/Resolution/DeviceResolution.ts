@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IDeviceResolution from "./IDeviceResolution";
 
 export default class DeviceResolution implements IDeviceResolution {
@@ -13,9 +14,6 @@ export default class DeviceResolution implements IDeviceResolution {
 	public readonly failedAt: IDeviceResolution['failedAt'];
 
 	constructor(data: IDeviceResolution) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

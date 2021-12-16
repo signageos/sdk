@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IAppletVersion from "./IAppletVersion";
 
 export default class AppletVersion implements IAppletVersion {
@@ -15,9 +16,6 @@ export default class AppletVersion implements IAppletVersion {
 	public readonly entryFile: IAppletVersion['entryFile'];
 
 	constructor(data: IAppletVersion) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

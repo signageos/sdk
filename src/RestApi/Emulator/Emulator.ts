@@ -1,3 +1,4 @@
+import { fillDataToEntity } from '../mapper';
 import IEmulator from './IEmulator';
 
 export default class Emulator implements IEmulator {
@@ -9,9 +10,6 @@ export default class Emulator implements IEmulator {
 	public readonly createdAt: IEmulator['createdAt'];
 
 	constructor(data: IEmulator) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

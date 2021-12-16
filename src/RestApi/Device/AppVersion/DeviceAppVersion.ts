@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IDeviceAppVersion from "./IDeviceAppVersion";
 
 export default class DeviceAppVersion implements IDeviceAppVersion {
@@ -12,9 +13,6 @@ export default class DeviceAppVersion implements IDeviceAppVersion {
 	public readonly failedAt: IDeviceAppVersion['failedAt'];
 
 	constructor(data: IDeviceAppVersion) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

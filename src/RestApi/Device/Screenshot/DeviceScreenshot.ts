@@ -1,3 +1,4 @@
+import { fillDataToEntity } from '../../mapper';
 import IDeviceScreenshot from './IDeviceScreenshot';
 
 export default class DeviceScreenshot implements IDeviceScreenshot {
@@ -8,9 +9,6 @@ export default class DeviceScreenshot implements IDeviceScreenshot {
 	public readonly uri: IDeviceScreenshot['uri'];
 
 	constructor(data: IDeviceScreenshot) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

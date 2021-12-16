@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IDevicePackage from "./IDevicePackage";
 
 export default class DevicePackage implements IDevicePackage {
@@ -14,9 +15,6 @@ export default class DevicePackage implements IDevicePackage {
 	public readonly postponedAt: IDevicePackage['postponedAt'];
 
 	constructor(data: IDevicePackage) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

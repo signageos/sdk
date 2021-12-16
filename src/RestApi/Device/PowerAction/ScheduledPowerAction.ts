@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IScheduledPowerAction from "./IScheduledPowerAction";
 
 export default class ScheduledPowerAction implements IScheduledPowerAction {
@@ -13,9 +14,6 @@ export default class ScheduledPowerAction implements IScheduledPowerAction {
 	public readonly failedAt: IScheduledPowerAction['failedAt'];
 
 	constructor(data: IScheduledPowerAction) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

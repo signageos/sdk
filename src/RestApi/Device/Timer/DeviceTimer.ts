@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IDeviceTimer from "./IDeviceTimer";
 
 export default class DeviceTimer implements IDeviceTimer {
@@ -16,9 +17,6 @@ export default class DeviceTimer implements IDeviceTimer {
 	public readonly failedAt: IDeviceTimer['failedAt'];
 
 	constructor(data: IDeviceTimer) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }
