@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IDeviceRemoteControl from "./IDeviceRemoteControl";
 
 export default class DeviceRemoteControl implements IDeviceRemoteControl {
@@ -11,9 +12,6 @@ export default class DeviceRemoteControl implements IDeviceRemoteControl {
 	public readonly failedAt: IDeviceRemoteControl['failedAt'];
 
 	constructor(data: IDeviceRemoteControl) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

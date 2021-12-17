@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IAppletTestSuite from "./IAppletTestSuite";
 
 export default class AppletTestSuite implements IAppletTestSuite {
@@ -9,9 +10,6 @@ export default class AppletTestSuite implements IAppletTestSuite {
 	public readonly binary: IAppletTestSuite['binary'];
 
 	constructor(data: IAppletTestSuite) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

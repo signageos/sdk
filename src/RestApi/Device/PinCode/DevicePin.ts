@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IDevicePin from "./IDevicePin";
 
 export default class DevicePin implements IDevicePin {
@@ -7,9 +8,6 @@ export default class DevicePin implements IDevicePin {
 	public readonly pinCode: IDevicePin['pinCode'];
 
 	constructor(data: IDevicePin) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

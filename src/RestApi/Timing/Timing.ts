@@ -19,6 +19,7 @@ import {
 import { VideoStateChanged } from '@signageos/front-applet/es6/Monitoring/Video/videoCommands';
 import IVideoProperties from '@signageos/front-applet/es6/FrontApplet/Video/IVideoProperties';
 import IFile from '@signageos/front-applet/es6/FrontApplet/Offline/Cache/IFile';
+import { fillDataToEntity } from '../mapper';
 
 export interface IHtml {
 	getDOMDocument(): Promise<HTMLDocument>;
@@ -193,14 +194,11 @@ export default class Timing implements ITiming {
 	);
 
 	constructor(
-		timingData: ITiming,
+		data: ITiming,
 		private timingManagement: TimingManagement,
 		private timingCommandManagement: TimingCommandManagement,
 	) {
-		for (const key in timingData) {
-			// @ts-ignore copy all values
-			this[key] = timingData[key];
-		}
+		fillDataToEntity(this, data);
 	}
 
 	public async onLoaded(since: Date = this.updatedAt) {

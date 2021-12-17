@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IDeviceAppletTest from "./IDeviceAppletTest";
 
 export default class DeviceAppletTest implements IDeviceAppletTest {
@@ -13,9 +14,6 @@ export default class DeviceAppletTest implements IDeviceAppletTest {
 	public readonly successfulTests: IDeviceAppletTest['successfulTests'];
 
 	constructor(data: IDeviceAppletTest) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

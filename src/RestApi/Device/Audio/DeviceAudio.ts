@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IDeviceAudio from "./IDeviceAudio";
 
 export default class DeviceVolume implements IDeviceAudio {
@@ -11,9 +12,6 @@ export default class DeviceVolume implements IDeviceAudio {
 	public readonly failedAt: IDeviceAudio['failedAt'];
 
 	constructor(data: IDeviceAudio) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

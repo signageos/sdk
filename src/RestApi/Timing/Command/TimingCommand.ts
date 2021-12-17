@@ -1,4 +1,5 @@
 
+import { fillDataToEntity } from "../../mapper";
 import ITimingCommand, { ITimingCommandPayload } from "./ITimingCommand";
 
 export default class TimingCommand<TCommandPayload extends ITimingCommandPayload> implements ITimingCommand<TCommandPayload> {
@@ -11,11 +12,8 @@ export default class TimingCommand<TCommandPayload extends ITimingCommandPayload
 	public readonly commandPayload: ITimingCommand<TCommandPayload>['commandPayload'];
 
 	constructor(
-		timingCommandData: ITimingCommand<TCommandPayload>,
+		data: ITimingCommand<TCommandPayload>,
 	) {
-		for (const key in timingCommandData) {
-			// @ts-ignore copy all values
-			this[key] = timingCommandData[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

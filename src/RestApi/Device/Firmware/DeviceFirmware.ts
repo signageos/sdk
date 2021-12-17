@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IDeviceFirmware from "./IDeviceFirmware";
 
 export default class DeviceFirmware implements IDeviceFirmware {
@@ -9,9 +10,6 @@ export default class DeviceFirmware implements IDeviceFirmware {
 	public readonly createdAt: IDeviceFirmware['createdAt'];
 
 	constructor(data: IDeviceFirmware) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

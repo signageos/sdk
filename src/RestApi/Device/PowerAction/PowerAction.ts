@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IPowerAction from "./IPowerAction";
 
 export default class PowerAction implements IPowerAction {
@@ -11,9 +12,6 @@ export default class PowerAction implements IPowerAction {
 	public readonly failedAt: IPowerAction['failedAt'];
 
 	constructor(data: IPowerAction) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

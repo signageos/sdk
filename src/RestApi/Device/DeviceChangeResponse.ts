@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../mapper";
 import IDeviceChangeResponse from "./IDeviceChangeResponse";
 
 export default class DeviceChangeResponse implements IDeviceChangeResponse {
@@ -7,9 +8,6 @@ export default class DeviceChangeResponse implements IDeviceChangeResponse {
 	public readonly requestUid: IDeviceChangeResponse['requestUid'];
 
 	constructor(data: IDeviceChangeResponse) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

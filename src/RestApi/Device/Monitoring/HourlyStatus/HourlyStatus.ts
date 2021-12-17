@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../../mapper";
 import IHourlyStatus from "./IHourlyStatus";
 
 export default class HourlyStatus implements IHourlyStatus {
@@ -11,9 +12,6 @@ export default class HourlyStatus implements IHourlyStatus {
 	public readonly time: IHourlyStatus['time'];
 
 	constructor(data: IHourlyStatus) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

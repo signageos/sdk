@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../mapper";
 import IOrganization from "./IOrganization";
 
 export default class Organization implements IOrganization {
@@ -11,9 +12,6 @@ export default class Organization implements IOrganization {
 	public readonly createdAt: IOrganization['createdAt'];
 
 	constructor(data: IOrganization) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

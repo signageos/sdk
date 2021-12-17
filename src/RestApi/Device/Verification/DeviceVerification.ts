@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IDeviceVerification from "./IDeviceVerification";
 
 export default class DeviceVerification implements IDeviceVerification {
@@ -10,9 +11,6 @@ export default class DeviceVerification implements IDeviceVerification {
 	public readonly verifiedAt: IDeviceVerification['verifiedAt'];
 
 	constructor(data: IDeviceVerification) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

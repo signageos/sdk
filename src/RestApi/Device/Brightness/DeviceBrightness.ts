@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../mapper";
 import IDeviceBrightness from "./IDeviceBrightness";
 
 export default class DeviceBrightness implements IDeviceBrightness {
@@ -14,9 +15,6 @@ export default class DeviceBrightness implements IDeviceBrightness {
 	public readonly failedAt: IDeviceBrightness['failedAt'];
 
 	constructor(data: IDeviceBrightness) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

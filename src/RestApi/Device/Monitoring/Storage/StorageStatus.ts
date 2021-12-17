@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../../mapper";
 import IStorageStatus from "./IStorageStatus";
 
 export default class StorageStatus implements IStorageStatus {
@@ -8,9 +9,6 @@ export default class StorageStatus implements IStorageStatus {
 	public readonly updatedAt: IStorageStatus['updatedAt'];
 
 	constructor(data: IStorageStatus) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }

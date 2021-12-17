@@ -1,3 +1,4 @@
+import { fillDataToEntity } from "../../../mapper";
 import IReportFile from "./IReportFile";
 
 export default class ReportFile implements IReportFile {
@@ -10,9 +11,6 @@ export default class ReportFile implements IReportFile {
 	public readonly createdAt: IReportFile['createdAt'];
 
 	constructor(data: IReportFile) {
-		for (const key in data) {
-			// @ts-ignore copy all values
-			this[key] = data[key];
-		}
+		fillDataToEntity(this, data);
 	}
 }
