@@ -2,6 +2,7 @@ import TimingManagement from './Timing/TimingManagement';
 import TimingCommandManagement from './Timing/Command/TimingCommandManagement';
 import DeviceManagement from "./Device/DeviceManagement";
 import AppletManagement from "./Applet/AppletManagement";
+import PolicyManagement from "./Policy/PolicyManagement";
 import OrganizationManagement from "./Organization/OrganizationManagement";
 import EmulatorManagement from "./Emulator/EmulatorManagement";
 import FirmwareVersionManagement from "./Firmware/Version/FirmwareVersionManagement";
@@ -20,6 +21,7 @@ export default class RestApi {
 	public readonly timingCommand: TimingCommandManagement = new TimingCommandManagement(this.organizationOptions);
 
 	public readonly applet: AppletManagement = new AppletManagement(this.organizationOptions);
+	public readonly policy: PolicyManagement = new PolicyManagement(this.accountOptions);
 	public readonly device: DeviceManagement = new DeviceManagement(this.accountOptions, this.organizationOptions);
 
 	constructor(
