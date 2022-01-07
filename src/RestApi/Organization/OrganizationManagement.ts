@@ -1,9 +1,8 @@
-import { getResource, parseJSONResponse, putResource, deleteResource } from '../requester';
-import IOptions from "../IOptions";
+import { getResource, parseJSONResponse, putResource, postResource, deleteResource } from '../requester';
+import IOptions from '../IOptions';
 import IOrganization, { IOrganizationCreatable, SubscriptionType } from './IOrganization';
-import { postResource } from "../requester";
-import Organization from "./Organization";
-import { IOrganizationFilter } from "./IOrganizationFilter";
+import Organization from './Organization';
+import { IOrganizationFilter } from './IOrganizationFilter';
 
 export default class OrganizationManagement {
 

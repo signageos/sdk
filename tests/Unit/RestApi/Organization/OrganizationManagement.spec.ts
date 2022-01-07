@@ -1,6 +1,6 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import { nockOpts } from '../helper';
+import { nockOpts, nockAuthHeader } from '../helper';
 import IOrganization, { IOrganizationCreatable } from '../../../../src/RestApi/Organization/IOrganization';
 import OrganizationManagement from "../../../../src/RestApi/Organization/OrganizationManagement";
 
@@ -25,12 +25,7 @@ describe('OrganizationManagement', () => {
 		title: 'signageOS.io organization',
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
+	nock(nockOpts.url, nockAuthHeader)
 		.get('/v1/organization').reply(200, validListResp)
 		.get('/v1/organization/someUid').reply(200, validGetResp)
 		.get('/v1/organization/someUid?name=signageos').reply(200, validGetResp)
