@@ -1,0 +1,27 @@
+export enum DeviceTelemetryType {
+	DISPLAY_SETTING = 'DISPLAY_SETTING',
+	INPUT_SOURCE = 'INPUT_SOURCE',
+	VOLUME = 'VOLUME',
+	BRIGHTNESS = 'BRIGHTNESS',
+	TIMERS = 'TIMERS',
+	PROPRIETARY_TIMERS = 'PROPRIETARY_TIMERS',
+	RESOLUTION = 'RESOLUTION',
+	ORIENTATION = 'ORIENTATION',
+	REMOTE_CONTROL = 'REMOTE_CONTROL',
+	APPLICATION_VERSION = 'APPLICATION_VERSION',
+	FIRMWARE_VERSION = 'FIRMWARE_VERSION',
+	DEBUG = 'DEBUG',
+	DATETIME = 'DATETIME',
+	POWER_ACTIONS_SCHEDULE = 'POWER_ACTIONS_SCHEDULE',
+	TEMPERATURE = 'TEMPERATURE',
+	OFFLINE_RANGE = 'OFFLINE_RANGE',
+	BUNDLED_APPLET = 'BUNDLED_APPLET',
+}
+
+export default interface IDeviceTelemetry {
+	deviceUid: string;
+	type: DeviceTelemetryType;
+	updatedAt: Date;
+	// TODO: More strict data type for each telemetry type
+	data: { [property: string]: any; } | null;
+}
