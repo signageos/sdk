@@ -19,6 +19,9 @@ export enum DeviceTelemetryType {
 }
 
 export default interface IDeviceTelemetry {
+	deviceUid: string;
+	type: DeviceTelemetryType;
 	updatedAt: Date;
+	// TODO: More strict data type for each telemetry type
 	data: { [property: string]: any; } | null;
 }

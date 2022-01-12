@@ -6,6 +6,8 @@ import DeviceTelemetryManagement from '../../../../../src/RestApi/Device/Telemet
 
 describe('DeviceTelemetryManagement', () => {
 	const brightnessTelemetry = {
+		deviceUid: 'someUid',
+		type: DeviceTelemetryType.BRIGHTNESS,
 		updatedAt: new Date('2022-01-07T08:56:52.550Z'),
 		data: { brightness: 20 },
 	};

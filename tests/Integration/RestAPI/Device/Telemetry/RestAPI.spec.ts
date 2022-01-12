@@ -22,6 +22,8 @@ describe('RestAPI - Policy', () => {
 
 	const assertDeviceTelemetry = (deviceTelemetry: DeviceTelemetry) => {
 		should(deviceTelemetry).be.ok();
+		should(deviceTelemetry!.deviceUid).be.equal(TEST_DEVICE_UID);
+		should(deviceTelemetry!.type).be.equal(DeviceTelemetryType.BRIGHTNESS);
 		should(deviceTelemetry!.updatedAt).be.Date();
 		should(deviceTelemetry!.data).has.ownProperty('brightness').of.Number();
 	};
