@@ -24,6 +24,7 @@ import DeviceVerificationManagement from "./Verification/DeviceVerificationManag
 import DeviceAppletTestManagement from "./AppletTest/DeviceAppletTestManagement";
 import DeviceTelemetryManagement from "./Telemetry/DeviceTelemetryManagement";
 import DevicePolicyManagement from "./Policy/DevicePolicyManagement";
+import DevicePolicyStatusManagement from "./PolicyStatus/DevicePolicyStatusManagement";
 
 export const RESOURCE: string = 'device';
 
@@ -50,6 +51,7 @@ export default class DeviceManagement {
 	public appletTest: DeviceAppletTestManagement;
 	public telemetry: DeviceTelemetryManagement;
 	public policy: DevicePolicyManagement;
+	public policyStatus: DevicePolicyStatusManagement;
 
 	constructor(private accountOptions: IOptions, private organizationOptions: IOptions) {
 		this.appVersion = new DeviceAppVersionManagement(organizationOptions);
@@ -73,6 +75,7 @@ export default class DeviceManagement {
 		this.appletTest = new DeviceAppletTestManagement(organizationOptions);
 		this.telemetry = new DeviceTelemetryManagement(organizationOptions);
 		this.policy = new DevicePolicyManagement(organizationOptions);
+		this.policyStatus = new DevicePolicyStatusManagement(organizationOptions);
 	}
 
 	public async list(filter: IDeviceFilter = {}): Promise<IDevice[]> {

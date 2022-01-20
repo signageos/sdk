@@ -14,7 +14,6 @@ export default class DevicePolicyManagement {
 		const urlParts = [DEVICE, deviceUid, DevicePolicyManagement.RESOURCE];
 		const response = await getResource(this.options, urlParts.join('/'));
 		const data: IDevicePolicyRaw[] = await parseJSONResponse(response);
-		console.log('data', JSON.stringify(data));
 		return data.map((item: IDevicePolicyRaw) => {
 			return new DevicePolicy({ deviceUid, policyUid: item.uid, ...pick(item, ['priority', 'assignedAt']) });
 		});
