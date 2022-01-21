@@ -4,6 +4,12 @@ export interface IDeviceUpdatable {
 	organizationUid?: string;
 }
 
+export declare type ResolutionItem = {
+	width: number;
+	height: number;
+	framerate?: number;
+};
+
 export default interface IDeviceReadOnly {
 	uid: string;
 	name: string;
@@ -45,4 +51,5 @@ export default interface IDeviceReadOnly {
 		timezone: string;
 		updatedAt: Date;
 	};
+	supportedResolutions: ResolutionItem[];
 }
