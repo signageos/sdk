@@ -50,6 +50,9 @@ describe('DeviceManagement', () => {
 			'timezone': 'Europe/Prague',
 			'updatedAt': new Date('2018-09-04T08:47:07.288Z'),
 		},
+		supportedResolutions: [
+			{ width: 1920, height: 1080 },
+		],
 	};
 	const validListResp: IDevice[] = [validGetResp];
 	const validSetReq: IDeviceUpdatable = {

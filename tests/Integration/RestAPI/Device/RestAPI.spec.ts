@@ -37,6 +37,7 @@ describe('RestAPI - Device', function () {
 		should(device.pinCode.length === 4).true();
 		should(device.organizationUid.length > 0).true();
 		should(device.createdAt.getTime() > 0).true();
+		should(device.supportedResolutions).be.deepEqual([{ width: 1920, height: 1080 }]);
 	});
 
 	it('should get the device  by its uid', async function () {
