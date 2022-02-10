@@ -1,3 +1,4 @@
+
 import { JSDOM } from 'jsdom';
 import * as _ from 'lodash';
 import ITiming from "./ITiming";
@@ -113,9 +114,9 @@ type IVideoOperations = {
 	getAll(since?: Date): Promise<IVideoProperties[]>;
 };
 export interface IVideo {
-	played: IVideoOperations;
-	stopped: IVideoOperations;
-	paused: IVideoOperations;
+	play: IVideoOperations;
+	stop: IVideoOperations;
+	pause: IVideoOperations;
 	ended: IVideoOperations;
 	error: IVideoOperations;
 }
