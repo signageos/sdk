@@ -38,7 +38,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@signageos/codestyle": "0.0.20",
+    "@signageos/codestyle": "0.0.21",
     "@types/form-data": "2.5.0",
     "@types/jsdom": "16.1.0",
     "@types/lodash": "4.14.116",
