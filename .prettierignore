@@ -1,0 +1,12 @@
+# General
+node_modules/*
+package.json
+package-lock.json
+
+# IDE
+.idea
+.vscode
+
+# Other
+tsconfig.json
+.prettierignore
