@@ -7,7 +7,7 @@ import Location, { ILocation, ILocationCreate, ILocationUpdate, ILocationFilter 
 export default class LocationManagement {
 	constructor(private options: IOptions) {}
 
-	public async create(location: ILocationCreate): Promise<ILocation> {
+	public async create(location: ILocationCreate) {
 		const { headers } = await postResource(this.options, Resources.Location, JSON.stringify(location));
 		const headerLocation = headers.get('location');
 
@@ -21,24 +21,24 @@ export default class LocationManagement {
 		return await this.get(locationUid);
 	}
 
-	public async list(filter: ILocationFilter = {}): Promise<ILocation[]> {
+	public async list(filter: ILocationFilter = {}) {
 		const response = await getResource(this.options, Resources.Location, filter);
 		const data: ILocation[] = await parseJSONResponse(response);
 
 		return data.map((item) => new Location(item));
 	}
 
-	public async get(uid: string, filter: ILocationFilter = {}): Promise<ILocation> {
+	public async get(uid: string, filter: ILocationFilter = {}) {
 		const response = await getResource(this.options, `${Resources.Location}/${uid}`, filter);
 
 		return new Location(await parseJSONResponse(response));
 	}
 
-	public async update(uid: ILocation['uid'], location: ILocationUpdate): Promise<void> {
+	public async update(uid: ILocation['uid'], location: ILocationUpdate) {
 		await putResource(this.options, `${Resources.Location}/${uid}`, JSON.stringify(location));
 	}
 
-	public async delete(uid: ILocation['uid']): Promise<void> {
+	public async delete(uid: ILocation['uid']) {
 		await deleteResource(this.options, `${Resources.Location}/${uid}`);
 	}
 }
