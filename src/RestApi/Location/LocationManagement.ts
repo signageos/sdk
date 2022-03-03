@@ -3,7 +3,6 @@ import { Resources } from '../resources';
 import IOptions from '../IOptions';
 import Location, { ILocation, ILocationCreate, ILocationUpdate, ILocationFilter } from './Location';
 
-// TODO: SDK for locationOrganizationTag. API is not ready for supporting SDK.
 export default class LocationManagement {
 	constructor(private options: IOptions) {}
 
