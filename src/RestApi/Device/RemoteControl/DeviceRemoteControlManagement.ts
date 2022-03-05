@@ -1,5 +1,5 @@
 import { getResource, parseJSONResponse, putResource } from "../../requester";
-import { RESOURCE as DEVICE } from "../DeviceManagement";
+import { Resources } from "../../resources";
 import IDeviceRemoteControl, { IDeviceRemoteControlUpdatable } from "./IDeviceRemoteControl";
 import IOptions from "../../IOptions";
 import DeviceRemoteControl from "./DeviceRemoteControl";
@@ -7,7 +7,7 @@ import DeviceRemoteControl from "./DeviceRemoteControl";
 export default class DeviceRemoteControlManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DEVICE}/${deviceUid}/remote-control`;
+		return `${Resources.Device}/${deviceUid}/remote-control`;
 	}
 
 	constructor(private options: IOptions) {

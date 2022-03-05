@@ -1,5 +1,5 @@
 import { getResource, parseJSONResponse, putResource } from "../../requester";
-import { RESOURCE as DEVICE } from "../DeviceManagement";
+import { Resources } from "../../resources";
 import IOptions from "../../IOptions";
 import IDeviceTimer, { IDeviceTimerUpdatable } from "./IDeviceTimer";
 import DeviceTimer from "./DeviceTimer";
@@ -7,7 +7,7 @@ import DeviceTimer from "./DeviceTimer";
 export default class DeviceTimerManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DEVICE}/${deviceUid}/timer-settings`;
+		return `${Resources.Device}/${deviceUid}/timer-settings`;
 	}
 
 	constructor(private options: IOptions) {

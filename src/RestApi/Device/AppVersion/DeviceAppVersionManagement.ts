@@ -1,13 +1,13 @@
 import { getResource, parseJSONResponse, putResource } from "../../requester";
-import { RESOURCE as DEVICE } from "../DeviceManagement";
 import IOptions from "../../IOptions";
+import { Resources } from "../../resources";
 import DeviceAppVersion from "./DeviceAppVersion";
 import IDeviceAppVersion, { IDeviceAppVersionUpdatable } from "./IDeviceAppVersion";
 
 export default class DeviceAppVersionManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DEVICE}/${deviceUid}/application/version`;
+		return `${Resources.Device}/${deviceUid}/application/version`;
 	}
 
 	constructor(private options: IOptions) {

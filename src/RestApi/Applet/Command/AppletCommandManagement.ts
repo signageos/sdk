@@ -1,15 +1,15 @@
 import { getResource, parseJSONResponse, postResource } from "../../requester";
+import { Resources } from "../../resources";
 import IOptions from "../../IOptions";
 import { RESOURCE as APPLET } from "../AppletManagement";
 import IAppletCommandFilter from "./IAppletCommandFilter";
 import IAppletCommand, { IAppletCommandSendable } from "./IAppletCommand";
-import { RESOURCE as DEVICE } from "../../Device/DeviceManagement";
 import AppletCommand from "./AppletCommand";
 
 export default class AppletCommandManagement {
 
 	private static getResource(deviceUid: string, appletUid: string): string {
-		return `${DEVICE}/${deviceUid}/${APPLET}/${appletUid}/command`;
+		return `${Resources.Device}/${deviceUid}/${APPLET}/${appletUid}/command`;
 	}
 
 	constructor(private options: IOptions) {

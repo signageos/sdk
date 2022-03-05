@@ -1,5 +1,5 @@
 import { getResource, parseJSONResponse, putResource } from "../../requester";
-import { RESOURCE as DEVICE } from "../DeviceManagement";
+import { Resources } from "../../resources";
 import IDevicePackage, { IDevicePackageUpdatable } from "./IDevicePackage";
 import DevicePackage from "./DevicePackage";
 import IOptions from "../../IOptions";
@@ -7,7 +7,7 @@ import IOptions from "../../IOptions";
 export default class DevicePackageManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DEVICE}/${deviceUid}/package-install`;
+		return `${Resources.Device}/${deviceUid}/package-install`;
 	}
 
 	constructor(private options: IOptions) {

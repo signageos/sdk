@@ -1,5 +1,5 @@
 import { getResource, parseJSONResponse, putResource } from "../../requester";
-import { RESOURCE as DEVICE } from "../DeviceManagement";
+import { Resources } from "../../resources";
 import IOptions from "../../IOptions";
 import DeviceDebug from "./DeviceDebug";
 import IDeviceDebug, { IDeviceDebugUpdatable } from "./IDeviceDebug";
@@ -7,7 +7,7 @@ import IDeviceDebug, { IDeviceDebugUpdatable } from "./IDeviceDebug";
 export default class DeviceDebugManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DEVICE}/${deviceUid}/debug`;
+		return `${Resources.Device}/${deviceUid}/debug`;
 	}
 
 	constructor(private options: IOptions) {
