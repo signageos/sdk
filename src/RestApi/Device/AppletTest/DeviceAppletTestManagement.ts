@@ -1,5 +1,5 @@
 import { getResource, parseJSONResponse, putResource } from "../../requester";
-import { RESOURCE as DEVICE } from "../DeviceManagement";
+import { Resources } from "../../resources";
 import IOptions from "../../IOptions";
 import DeviceAppletTest from "./DeviceAppletTest";
 import IDeviceAppletTest from "./IDeviceAppletTest";
@@ -7,7 +7,7 @@ import IDeviceAppletTest from "./IDeviceAppletTest";
 export default class DeviceAppletTestManagement {
 
 	private static getUrl(deviceUid: string, appletUid: string, appletVersion: string): string {
-		return `${DEVICE}/${deviceUid}/applet-test/${appletUid}/${appletVersion}`;
+		return `${Resources.Device}/${deviceUid}/applet-test/${appletUid}/${appletVersion}`;
 	}
 
 	constructor(private options: IOptions) {

@@ -1,11 +1,11 @@
 import * as should from 'should';
-import { Api } from "../../../../src/index";
-import { opts, RUN_INTEGRATION_TESTS } from "../helper";
+
+import { Api } from "../../../../src";
+import { opts, ALLOWED_TIMEOUT, preRunCheck } from "../helper";
 import IFirmwareVersion, { IFirmwareVersionUpdatable } from '../../../../src/RestApi/Firmware/Version/IFirmwareVersion';
 import FirmwareVersion from '../../../../src/RestApi/Firmware/Version/FirmwareVersion';
 import { createReadableStream } from '../../../Unit/RestApi/Applet/Version/File/helper';
 
-const allowedTimeout = 10000;
 const api = new Api(opts);
 
 describe('RestAPI - FirmwareVersion', () => {
@@ -26,10 +26,7 @@ describe('RestAPI - FirmwareVersion', () => {
 	};
 
 	before (function() {
-		if (!RUN_INTEGRATION_TESTS || (opts.accountAuth as any).tokenId === '' || (opts.accountAuth as any).token === '') {
-			console.warn('you must set auth details in order to run this test');
-			this.skip();
-		}
+		preRunCheck(this.skip.bind(this));
 	});
 
 	const assertFwv = (fwv: IFirmwareVersion) => {
@@ -48,7 +45,7 @@ describe('RestAPI - FirmwareVersion', () => {
 			assertFwv(fwv);
 		});
 
-	}).timeout(allowedTimeout);
+	}).timeout(ALLOWED_TIMEOUT);
 
 	it('should create the new firmwareVersion', async () => {
 
@@ -65,7 +62,7 @@ describe('RestAPI - FirmwareVersion', () => {
 		});
 		should(true).true();
 
-	}).timeout(allowedTimeout);
+	}).timeout(ALLOWED_TIMEOUT);
 
 	it('should set firmwareVersion uploaded', async function () {
 

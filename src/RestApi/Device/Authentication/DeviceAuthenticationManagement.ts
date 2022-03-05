@@ -1,5 +1,5 @@
 import { getResource, parseJSONResponse } from "../../requester";
-import { RESOURCE as DEVICE } from "../DeviceManagement";
+import { Resources } from "../../resources";
 import IOptions from "../../IOptions";
 import IDeviceAuthentication from "./IDeviceAuthentication";
 import DeviceAuthentication from "./DeviceAuthentication";
@@ -7,11 +7,11 @@ import DeviceAuthentication from "./DeviceAuthentication";
 export default class DeviceAuthenticationManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DEVICE}/${deviceUid}/authentication`;
+		return `${Resources.Device}/${deviceUid}/authentication`;
 	}
 
 	private static getUrlByAuthHash(authHash: string): string {
-		return `${DEVICE}/authentication/${authHash}`;
+		return `${Resources.Device}/authentication/${authHash}`;
 	}
 
 	constructor(private options: IOptions) {

@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Device policy status for given device & policy & item type or list for given device by filter
 - Array `supportedResolutions` into Device entity
 - Bulk Operations
+- Location `create`, `list` (multiple), `get` (single), `update` and `delete`
+- Organization tag to location `assign` and `unassign`
+- Location to device `assign` and `unassign`
 
 ## [1.7.1] - 2021-12-17
 ### Fixed

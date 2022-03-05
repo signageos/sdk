@@ -25,8 +25,7 @@ import DeviceAppletTestManagement from "./AppletTest/DeviceAppletTestManagement"
 import DeviceTelemetryManagement from "./Telemetry/DeviceTelemetryManagement";
 import DevicePolicyManagement from "./Policy/DevicePolicyManagement";
 import DevicePolicyStatusManagement from "./PolicyStatus/DevicePolicyStatusManagement";
-
-export const RESOURCE: string = 'device';
+import { Resources } from "../resources";
 
 export default class DeviceManagement {
 
@@ -79,23 +78,23 @@ export default class DeviceManagement {
 	}
 
 	public async list(filter: IDeviceFilter = {}): Promise<IDevice[]> {
-		const response = await getResource(this.organizationOptions, RESOURCE, filter);
+		const response = await getResource(this.organizationOptions, Resources.Device, filter);
 		const data: IDevice[] = await parseJSONResponse(response);
 
 		return data.map((item: IDevice) => new Device(item));
 	}
 
 	public async get(deviceUid: string, filter: IDeviceFilter = {}): Promise<IDevice> {
-		const response = await getResource(this.organizationOptions, RESOURCE + '/' + deviceUid, filter);
+		const response = await getResource(this.organizationOptions, Resources.Device + '/' + deviceUid, filter);
 
 		return new Device(await parseJSONResponse(response));
 	}
 
 	public async set(deviceUid: string, settings: IDeviceUpdatable): Promise<void> {
 		if (settings.name) {
-			await putResource(this.organizationOptions, RESOURCE + '/' + deviceUid, JSON.stringify(settings));
+			await putResource(this.organizationOptions, Resources.Device + '/' + deviceUid, JSON.stringify(settings));
 		} else if (settings.organizationUid) {
-			await putResource(this.accountOptions, `${RESOURCE}/${deviceUid}/organization`, JSON.stringify(settings));
+			await putResource(this.accountOptions, `${Resources.Device}/${deviceUid}/organization`, JSON.stringify(settings));
 		}
 	}
 

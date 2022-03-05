@@ -1,18 +1,16 @@
 import * as should from 'should';
-import { Api } from "../../../../src/index";
+
+import { Api } from "../../../../src";
 import Emulator from '../../../../src/RestApi/Emulator/Emulator';
-import { opts, RUN_INTEGRATION_TESTS } from "../helper";
+import { opts, preRunCheck } from "../helper";
 
 const api = new Api(opts);
 
 describe('RestAPI - Emulator', () => {
 	let emulatorUid: string;
 	before(function () {
-		// in order to run these tests, fill in auth and RUN_INTEGRATION_TESTS environment variables (please see '../helper.ts' file)
-		if (!RUN_INTEGRATION_TESTS || (opts.accountAuth as any).tokenId === '' || (opts.accountAuth as any).token === '') {
-			console.warn('you must set auth details in order to run this test');
-			this.skip();
-		}
+		preRunCheck(this.skip.bind(this));
+
 		if (!opts.organizationUid) {
 			console.warn('you must set organizationUid in order to run this test');
 			this.skip();

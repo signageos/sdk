@@ -1,5 +1,5 @@
 import { postResource, getResource, parseJSONResponse } from '../../requester';
-import { RESOURCE as DEVICE } from "../DeviceManagement";
+import { Resources } from "../../resources";
 import IOptions from "../../IOptions";
 import IDeviceScreenshot from './IDeviceScreenshot';
 import IDeviceScreenshotFilter from './IDeviceScreenshotFilter';
@@ -8,7 +8,7 @@ import DeviceScreenshot from './DeviceScreenshot';
 export default class DeviceScreenshotManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DEVICE}/${deviceUid}/screenshot`;
+		return `${Resources.Device}/${deviceUid}/screenshot`;
 	}
 
 	constructor(private options: IOptions) {}

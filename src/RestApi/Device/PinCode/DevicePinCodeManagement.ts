@@ -1,5 +1,5 @@
 import { getResource, parseJSONResponse } from "../../requester";
-import { RESOURCE as DEVICE } from "../DeviceManagement";
+import { Resources } from "../../resources";
 import IDevicePin from "./IDevicePin";
 import DevicePin from "./DevicePin";
 import IOptions from "../../IOptions";
@@ -7,7 +7,7 @@ import IOptions from "../../IOptions";
 export default class DevicePinCodeManagement {
 
 	private static getUrl(deviceUid: string): string {
-		return `${DEVICE}/${deviceUid}/pin-code`;
+		return `${Resources.Device}/${deviceUid}/pin-code`;
 	}
 
 	constructor(private options: IOptions) {
