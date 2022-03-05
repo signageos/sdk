@@ -1,4 +1,3 @@
-
 export interface IDeviceUpdatable {
 	name?: string;
 	organizationUid?: string;
@@ -31,11 +30,11 @@ export default interface IDeviceReadOnly {
 		internal: {
 			capacity: number;
 			freeSpace: number;
-		},
+		};
 		removable: {
 			capacity: number;
 			freeSpace: number;
-		},
+		};
 		updatedAt: Date;
 	};
 	connections: any;
@@ -52,4 +51,5 @@ export default interface IDeviceReadOnly {
 		updatedAt: Date;
 	};
 	supportedResolutions: ResolutionItem[];
+	locationUid?: string;
 }

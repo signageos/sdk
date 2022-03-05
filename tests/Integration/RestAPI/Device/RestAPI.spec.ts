@@ -1,6 +1,7 @@
 import * as should from 'should';
-import { Api } from "../../../../src/index";
-import { opts, RUN_INTEGRATION_TESTS } from "../helper";
+
+import { Api } from "../../../../src";
+import { opts, preRunCheck } from "../helper";
 import IDevice, { IDeviceUpdatable } from "../../../../src/RestApi/Device/IDevice";
 import IDeviceResolution, {
 	DeviceResolutionOrientation,
@@ -15,15 +16,12 @@ describe('RestAPI - Device', function () {
 	this.timeout(allowedTimeout);
 
 	before(function () {
-		// in order to run these tests, fill in auth and RUN_INTEGRATION_TESTS environment variables (please see '../helper.ts' file)
-		if (!RUN_INTEGRATION_TESTS || (opts.accountAuth as any).tokenId === '' || (opts.accountAuth as any).token === '') {
-			console.warn('you must set auth details in order to run this test');
-			this.skip();
-		}
+		preRunCheck(this.skip.bind(this));
 	});
 
 	let device: IDevice | undefined;
 
+	// TODO: This test is dependency for other tests, this is not good approach
 	it('should get the list of existing devices', async () => {
 		const devices = await api.device.list();
 		should(Array.isArray(devices)).true();

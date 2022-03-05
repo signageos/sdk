@@ -23,6 +23,7 @@ export default class Device implements IDevice {
 	public readonly batteryStatus: IDevice['batteryStatus'];
 	public readonly currentTime: IDevice['currentTime'];
 	public readonly supportedResolutions: IDevice['supportedResolutions'];
+	public readonly locationUid: IDevice['locationUid'];
 
 	constructor(data: IDevice) {
 		fillDataToEntity(this, data);
