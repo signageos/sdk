@@ -1,20 +1,16 @@
 import * as should from 'should';
-import { Api } from '../../../../src/index';
-import Policy from '../../../../src/RestApi/Policy/Policy';
-import { opts, RUN_INTEGRATION_TESTS } from '../helper';
 
-const allowedTimeout = 10e3;
+import { Api } from '../../../../src';
+import Policy from '../../../../src/RestApi/Policy/Policy';
+import { ALLOWED_TIMEOUT, opts, preRunCheck } from '../helper';
+
 const api = new Api(opts);
 
 describe('RestAPI - Policy', () => {
 	before(function () {
-		this.timeout(allowedTimeout);
+		this.timeout(ALLOWED_TIMEOUT);
 
-		// in order to run these tests, fill in auth and RUN_INTEGRATION_TESTS environment variables (please see '../helper.ts' file)
-		if (!RUN_INTEGRATION_TESTS || (opts.accountAuth as any).tokenId === '' || (opts.accountAuth as any).token === '') {
-			console.warn('you must set auth details in order to run this test');
-			this.skip();
-		}
+		preRunCheck(this.skip.bind(this));
 	});
 
 	const testEmptyPolicyName = `testEmptyPolicy${Date.now()}`;

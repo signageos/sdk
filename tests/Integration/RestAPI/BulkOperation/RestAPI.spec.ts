@@ -1,10 +1,10 @@
 import * as should from 'should';
-import { Api } from '../../../../src/index';
+
+import { Api } from '../../../../src';
 import BulkOperation from '../../../../src/RestApi/BulkOperation/BulkOperation';
-import { opts, RUN_INTEGRATION_TESTS } from '../helper';
+import { opts, ALLOWED_TIMEOUT, preRunCheck } from '../helper';
 import { DeviceActionType } from "../../../../src/RestApi/BulkOperation/enums";
 
-const allowedTimeout = 10e3;
 const testingOrganizationUid = 'c49448335ce7f9f275226fa3c3307d4585a56baf56494ef06a';
 const testingBulkOperation = {
 	name: 'testingName4',
@@ -29,13 +29,10 @@ const testingBulkOperation = {
 const api = new Api(opts);
 
 describe('RestAPI - BulkOperation', function () {
-	this.timeout(allowedTimeout);
+	this.timeout(ALLOWED_TIMEOUT);
+
 	before(function () {
-		// in order to run these tests, fill in auth and RUN_INTEGRATION_TESTS environment variables (please see '../helper.ts' file)
-		if (!RUN_INTEGRATION_TESTS || (opts.organizationAuth as any).tokenId === '' || (opts.organizationAuth as any).token === '') {
-			console.warn('you must set auth details in order to run this test');
-			this.skip();
-		}
+		preRunCheck(this.skip.bind(this));
 	});
 
 	let createdBulkOperation: BulkOperation;

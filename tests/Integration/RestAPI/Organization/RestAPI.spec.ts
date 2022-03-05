@@ -1,20 +1,16 @@
 import * as should from 'should';
-import { Api } from "../../../../src/index";
+
+import { Api } from "../../../../src";
 import IOrganization from "../../../../src/RestApi/Organization/IOrganization";
 import Organization from "../../../../src/RestApi/Organization/Organization";
-import { opts, RUN_INTEGRATION_TESTS } from "../helper";
+import { opts, ALLOWED_TIMEOUT, preRunCheck } from "../helper";
 
-const allowedTimeout = 10000;
 const api = new Api(opts);
 
 describe('RestAPI - Organization', () => {
 
 	before(function () {
-		// in order to run these tests, fill in auth and RUN_INTEGRATION_TESTS environment variables (please see '../helper.ts' file)
-		if (!RUN_INTEGRATION_TESTS || (opts.accountAuth as any).tokenId === '' || (opts.accountAuth as any).token === '') {
-			console.warn('you must set auth details in order to run this test');
-			this.skip();
-		}
+		preRunCheck(this.skip.bind(this));
 	});
 
 	const assertOrg = (org: IOrganization) => {
@@ -36,7 +32,7 @@ describe('RestAPI - Organization', () => {
 			title: `Integration test organization created on ${now.toISOString()}`,
 		});
 		should(true).true();
-	}).timeout(allowedTimeout);
+	}).timeout(ALLOWED_TIMEOUT);
 
 	it('should get the list of existing organizations', async () => {
 		const orgs = await api.organization.list({});
@@ -51,7 +47,7 @@ describe('RestAPI - Organization', () => {
 			const org = await api.organization.get(orgs[0].uid);
 			assertOrg(org);
 		}
-	}).timeout(allowedTimeout);
+	}).timeout(ALLOWED_TIMEOUT);
 
 	it('should get the organizations by Uid', async () => {
 		if (!pickedOrg) { // there is no organization, we can't test getting by Uid
@@ -63,7 +59,7 @@ describe('RestAPI - Organization', () => {
 		assertOrg(org);
 		should.deepEqual(pickedOrg, org, 'inconsistency in organizations data');
 
-	}).timeout(allowedTimeout);
+	}).timeout(ALLOWED_TIMEOUT);
 
 	it('should delete the organizations by Uid', async () => {
 		if (!pickedOrg) { // there is no organization, we can't test getting by Uid
@@ -76,6 +72,6 @@ describe('RestAPI - Organization', () => {
 		const org = await api.organization.get(pickedOrg.uid);
 		should(org).be.null();
 
-	}).timeout(allowedTimeout);
+	}).timeout(ALLOWED_TIMEOUT);
 
 });
