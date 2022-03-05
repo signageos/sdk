@@ -8,6 +8,7 @@ import OrganizationManagement from "./Organization/OrganizationManagement";
 import EmulatorManagement from "./Emulator/EmulatorManagement";
 import FirmwareVersionManagement from "./Firmware/Version/FirmwareVersionManagement";
 import CompanyManagement from './Company/CompanyManagement';
+import LocationManagement from './Location/LocationManagement';
 import IOptions from './IOptions';
 
 export default class RestApi {
@@ -25,6 +26,8 @@ export default class RestApi {
 	public readonly policy: PolicyManagement = new PolicyManagement(this.accountOptions);
 	public readonly bulkOperation: BulkOperationManagement = new BulkOperationManagement(this.organizationOptions);
 	public readonly device: DeviceManagement = new DeviceManagement(this.accountOptions, this.organizationOptions);
+
+	public readonly location: LocationManagement = new LocationManagement(this.organizationOptions);
 
 	constructor(
 		public readonly accountOptions: IOptions,
