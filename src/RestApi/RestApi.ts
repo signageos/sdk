@@ -11,6 +11,7 @@ import CompanyManagement from './Company/CompanyManagement';
 import LocationManagement from './Location/LocationManagement';
 import DeviceLocationManagement from './Device/Location/DeviceLocationManagement';
 import IOptions from './IOptions';
+import AlertManagement from "./Alerts/AlertManagement";
 
 export default class RestApi {
 
@@ -28,6 +29,7 @@ export default class RestApi {
 	public readonly bulkOperation: BulkOperationManagement = new BulkOperationManagement(this.organizationOptions);
 	public readonly device: DeviceManagement = new DeviceManagement(this.accountOptions, this.organizationOptions);
 	public readonly deviceLocation: DeviceLocationManagement = new DeviceLocationManagement(this.organizationOptions);
+	public readonly alert: AlertManagement =  new AlertManagement(this.accountOptions);
 
 	public readonly location: LocationManagement = new LocationManagement(this.organizationOptions);
 
