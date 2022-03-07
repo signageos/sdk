@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Array `supportedResolutions` into Device entity
 - Bulk Operations
 - Location `create`, `list` (multiple), `get` (single), `update` and `delete`
+- Organization tag `get one`, `create`, `update` and `delete`
 - Organization tag to location `assign` and `unassign`
 - Location to device `assign` and `unassign`
 

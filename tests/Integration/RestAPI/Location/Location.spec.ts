@@ -1,7 +1,7 @@
 import * as should from 'should';
 
 import { Api } from '../../../../src';
-import { ILocation } from './../../../../dist/RestApi/Location/Location.d';
+import { ILocation } from '../../../../src/RestApi/Location/Location';
 import { opts, ALLOWED_TIMEOUT, preRunCheck, getOrganizationUid } from '../helper';
 import { LOCATION_CREATE_1, LOCATION_CREATE_2, LOCATION_UPDATE_1 } from './Location.fixtures';
 import { handleCreateLocation } from './Location.utils';
@@ -68,10 +68,11 @@ describe('Integration.RestAPI.Location', async () => {
 			organizationUid: getOrganizationUid(),
 		});
 
-		await api.location.delete(createdLocation.uid);
-
 		try {
-			await api.location.get(createdLocation.uid);
+			await api.location.delete(createdLocation.uid);
+			const response = await api.location.get(createdLocation.uid);
+
+			should(response.uid).not.be.equal(createdLocation.uid);
 		} catch (err) {
 			should(err.errorCode).be.equal(404141);
 		}
