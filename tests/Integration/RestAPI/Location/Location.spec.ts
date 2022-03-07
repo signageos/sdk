@@ -68,10 +68,11 @@ describe('Integration.RestAPI.Location', async () => {
 			organizationUid: getOrganizationUid(),
 		});
 
-		await api.location.delete(createdLocation.uid);
-
 		try {
-			await api.location.get(createdLocation.uid);
+			await api.location.delete(createdLocation.uid);
+			const response = await api.location.get(createdLocation.uid);
+
+			should(response.uid).not.be.equal(createdLocation.uid);
 		} catch (err) {
 			should(err.errorCode).be.equal(404141);
 		}

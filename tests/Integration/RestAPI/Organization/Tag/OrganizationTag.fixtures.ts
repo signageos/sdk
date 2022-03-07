@@ -28,3 +28,8 @@ export const ORGANIZATION_TAG_UPDATE_1: IOrganizationTagUpdate = {
 	name: 'Organization tag 1 updated',
 	color: '#202124',
 };
+
+export const ORGANIZATION_TAG_DELETE_1: IOrganizationTagCreate = {
+	name: 'Organization tag delete 1',
+	organizationUid: getOrganizationUid(),
+};
