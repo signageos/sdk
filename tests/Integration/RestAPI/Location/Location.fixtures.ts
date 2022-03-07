@@ -1,6 +1,7 @@
 import { random } from 'faker';
 
 import { ILocation, ILocationCreate, ILocationUpdate } from '../../../../src/RestApi/Location/Location';
+import { ORGANIZATION_TAG_1 } from '../Organization/Tag/OrganizationTag.fixtures';
 
 export type LocationCreateWithoutOrg = Omit<ILocationCreate, 'organizationUid'>;
 export type LocationWithoutOrg = Omit<ILocation, 'organizationUid'>;
@@ -99,6 +100,28 @@ export const LOCATION_2: LocationWithoutOrg = {
 	},
 	attachments: ['www.attachment-3.com', 'www.attachment-4.com'],
 	description: 'test note 2',
+	customId: undefined,
+	createdAt: new Date(),
+	updatedAt: new Date(),
+};
+export const LOCATION_3: LocationWithoutOrg = {
+	uid: random.uuid(),
+	name: `SDK Location (4)`,
+	feature: {
+		type: 'Feature',
+		properties: {
+			name: 'Feature name 3',
+			amenity: 'Football Stadium',
+			popupContent: 'This is where the pros play!',
+		},
+		geometry: {
+			type: 'Point',
+			coordinates: [-22.22222, 22.22222],
+		},
+	},
+	attachments: ['www.attachment-3.com', 'www.attachment-4.com'],
+	description: 'test note 2',
+	tagUids: [ORGANIZATION_TAG_1.uid],
 	customId: undefined,
 	createdAt: new Date(),
 	updatedAt: new Date(),

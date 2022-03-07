@@ -25,7 +25,7 @@ const assertOrganizationTag = (organizationTag: IOrganizationTag) => {
 	should(organizationUid).be.equal(ORGANIZATION_TAG_1.organizationUid);
 };
 
-describe('Unit.RestApi.Organization.Tag', () => {
+describe('Unit.RestApi.Organization.Tag.OrganizationTag', () => {
 	it('should create organization tag', async () => {
 		nock(nockOpts.url, nockAuthHeader)
 			.post(`/${ApiVersions.V1}/${Resources.OrganizationTag}`, JSON.stringify(ORGANIZATION_TAG_1))
