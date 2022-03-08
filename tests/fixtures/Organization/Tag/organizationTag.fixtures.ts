@@ -9,19 +9,19 @@ import { getOrganizationUid } from '../organization.fixtures';
 
 export const ORGANIZATION_TAG_CREATE_1: IOrganizationTagCreate = {
 	name: 'Organization tag create 1',
-	organizationUid: getOrganizationUid(),
+	get organizationUid() { return getOrganizationUid(); },
 	color: '#303124',
 };
 export const ORGANIZATION_TAG_CREATE_2: IOrganizationTagCreate = {
 	name: 'Organization tag create 2',
-	organizationUid: getOrganizationUid(),
+	get organizationUid() { return getOrganizationUid(); },
 	color: '#403624',
 };
 
 export const ORGANIZATION_TAG_1: IOrganizationTag = {
 	uid: random.uuid(),
 	name: 'Organization tag 1',
-	organizationUid: getOrganizationUid(),
+	get organizationUid() { return getOrganizationUid(); },
 };
 
 export const ORGANIZATION_TAG_UPDATE_1: IOrganizationTagUpdate = {
@@ -31,5 +31,5 @@ export const ORGANIZATION_TAG_UPDATE_1: IOrganizationTagUpdate = {
 
 export const ORGANIZATION_TAG_DELETE_1: IOrganizationTagCreate = {
 	name: 'Organization tag delete 1',
-	organizationUid: getOrganizationUid(),
+	get organizationUid() { return getOrganizationUid(); },
 };

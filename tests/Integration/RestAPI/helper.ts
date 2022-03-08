@@ -22,8 +22,8 @@ export const ALLOWED_TIMEOUT = 10000;
 export const preRunCheck = (skip: () => never) => {
 	if (
 		!RUN_INTEGRATION_TESTS ||
-		(opts.accountAuth as any)?.tokenId === '' ||
-		(opts.accountAuth as any)?.token === ''
+		!(opts.accountAuth as any)?.tokenId ||
+		!(opts.accountAuth as any)?.token
 	) {
 		console.warn('you must set auth details in order to run this test');
 		skip();
