@@ -1,7 +1,9 @@
 
 export interface IAppletVersionUpdatable {
-	binary?: string | NodeJS.ReadableStream; //Deprecated
-	frontAppletVersion: string;
+	/** @deprecated used only for old single file applets. No more supported. */
+	binary?: string | NodeJS.ReadableStream;
+	/** @deprecated used only for old single file applets. No more supported. */
+	frontAppletVersion?: string;
 	entryFile?: string;
 }
 

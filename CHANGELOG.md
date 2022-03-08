@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Location `create` and `update` methods, simplification of the `feature` parameter into two `coordinates: { lat: number; long: number }` and `address: string`. Where now the feature params is obtained programmatically from the `mapbox` API
 
 
+### Deprecated
+- Marked properties `binary` and `frontDisplayVersion` in Applet Version SDK as deprecated. They are meant to be used for single file applets which are no more supported.
+
 ## [1.7.1] - 2021-12-17
 ### Fixed
 - No extra parameters in entity responses
