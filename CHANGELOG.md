@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Organization tag `get one`, `create`, `update` and `delete`
 - Organization tag to location `assign` and `unassign`
 - Location to device `assign` and `unassign`
+- Location `create` and `update` methods, simplification of the `feature` parameter into two `coordinates: { lat: number; long: number }` and `address: string`. Where now the feature params is obtained programmatically from the `mapbox` API
+
 
 ## [1.7.1] - 2021-12-17
 ### Fixed

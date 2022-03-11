@@ -1,6 +1,17 @@
-import { Feature, Point } from 'geojson';
+import { Feature, Point, Position } from 'geojson';
 
 import { fillDataToEntity } from '../mapper';
+
+export enum LocationTypeNamesEnum {
+	Coordinates = 'Coordinates',
+	Address = 'Address',
+}
+type Coordinates = { __typename: LocationTypeNamesEnum.Coordinates; coordinates: Position };
+type Address = { __typename: LocationTypeNamesEnum.Address; address: string };
+/**
+ * One of the `Coordinates` or `Address` must be always in the params
+ */
+type LocationUnion = Coordinates | Address;
 
 export interface ILocation {
 	uid: string;
@@ -15,18 +26,21 @@ export interface ILocation {
 	updatedAt: Date;
 }
 
-export interface ILocationCreate {
-	name: string;
-	feature: Feature<Point>;
-	organizationUid: string;
-	customId?: string;
-	attachments?: string[];
-	description?: string;
+export interface ILocationCreateRequired {
+	name: ILocation['name'];
+	location: LocationUnion;
+	organizationUid: ILocation['organizationUid'];
+	attachments: ILocation['attachments'];
+}
+
+export interface ILocationCreate extends ILocationCreateRequired {
+	customId: ILocation['customId'];
+	description: ILocation['description'];
 }
 
 export interface ILocationUpdate {
 	name?: string;
-	feature?: Feature<Point>;
+	location?: LocationUnion;
 	customId?: string;
 	attachments?: string[];
 	description?: string;

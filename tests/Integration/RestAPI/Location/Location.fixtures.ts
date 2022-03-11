@@ -1,43 +1,51 @@
 import { random } from 'faker';
+import { Point } from 'geojson';
 
-import { ILocation, ILocationCreate, ILocationUpdate } from '../../../../src/RestApi/Location/Location';
+import {
+	LocationTypeNamesEnum,
+	ILocation,
+	ILocationCreate,
+	ILocationUpdate,
+} from '../../../../src/RestApi/Location/Location';
 import { ORGANIZATION_TAG_1 } from '../Organization/Tag/OrganizationTag.fixtures';
 
 export type LocationCreateWithoutOrg = Omit<ILocationCreate, 'organizationUid'>;
 export type LocationWithoutOrg = Omit<ILocation, 'organizationUid'>;
 
+export const COORDINATES_1: Point['coordinates'] = [-122.40492, 37.78119]; // Address: ADDRESS_1
+export const COORDINATES_2: Point['coordinates'] = [-74.011025, 40.707085]; // Address: ADDRESS_2
+
+export const ADDRESS_1 = 'Howard Street, San Francisco, CA, USA'; // Coordinates: COORDINATES_1
+export const ADDRESS_2 = '11 Wall Street, New York, New York 10005, United States'; // Coordinates: COORDINATES_2
+
+export const LOCATION_COORDINATES_1: ILocationCreate['location'] = {
+	__typename: LocationTypeNamesEnum.Coordinates,
+	coordinates: COORDINATES_1,
+};
+export const LOCATION_COORDINATES_2: ILocationCreate['location'] = {
+	__typename: LocationTypeNamesEnum.Coordinates,
+	coordinates: COORDINATES_2,
+};
+
+export const LOCATION_ADDRESS_1: ILocationCreate['location'] = {
+	__typename: LocationTypeNamesEnum.Address,
+	address: ADDRESS_1,
+};
+export const LOCATION_ADDRESS_2: ILocationCreate['location'] = {
+	__typename: LocationTypeNamesEnum.Address,
+	address: ADDRESS_2,
+};
+
 export const LOCATION_CREATE_1: LocationCreateWithoutOrg = {
 	name: `SDK Location (0)`,
-	feature: {
-		type: 'Feature',
-		properties: {
-			name: 'Feature name 1',
-			amenity: 'Baseball Stadium',
-			popupContent: 'This is where the Rockies play!',
-		},
-		geometry: {
-			type: 'Point',
-			coordinates: [-11.11111, 11.11111],
-		},
-	},
+	location: LOCATION_COORDINATES_1,
 	attachments: ['www.attachment-1.com', 'www.attachment-2.com'],
 	description: 'test note 1',
 	customId: 'custom-id-123',
 };
 export const LOCATION_CREATE_2: LocationCreateWithoutOrg = {
 	name: `SDK Location (1)`,
-	feature: {
-		type: 'Feature',
-		properties: {
-			name: 'Feature name 2',
-			amenity: 'Football Stadium',
-			popupContent: 'This is where the pros play!',
-		},
-		geometry: {
-			type: 'Point',
-			coordinates: [-22.22222, 22.22222],
-		},
-	},
+	location: LOCATION_ADDRESS_1,
 	attachments: ['www.attachment-3.com', 'www.attachment-4.com'],
 	description: 'test note 2',
 	customId: undefined,
@@ -45,18 +53,7 @@ export const LOCATION_CREATE_2: LocationCreateWithoutOrg = {
 
 export const LOCATION_UPDATE_1: Omit<ILocationUpdate, 'organizationUid'> = {
 	name: `SDK Location (update-1)`,
-	feature: {
-		type: 'Feature',
-		properties: {
-			name: 'Feature name 2',
-			amenity: 'Football Stadium',
-			popupContent: 'This is where the pros play!',
-		},
-		geometry: {
-			type: 'Point',
-			coordinates: [-22.22222, 22.22222],
-		},
-	},
+	location: LOCATION_COORDINATES_1,
 	attachments: ['www.attachment-3.com', 'www.attachment-4.com'],
 	description: 'test note 2',
 	customId: 'custom-id-456',
