@@ -25,11 +25,11 @@ export default class RestApi {
 	public readonly timingCommand: TimingCommandManagement = new TimingCommandManagement(this.organizationOptions);
 
 	public readonly applet: AppletManagement = new AppletManagement(this.organizationOptions);
-	public readonly policy: PolicyManagement = new PolicyManagement(this.accountOptions);
+	public readonly policy: PolicyManagement = new PolicyManagement(this.organizationOptions);
 	public readonly bulkOperation: BulkOperationManagement = new BulkOperationManagement(this.organizationOptions);
 	public readonly device: DeviceManagement = new DeviceManagement(this.accountOptions, this.organizationOptions);
 	public readonly deviceLocation: DeviceLocationManagement = new DeviceLocationManagement(this.organizationOptions);
-	public readonly alert: AlertManagement =  new AlertManagement(this.accountOptions);
+	public readonly alert: AlertManagement =  new AlertManagement(this.organizationOptions);
 
 	public readonly location: LocationManagement = new LocationManagement(this.organizationOptions);
 
