@@ -4,8 +4,8 @@ import {
 	IOrganizationTagCreate,
 	IOrganizationTagUpdate,
 	IOrganizationTag,
-} from '../../../../../src/RestApi/Organization/Tag/OrganizationTag';
-import { getOrganizationUid } from '../../helper';
+} from '../../../../src/RestApi/Organization/Tag/OrganizationTag';
+import { getOrganizationUid } from '../organization.fixtures';
 
 export const ORGANIZATION_TAG_CREATE_1: IOrganizationTagCreate = {
 	name: 'Organization tag create 1',

@@ -1,6 +1,6 @@
 import { random } from 'faker';
 
-import IDevice from '../../../../src/RestApi/Device/IDevice';
+import IDevice from '../../../src/RestApi/Device/IDevice';
 
 export const DEVICE_1: IDevice = {
 	uid: random.uuid(),

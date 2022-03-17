@@ -3,12 +3,12 @@ import { isDate } from 'lodash';
 
 import { Api } from '../../../../../src';
 import OrganizationTag from '../../../../../src/RestApi/Organization/Tag/OrganizationTag';
-import { opts, ALLOWED_TIMEOUT, preRunCheck } from '../../helper';
 import {
 	ORGANIZATION_TAG_CREATE_1,
 	ORGANIZATION_TAG_UPDATE_1,
 	ORGANIZATION_TAG_DELETE_1,
-} from './OrganizationTag.fixtures';
+} from '../../../../fixtures/Organization/Tag/organizationTag.fixtures';
+import { opts, ALLOWED_TIMEOUT, preRunCheck } from '../../helper';
 
 const api = new Api(opts);
 

@@ -10,7 +10,7 @@ import {
 	LOCATION_2,
 	LOCATION_CREATE_1,
 	LOCATION_UPDATE_1,
-} from '../../../Integration/RestAPI/Location/Location.fixtures';
+} from '../../../fixtures/Location/location.fixtures';
 import { nockOpts, nockAuthHeader } from '../helper';
 
 const locationManagement = new LocationManagement(nockOpts);

@@ -2,8 +2,9 @@ import * as should from 'should';
 
 import { Api } from '../../../../../src';
 import IDevice from '../../../../../src/RestApi/Device/IDevice';
-import { opts, ALLOWED_TIMEOUT, preRunCheck, getOrganizationUid } from '../../helper';
-import { LOCATION_CREATE_1, handleCreateLocation } from '../../Location/Location.fixtures';
+import { getOrganizationUid } from '../../../../fixtures/Organization/organization.fixtures';
+import { LOCATION_CREATE_1, handleCreateLocation } from '../../../../fixtures/Location/location.fixtures';
+import { opts, ALLOWED_TIMEOUT, preRunCheck } from '../../helper';
 
 const api = new Api(opts);
 
