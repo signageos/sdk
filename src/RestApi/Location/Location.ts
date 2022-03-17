@@ -2,6 +2,9 @@ import { Feature, Point } from 'geojson';
 
 import { fillDataToEntity } from '../mapper';
 
+export type Coordinates = { lat: number; long: number };
+export type Address = string;
+
 export interface ILocation {
 	uid: string;
 	name: string;
@@ -15,21 +18,29 @@ export interface ILocation {
 	updatedAt: Date;
 }
 
-export interface ILocationCreate {
-	name: string;
-	feature: Feature<Point>;
-	organizationUid: string;
-	customId?: string;
-	attachments?: string[];
-	description?: string;
+export interface ILocationCreateRequired {
+	name: ILocation['name'];
+	organizationUid: ILocation['organizationUid'];
+	attachments: ILocation['attachments'];
+}
+
+/**
+ * One of the `Coordinates` or `Address` must be always in the params. But just only one
+ */
+export interface ILocationCreate extends ILocationCreateRequired {
+	coordinates?: Coordinates;
+	address?: Address;
+	customId: ILocation['customId'];
+	description: ILocation['description'];
 }
 
 export interface ILocationUpdate {
 	name?: string;
-	feature?: Feature<Point>;
+	coordinates?: Coordinates;
+	address?: Address;
 	customId?: string;
 	attachments?: string[];
-	description?: string;
+	description: ILocation['description'];
 }
 
 export interface ILocationFilter {

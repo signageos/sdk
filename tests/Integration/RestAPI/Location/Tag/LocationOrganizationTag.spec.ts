@@ -3,8 +3,7 @@ import * as should from 'should';
 import { Api } from '../../../../../src';
 import { opts, ALLOWED_TIMEOUT, preRunCheck, getOrganizationUid } from '../../helper';
 import { ORGANIZATION_TAG_CREATE_1, ORGANIZATION_TAG_CREATE_2 } from '../../Organization/Tag/OrganizationTag.fixtures';
-import { LOCATION_CREATE_1 } from '../Location.fixtures';
-import { handleCreateLocation } from '../Location.utils';
+import { LOCATION_CREATE_1, handleCreateLocation } from '../Location.fixtures';
 
 const api = new Api(opts);
 

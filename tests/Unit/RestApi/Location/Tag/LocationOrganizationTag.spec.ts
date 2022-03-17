@@ -1,11 +1,10 @@
-import { LOCATION_3 } from './../../../../Integration/RestAPI/Location/Location.fixtures';
 import * as nock from 'nock';
 import * as should from 'should';
 
 import { ApiVersions } from '../../../../../src/RestApi/apiVersions';
 import { Resources } from '../../../../../src/RestApi/resources';
 import LocationOrganizationTag from '../../../../../src/RestApi/Location/OrganizationTag/LocationOrganizationTagManagement';
-import { LOCATION_1 } from '../../../../Integration/RestAPI/Location/Location.fixtures';
+import { LOCATION_1, LOCATION_3 } from '../../../../Integration/RestAPI/Location/Location.fixtures';
 import { ORGANIZATION_TAG_1 } from '../../../../Integration/RestAPI/Organization/Tag/OrganizationTag.fixtures';
 import { nockOpts, nockAuthHeader } from '../../helper';
 

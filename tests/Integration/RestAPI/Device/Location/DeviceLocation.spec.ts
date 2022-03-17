@@ -3,8 +3,7 @@ import * as should from 'should';
 import { Api } from '../../../../../src';
 import IDevice from '../../../../../src/RestApi/Device/IDevice';
 import { opts, ALLOWED_TIMEOUT, preRunCheck, getOrganizationUid } from '../../helper';
-import { LOCATION_CREATE_1 } from '../../Location/Location.fixtures';
-import { handleCreateLocation } from '../../Location/Location.utils';
+import { LOCATION_CREATE_1, handleCreateLocation } from '../../Location/Location.fixtures';
 
 const api = new Api(opts);
 

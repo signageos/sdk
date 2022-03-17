@@ -2,15 +2,20 @@ import * as nock from 'nock';
 import * as should from 'should';
 
 import { ApiVersions } from '../../../../src/RestApi/apiVersions';
-import { ILocation, ILocationUpdate } from '../../../../src/RestApi/Location/Location';
+import { ILocationCreate, ILocation, ILocationUpdate } from '../../../../src/RestApi/Location/Location';
 import LocationManagement from '../../../../src/RestApi/Location/LocationManagement';
 import { Resources } from '../../../../src/RestApi/resources';
-import { LOCATION_1, LOCATION_2, LOCATION_UPDATE_1 } from '../../../Integration/RestAPI/Location/Location.fixtures';
+import {
+	LOCATION_1,
+	LOCATION_2,
+	LOCATION_CREATE_1,
+	LOCATION_UPDATE_1,
+} from '../../../Integration/RestAPI/Location/Location.fixtures';
 import { nockOpts, nockAuthHeader } from '../helper';
 
 const locationManagement = new LocationManagement(nockOpts);
 
-const validCreateReq: ILocation = { ...LOCATION_1, organizationUid: 'organization-uid-1' };
+const validCreateReq: ILocationCreate = { ...LOCATION_CREATE_1, organizationUid: 'organization-uid-1' };
 const validGetResp: ILocation = { ...LOCATION_1, organizationUid: 'organization-uid-1' };
 const validListResp: ILocation[] = [
 	{ ...LOCATION_1, organizationUid: 'organization-uid-1' },
