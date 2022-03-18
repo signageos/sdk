@@ -5,9 +5,9 @@ import * as should from 'should';
 import { ApiVersions } from '../../../../../src/RestApi/apiVersions';
 import DeviceLocationManagement from '../../../../../src/RestApi/Device/Location/DeviceLocationManagement';
 import { Resources } from '../../../../../src/RestApi/resources';
-import { LOCATION_1 } from '../../../../Integration/RestAPI/Location/Location.fixtures';
+import { LOCATION_1 } from '../../../../fixtures/Location/location.fixtures';
+import { DEVICE_1 } from '../../../../fixtures/Device/Device.fixtures';
 import { nockOpts, nockAuthHeader } from '../../helper';
-import { DEVICE_1 } from '../Device.fixtures';
 
 const deviceLocationManagement = new DeviceLocationManagement(nockOpts);
 

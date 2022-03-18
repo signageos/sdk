@@ -1,11 +1,11 @@
+import { random } from 'faker';
+
 import {
 	IOrganizationTagCreate,
 	IOrganizationTagUpdate,
-} from '../../../../../src/RestApi/Organization/Tag/OrganizationTag';
-import { random } from 'faker';
-
-import { IOrganizationTag } from '../../../../../src/RestApi/Organization/Tag/OrganizationTag';
-import { getOrganizationUid } from '../../helper';
+	IOrganizationTag,
+} from '../../../../src/RestApi/Organization/Tag/OrganizationTag';
+import { getOrganizationUid } from '../organization.fixtures';
 
 export const ORGANIZATION_TAG_CREATE_1: IOrganizationTagCreate = {
 	name: 'Organization tag create 1',

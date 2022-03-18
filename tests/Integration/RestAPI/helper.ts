@@ -29,12 +29,3 @@ export const preRunCheck = (skip: () => never) => {
 		skip();
 	}
 };
-
-// TODO: Temporary solution until dynamic solution to get organization tag is developed
-export const getOrganizationUid = () => {
-	if (!organizationUid) {
-		throw new Error('Required environment variable SOS_ORGANIZATION_UID is missing.');
-	}
-
-	return organizationUid;
-};
