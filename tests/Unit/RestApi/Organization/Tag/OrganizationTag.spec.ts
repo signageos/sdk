@@ -8,7 +8,7 @@ import { Resources } from '../../../../../src/RestApi/resources';
 import {
 	ORGANIZATION_TAG_1,
 	ORGANIZATION_TAG_UPDATE_1,
-} from '../../../../fixtures/Organization/Tag/organizationTag.fixtures';
+} from './OrganizationTag.fixtures';
 import { nockOpts, nockAuthHeader } from '../../helper';
 
 const organizationTagManagement = new OrganizationTagManagement(nockOpts);
