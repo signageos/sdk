@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - Alert and alert rules management
+- File system & cache methods in timing
+
+### Fixed
+- Wrong naming in video timing events
 
 ## [1.8.0] - 2022-03-18
 ### Added
