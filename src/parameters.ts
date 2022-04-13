@@ -10,6 +10,7 @@ require('dotenv').config({ path: path.join(rootPath, '.env') }); // default look
 
 const requestMaxAttempts = process.env.SOS_REQUEST_MAX_ATTEMPTS ? parseInt(process.env.SOS_REQUEST_MAX_ATTEMPTS) : 3;
 const apiUrl = process.env.SOS_API_URL;
+
 if (!apiUrl) {
 	throw new Error(`Environment variable SOS_API_URL is required`);
 }

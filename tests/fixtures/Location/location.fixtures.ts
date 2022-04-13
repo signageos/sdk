@@ -28,14 +28,12 @@ export const ADDRESS_2 = '11 Wall Street, New York, New York 10005, United State
 export const LOCATION_CREATE_1: LocationCreateWithoutOrg = {
 	name: `SDK Location (0)`,
 	coordinates: COORDINATES_1,
-	attachments: ['www.attachment-1.com', 'www.attachment-2.com'],
 	description: 'test note 1',
 	customId: 'custom-id-123',
 };
 export const LOCATION_CREATE_2: LocationCreateWithoutOrg = {
 	name: `SDK Location (1)`,
 	address: ADDRESS_1,
-	attachments: ['www.attachment-3.com', 'www.attachment-4.com'],
 	description: 'test note 2',
 	customId: undefined,
 };
@@ -43,7 +41,6 @@ export const LOCATION_CREATE_2: LocationCreateWithoutOrg = {
 export const LOCATION_UPDATE_1: Omit<ILocationUpdate, 'organizationUid'> = {
 	name: `SDK Location (update-1)`,
 	coordinates: COORDINATES_1,
-	attachments: ['www.attachment-3.com', 'www.attachment-4.com'],
 	description: 'test note 2',
 	customId: 'custom-id-456',
 };

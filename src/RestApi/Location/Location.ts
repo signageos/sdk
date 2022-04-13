@@ -3,6 +3,7 @@ import { Feature, Point } from 'geojson';
 import { fillDataToEntity } from '../mapper';
 
 export type Coordinates = { lat: number; long: number };
+
 export type Address = string;
 
 export interface ILocation {
@@ -16,18 +17,14 @@ export interface ILocation {
 	tagUids?: string[];
 	createdAt: Date;
 	updatedAt: Date;
-}
-
-export interface ILocationCreateRequired {
-	name: ILocation['name'];
-	organizationUid: ILocation['organizationUid'];
-	attachments: ILocation['attachments'];
+	archivedAt?: Date;
 }
 
 /**
  * One of the `Coordinates` or `Address` must be always in the params. But just only one
  */
-export interface ILocationCreate extends ILocationCreateRequired {
+export interface ILocationCreate {
+	name: ILocation['name'];
 	coordinates?: Coordinates;
 	address?: Address;
 	customId: ILocation['customId'];
@@ -39,16 +36,11 @@ export interface ILocationUpdate {
 	coordinates?: Coordinates;
 	address?: Address;
 	customId?: string;
-	attachments?: string[];
 	description: ILocation['description'];
 }
 
 export interface ILocationFilter {
-	uid?: string;
-	organizationUids?: string[];
-	tagUids?: string[];
-	name?: string;
-	withDeviceNumber?: string;
+	uid?: ILocation['uid'];
 }
 
 export default class Location implements ILocation {
@@ -62,6 +54,7 @@ export default class Location implements ILocation {
 	public readonly tagUids: ILocation['tagUids'];
 	public readonly createdAt: ILocation['createdAt'];
 	public readonly updatedAt: ILocation['updatedAt'];
+	public readonly archivedAt: ILocation['archivedAt'];
 
 	constructor(data: ILocation) {
 		fillDataToEntity(this, data);
