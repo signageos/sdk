@@ -66,6 +66,7 @@
   },
   "dependencies": {
     "@signageos/front-applet": "5.2.0",
+    "@signageos/lib": "9.2.0",
     "@types/fs-extra": "8.1.0",
     "@types/geojson": "7946.0.8",
     "@types/ini": "1.3.30",

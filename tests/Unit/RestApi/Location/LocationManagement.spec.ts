@@ -1,10 +1,12 @@
+import { readFile } from 'fs-extra';
 import * as nock from 'nock';
 import * as should from 'should';
 
 import { ApiVersions } from '../../../../src/RestApi/apiVersions';
 import { ILocationCreate, ILocation, ILocationUpdate } from '../../../../src/RestApi/Location/Location';
-import LocationManagement from '../../../../src/RestApi/Location/LocationManagement';
+import LocationManagement, { LocationResources } from '../../../../src/RestApi/Location/LocationManagement';
 import { Resources } from '../../../../src/RestApi/resources';
+import { parameters } from '../../../../src/parameters';
 import {
 	LOCATION_1,
 	LOCATION_2,
@@ -15,13 +17,13 @@ import { nockOpts, nockAuthHeader } from '../helper';
 
 const locationManagement = new LocationManagement(nockOpts);
 
-const validCreateReq: ILocationCreate = { ...LOCATION_CREATE_1, organizationUid: 'organization-uid-1' };
+const validCreateReq: ILocationCreate = { ...LOCATION_CREATE_1 };
+const validUpdateReq: ILocationUpdate = LOCATION_UPDATE_1;
 const validGetResp: ILocation = { ...LOCATION_1, organizationUid: 'organization-uid-1' };
 const validListResp: ILocation[] = [
 	{ ...LOCATION_1, organizationUid: 'organization-uid-1' },
 	{ ...LOCATION_2, organizationUid: 'organization-uid-1' },
 ];
-const validUpdateReq: ILocationUpdate = LOCATION_UPDATE_1;
 
 const assertLocation = (location: ILocation) => {
 	should.equal(validGetResp.uid, location.uid);
@@ -72,9 +74,33 @@ describe('Unit.RestApi.Location', () => {
 	it('should update location', async () => {
 		nock(nockOpts.url, nockAuthHeader)
 			.put(`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}`, JSON.stringify(validUpdateReq))
-			.reply(200, validGetResp);
+			.reply(200);
 
 		await should(locationManagement.update(LOCATION_1.uid, validUpdateReq)).be.fulfilled();
+	});
+
+	it('should add attachment', async () => {
+		const attachment = await readFile(`${parameters.paths.rootPath}/tests/assets/image_1.png`);
+
+		nock(nockOpts.url, nockAuthHeader)
+			.put(
+				`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}/${LocationResources.AddAttachment}`,
+				attachment,
+			)
+			.reply(200);
+
+		await should(locationManagement.addAttachment(LOCATION_1.uid, attachment)).be.fulfilled();
+	});
+
+	it('should remove attachments', async () => {
+		nock(nockOpts.url, nockAuthHeader)
+			.put(
+				`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}/${LocationResources.RemoveAttachments}`,
+				JSON.stringify({ attachmentsToRemove: [] }),
+			)
+			.reply(200);
+
+		await should(locationManagement.removeAttachments(LOCATION_1.uid, [])).be.fulfilled();
 	});
 
 	it('should delete location', async () => {

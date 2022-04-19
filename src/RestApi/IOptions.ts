@@ -1,4 +1,3 @@
-
 export interface IAuthOptions {
 	clientId: string;
 	secret: string;
@@ -12,4 +11,5 @@ interface IOptions {
 	auth: IAuthLikeOptions;
 	version: 'v1';
 }
+
 export default IOptions;

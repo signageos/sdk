@@ -1,22 +1,26 @@
-
-import fetch, { Request, Response } from 'node-fetch';
+import fetch, { Request, Response, RequestInit, BodyInit } from 'node-fetch';
 import { stringify } from 'querystring';
-import { RequestInit } from "node-fetch";
-import IOptions from "./IOptions";
-import RequestError from "./Error/RequestError";
-import NotFoundError from "./Error/NotFoundError";
-import TooMAnyRequestsError from "./Error/TooMAnyRequestsError";
-import AuthenticationError from "./Error/AuthenticationError";
-import InternalApiError from "./Error/InternalApiError";
+
+import IOptions from './IOptions';
+import RequestError from './Error/RequestError';
+import NotFoundError from './Error/NotFoundError';
+import TooMAnyRequestsError from './Error/TooMAnyRequestsError';
+import AuthenticationError from './Error/AuthenticationError';
+import InternalApiError from './Error/InternalApiError';
 import GatewayError from './Error/GatewayError';
 import ResponseBodyFormatError from './Error/ResponseBodyFormatError';
 import { parameters } from '../parameters';
 
-async function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options: IOptions, data?: any): Promise<RequestInit> {
+async function createOptions(
+	method: 'POST' | 'GET' | 'PUT' | 'DELETE',
+	options: IOptions,
+	data?: BodyInit | Buffer,
+): Promise<RequestInit> {
 	const authOptions = typeof options.auth === 'function' ? await options.auth() : options.auth;
+
 	return {
 		headers: {
-			'Content-Type': options.contentType ? options.contentType : 'application/json',
+			'Content-Type': options.contentType ?? 'application/json',
 			'X-Auth': authOptions.clientId + ':' + authOptions.secret,
 		},
 		method,
@@ -84,6 +88,7 @@ function prepareQueryParams(qp: any): string {
 
 async function doFetch(url: string | Request, init?: RequestInit): Promise<Response> {
 	const resp = await fetch(url, init);
+
 	if (resp.ok) {
 		return resp;
 	}
@@ -111,7 +116,7 @@ async function doFetch(url: string | Request, init?: RequestInit): Promise<Respo
 	}
 }
 
-// Copied from @signageos/lib, we can add this lib to dependencies ?
+// TODO: Copied from @signageos/lib, we can add this lib to dependencies ?
 function wait(timeout: number) {
 	return new Promise<void>((resolve: () => void) => setTimeout(() => resolve(), timeout));
 }
@@ -125,6 +130,7 @@ export async function doRequest(
 	let tries = parameters.requestMaxAttempts;
 	let currentTimeout = 1000;
 	let lastError: Error | null = null;
+
 	do {
 		try {
 			return await fetchFn(url, init);
@@ -139,5 +145,6 @@ export async function doRequest(
 			}
 		}
 	} while (tries > 0);
+
 	throw lastError;
 }
