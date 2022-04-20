@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import ITiming from "./ITiming";
 import TimingCommandManagement from "./Command/TimingCommandManagement";
 import { TimingLoaded } from "@signageos/front-applet/es6/Monitoring/Timing/timingCommands";
+import { EnableMonitoring, DisableMonitoring } from "@signageos/front-applet/es6/Monitoring/monitoringCommands";
 import waitUntil from "../../Timer/waitUntil";
 import TimingManagement from "./TimingManagement";
 import { HtmlSnapshotTaken, TakeHtmlSnapshot } from "@signageos/front-applet/es6/Monitoring/Html/htmlCommands";
@@ -691,6 +692,22 @@ export default class Timing implements ITiming {
 				type: TimingLoaded,
 			});
 			return timingCommands.length > 0;
+		});
+	}
+
+	public async enableMonitoring() {
+		await this.timingCommandManagement.create<EnableMonitoring>({
+			deviceUid: this.deviceUid,
+			appletUid: this.appletUid,
+			commandPayload: { type: EnableMonitoring },
+		});
+	}
+
+	public async disableMonitoring() {
+		await this.timingCommandManagement.create<DisableMonitoring>({
+			deviceUid: this.deviceUid,
+			appletUid: this.appletUid,
+			commandPayload: { type: DisableMonitoring },
 		});
 	}
 
