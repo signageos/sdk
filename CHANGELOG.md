@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - `Location` attachments upload management. On `Add` attached file can be added. On `Delete` attached files can be deleted
+- Enable and disable monitoring methods on Timing instance
+
+### Fixed
+- Management entities are serializable using JSON.stringify() and methods and nested objects still works
 
 ## [1.9.0] - 2022-04-06
 ### Added
