@@ -5,7 +5,10 @@ export function fillDataToEntity<T>(entity: T & { constructor: Function }, data:
 	}
 	for (const key in entity) {
 		if (!(key in data)) {
-			Object.defineProperty(entity, key, { enumerable: false });
+			const descriptor = Object.getOwnPropertyDescriptor(entity, key);
+			if (descriptor) {
+				Object.defineProperty(entity, key, { enumerable: false });
+			}
 		}
 	}
 }
