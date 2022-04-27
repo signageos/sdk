@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Fixed
 - Incorrect URL path on updating device application version
+- Policy management use wrong auth tokens
 
 ## [1.10.0] - 2022-04-21
 ### Added
