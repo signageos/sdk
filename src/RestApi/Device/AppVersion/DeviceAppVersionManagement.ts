@@ -6,21 +6,18 @@ import IDeviceAppVersion, { IDeviceAppVersionUpdatable } from "./IDeviceAppVersi
 
 export default class DeviceAppVersionManagement {
 
-	private static getUrl(deviceUid: string): string {
-		return `${Resources.Device}/${deviceUid}/application/version`;
-	}
-
 	constructor(private options: IOptions) {
 	}
 
 	public async get(deviceUid: string): Promise<IDeviceAppVersion> {
-		const response = await getResource(this.options, DeviceAppVersionManagement.getUrl(deviceUid));
-
+		const urlParts = [Resources.Device, deviceUid, 'application', 'version'];
+		const response = await getResource(this.options, urlParts.join('/'));
 		return new DeviceAppVersion(await parseJSONResponse(response));
 	}
 
 	public async set(deviceUid: string, settings: IDeviceAppVersionUpdatable): Promise<void> {
-		await putResource(this.options, DeviceAppVersionManagement.getUrl(deviceUid), JSON.stringify(settings));
+		const urlParts = [Resources.Device, deviceUid, 'application', settings.applicationType, 'version'];
+		await putResource(this.options, urlParts.join('/'), JSON.stringify(settings));
 	}
 
 }
