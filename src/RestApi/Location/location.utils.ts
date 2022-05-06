@@ -1,4 +1,4 @@
-import { getFileExtension } from '@signageos/lib/dist/Utils/file';
+import { getFileExtension } from '../../Utils/file';
 
 export const getAttachmentExtension = async (file: Buffer) => {
 	const extension = await getFileExtension(file);
