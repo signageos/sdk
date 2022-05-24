@@ -1,4 +1,6 @@
-import { ApplicationType, DeviceActionType, InputSource, Orientation, VideoOrientation } from './enums';
+import { InputSource } from '../Device/InputSource';
+import { TResolutionItem } from '../Device/Resolution/IDeviceResolution';
+import { ApplicationType, DeviceActionType, Orientation, VideoOrientation } from './enums';
 
 export interface IConfigValues {
 	platformUri?: string | null;
@@ -23,11 +25,6 @@ export interface DateFormat {
 	timeZoneOffset: number;
 }
 
-export type ResolutionItem = {
-	width: number;
-	height: number;
-	framerate?: number;
-};
 export type LogData = {
 	[DeviceActionType.SET_APPLICATION_VERSION]: {
 		applicationType: ApplicationType;
@@ -86,7 +83,7 @@ export type LogData = {
 		enabled: boolean;
 	};
 	[DeviceActionType.RESIZE]: {
-		resolution: ResolutionItem;
+		resolution: TResolutionItem;
 		orientation: Orientation;
 		videoOrientation?: VideoOrientation;
 	};

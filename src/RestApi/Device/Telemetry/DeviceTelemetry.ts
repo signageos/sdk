@@ -1,4 +1,4 @@
-import { fillDataToEntity } from "../../mapper";
+import { fillDataToEntity } from '../../mapper';
 import IDeviceTelemetry from './IDeviceTelemetry';
 
 export default class DeviceTelemetry implements IDeviceTelemetry {
