@@ -3,6 +3,7 @@ import OrganizationTagManagement from './Organization/Tag/OrganizationTagManagem
 import TimingManagement from './Timing/TimingManagement';
 import TimingCommandManagement from './Timing/Command/TimingCommandManagement';
 import DeviceManagement from './Device/DeviceManagement';
+import DeviceAliveManagement from './Device/Alive/DeviceAliveManagement';
 import AppletManagement from './Applet/AppletManagement';
 import PolicyManagement from './Policy/PolicyManagement';
 import BulkOperationManagement from './BulkOperation/BulkOperationManagement';
@@ -12,8 +13,8 @@ import CompanyManagement from './Company/CompanyManagement';
 import LocationManagement from './Location/LocationManagement';
 import LocationOrganizationTag from './Location/OrganizationTag/LocationOrganizationTagManagement';
 import DeviceLocationManagement from './Device/Location/DeviceLocationManagement';
+import AlertManagement from './Alerts/AlertManagement';
 import IOptions from './IOptions';
-import AlertManagement from "./Alerts/AlertManagement";
 
 export default class RestApi {
 	// Note: We use different authentication here
@@ -32,8 +33,9 @@ export default class RestApi {
 	public readonly policy: PolicyManagement = new PolicyManagement(this.organizationOptions);
 	public readonly bulkOperation: BulkOperationManagement = new BulkOperationManagement(this.organizationOptions);
 	public readonly device: DeviceManagement = new DeviceManagement(this.accountOptions, this.organizationOptions);
+	public readonly deviceAlive: DeviceAliveManagement = new DeviceAliveManagement(this.organizationOptions);
 	public readonly deviceLocation: DeviceLocationManagement = new DeviceLocationManagement(this.organizationOptions);
-	public readonly alert: AlertManagement =  new AlertManagement(this.organizationOptions);
+	public readonly alert: AlertManagement = new AlertManagement(this.organizationOptions);
 
 	public readonly location: LocationManagement = new LocationManagement(this.organizationOptions);
 	public readonly locationOrganizationTag: LocationOrganizationTag = new LocationOrganizationTag(
