@@ -23,5 +23,5 @@ export default interface IDeviceTelemetry {
 	type: DeviceTelemetryType;
 	updatedAt: Date;
 	// TODO: More strict data type for each telemetry type
-	data: { [property: string]: any } | null;
+	data: { [property: string]: any; } | null;
 }
