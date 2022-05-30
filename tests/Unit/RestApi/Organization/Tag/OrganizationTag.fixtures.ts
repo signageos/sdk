@@ -1,6 +1,5 @@
-import { random } from 'faker';
-
 import { IOrganizationTag, IOrganizationTagUpdate } from "../../../../../src/RestApi/Organization/Tag/OrganizationTag";
+import { random } from 'faker';
 
 export const ORGANIZATION_TAG_1: IOrganizationTag = {
 	uid: random.uuid(),
