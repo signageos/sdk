@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Device alive `list` method to fetch list of devices with alive time
 - Device alive `get` method to fetch one device with alive time
-
+- Device telemetry `listLatest` method to fetch list of devices with telemetries
+- Device telemetry `getLatestByUid` method to fetch one device by uid with telemetries
 
 ## [1.10.1] - 2022-05-06
 ### Fixed

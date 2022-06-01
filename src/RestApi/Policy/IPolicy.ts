@@ -1,4 +1,3 @@
-
 export interface IPolicyCreatable {
 	name: string;
 	organizationUid: string;

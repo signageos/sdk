@@ -2,7 +2,7 @@ import * as should from 'should';
 import * as nock from "nock";
 import { nockOpts, successRes } from "../../helper";
 import IDeviceResolution, {
-	DeviceResolutionOrientation as Orientation,
+	DeviceOrientation,
 	DeviceResolutionResolution as Resolution,
 	IDeviceResolutionUpdatable,
 } from "../../../../../src/RestApi/Device/Resolution/IDeviceResolution";
@@ -13,7 +13,7 @@ describe('DeviceResolutionManagement', () => {
 	const resol: IDeviceResolution = {
 		uid: 'someUid',
 		deviceUid: '3caXXX589b',
-		orientation: Orientation.Landscape,
+		orientation: DeviceOrientation.Landscape,
 		resolution: Resolution.HDReady,
 		videoOrientation: null,
 		createdAt: new Date('2018-05-23T14:37:07.362Z'),
@@ -22,7 +22,7 @@ describe('DeviceResolutionManagement', () => {
 	};
 	const validGetResp: IDeviceResolution[] = [resol];
 	const validSetReq: IDeviceResolutionUpdatable = {
-		orientation: Orientation.Portrait,
+		orientation: DeviceOrientation.Portrait,
 		resolution: Resolution.FullHD,
 	};
 

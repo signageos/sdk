@@ -1,13 +1,13 @@
 import * as should from 'should';
 
-import { Api } from "../../../../src";
-import { opts, preRunCheck } from "../helper";
-import IDevice, { IDeviceUpdatable } from "../../../../src/RestApi/Device/IDevice";
+import { Api } from '../../../../src';
+import IDevice, { IDeviceUpdatable } from '../../../../src/RestApi/Device/IDevice';
 import IDeviceResolution, {
-	DeviceResolutionOrientation,
+	DeviceOrientation,
 	DeviceResolutionResolution,
 	IDeviceResolutionUpdatable,
-} from "../../../../src/RestApi/Device/Resolution/IDeviceResolution";
+} from '../../../../src/RestApi/Device/Resolution/IDeviceResolution';
+import { opts, preRunCheck } from '../helper';
 
 const allowedTimeout = 30000;
 const api = new Api(opts);
@@ -45,7 +45,6 @@ describe('RestAPI - Device', function () {
 
 		const dvc = await api.device.get(device.uid);
 		should.equal(device.uid, dvc.uid);
-
 	});
 
 	it('should update device name', async function () {
@@ -86,7 +85,7 @@ describe('RestAPI - Device', function () {
 		screenshots.length.should.equal(0);
 	});
 
-	it('should request instant screenshot', async function() {
+	it('should request instant screenshot', async function () {
 		if (!device || !device.uid) {
 			return this.skip();
 		}
@@ -102,7 +101,6 @@ describe('RestAPI - Device', function () {
 		const pin = await api.device.pinCode.get(device.uid);
 		should.equal(device.uid, pin.deviceUid);
 		should.equal(device.pinCode, pin.pinCode);
-
 	});
 
 	it('should set and get the device resolution', async function () {
@@ -111,7 +109,7 @@ describe('RestAPI - Device', function () {
 		}
 
 		const toSet: IDeviceResolutionUpdatable = {
-			orientation: DeviceResolutionOrientation.Landscape,
+			orientation: DeviceOrientation.Landscape,
 			resolution: DeviceResolutionResolution.HDReady,
 		};
 		await api.device.resolution.set(device.uid, toSet);
@@ -124,7 +122,5 @@ describe('RestAPI - Device', function () {
 			should.equal(item.deviceUid, device.uid);
 			should(item.uid.length > 0).true();
 		});
-
 	});
-
 });
