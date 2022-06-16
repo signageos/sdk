@@ -35,6 +35,7 @@ export default class RestApi {
 	public readonly device: DeviceManagement = new DeviceManagement(this.accountOptions, this.organizationOptions);
 	public readonly deviceAlive: DeviceAliveManagement = new DeviceAliveManagement(this.organizationOptions);
 	public readonly deviceLocation: DeviceLocationManagement = new DeviceLocationManagement(this.organizationOptions);
+
 	public readonly alert: AlertManagement = new AlertManagement(this.organizationOptions);
 
 	public readonly location: LocationManagement = new LocationManagement(this.organizationOptions);

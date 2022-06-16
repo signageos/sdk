@@ -48,6 +48,14 @@ interface IPowerActionsScheduleSettings {
 	time: string;
 }
 
+export interface IDeviceActionLog {
+	uid: string;
+	deviceUid: string;
+	createdAt: Date;
+	succeededAt: Date | null;
+	failedAt: Date | null;
+}
+
 export enum DeviceTelemetryType {
 	DISPLAY_SETTING = 'DISPLAY_SETTING',
 	INPUT_SOURCE = 'INPUT_SOURCE',
