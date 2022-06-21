@@ -65,29 +65,9 @@ node.js app, it tries to get values from user's `~/.sosrc` which is configured b
 [`@signageos/cli`](https://github.com/signageos/cli) dependency.
 
 ```ecmascript 6
-import {api} from "@signageos/sdk";
+import { createApiV1 } from "@signageos/sdk";
 
-// retrieves the list of all devices
-const devices = await api.device.list();
-
-// retrieves the device info
-const deviceInfo = await api.device.get('deviceUid');
-
-// sets the device volume
-await api.device.audio.set('deviceUid', {volume: 40});
-
-// retrieves the list of all applets
-const applets = await api.applet.list();
-
-// ...
-```
-
-### Instantiating
-
-```ecmascript 6
-import {Api} from "@signageos/sdk";
-
-const api = new Api(
+const api = createApiV1(
 	{
 		url: 'https://api.signageos.io', // Optional
 		organizationAuth: {
@@ -98,7 +78,43 @@ const api = new Api(
 			tokenId: '...apiSecurityTokenID...',
 			token: '...apiSecurityToken...',
 		},
-		version: 'v1', // Optional
+		version: 'v1',
+	},
+);
+
+// retrieves the list of all devices
+const devices = await api.device.list();
+
+// ...
+```
+
+```ecmascript 6
+import { createApiV1 } from "@signageos/sdk";
+
+// takes parameters from env vars
+const api = createApiV1();
+
+// retrieves the list of all devices
+const devices = await api.device.list();
+
+// ...
+```
+
+```ecmascript 6
+import { createApiV2 } from "@signageos/sdk";
+
+const api = createApiV2(
+	{
+		url: 'https://api.signageos.io', // Optional
+		organizationAuth: {
+			clientId: '...OAuthClientID...',
+			secret: '...OAuthSecret...',
+		},
+		accountAuth: {
+			tokenId: '...apiSecurityTokenID...',
+			token: '...apiSecurityToken...',
+		},
+		version: 'v2',
 	},
 );
 
