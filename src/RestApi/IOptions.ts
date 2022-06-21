@@ -9,7 +9,7 @@ interface IOptions {
 	url: string;
 	contentType?: string;
 	auth: IAuthLikeOptions;
-	version: 'v1';
+	version: 'v1' | 'v2';
 }
 
 export default IOptions;

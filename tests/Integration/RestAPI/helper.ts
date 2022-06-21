@@ -1,5 +1,5 @@
-import { IOptions } from '../../../src';
 import { parameters } from '../../../src/parameters';
+import { IOptions } from '../../../src/apiTools';
 
 export const RUN_INTEGRATION_TESTS = parameters.runIntegrationTests === 'true';
 
