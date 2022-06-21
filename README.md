@@ -58,7 +58,7 @@ Please see the `.env.dist` file where all mandatory ENV variables, required for 
 
 ## REST API
 
-### Singleton
+### Credentials in code
 
 Just by setting ENV variables properly, you are ready to go and may use the api. If not ENV variables provided to
 node.js app, it tries to get values from user's `~/.sosrc` which is configured by
@@ -89,18 +89,6 @@ const devices = await api.device.list();
 ```
 
 ```ecmascript 6
-import { createApiV1 } from "@signageos/sdk";
-
-// takes parameters from env vars
-const api = createApiV1();
-
-// retrieves the list of all devices
-const devices = await api.device.list();
-
-// ...
-```
-
-```ecmascript 6
 import { createApiV2 } from "@signageos/sdk";
 
 const api = createApiV2(
@@ -117,6 +105,32 @@ const api = createApiV2(
 		version: 'v2',
 	},
 );
+
+// retrieves the list of all devices
+const devices = await api.device.list();
+
+// ...
+```
+
+### Credentials from ENV Variables
+
+```ecmascript 6
+import { createApiV1 } from "@signageos/sdk";
+
+// takes parameters from env vars
+const api = createApiV1();
+
+// retrieves the list of all devices
+const devices = await api.device.list();
+
+// ...
+```
+
+```ecmascript 6
+import { createApiV2 } from "@signageos/sdk";
+
+// takes parameters from env vars
+const api = createApiV2();
 
 // retrieves the list of all devices
 const devices = await api.device.list();
