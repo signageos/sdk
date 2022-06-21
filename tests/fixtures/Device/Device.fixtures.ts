@@ -1,11 +1,11 @@
 import { random } from 'faker';
 
-import IDeviceReadOnly from '../../../src/RestApi/Device/IDevice';
+import IDevice from '../../../src/RestApi/Device/IDevice';
 import { ORGANIZATION_UID_1 } from '../Organization/organization.fixtures';
 import { APPLICATION_TYPE_1 } from '../Application/Application.fixtures';
 
 // If the DEVICE fixtures dont have valid organizationUid they will not work for e2e tests
-export const DEVICE_1: IDeviceReadOnly = {
+export const DEVICE_1: IDevice = {
 	uid: random.uuid(),
 	name: 'Display 1',
 	createdAt: new Date('2022-01-22T14:00:00.000Z'),
@@ -51,7 +51,7 @@ export const DEVICE_1: IDeviceReadOnly = {
 	supportedResolutions: [{ width: 1920, height: 1080 }],
 };
 
-export const DEVICE_2: IDeviceReadOnly = {
+export const DEVICE_2: IDevice = {
 	name: random.alphaNumeric(10),
 	uid: random.uuid(),
 	createdAt: new Date('2022-01-01T10:00:00.000Z'),
@@ -96,7 +96,7 @@ export const DEVICE_2: IDeviceReadOnly = {
 	organizationUid: ORGANIZATION_UID_1,
 	applicationType: APPLICATION_TYPE_1,
 };
-export const DEVICE_3: IDeviceReadOnly = {
+export const DEVICE_3: IDevice = {
 	name: random.alphaNumeric(10),
 	uid: random.uuid(),
 	createdAt: new Date('2022-01-21T10:00:00.000Z'),
