@@ -78,7 +78,6 @@ const api = createApiV1(
 			tokenId: '...apiSecurityTokenID...',
 			token: '...apiSecurityToken...',
 		},
-		version: 'v1',
 	},
 );
 
@@ -102,7 +101,6 @@ const api = createApiV2(
 			tokenId: '...apiSecurityTokenID...',
 			token: '...apiSecurityToken...',
 		},
-		version: 'v2',
 	},
 );
 
