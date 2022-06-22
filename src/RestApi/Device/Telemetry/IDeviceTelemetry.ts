@@ -75,6 +75,7 @@ export enum DeviceTelemetryType {
 	OFFLINE_RANGE = 'OFFLINE_RANGE',
 	ONLINE_STATUS = 'ONLINE_STATUS',
 	BUNDLED_APPLET = 'BUNDLED_APPLET',
+	PEER_RECOVERY = 'PEER_RECOVERY',
 }
 
 export type LogData = {
@@ -140,6 +141,9 @@ export type LogData = {
 			[key: string]: string;
 		};
 	};
+	[DeviceTelemetryType.PEER_RECOVERY]: {
+		enabled: boolean;
+	}
 };
 
 export default interface IDeviceTelemetry {
