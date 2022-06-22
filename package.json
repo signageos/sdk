@@ -24,7 +24,7 @@
     "watch": "tsc --watch",
     "docs": "typedoc ./src/RestApi",
     "check": "npm run depcheck && npx --userconfig ./.npmrc @signageos/lib check-deps",
-    "depcheck": "depcheck --specials=tslint,webpack,mocha --parsers='*.ts:typescript,*.tsx:typescript,*.js:es6' --detectors='requireCallExpression,importDeclaration' --ignore-dirs='dist' --ignores='@types/*,@signageos/codestyle,ts-node,source-map-support,mocha,depcheck,webpack-cli,typedoc,prettier'"
+    "depcheck": "depcheck --specials=tslint,mocha --parsers='*.ts:typescript,*.tsx:typescript,*.js:es6' --detectors='requireCallExpression,importDeclaration' --ignore-dirs='dist' --ignores='@types/*,@signageos/codestyle,ts-node,source-map-support,mocha,depcheck,typedoc,prettier'"
   },
   "author": "Michael Zabka <zabka.michael@gmail.com>",
   "license": "MIT",
@@ -50,7 +50,6 @@
     "@types/node-fetch": "2.1.2",
     "@types/should": "8.3.0",
     "@types/sinon": "9.0.8",
-    "@types/webpack": "3.8.1",
     "depcheck": "1.2.0",
     "faker": "4.1.0",
     "mocha": "7.2.0",

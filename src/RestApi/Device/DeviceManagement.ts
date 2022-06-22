@@ -1,31 +1,32 @@
-import IOptions from "../IOptions";
-import { getResource, parseJSONResponse, putResource } from "../requester";
-import IDeviceFilter from "./IDeviceFilter";
-import Device from "./Device";
-import IDevice, { IDeviceUpdatable } from "./IDevice";
-import DeviceAppVersionManagement from "./AppVersion/DeviceAppVersionManagement";
-import DeviceAudioManagement from "./Audio/DeviceAudioManagement";
-import DeviceAuthenticationManagement from "./Authentication/DeviceAuthenticationManagement";
-import DeviceBrightnessManagement from "./Brightness/DeviceBrightnessManagement";
-import DeviceDateTimeManagement from "./DateTime/DeviceDateTimeManagement";
-import DeviceDebugManagement from "./Debug/DeviceDebugManagement";
-import DeviceProvisioningManagement from "./Provisioning/DeviceProvisioningManagement";
-import DeviceFirmwareManagement from "./Firmware/DeviceFirmwareManagement";
-import DeviceMonitoringManagement from "./Monitoring/DeviceMonitoringManagement";
-import DevicePackageManagement from "./Package/DevicePackageManagement";
-import DevicePinCodeManagement from "./PinCode/DevicePinCodeManagement";
-import DevicePowerActionManagement from "./PowerAction/DevicePowerActionManagement";
-import DeviceScheduledPowerActionManagement from "./PowerAction/DeviceScheduledPowerActionManagement";
-import DeviceScreenshotManagement from "./Screenshot/DeviceScreenshotManagement";
-import DeviceRemoteControlManagement from "./RemoteControl/DeviceRemoteControlManagement";
-import DeviceResolutionManagement from "./Resolution/DeviceResolutionManagement";
-import DeviceTimerManagement from "./Timer/DeviceTimerManagement";
-import DeviceVerificationManagement from "./Verification/DeviceVerificationManagement";
-import DeviceAppletTestManagement from "./AppletTest/DeviceAppletTestManagement";
-import DeviceTelemetryManagement from "./Telemetry/DeviceTelemetryManagement";
-import DevicePolicyManagement from "./Policy/DevicePolicyManagement";
-import DevicePolicyStatusManagement from "./PolicyStatus/DevicePolicyStatusManagement";
-import { Resources } from "../resources";
+import IOptions from '../IOptions';
+import { getResource, parseJSONResponse, putResource } from '../requester';
+import { Resources } from '../resources';
+import IDeviceFilter from './IDeviceFilter';
+import Device from './Device';
+import IDevice, { IDeviceUpdatable } from './IDevice';
+import DeviceAppVersionManagement from './AppVersion/DeviceAppVersionManagement';
+import DeviceAudioManagement from './Audio/DeviceAudioManagement';
+import DeviceAuthenticationManagement from './Authentication/DeviceAuthenticationManagement';
+import DeviceBrightnessManagement from './Brightness/DeviceBrightnessManagement';
+import DeviceDateTimeManagement from './DateTime/DeviceDateTimeManagement';
+import DeviceDebugManagement from './Debug/DeviceDebugManagement';
+import DeviceProvisioningManagement from './Provisioning/DeviceProvisioningManagement';
+import DeviceFirmwareManagement from './Firmware/DeviceFirmwareManagement';
+import DeviceMonitoringManagement from './Monitoring/DeviceMonitoringManagement';
+import DevicePackageManagement from './Package/DevicePackageManagement';
+import DevicePinCodeManagement from './PinCode/DevicePinCodeManagement';
+import DevicePowerActionManagement from './PowerAction/DevicePowerActionManagement';
+import DeviceScheduledPowerActionManagement from './PowerAction/DeviceScheduledPowerActionManagement';
+import DeviceScreenshotManagement from './Screenshot/DeviceScreenshotManagement';
+import DeviceRemoteControlManagement from './RemoteControl/DeviceRemoteControlManagement';
+import DeviceResolutionManagement from './Resolution/DeviceResolutionManagement';
+import DeviceTimerManagement from './Timer/DeviceTimerManagement';
+import DeviceVerificationManagement from './Verification/DeviceVerificationManagement';
+import DeviceAppletTestManagement from './AppletTest/DeviceAppletTestManagement';
+import DeviceTelemetryManagement from './Telemetry/DeviceTelemetryManagement';
+import DevicePolicyManagement from './Policy/DevicePolicyManagement';
+import DevicePolicyStatusManagement from './PolicyStatus/DevicePolicyStatusManagement';
+import DevicePeerRecoveryManagement from './PeerRecovery/DevicePeerRecoveryManagement';
 
 export default class DeviceManagement {
 
@@ -51,6 +52,7 @@ export default class DeviceManagement {
 	public telemetry: DeviceTelemetryManagement;
 	public policy: DevicePolicyManagement;
 	public policyStatus: DevicePolicyStatusManagement;
+	public peerRecovery: DevicePeerRecoveryManagement;
 
 	constructor(private accountOptions: IOptions, private organizationOptions: IOptions) {
 		this.appVersion = new DeviceAppVersionManagement(organizationOptions);
@@ -75,6 +77,7 @@ export default class DeviceManagement {
 		this.telemetry = new DeviceTelemetryManagement(organizationOptions);
 		this.policy = new DevicePolicyManagement(organizationOptions);
 		this.policyStatus = new DevicePolicyStatusManagement(organizationOptions);
+		this.peerRecovery = new DevicePeerRecoveryManagement(organizationOptions);
 	}
 
 	/** @deprecated
