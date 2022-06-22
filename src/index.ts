@@ -2,6 +2,7 @@ import RestApi from './RestApi/RestApi';
 import RestApiV2 from './RestApi/RestApiV2';
 import waitUntilTrue from './Timer/waitUntil';
 import { createApiOrgAndAccountOptions, createDefaultOptions, IOptions } from './apiTools';
+import { ApiVersions } from './RestApi/apiVersions';
 
 /** @deprecated, use createApiV1, or createApiV2 functions instead */
 export class Api extends RestApi {
@@ -14,12 +15,12 @@ export class Api extends RestApi {
 }
 
 export function createApiV1(options: IOptions = createDefaultOptions()): RestApi {
-	const { accountOptions, organizationOptions } = createApiOrgAndAccountOptions(options);
+	const { accountOptions, organizationOptions } = createApiOrgAndAccountOptions(options, ApiVersions.V1);
 	return new RestApi(accountOptions, organizationOptions);
 }
 
-export function createApiV2(options: IOptions = createDefaultOptions('v2')): RestApiV2 {
-	const { accountOptions, organizationOptions } = createApiOrgAndAccountOptions(options);
+export function createApiV2(options: IOptions = createDefaultOptions(ApiVersions.V2)): RestApiV2 {
+	const { accountOptions, organizationOptions } = createApiOrgAndAccountOptions(options, ApiVersions.V2);
 	return new RestApiV2(accountOptions, organizationOptions);
 }
 

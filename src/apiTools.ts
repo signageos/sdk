@@ -2,6 +2,7 @@ import IRestApiOptions from './RestApi/IOptions';
 import { parameters } from './parameters';
 import { cacheFunctionResult } from './SosHelper/cache';
 import { loadAccountAuthOptions, loadOrganizationAuthOptions } from './SosHelper/sosControlHelper';
+import { ApiVersions } from './RestApi/apiVersions';
 
 export interface IOptions {
 	url?: string;
@@ -20,10 +21,10 @@ export interface IOptions {
 		clientId: string;
 		secret: string;
 	};
-	version: 'v1' | 'v2';
+	version?: ApiVersions.V1 | ApiVersions.V2;
 }
 
-export function createDefaultOptions(version: 'v1' | 'v2' = 'v1'): IOptions {
+export function createDefaultOptions(version: ApiVersions.V1 | ApiVersions.V2 = ApiVersions.V1): IOptions {
 	return {
 		url: parameters.apiUrl,
 		version: version,
@@ -33,7 +34,7 @@ export function createDefaultOptions(version: 'v1' | 'v2' = 'v1'): IOptions {
 	};
 }
 
-export function createApiOrgAndAccountOptions(options: IOptions): {
+export function createApiOrgAndAccountOptions(options: IOptions, version?: ApiVersions.V1 | ApiVersions.V2): {
 	accountOptions: IRestApiOptions,
 	organizationOptions: IRestApiOptions,
 } {
@@ -55,7 +56,7 @@ export function createApiOrgAndAccountOptions(options: IOptions): {
 
 	const generalOptions = {
 		url: options.url ?? parameters.apiUrl,
-		version: options.version ?? 'v1',
+		version: version ?? options.version ?? ApiVersions.V1,
 		contentType: options.contentType,
 	};
 
