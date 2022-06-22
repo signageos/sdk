@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
-- DeviceV2 endpoints to fetch list of devices or device by uid
+- Version 2 of device endpoints to fetch list of devices or device by uid
 
 
 ## [1.11.0] - 2022-06-03
