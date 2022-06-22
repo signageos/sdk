@@ -1,11 +1,12 @@
 import { parameters } from '../../../src/parameters';
 import { IOptions } from '../../../src/apiTools';
+import { ApiVersions } from '../../../src/RestApi/apiVersions';
 
 export const RUN_INTEGRATION_TESTS = parameters.runIntegrationTests === 'true';
 
 // api host
 const host = parameters.apiUrl;
-const version = 'v1';
+const version = ApiVersions.V1;
 const organizationUid = parameters.organizationUid;
 
 export const opts: IOptions = {

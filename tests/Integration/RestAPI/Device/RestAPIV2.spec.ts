@@ -5,7 +5,6 @@ import IDeviceV2 from '../../../../src/RestApi/Device/DeviceV2';
 import { opts, preRunCheck } from '../helper';
 
 const allowedTimeout = 30000;
-opts.version = 'v2';
 const api = createApiV2(opts);
 
 describe('RestAPI - Device', function () {
