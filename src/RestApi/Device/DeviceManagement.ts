@@ -78,10 +78,9 @@ export default class DeviceManagement {
 	}
 
 	/** @deprecated
-	 * use v2/device and v2/device/:deviceUid endpoints for general info
-	 * use v1/device/alive for device status
-	 * use v1/device/telemetry/latest and v1/device/:deviceUid/telemetry/latest for various device info such as battery,
-	 * time settings, storage...
+	 * use api.device.list() from API v2 for general device info
+	 * use api.device.deviceAlive.list() for device alive status
+	 * use api.device.telemetry.listLatest() for latest telemetry readings
 	 */
 	public async list(filter: IDeviceFilter = {}): Promise<IDevice[]> {
 		const response = await getResource(this.organizationOptions, Resources.Device, filter);
@@ -91,10 +90,9 @@ export default class DeviceManagement {
 	}
 
 	/** @deprecated
-	 * use v2/device and v2/device/:deviceUid endpoints for general info
-	 * use v1/device/alive for device status
-	 * use v1/device/telemetry/latest and v1/device/:deviceUid/telemetry/latest for various device info such as battery,
-	 * time settings, storage...
+	 * use api.device.get(deviceUid) from API v2 for general device info
+	 * use api.device.deviceAlive.get(deviceUid) for device alive status
+	 * use api.device.telemetry.getLatest(deviceUid) for latest telemetry readings
 	 */
 	public async get(deviceUid: string, filter: IDeviceFilter = {}): Promise<IDevice> {
 		const response = await getResource(this.organizationOptions, Resources.Device + '/' + deviceUid, filter);
