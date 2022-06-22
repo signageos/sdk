@@ -1,82 +1,31 @@
 import RestApi from './RestApi/RestApi';
+import RestApiV2 from './RestApi/RestApiV2';
 import waitUntilTrue from './Timer/waitUntil';
-import { parameters } from './parameters';
-import IRestApiOptions from './RestApi/IOptions';
-import {
-	loadAccountAuthOptions,
-	loadOrganizationAuthOptions,
-} from './SosHelper/sosControlHelper';
-import { cacheFunctionResult } from './SosHelper/cache';
+import { createApiOrgAndAccountOptions, createDefaultOptions, IOptions } from './apiTools';
+import { ApiVersions } from './RestApi/apiVersions';
 
-export interface IOptions {
-	url?: string;
-	contentType?: string;
-	accountAuth?: {
-		tokenId: string;
-		token: string;
-	} | {
-		/** @deprecated use tokenId instead */
-		accountId: string;
-		/** @deprecated use token instead */
-		secret: string;
-	};
-	organizationUid?: string;
-	organizationAuth?: {
-		clientId: string;
-		secret: string;
-	};
-	version?: 'v1';
-}
-
+/** @deprecated, use createApiV1, or createApiV2 functions instead */
 export class Api extends RestApi {
 	constructor(
 		options: IOptions,
 	) {
-		if (options.accountAuth && 'accountId' in options.accountAuth) {
-			console.warn(
-				`Option "accountAuth.accountId" is deprecated and will be removed in next major version. Use "accountAuth.tokenId" instead.`,
-			);
-		}
-		if (options.accountAuth && 'secret' in options.accountAuth) {
-			console.warn(
-				`Option "accountAuth.secret" is deprecated and will be removed in next major version. Use "accountAuth.token" instead.`,
-			);
-		}
-		const accountAuth = options.accountAuth && 'tokenId' in options.accountAuth ? options.accountAuth : {
-			tokenId: options.accountAuth?.accountId,
-			token: options.accountAuth?.secret,
-		};
-		const accountOptions: IRestApiOptions = {
-			url: options.url ?? parameters.apiUrl,
-			version: options.version ?? 'v1',
-			contentType: options.contentType,
-			auth: accountAuth.tokenId && accountAuth.token ? {
-				clientId: accountAuth.tokenId,
-				secret: accountAuth.token,
-			} : cacheFunctionResult(loadAccountAuthOptions),
-		};
-		const organizationOptions: IRestApiOptions = {
-			url: options.url ?? parameters.apiUrl,
-			version: options.version ?? 'v1',
-			contentType: options.contentType,
-			auth: options.organizationAuth?.clientId && options.organizationAuth?.secret ? {
-				clientId: options.organizationAuth?.clientId,
-				secret: options.organizationAuth?.secret,
-			} : cacheFunctionResult(() => loadOrganizationAuthOptions(accountOptions, options.organizationUid)),
-		};
+		const { accountOptions, organizationOptions } = createApiOrgAndAccountOptions(options);
 		super(accountOptions, organizationOptions);
 	}
 }
 
-const rest = new Api(
-	{
-		url: parameters.apiUrl,
-		version: 'v1',
-		accountAuth: parameters.accountAuth,
-		organizationUid: parameters.organizationUid,
-		organizationAuth: parameters.organizationAuth,
-	},
-);
+export function createApiV1(options: IOptions = createDefaultOptions()): RestApi {
+	const { accountOptions, organizationOptions } = createApiOrgAndAccountOptions(options, ApiVersions.V1);
+	return new RestApi(accountOptions, organizationOptions);
+}
+
+export function createApiV2(options: IOptions = createDefaultOptions(ApiVersions.V2)): RestApiV2 {
+	const { accountOptions, organizationOptions } = createApiOrgAndAccountOptions(options, ApiVersions.V2);
+	return new RestApiV2(accountOptions, organizationOptions);
+}
+
+/** @deprecated, use createApiV1, or createApiV2 functions instead */
+const rest = createApiV1();
 
 /** @deprecated use process.env.SOS_DEVICE_UID instead */
 export const CURRENT_DEVICE_UID = process.env.SOS_DEVICE_UID ?? Symbol('CURRENT_DEVICE_UID');

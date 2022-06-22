@@ -1,3 +1,5 @@
+import { ApiVersions } from './apiVersions';
+
 export interface IAuthOptions {
 	clientId: string;
 	secret: string;
@@ -9,7 +11,7 @@ interface IOptions {
 	url: string;
 	contentType?: string;
 	auth: IAuthLikeOptions;
-	version: 'v1';
+	version: ApiVersions.V1 | ApiVersions.V2;
 }
 
 export default IOptions;

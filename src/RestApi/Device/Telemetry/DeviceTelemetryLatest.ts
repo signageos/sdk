@@ -1,5 +1,5 @@
 import { fillDataToEntity } from '../../mapper';
-import IDeviceReadOnly from '../IDevice';
+import IDevice from '../IDevice';
 import { LogData, DeviceTelemetryType } from './IDeviceTelemetry';
 
 export interface ITelemetryItem<T extends DeviceTelemetryType> {
@@ -11,8 +11,8 @@ export interface ITelemetryItem<T extends DeviceTelemetryType> {
 type TTelemetries = { [T in DeviceTelemetryType]: ITelemetryItem<T> };
 
 export type TTelemetriesByDevice = {
-	deviceUid: IDeviceReadOnly['uid'];
-	createdAt: IDeviceReadOnly['createdAt'];
+	deviceUid: IDevice['uid'];
+	createdAt: IDevice['createdAt'];
 	telemetries: TTelemetries;
 };
 

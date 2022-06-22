@@ -9,7 +9,7 @@ export declare type ResolutionItem = {
 	framerate?: number;
 };
 
-export default interface IDeviceReadOnly {
+export default interface IDevice {
 	uid: string;
 	name: string;
 	createdAt: Date;

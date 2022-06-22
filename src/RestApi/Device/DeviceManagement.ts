@@ -77,6 +77,11 @@ export default class DeviceManagement {
 		this.policyStatus = new DevicePolicyStatusManagement(organizationOptions);
 	}
 
+	/** @deprecated
+	 * use api.device.list() from API v2 for general device info
+	 * use api.device.deviceAlive.list() for device alive status
+	 * use api.device.telemetry.listLatest() for latest telemetry readings
+	 */
 	public async list(filter: IDeviceFilter = {}): Promise<IDevice[]> {
 		const response = await getResource(this.organizationOptions, Resources.Device, filter);
 		const data: IDevice[] = await parseJSONResponse(response);
@@ -84,6 +89,11 @@ export default class DeviceManagement {
 		return data.map((item: IDevice) => new Device(item));
 	}
 
+	/** @deprecated
+	 * use api.device.get(deviceUid) from API v2 for general device info
+	 * use api.device.deviceAlive.get(deviceUid) for device alive status
+	 * use api.device.telemetry.getLatest(deviceUid) for latest telemetry readings
+	 */
 	public async get(deviceUid: string, filter: IDeviceFilter = {}): Promise<IDevice> {
 		const response = await getResource(this.organizationOptions, Resources.Device + '/' + deviceUid, filter);
 
