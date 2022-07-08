@@ -1,8 +1,14 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import { nockOpts, nockAuthHeader, successRes } from '../../helper';
-import IDevicePolicy, { IDevicePolicyRaw, IDevicePolicyAssignable } from '../../../../../src/RestApi/Device/Policy/IDevicePolicy';
+
+import { getNockOpts, nockAuthHeader1, successRes } from '../../helper';
+import IDevicePolicy, {
+	IDevicePolicyRaw,
+	IDevicePolicyAssignable,
+} from '../../../../../src/RestApi/Device/Policy/IDevicePolicy';
 import DevicePolicyManagement from '../../../../../src/RestApi/Device/Policy/DevicePolicyManagement';
+
+const nockOpts = getNockOpts({});
 
 describe('DevicePolicyManagement', () => {
 	const validAssignPolicyToDeviceRequest: IDevicePolicyAssignable = { uid: 'somePolicyUid', priority: 1 };
@@ -20,7 +26,7 @@ describe('DevicePolicyManagement', () => {
 		assignedAt: new Date('2022-01-07T08:56:52.550Z'),
 	};
 
-	nock(nockOpts.url, nockAuthHeader)
+	nock(nockOpts.url, nockAuthHeader1)
 		.get('/v1/device/someDeviceUid/policy')
 		.reply(200, [originalDevicePolicyRaw])
 		.post('/v1/device/someDeviceUid/policy', validAssignPolicyToDeviceRequest)

@@ -1,8 +1,13 @@
 import * as should from 'should';
-import * as nock from "nock";
-import DeviceBrightnessManagement from "../../../../../src/RestApi/Device/Brightness/DeviceBrightnessManagement";
-import IDeviceBrightness, { IDeviceBrightnessUpdatable } from "../../../../../src/RestApi/Device/Brightness/IDeviceBrightness";
-import { errorResp, errorRespMessage, nockOpts, successRes } from "../../helper";
+import * as nock from 'nock';
+
+import DeviceBrightnessManagement from '../../../../../src/RestApi/Device/Brightness/DeviceBrightnessManagement';
+import IDeviceBrightness, {
+	IDeviceBrightnessUpdatable,
+} from '../../../../../src/RestApi/Device/Brightness/IDeviceBrightness';
+import { errorResp, errorRespMessage, getNockOpts, successRes } from '../../helper';
+
+const nockOpts = getNockOpts({});
 
 describe('DeviceBrightnessManagement', () => {
 

@@ -1,11 +1,14 @@
 import * as should from 'should';
-import * as nock from "nock";
-import { nockOpts, successRes } from "../../helper";
+import * as nock from 'nock';
+
+import { getNockOpts, successRes } from '../../helper';
 import IAppletTestSuite, {
 	IAppletTestSuiteCreatable,
 	IAppletTestSuiteUpdatable,
-} from "../../../../../src/RestApi/Applet/Version/IAppletTestSuite";
-import AppletTestSuiteManagement from "../../../../../src/RestApi/Applet/Version/AppletTestSuiteManagement";
+} from '../../../../../src/RestApi/Applet/Version/IAppletTestSuite';
+import AppletTestSuiteManagement from '../../../../../src/RestApi/Applet/Version/AppletTestSuiteManagement';
+
+const nockOpts = getNockOpts({});
 
 describe('AppletTestSuiteManagement', () => {
 

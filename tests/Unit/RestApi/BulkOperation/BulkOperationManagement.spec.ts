@@ -1,11 +1,13 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import { nockOpts, nockAuthHeader, successRes } from '../helper';
+
+import { getNockOpts, nockAuthHeader1, successRes } from '../helper';
 import { IBulkOperationCreatable } from '../../../../src/RestApi/BulkOperation/IBulkOperation';
 import { DeviceActionType } from '../../../../src/RestApi/BulkOperation/enums';
 import BulkOperation from '../../../../src/RestApi/BulkOperation/BulkOperation';
 import BulkOperationManagement from '../../../../src/RestApi/BulkOperation/BulkOperationManagement';
 
+const nockOpts = getNockOpts({});
 const bulkOperationResource = 'bulk-operation';
 
 describe('BulkOperationManagement', () => {
@@ -72,7 +74,7 @@ describe('BulkOperationManagement', () => {
 		},
 	};
 
-	nock(nockOpts.url, nockAuthHeader)
+	nock(nockOpts.url, nockAuthHeader1)
 		.persist()
 		.get(`/v1/${bulkOperationResource}`)
 		.query({

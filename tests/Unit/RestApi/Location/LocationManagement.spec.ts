@@ -13,8 +13,9 @@ import {
 	LOCATION_CREATE_1,
 	LOCATION_UPDATE_1,
 } from '../../../fixtures/Location/location.fixtures';
-import { nockOpts, nockAuthHeader } from '../helper';
+import { getNockOpts, nockAuthHeader1 } from '../helper';
 
+const nockOpts = getNockOpts({});
 const locationManagement = new LocationManagement(nockOpts);
 
 const validCreateReq: ILocationCreate = { ...LOCATION_CREATE_1 };
@@ -42,7 +43,7 @@ describe('Unit.RestApi.Location', () => {
 	};
 
 	it('should create location', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.post(`/${ApiVersions.V1}/${Resources.Location}`, JSON.stringify(validCreateReq))
 			.reply(200, 'Created', validPostRespHeaders)
 			.get(`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}`)
@@ -54,7 +55,7 @@ describe('Unit.RestApi.Location', () => {
 	});
 
 	it('should get one location', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.get(`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}`)
 			.reply(200, validGetResp);
 
@@ -64,7 +65,7 @@ describe('Unit.RestApi.Location', () => {
 	});
 
 	it('should get multiple locations', async () => {
-		nock(nockOpts.url, nockAuthHeader).get(`/${ApiVersions.V1}/${Resources.Location}`).reply(200, validListResp);
+		nock(nockOpts.url, nockAuthHeader1).get(`/${ApiVersions.V1}/${Resources.Location}`).reply(200, validListResp);
 
 		const locations = await locationManagement.list();
 
@@ -72,7 +73,7 @@ describe('Unit.RestApi.Location', () => {
 	});
 
 	it('should update location', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.put(`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}`, JSON.stringify(validUpdateReq))
 			.reply(200);
 
@@ -82,7 +83,7 @@ describe('Unit.RestApi.Location', () => {
 	it('should add attachment', async () => {
 		const attachment = await readFile(`${parameters.paths.rootPath}/tests/assets/image_1.png`);
 
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.put(
 				`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}/${LocationResources.AddAttachment}`,
 				attachment,
@@ -93,7 +94,7 @@ describe('Unit.RestApi.Location', () => {
 	});
 
 	it('should remove attachments', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.put(
 				`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}/${LocationResources.RemoveAttachments}`,
 				JSON.stringify({ attachmentsToRemove: [] }),
@@ -104,7 +105,7 @@ describe('Unit.RestApi.Location', () => {
 	});
 
 	it('should delete location', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.delete(`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}`)
 			.reply(200);
 

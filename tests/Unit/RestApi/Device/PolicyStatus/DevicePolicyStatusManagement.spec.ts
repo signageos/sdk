@@ -1,8 +1,11 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import { nockOpts, nockAuthHeader } from '../../helper';
+
+import { getNockOpts, nockAuthHeader1 } from '../../helper';
 import IDevicePolicyStatus from '../../../../../src/RestApi/Device/PolicyStatus/IDevicePolicyStatus';
 import DevicePolicyStatusManagement from '../../../../../src/RestApi/Device/PolicyStatus/DevicePolicyStatusManagement';
+
+const nockOpts = getNockOpts({});
 
 describe('DevicePolicyStatusManagement', () => {
 	const originalDevicePolicyStatus: IDevicePolicyStatus = {
@@ -13,7 +16,7 @@ describe('DevicePolicyStatusManagement', () => {
 		updatedAt: new Date('2022-01-07T08:56:52.550Z'),
 	};
 
-	nock(nockOpts.url, nockAuthHeader)
+	nock(nockOpts.url, nockAuthHeader1)
 		.get('/v1/device/someDeviceUid/policy-status?policyUid=somePolicyUid&itemType=BRIGHTNESS')
 		.reply(200, [originalDevicePolicyStatus])
 		.get('/v1/device/someDeviceUid/policy-status/somePolicyUid/item/BRIGHTNESS')

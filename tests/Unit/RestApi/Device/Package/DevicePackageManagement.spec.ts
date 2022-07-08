@@ -1,8 +1,11 @@
 import * as should from 'should';
-import * as nock from "nock";
-import { errorResp, errorRespMessage, nockOpts, successRes } from "../../helper";
-import IDevicePackage, { IDevicePackageUpdatable } from "../../../../../src/RestApi/Device/Package/IDevicePackage";
-import DevicePackageManagement from "../../../../../src/RestApi/Device/Package/DevicePackageManagement";
+import * as nock from 'nock';
+
+import { errorResp, errorRespMessage, getNockOpts, successRes } from '../../helper';
+import IDevicePackage, { IDevicePackageUpdatable } from '../../../../../src/RestApi/Device/Package/IDevicePackage';
+import DevicePackageManagement from '../../../../../src/RestApi/Device/Package/DevicePackageManagement';
+
+const nockOpts = getNockOpts({});
 
 describe('DevicePackageManagement', () => {
 

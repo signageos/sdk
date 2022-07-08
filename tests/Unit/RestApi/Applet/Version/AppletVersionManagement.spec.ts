@@ -1,11 +1,14 @@
 import * as should from 'should';
-import * as nock from "nock";
-import { nockOpts, successRes } from "../../helper";
+import * as nock from 'nock';
+
+import { getNockOpts, successRes } from '../../helper';
 import IAppletVersion, {
 	IAppletVersionCreatable,
 	IAppletVersionUpdatable,
-} from "../../../../../src/RestApi/Applet/Version/IAppletVersion";
-import AppletVersionManagement from "../../../../../src/RestApi/Applet/Version/AppletVersionManagement";
+} from '../../../../../src/RestApi/Applet/Version/IAppletVersion';
+import AppletVersionManagement from '../../../../../src/RestApi/Applet/Version/AppletVersionManagement';
+
+const nockOpts = getNockOpts({});
 
 describe('AppletVersionManagement', () => {
 

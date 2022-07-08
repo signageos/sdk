@@ -1,12 +1,14 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import { errorResp, errorRespMessage, nockOpts } from '../helper';
+
+import { errorResp, errorRespMessage, getNockOpts } from '../helper';
 import DeviceManagement from '../../../../src/RestApi/Device/DeviceManagement';
 import IDevice, { IDeviceUpdatable } from '../../../../src/RestApi/Device/IDevice';
-import Device from "../../../../src/RestApi/Device/Device";
+import Device from '../../../../src/RestApi/Device/Device';
+
+const nockOpts = getNockOpts({});
 
 describe('DeviceManagement', () => {
-
 	const validGetResp: IDevice = {
 		'uid': 'someUid',
 		'name': 'Display 1',

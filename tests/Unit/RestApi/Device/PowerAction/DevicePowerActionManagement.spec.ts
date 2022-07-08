@@ -1,11 +1,14 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import { nockOpts, successRes } from '../../helper';
+
+import { getNockOpts, successRes } from '../../helper';
 import IPowerAction, {
 	DevicePowerAction,
 	IPowerActionUpdatable,
-} from "../../../../../src/RestApi/Device/PowerAction/IPowerAction";
-import DevicePowerActionManagement from "../../../../../src/RestApi/Device/PowerAction/DevicePowerActionManagement";
+} from '../../../../../src/RestApi/Device/PowerAction/IPowerAction';
+import DevicePowerActionManagement from '../../../../../src/RestApi/Device/PowerAction/DevicePowerActionManagement';
+
+const nockOpts = getNockOpts({});
 
 describe('DevicePowerActionManagement', () => {
 

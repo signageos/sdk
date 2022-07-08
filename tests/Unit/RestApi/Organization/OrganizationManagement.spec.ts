@@ -1,8 +1,11 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import { nockOpts, nockAuthHeader } from '../helper';
+
+import { getNockOpts, nockAuthHeader1 } from '../helper';
 import IOrganization, { IOrganizationCreatable } from '../../../../src/RestApi/Organization/IOrganization';
-import OrganizationManagement from "../../../../src/RestApi/Organization/OrganizationManagement";
+import OrganizationManagement from '../../../../src/RestApi/Organization/OrganizationManagement';
+
+const nockOpts = getNockOpts({});
 
 describe('OrganizationManagement', () => {
 
@@ -25,7 +28,7 @@ describe('OrganizationManagement', () => {
 		title: 'signageOS.io organization',
 	};
 
-	nock(nockOpts.url, nockAuthHeader)
+	nock(nockOpts.url, nockAuthHeader1)
 		.get('/v1/organization').reply(200, validListResp)
 		.get('/v1/organization/someUid').reply(200, validGetResp)
 		.get('/v1/organization/someUid?name=signageos').reply(200, validGetResp)

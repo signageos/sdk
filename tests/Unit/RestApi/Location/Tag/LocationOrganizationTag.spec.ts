@@ -6,13 +6,14 @@ import { Resources } from '../../../../../src/RestApi/resources';
 import LocationOrganizationTag from '../../../../../src/RestApi/Location/OrganizationTag/LocationOrganizationTagManagement';
 import { LOCATION_1, LOCATION_3 } from '../../../../fixtures/Location/location.fixtures';
 import { ORGANIZATION_TAG_1 } from '../../../../fixtures/Organization/Tag/organizationTag.fixtures';
-import { nockOpts, nockAuthHeader } from '../../helper';
+import { getNockOpts, nockAuthHeader1 } from '../../helper';
 
+const nockOpts = getNockOpts({});
 const locationOrganizationTag = new LocationOrganizationTag(nockOpts);
 
 describe('Unit.RestApi.Location.Tag.LocationOrganizationTag', () => {
 	it('should assign organization tag to location', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.put(
 				`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}/${Resources.OrganizationTag}/${ORGANIZATION_TAG_1.uid}`,
 			)
@@ -22,7 +23,7 @@ describe('Unit.RestApi.Location.Tag.LocationOrganizationTag', () => {
 	});
 
 	it('should unassign organization tag from location', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.delete(
 				`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_3.uid}/${Resources.OrganizationTag}/${ORGANIZATION_TAG_1.uid}`,
 			)

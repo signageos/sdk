@@ -1,13 +1,15 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import { nockOpts, successRes } from '../../helper';
-import { DevicePowerAction } from "../../../../../src/RestApi/Device/PowerAction/IPowerAction";
-import DeviceScheduledPowerActionManagement
-	from "../../../../../src/RestApi/Device/PowerAction/DeviceScheduledPowerActionManagement";
+
+import { getNockOpts, successRes } from '../../helper';
+import { DevicePowerAction } from '../../../../../src/RestApi/Device/PowerAction/IPowerAction';
+import DeviceScheduledPowerActionManagement from '../../../../../src/RestApi/Device/PowerAction/DeviceScheduledPowerActionManagement';
 import IScheduledPowerAction, {
 	IScheduledPowerActionCreatable,
 	SheduledActionDay,
-} from "../../../../../src/RestApi/Device/PowerAction/IScheduledPowerAction";
+} from '../../../../../src/RestApi/Device/PowerAction/IScheduledPowerAction';
+
+const nockOpts = getNockOpts({});
 
 describe('DeviceScheduledPowerActionManagement', () => {
 

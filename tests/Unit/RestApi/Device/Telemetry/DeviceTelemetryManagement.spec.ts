@@ -12,8 +12,9 @@ import {
 	DEVICE_TELEMETRY_2,
 	DEVICE_TELEMETRY_3,
 } from '../../../../fixtures/Device/Telemetry/DeviceTelemetry.fixtures';
-import { nockOpts, nockAuthHeader } from '../../helper';
+import { getNockOpts, nockAuthHeader1 } from '../../helper';
 
+const nockOpts = getNockOpts({});
 const deviceTelemetryManagement = new DeviceTelemetryManagement(nockOpts);
 
 const assertTelemetry = (firstTelemetry: IDeviceTelemetry, secondTelemetry: IDeviceTelemetry) => {
@@ -23,7 +24,7 @@ const assertTelemetry = (firstTelemetry: IDeviceTelemetry, secondTelemetry: IDev
 
 describe('Unit.RestApi.Device.Telemetry.DeviceTelemetryManagement', () => {
 	it('should get latest brightness telemetry for given device', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.get(`/${ApiVersions.V1}/device/someUid/telemetry/${DeviceTelemetryType.BRIGHTNESS}/latest`)
 			.reply(200, TELEMETRY_BRIGHTNESS_1);
 
@@ -33,7 +34,7 @@ describe('Unit.RestApi.Device.Telemetry.DeviceTelemetryManagement', () => {
 	});
 
 	it('should fetch list', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.get(`/${ApiVersions.V1}/${Resources.Device}/telemetry/latest`)
 			.reply(200, [
 				{
@@ -59,7 +60,7 @@ describe('Unit.RestApi.Device.Telemetry.DeviceTelemetryManagement', () => {
 	});
 
 	it('should fetch one', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.get(`/${ApiVersions.V1}/${Resources.Device}/${DEVICE_2.uid}/telemetry/latest`)
 			.reply(200, {
 				deviceUid: DEVICE_2.uid,

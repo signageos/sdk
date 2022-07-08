@@ -1,8 +1,11 @@
 import * as should from 'should';
-import * as nock from "nock";
-import { nockOpts, successRes } from "../../helper";
-import IDeviceDateTime, { IDeviceDateTimeUpdatable } from "../../../../../src/RestApi/Device/DateTime/IDeviceDateTime";
-import DeviceDateTimeManagement from "../../../../../src/RestApi/Device/DateTime/DeviceDateTimeManagement";
+import * as nock from 'nock';
+
+import { getNockOpts, successRes } from '../../helper';
+import IDeviceDateTime, { IDeviceDateTimeUpdatable } from '../../../../../src/RestApi/Device/DateTime/IDeviceDateTime';
+import DeviceDateTimeManagement from '../../../../../src/RestApi/Device/DateTime/DeviceDateTimeManagement';
+
+const nockOpts = getNockOpts({});
 
 describe('DeviceDateTimeManagement', () => {
 

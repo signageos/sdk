@@ -1,8 +1,8 @@
 import * as should from 'should';
 
-import { createApiV2 } from '../../../../src';
-import IDeviceV2 from '../../../../src/RestApi/Device/DeviceV2';
-import { opts, preRunCheck } from '../helper';
+import { createApiV2 } from '../../../../../src';
+import IDeviceV2 from '../../../../../src/RestApi/V2/Device/Device';
+import { opts, preRunCheck } from '../../helper';
 
 const allowedTimeout = 30000;
 const api = createApiV2(opts);

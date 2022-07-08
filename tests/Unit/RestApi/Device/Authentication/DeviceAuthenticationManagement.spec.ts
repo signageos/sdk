@@ -1,9 +1,11 @@
 import * as should from 'should';
-import * as nock from "nock";
-import { nockOpts } from "../../helper";
-import IDeviceAuthentication from "../../../../../src/RestApi/Device/Authentication/IDeviceAuthentication";
-import DeviceAuthenticationManagement
-	from "../../../../../src/RestApi/Device/Authentication/DeviceAuthenticationManagement";
+import * as nock from 'nock';
+
+import { getNockOpts } from '../../helper';
+import IDeviceAuthentication from '../../../../../src/RestApi/Device/Authentication/IDeviceAuthentication';
+import DeviceAuthenticationManagement from '../../../../../src/RestApi/Device/Authentication/DeviceAuthenticationManagement';
+
+const nockOpts = getNockOpts({});
 
 describe('DeviceAuthenticationManagement', () => {
 

@@ -1,13 +1,16 @@
 import * as should from 'should';
-import * as nock from "nock";
+import * as nock from 'nock';
 import * as streamToString from 'stream-to-string';
-import { nockOpts } from "../../../helper";
+
+import { getNockOpts } from '../../../helper';
 import IAppletVersionFile, {
 	IAppletVersionFileCreatable,
 	IAppletVersionFileUpdatable,
 } from '../../../../../../src/RestApi/Applet/Version/File/IAppletVersionFile';
 import AppletVersionFileManagement from '../../../../../../src/RestApi/Applet/Version/File/AppletVersionFileManagement';
 import { createReadableStream } from './helper';
+
+const nockOpts = getNockOpts({});
 
 describe('AppletVersionFileManagement', function () {
 

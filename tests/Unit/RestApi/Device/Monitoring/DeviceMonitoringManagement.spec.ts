@@ -1,16 +1,20 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import { nockOpts, successRes } from '../../helper';
+
+import { getNockOpts, successRes } from '../../helper';
 import IReportFile from '../../../../../src/RestApi/Device/Monitoring/ReportFile/IReportFile';
 import DeviceMonitoringManagement from '../../../../../src/RestApi/Device/Monitoring/DeviceMonitoringManagement';
 import IStorageStatus from '../../../../../src/RestApi/Device/Monitoring/Storage/IStorageStatus';
 import ITemperature from '../../../../../src/RestApi/Device/Monitoring/Temperature/ITemperature';
-import IHourlyStatus from "../../../../../src/RestApi/Device/Monitoring/HourlyStatus/IHourlyStatus";
+import IHourlyStatus from '../../../../../src/RestApi/Device/Monitoring/HourlyStatus/IHourlyStatus';
 import {
 	ICreatedDateRangeFilter,
-	IDateRangeFilter, ITakenDateRangeFilter,
-} from "../../../../../src/RestApi/Device/Monitoring/ICreatedDateRangeFilter";
-import IScreenshot from "../../../../../src/RestApi/Device/Monitoring/Screenshot/IScreenshot";
+	IDateRangeFilter,
+	ITakenDateRangeFilter,
+} from '../../../../../src/RestApi/Device/Monitoring/ICreatedDateRangeFilter';
+import IScreenshot from '../../../../../src/RestApi/Device/Monitoring/Screenshot/IScreenshot';
+
+const nockOpts = getNockOpts({});
 
 describe('DeviceMonitoringManagement', () => {
 

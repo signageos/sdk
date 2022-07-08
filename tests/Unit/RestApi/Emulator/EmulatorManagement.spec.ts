@@ -1,8 +1,11 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import { nockOpts } from '../helper';
+
+import { getNockOpts } from '../helper';
 import IEmulator, { IEmulatorCreatable } from '../../../../src/RestApi/Emulator/IEmulator';
 import EmulatorManagement from '../../../../src/RestApi/Emulator/EmulatorManagement';
+
+const nockOpts = getNockOpts({});
 
 describe('EmulatorManagement', () => {
 	const emulator: IEmulator = {
