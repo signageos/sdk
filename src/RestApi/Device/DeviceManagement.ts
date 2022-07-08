@@ -80,7 +80,8 @@ export default class DeviceManagement {
 		this.peerRecovery = new DevicePeerRecoveryManagement(organizationOptions);
 	}
 
-	/** @deprecated
+	/**
+	 * @deprecated
 	 * use api.device.list() from API v2 for general device info
 	 * use api.device.deviceAlive.list() for device alive status
 	 * use api.device.telemetry.listLatest() for latest telemetry readings
@@ -92,7 +93,8 @@ export default class DeviceManagement {
 		return data.map((item: IDevice) => new Device(item));
 	}
 
-	/** @deprecated
+	/**
+	 * @deprecated
 	 * use api.device.get(deviceUid) from API v2 for general device info
 	 * use api.device.deviceAlive.get(deviceUid) for device alive status
 	 * use api.device.telemetry.getLatest(deviceUid) for latest telemetry readings
@@ -103,6 +105,9 @@ export default class DeviceManagement {
 		return new Device(await parseJSONResponse(response));
 	}
 
+	/**
+	 * @deprecated use API v2 device set method
+	 */
 	public async set(deviceUid: string, settings: IDeviceUpdatable): Promise<void> {
 		if (settings.name) {
 			await putResource(this.organizationOptions, Resources.Device + '/' + deviceUid, JSON.stringify(settings));

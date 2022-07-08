@@ -1,12 +1,15 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import { nockOpts, successRes } from '../helper';
+
+import { getNockOpts, successRes } from '../helper';
 import IFirmwareVersion, {
 	IFirmwareVersionUpdatable,
 	IFirmwareVersionCreatable,
 } from '../../../../src/RestApi/Firmware/Version/IFirmwareVersion';
-import FirmwareVersionManagement from "../../../../src/RestApi/Firmware/Version/FirmwareVersionManagement";
+import FirmwareVersionManagement from '../../../../src/RestApi/Firmware/Version/FirmwareVersionManagement';
 import { createReadableStream } from '../Applet/Version/File/helper';
+
+const nockOpts = getNockOpts({});
 
 describe('FirmwareVersionManagement', () => {
 	const firmwareVersion: IFirmwareVersion = {

@@ -1,6 +1,7 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import { nockOpts, successRes } from '../../helper';
+
+import { getNockOpts, successRes } from '../../helper';
 import {
 	DeviceTimerLevel,
 	DeviceTimerType,
@@ -8,6 +9,8 @@ import {
 	IDeviceTimerUpdatable,
 } from '../../../../../src/RestApi/Device/Timer/IDeviceTimer';
 import DeviceTimerManagement from '../../../../../src/RestApi/Device/Timer/DeviceTimerManagement';
+
+const nockOpts = getNockOpts({});
 
 describe('DeviceTimerManagement', () => {
 

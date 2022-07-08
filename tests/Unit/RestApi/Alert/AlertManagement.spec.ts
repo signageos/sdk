@@ -1,8 +1,11 @@
-import * as nock from "nock";
+import * as nock from 'nock';
 import * as should from 'should';
-import { nockOpts, successRes } from "../helper";
-import IAlert, { AlertSnooze, IAlertCreatable } from "../../../../src/RestApi/Alerts/IAlert";
-import AlertManagement from "../../../../src/RestApi/Alerts/AlertManagement";
+
+import { getNockOpts, successRes } from '../helper';
+import IAlert, { AlertSnooze, IAlertCreatable } from '../../../../src/RestApi/Alerts/IAlert';
+import AlertManagement from '../../../../src/RestApi/Alerts/AlertManagement';
+
+const nockOpts = getNockOpts({});
 
 describe("AlertManagement", () => {
 

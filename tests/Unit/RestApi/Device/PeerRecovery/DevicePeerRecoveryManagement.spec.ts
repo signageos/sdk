@@ -7,15 +7,16 @@ import { IDevicePeerRecovery } from '../../../../../src/RestApi/Device/PeerRecov
 import DevicePeerRecoveryManagement from '../../../../../src/RestApi/Device/PeerRecovery/DevicePeerRecoveryManagement';
 import { DEVICE_1 } from '../../../../fixtures/Device/Device.fixtures';
 import { PEER_RECOVERY_1, PEER_RECOVERY_2 } from '../../../../fixtures/Device/PeerRecovery/DevicePeerRecovery.fixtures';
-import { nockOpts, nockAuthHeader } from '../../helper';
+import { getNockOpts, nockAuthHeader1 } from '../../helper';
 
+const nockOpts = getNockOpts({});
 const devicePeerRecoveryManagement = new DevicePeerRecoveryManagement(nockOpts);
 
 describe('Unit.RestApi.Device.PeerRecovery.DevicePeerRecoveryManagement', () => {
 	it('should get peer recovery list', async () => {
 		const expectedPeerRecoveries: IDevicePeerRecovery[] = [PEER_RECOVERY_1, PEER_RECOVERY_2];
 
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.get(`/${ApiVersions.V1}/${Resources.Device}/${DEVICE_1.uid}/peer-recovery`)
 			.reply(200, expectedPeerRecoveries);
 
@@ -27,7 +28,7 @@ describe('Unit.RestApi.Device.PeerRecovery.DevicePeerRecoveryManagement', () => 
 	it('should set peer recovery', async () => {
 		const peerRecoveryPayload: { enabled: IDevicePeerRecovery['enabled'] } = { enabled: true };
 
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.put(
 				`/${ApiVersions.V1}/${Resources.Device}/${DEVICE_1.uid}/peer-recovery`,
 				JSON.stringify(peerRecoveryPayload),

@@ -1,8 +1,13 @@
 import * as should from 'should';
-import * as nock from "nock";
-import { nockOpts, successRes } from "../../helper";
-import IDeviceAppVersion, { IDeviceAppVersionUpdatable } from "../../../../../src/RestApi/Device/AppVersion/IDeviceAppVersion";
-import DeviceAppVersionManagement from "../../../../../src/RestApi/Device/AppVersion/DeviceAppVersionManagement";
+import * as nock from 'nock';
+
+import { getNockOpts, successRes } from '../../helper';
+import IDeviceAppVersion, {
+	IDeviceAppVersionUpdatable,
+} from '../../../../../src/RestApi/Device/AppVersion/IDeviceAppVersion';
+import DeviceAppVersionManagement from '../../../../../src/RestApi/Device/AppVersion/DeviceAppVersionManagement';
+
+const nockOpts = getNockOpts({});
 
 describe('DeviceAppVersionManagement', () => {
 

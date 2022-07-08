@@ -1,8 +1,11 @@
 import * as should from 'should';
 import * as nock from 'nock';
-import { nockOpts, nockAuthHeader, successRes } from '../helper';
+
+import { getNockOpts, nockAuthHeader1, successRes } from '../helper';
 import IPolicy, { IPolicyCreatable, IPolicyUpdatable, IPolicyClonable } from '../../../../src/RestApi/Policy/IPolicy';
 import PolicyManagement from '../../../../src/RestApi/Policy/PolicyManagement';
+
+const nockOpts = getNockOpts({});
 
 describe('PolicyManagement', () => {
 	const getLocationHeader = (policyUid: string): nock.HttpHeaders => ({
@@ -33,7 +36,7 @@ describe('PolicyManagement', () => {
 		note: 'Cloned from policy testPolicy',
 	};
 
-	nock(nockOpts.url, nockAuthHeader)
+	nock(nockOpts.url, nockAuthHeader1)
 		.get('/v1/policy')
 		.reply(200, [originalPolicy])
 		.get('/v1/policy/someUid')

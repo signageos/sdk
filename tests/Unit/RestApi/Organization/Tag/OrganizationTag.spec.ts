@@ -9,8 +9,9 @@ import {
 	ORGANIZATION_TAG_1,
 	ORGANIZATION_TAG_UPDATE_1,
 } from './OrganizationTag.fixtures';
-import { nockOpts, nockAuthHeader } from '../../helper';
+import { getNockOpts, nockAuthHeader1 } from '../../helper';
 
+const nockOpts = getNockOpts({});
 const organizationTagManagement = new OrganizationTagManagement(nockOpts);
 
 const postRespHeaders: nock.HttpHeaders = {
@@ -27,7 +28,7 @@ const assertOrganizationTag = (organizationTag: IOrganizationTag) => {
 
 describe('Unit.RestApi.Organization.Tag.OrganizationTag', () => {
 	it('should create organization tag', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.post(`/${ApiVersions.V1}/${Resources.OrganizationTag}`, JSON.stringify(ORGANIZATION_TAG_1))
 			.reply(200, 'Created', postRespHeaders)
 			.get(`/${ApiVersions.V1}/${Resources.OrganizationTag}/${ORGANIZATION_TAG_1.uid}`)
@@ -39,7 +40,7 @@ describe('Unit.RestApi.Organization.Tag.OrganizationTag', () => {
 	});
 
 	it('should get one organization tag', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.get(`/${ApiVersions.V1}/${Resources.OrganizationTag}/${ORGANIZATION_TAG_1.uid}`)
 			.reply(200, ORGANIZATION_TAG_1);
 
@@ -49,7 +50,7 @@ describe('Unit.RestApi.Organization.Tag.OrganizationTag', () => {
 	});
 
 	it('should update organization tag', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.put(`/${ApiVersions.V1}/${Resources.OrganizationTag}/${ORGANIZATION_TAG_1.uid}`)
 			.reply(200, ORGANIZATION_TAG_1);
 
@@ -59,7 +60,7 @@ describe('Unit.RestApi.Organization.Tag.OrganizationTag', () => {
 	});
 
 	it('should delete organization tag', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.delete(`/${ApiVersions.V1}/${Resources.OrganizationTag}/${ORGANIZATION_TAG_1.uid}`)
 			.reply(200);
 

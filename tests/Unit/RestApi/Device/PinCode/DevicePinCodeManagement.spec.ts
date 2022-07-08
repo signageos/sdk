@@ -1,8 +1,11 @@
 import * as should from 'should';
-import * as nock from "nock";
-import DevicePinCodeManagement from "../../../../../src/RestApi/Device/PinCode/DevicePinCodeManagement";
-import IDevicePin from "../../../../../src/RestApi/Device/PinCode/IDevicePin";
-import { errorResp, errorRespMessage, nockOpts } from "../../helper";
+import * as nock from 'nock';
+
+import DevicePinCodeManagement from '../../../../../src/RestApi/Device/PinCode/DevicePinCodeManagement';
+import IDevicePin from '../../../../../src/RestApi/Device/PinCode/IDevicePin';
+import { errorResp, errorRespMessage, getNockOpts } from '../../helper';
+
+const nockOpts = getNockOpts({});
 
 describe('DevicePinCodeManagement', () => {
 

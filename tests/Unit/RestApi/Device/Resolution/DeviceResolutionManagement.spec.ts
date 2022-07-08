@@ -1,12 +1,15 @@
 import * as should from 'should';
-import * as nock from "nock";
-import { nockOpts, successRes } from "../../helper";
+import * as nock from 'nock';
+
+import { getNockOpts, successRes } from '../../helper';
 import IDeviceResolution, {
 	DeviceOrientation,
 	DeviceResolutionResolution as Resolution,
 	IDeviceResolutionUpdatable,
-} from "../../../../../src/RestApi/Device/Resolution/IDeviceResolution";
-import DeviceResolutionManagement from "../../../../../src/RestApi/Device/Resolution/DeviceResolutionManagement";
+} from '../../../../../src/RestApi/Device/Resolution/IDeviceResolution';
+import DeviceResolutionManagement from '../../../../../src/RestApi/Device/Resolution/DeviceResolutionManagement';
+
+const nockOpts = getNockOpts({});
 
 describe('DeviceResolutionManagement', () => {
 

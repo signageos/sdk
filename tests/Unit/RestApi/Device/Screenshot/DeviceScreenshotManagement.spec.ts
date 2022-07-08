@@ -1,8 +1,11 @@
 import * as should from 'should';
-import * as nock from "nock";
-import { nockOpts } from "../../helper";
+import * as nock from 'nock';
+
+import { getNockOpts } from '../../helper';
 import DeviceScreenshotManagement from '../../../../../src/RestApi/Device/Screenshot/DeviceScreenshotManagement';
 import IDeviceScreenshot from '../../../../../src/RestApi/Device/Screenshot/IDeviceScreenshot';
+
+const nockOpts = getNockOpts({});
 
 const extractProps = (instances: any[]) => {
 	return instances.map(

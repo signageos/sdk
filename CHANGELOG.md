@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- Device `list` (v2) new field `connectionMethod`, which can be `http` or `websocket`
+- Device `get` (v2) new field `connectionMethod`, which can be `http` or `websocket`
+- Device `set` (v2) set fields `name` and `connectionMethod` (http/websocket)
+
+### Deprecated
+- Device `list` (v1)
+- Device `get` (v1)
+- Deprecated device `set` (v1)
+
 ## [1.12.0] - 2022-07-01
 ### Added
 - Version 2 of device endpoints to fetch list of devices or device by uid

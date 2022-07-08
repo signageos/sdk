@@ -1,6 +1,9 @@
-import * as nock from "nock";
-import { nockOpts, successRes } from "../../helper";
-import DeviceProvisioningManagement from "../../../../../src/RestApi/Device/Provisioning/DeviceProvisioningManagement";
+import * as nock from 'nock';
+
+import { getNockOpts, successRes } from '../../helper';
+import DeviceProvisioningManagement from '../../../../../src/RestApi/Device/Provisioning/DeviceProvisioningManagement';
+
+const nockOpts = getNockOpts({});
 
 describe('DeviceProvisioningManagement', () => {
 

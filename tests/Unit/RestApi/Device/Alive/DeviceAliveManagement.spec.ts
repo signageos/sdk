@@ -5,13 +5,15 @@ import { ApiVersions } from '../../../../../src/RestApi/apiVersions';
 import { Resources } from '../../../../../src/RestApi/resources';
 import DeviceAliveManagement from '../../../../../src/RestApi/Device/Alive/DeviceAliveManagement';
 import { DEVICE_ALIVE_1, DEVICE_ALIVE_2 } from '../../../../fixtures/Device/Alive/DeviceAlive.fixtures';
-import { nockOpts, nockAuthHeader } from '../../helper';
+import { getNockOpts, nockAuthHeader1 } from '../../helper';
+
+const nockOpts = getNockOpts({});
 
 const deviceAliveManagement = new DeviceAliveManagement(nockOpts);
 
 describe('Unit.RestApi.Device.Alive', () => {
 	it('should get many', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.get(`/${ApiVersions.V1}/${Resources.Device}/alive`)
 			.reply(200, [DEVICE_ALIVE_1, DEVICE_ALIVE_2]);
 
@@ -21,7 +23,7 @@ describe('Unit.RestApi.Device.Alive', () => {
 	});
 
 	it('should get one location', async () => {
-		nock(nockOpts.url, nockAuthHeader)
+		nock(nockOpts.url, nockAuthHeader1)
 			.get(`/${ApiVersions.V1}/${Resources.Device}/${DEVICE_ALIVE_1.uid}/alive`)
 			.reply(200, DEVICE_ALIVE_1);
 

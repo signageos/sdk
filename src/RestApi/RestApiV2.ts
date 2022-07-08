@@ -1,4 +1,4 @@
-import DeviceManagement from './Device/DeviceManagementV2';
+import DeviceManagement from './V2/Device/DeviceManagement';
 import IOptions from './IOptions';
 
 export default class RestApiV2 {
