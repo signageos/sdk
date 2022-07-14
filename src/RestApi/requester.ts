@@ -19,10 +19,13 @@ async function createOptions(
 ): Promise<RequestInit> {
 	const authOptions = typeof options.auth === 'function' ? await options.auth() : options.auth;
 
+	const userAgent = createUserAgent(options);
+
 	return {
 		headers: {
 			'Content-Type': options.contentType ?? 'application/json',
 			'X-Auth': authOptions.clientId + ':' + authOptions.secret,
+			'User-Agent': userAgent,
 		},
 		method,
 		body: data,
@@ -150,4 +153,14 @@ export async function doRequest(
 	} while (tries > 0);
 
 	throw lastError;
+}
+
+function createUserAgent(options: IOptions) {
+	const clientVersions: { [clientName: string]: string } = {
+		['signageOS_SDK']: parameters.version,
+		...options.clientVersions,
+	};
+	const clients = Object.keys(clientVersions)
+	.map((client: string) => `${encodeURIComponent(client)}/${encodeURIComponent(clientVersions[client])}`);
+	return clients.join(' ');
 }
