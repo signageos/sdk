@@ -1,6 +1,6 @@
 import fetch, { Request, Response, RequestInit, BodyInit } from 'node-fetch';
 import { stringify } from 'querystring';
-
+import * as Debug from 'debug';
 import IOptions from './IOptions';
 import RequestError from './Error/RequestError';
 import NotFoundError from './Error/NotFoundError';
@@ -10,6 +10,7 @@ import InternalApiError from './Error/InternalApiError';
 import GatewayError from './Error/GatewayError';
 import ResponseBodyFormatError from './Error/ResponseBodyFormatError';
 import { parameters } from '../parameters';
+const debug = Debug('@signageos/sdk:RestApi:requester');
 
 async function createOptions(
 	method: 'POST' | 'GET' | 'PUT' | 'DELETE',
@@ -130,6 +131,8 @@ export async function doRequest(
 	let tries = parameters.requestMaxAttempts;
 	let currentTimeout = 1000;
 	let lastError: Error | null = null;
+
+	debug('doRequest', url, init);
 
 	do {
 		try {
