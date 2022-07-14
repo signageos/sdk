@@ -17,6 +17,16 @@ import {
 	StorageResponse,
 } from '../../../storageRequester';
 
+interface IUploadOptions {
+	/**
+	 * Defines whether the uploading of the file invokes building applet or not.
+	 * Default is true.
+	 * However, the true is only for backward compatibility.
+	 * It's better to use false and build applet only when last file is uploaded using AppletManagement.update()
+	 */
+	build?: boolean;
+}
+
 export default class AppletVersionFileManagement {
 
 	private static readonly RESOURCE: string = 'file';
@@ -58,14 +68,20 @@ export default class AppletVersionFileManagement {
 		return new AppletVersionFile(data);
 	}
 
-	public async create(appletUid: string, appletVersion: string, settings: IAppletVersionFileCreatable): Promise<void> {
+	public async create(
+		appletUid: string,
+		appletVersion: string,
+		settings: IAppletVersionFileCreatable,
+		options: IUploadOptions = {},
+	): Promise<void> {
 		const appletVersionPath = AppletVersionFileManagement.getResource(appletUid, appletVersion);
 
-		const response = await postResource(this.options, appletVersionPath, JSON.stringify({
+		const reqBody = {
 			...settings,
 			content: undefined,
 			size: undefined,
-		}));
+		};
+		const response = await postResource(this.options, appletVersionPath, JSON.stringify(reqBody), options);
 		const body = await response.json();
 
 		await postStorage(
@@ -76,14 +92,21 @@ export default class AppletVersionFileManagement {
 		);
 	}
 
-	public async update(appletUid: string, appletVersion: string, filePath: string, settings: IAppletVersionFileUpdatable): Promise<void> {
+	public async update(
+		appletUid: string,
+		appletVersion: string,
+		filePath: string,
+		settings: IAppletVersionFileUpdatable,
+		options: IUploadOptions = {},
+	): Promise<void> {
 		const appletVersionPath = AppletVersionFileManagement.getUrl(appletUid, appletVersion, filePath);
 
-		const response = await putResource(this.options, appletVersionPath, JSON.stringify({
+		const reqBody = {
 			...settings,
 			content: undefined,
 			size: undefined,
-		}));
+		};
+		const response = await putResource(this.options, appletVersionPath, JSON.stringify(reqBody), options);
 		const body = await response.json();
 
 		await postStorage(
@@ -94,9 +117,9 @@ export default class AppletVersionFileManagement {
 		);
 	}
 
-	public async remove(appletUid: string, appletVersion: string, filePath: string): Promise<void> {
+	public async remove(appletUid: string, appletVersion: string, filePath: string, options: IUploadOptions = {}): Promise<void> {
 		const appletVersionPath = AppletVersionFileManagement.getUrl(appletUid, appletVersion, filePath);
 
-		await deleteResource(this.options, appletVersionPath);
+		await deleteResource(this.options, appletVersionPath, options);
 	}
 }

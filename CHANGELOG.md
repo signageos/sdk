@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Device `get` (v2) new field `connectionMethod`, which can be `http` or `websocket`
 - Device `set` (v2) set fields `name` and `connectionMethod` (http/websocket)
 - Load TextEncoder and TextDecoder as global variables if not defined already
+- Optional preventing building applet when file uploaded
 
 ### Deprecated
 - Device `list` (v1)
