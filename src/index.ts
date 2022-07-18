@@ -1,8 +1,14 @@
+import { loadTextEncoderDecoderIfNotExist } from './Polyfill/textCoders';
+loadTextEncoderDecoderIfNotExist();
 import RestApi from './RestApi/RestApi';
 import RestApiV2 from './RestApi/RestApiV2';
 import waitUntilTrue from './Timer/waitUntil';
-import { createApiOrgAndAccountOptions, createDefaultOptions, IOptions } from './apiTools';
 import { ApiVersions } from './RestApi/apiVersions';
+import {
+	createApiOrgAndAccountOptions,
+	createDefaultOptions,
+	IOptions,
+} from './apiTools';
 
 /** @deprecated, use createApiV1, or createApiV2 functions instead */
 export class Api extends RestApi {
