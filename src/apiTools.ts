@@ -22,6 +22,13 @@ export interface IOptions {
 		secret: string;
 	};
 	version?: ApiVersions.V1 | ApiVersions.V2;
+	/**
+	 * Define the user custom client versions which is used for header User-Agent.
+	 * E.g.: { "signageOS_CLI": "1.0.3" }
+	 */
+	clientVersions?: {
+		[clientName: string]: string;
+	};
 }
 
 export function createDefaultOptions(version: ApiVersions.V1 | ApiVersions.V2 = ApiVersions.V1): IOptions {
@@ -62,6 +69,7 @@ export function createApiOrgAndAccountOptions(options: IOptions, version?: ApiVe
 
 	const accountOptions: IRestApiOptions = {
 		...generalOptions,
+		clientVersions: options.clientVersions ?? {},
 		auth: accountAuth.tokenId && accountAuth.token ? {
 			clientId: accountAuth.tokenId,
 			secret: accountAuth.token,
@@ -70,6 +78,7 @@ export function createApiOrgAndAccountOptions(options: IOptions, version?: ApiVe
 
 	const organizationOptions: IRestApiOptions = {
 		...generalOptions,
+		clientVersions: options.clientVersions ?? {},
 		auth: options.organizationAuth?.clientId && options.organizationAuth?.secret ? {
 			clientId: options.organizationAuth?.clientId,
 			secret: options.organizationAuth?.secret,

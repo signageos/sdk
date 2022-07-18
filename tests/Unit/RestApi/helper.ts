@@ -12,6 +12,7 @@ export const getNockOpts: TNockOpts = ({ version }: INockOptsParams) => ({
 	url: 'https://api.signageos.io',
 	auth: { clientId: 'clientId', secret: 'secret' },
 	version: version ?? ApiVersions.V1,
+	clientVersions: {},
 });
 
 export const successRes: any = { message: 'OK' };

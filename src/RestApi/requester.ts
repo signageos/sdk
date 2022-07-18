@@ -1,6 +1,6 @@
 import fetch, { Request, Response, RequestInit, BodyInit } from 'node-fetch';
 import { stringify } from 'querystring';
-
+import * as Debug from 'debug';
 import IOptions from './IOptions';
 import RequestError from './Error/RequestError';
 import NotFoundError from './Error/NotFoundError';
@@ -10,6 +10,7 @@ import InternalApiError from './Error/InternalApiError';
 import GatewayError from './Error/GatewayError';
 import ResponseBodyFormatError from './Error/ResponseBodyFormatError';
 import { parameters } from '../parameters';
+const debug = Debug('@signageos/sdk:RestApi:requester');
 
 async function createOptions(
 	method: 'POST' | 'GET' | 'PUT' | 'DELETE',
@@ -18,10 +19,13 @@ async function createOptions(
 ): Promise<RequestInit> {
 	const authOptions = typeof options.auth === 'function' ? await options.auth() : options.auth;
 
+	const userAgent = createUserAgent(options);
+
 	return {
 		headers: {
 			'Content-Type': options.contentType ?? 'application/json',
 			'X-Auth': authOptions.clientId + ':' + authOptions.secret,
+			'User-Agent': userAgent,
 		},
 		method,
 		body: data,
@@ -131,6 +135,8 @@ export async function doRequest(
 	let currentTimeout = 1000;
 	let lastError: Error | null = null;
 
+	debug('doRequest', url, init);
+
 	do {
 		try {
 			return await fetchFn(url, init);
@@ -147,4 +153,14 @@ export async function doRequest(
 	} while (tries > 0);
 
 	throw lastError;
+}
+
+function createUserAgent(options: IOptions) {
+	const clientVersions: { [clientName: string]: string } = {
+		['signageOS_SDK']: parameters.version,
+		...options.clientVersions,
+	};
+	const clients = Object.keys(clientVersions)
+	.map((client: string) => `${encodeURIComponent(client)}/${encodeURIComponent(clientVersions[client])}`);
+	return clients.join(' ');
 }
