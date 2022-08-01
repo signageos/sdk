@@ -81,8 +81,7 @@ describe('DeviceManagement', () => {
 			const devices = await dm.list();
 			should.equal(1, devices.length);
 			should(devices[0] instanceof Device).true();
-			Object.getOwnPropertyNames(validGetResp).forEach((propName: string) => {
-				// @ts-ignore comparing by props names
+			safeObjectOwnPropertyNames(validGetResp).forEach((propName: keyof IDevice) => {
 				should.deepEqual(validGetResp[propName], devices[0][propName]);
 			});
 		});
@@ -91,8 +90,7 @@ describe('DeviceManagement', () => {
 	describe('get device information', () => {
 		it('should parse the response', async () => {
 			const device = await dm.get('someUid');
-			Object.getOwnPropertyNames(validGetResp).forEach((propName: string) => {
-				// @ts-ignore comparing by props names
+			safeObjectOwnPropertyNames(validGetResp).forEach((propName: keyof IDevice) => {
 				should.deepEqual(validGetResp[propName], device[propName]);
 			});
 		});
@@ -122,3 +120,7 @@ describe('DeviceManagement', () => {
 		});
 	});
 });
+
+function safeObjectOwnPropertyNames<T>(validGetResp: T): (keyof T)[] {
+	return Object.getOwnPropertyNames(validGetResp) as (keyof T)[];
+}
