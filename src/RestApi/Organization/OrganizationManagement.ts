@@ -3,6 +3,8 @@ import IOptions from '../IOptions';
 import IOrganization, { IOrganizationCreatable, SubscriptionType } from './IOrganization';
 import Organization from './Organization';
 import { IOrganizationFilter } from './IOrganizationFilter';
+import { omit } from 'lodash';
+import CompanyManagement from '../Company/CompanyManagement';
 
 export default class OrganizationManagement {
 
@@ -12,7 +14,14 @@ export default class OrganizationManagement {
 	}
 
 	public async list(filter: IOrganizationFilter = {}): Promise<IOrganization[]> {
-		const response = await getResource(this.options, OrganizationManagement.RESOURCE, filter);
+		const response = filter.companyUid
+			// filtering by company is currently supported only by the /company/:companyUid/organizations endpoint
+			? await getResource(
+				this.options,
+				CompanyManagement.RESOURCE + '/' + filter.companyUid + '/organizations',
+				omit(filter, 'companyUid'),
+			)
+			: await getResource(this.options, OrganizationManagement.RESOURCE, filter);
 		const data: IOrganization[] = await parseJSONResponse(response);
 
 		return data.map((item: IOrganization) => new Organization(item));
