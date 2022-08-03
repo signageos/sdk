@@ -60,8 +60,7 @@ describe('RestAPI - Device', function () {
 		await api.device.set(device.uid, update);
 		const devices = await api.device.list();
 		devices.forEach((dvc: IDevice) => {
-			// @ts-ignore potentially undefined uid
-			if (dvc.uid === device.uid) {
+			if (dvc.uid === device?.uid) {
 				should.equal(dvc.name, update.name);
 			}
 		});
@@ -118,8 +117,7 @@ describe('RestAPI - Device', function () {
 		should(Array.isArray(res)).true();
 		should(res.length > 0).true();
 		res.forEach((item: IDeviceResolution) => {
-			// @ts-ignore potentially undefined deviceUid
-			should.equal(item.deviceUid, device.uid);
+			should.equal(item.deviceUid, device?.uid);
 			should(item.uid.length > 0).true();
 		});
 	});
