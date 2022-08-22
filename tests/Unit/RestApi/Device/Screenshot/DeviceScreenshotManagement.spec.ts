@@ -1,40 +1,33 @@
 import * as should from 'should';
-import * as nock from 'nock';
 
-import { getNockOpts } from '../../helper';
+import { ApiVersions } from '../../../../../src/RestApi/apiVersions';
+import { Resources } from '../../../../../src/RestApi/resources';
 import DeviceScreenshotManagement from '../../../../../src/RestApi/Device/Screenshot/DeviceScreenshotManagement';
-import IDeviceScreenshot from '../../../../../src/RestApi/Device/Screenshot/IDeviceScreenshot';
+import { nockOpts1, createNock } from '../../helper';
+import { createScreenshot } from './DeviceScreenshotManagement.utils';
 
-const nockOpts = getNockOpts({});
+const fakeList = [createScreenshot(), createScreenshot(), createScreenshot(), createScreenshot()];
+
+const URL = `/${ApiVersions.V1}/${Resources.Device}/someDeviceUid/screenshot`;
 
 const extractProps = (instances: any[]) => {
-	return instances.map(
-		(_this: any) => Object.getOwnPropertyNames(_this).reduce(
-			(result: object, prop: string) => ({...result, [prop]: _this[prop] }),
-			{},
-		),
+	return instances.map((_this: any) =>
+		Object.getOwnPropertyNames(_this).reduce((result: object, prop: string) => ({ ...result, [prop]: _this[prop] }), {}),
 	);
 };
 
-describe('DeviceScreenshotManagement', () => {
-	const fakeList: IDeviceScreenshot[] = [
-		{ deviceUid: 'someDeviceUid', takenAt: new Date('2020-01-27T12:00:00.000Z'), uri: 'https://signageos.io/someUid1' },
-		{ deviceUid: 'someDeviceUid', takenAt: new Date('2020-01-27T12:00:01.000Z'), uri: 'https://signageos.io/someUid2' },
-		{ deviceUid: 'someDeviceUid', takenAt: new Date('2020-01-27T12:00:02.000Z'), uri: 'https://signageos.io/someUid3' },
-		{ deviceUid: 'someDeviceUid', takenAt: new Date('2020-01-27T12:00:03.000Z'), uri: 'https://signageos.io/someUid4' },
-	];
+createNock().get(URL).reply(200, fakeList).get(`${URL}?descending=true`).reply(200, fakeList.slice().reverse()).post(URL).reply(200);
 
-	const URL = '/v1/device/someDeviceUid/screenshot';
-	nock(nockOpts.url, {
-		reqheaders: {
-			"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-		},
-	})
-	.get(URL).reply(200, fakeList)
-	.get(`${URL}?descending=true`).reply(200, fakeList.slice().reverse())
-	.post(URL).reply(200);
+const dsm = new DeviceScreenshotManagement(nockOpts1);
 
-	const dsm = new DeviceScreenshotManagement(nockOpts);
+describe('Unit.RestApi.Device.Screenshot', () => {
+	it('should get last screenshots by devices', async () => {
+		createNock().get(`/${ApiVersions.V1}/${Resources.Device}/screenshot`).reply(200, [createScreenshot(), createScreenshot()]);
+
+		const screenshots = await dsm.listLastScreenshotsByDevices({});
+
+		should(screenshots.length).be.eql(2);
+	});
 
 	it('should get list of screenshots', async () => {
 		const ascendingScreenshots = await dsm.getList('someDeviceUid');
