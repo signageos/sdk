@@ -1,3 +1,5 @@
+import * as nock from 'nock';
+
 import IOptions, { IAuthOptions } from '../../../src/RestApi/IOptions';
 import RequestError from '../../../src/RestApi/Error/RequestError';
 import { ApiVersions } from '../../../src/RestApi/apiVersions';
@@ -21,9 +23,12 @@ export const errorRespMessage: (status: number) => string = (status: number) => 
 	return new RequestError(status, errorResp).message;
 };
 
-const nockOptsV1 = getNockOpts({});
+export const nockOpts1 = getNockOpts({});
+
 export const nockAuthHeader1 = {
 	reqheaders: {
-		'x-auth': `${nockOptsV1.auth.clientId}:${nockOptsV1.auth.secret}`, // checks the x-auth header presence
+		'x-auth': `${nockOpts1.auth.clientId}:${nockOpts1.auth.secret}`, // checks the x-auth header presence
 	},
 };
+
+export const createNock = () => nock(nockOpts1.url, nockAuthHeader1);

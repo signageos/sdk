@@ -1,5 +1,4 @@
-import { ISort } from '../../../Lib/Sort/sort';
-import { TPagination } from '../../../Lib/Pagination/pagination';
+import { IPaginationAndSort } from '../../../Lib/Pagination/pagination';
 import { getResource, parseJSONResponse } from '../../requester';
 import IOptions from '../../IOptions';
 import { Resources } from '../../resources';
@@ -12,10 +11,8 @@ interface IDeviceTelemetryFilter {
 	deviceUids?: IDevice['uid'][];
 }
 
-interface IDeviceTelemetriesLatest {
+interface IDeviceTelemetriesLatest extends IPaginationAndSort {
 	filter?: IDeviceTelemetryFilter;
-	sort?: ISort;
-	pagination?: TPagination;
 }
 
 interface IDeviceTelemetryLatest {
