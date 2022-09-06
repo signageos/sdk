@@ -6,6 +6,7 @@ import DevicePeerRecovery, { IDevicePeerRecovery } from './DevicePeerRecovery';
 
 interface ISetSettings {
 	enabled: IDevicePeerRecovery['enabled'];
+	autoEnableTimeoutMs?: IDevicePeerRecovery['autoEnableTimeoutMs'];
 }
 
 export default class DevicePeerRecoveryManagement {
@@ -20,10 +21,6 @@ export default class DevicePeerRecoveryManagement {
 	}
 
 	public async set(deviceUid: IDeviceActionLog['deviceUid'], settings: ISetSettings) {
-		await putResource(
-			this.options,
-			`${Resources.Device}/${deviceUid}/peer-recovery`,
-			JSON.stringify({ enabled: settings.enabled }),
-		);
+		await putResource(this.options, `${Resources.Device}/${deviceUid}/peer-recovery`, JSON.stringify(settings));
 	}
 }
