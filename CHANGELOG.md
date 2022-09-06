@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Bulk operation method to archive bulk operations
 - Device OS version property
 - Optional field `autoEnableTimeoutMs` when disabling device peer recovery
+- Device auto recovery
 
 ## [1.14.0] - 2022-08-03
 ### Added

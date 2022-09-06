@@ -26,6 +26,7 @@ import DeviceAppletTestManagement from './AppletTest/DeviceAppletTestManagement'
 import DeviceTelemetryManagement from './Telemetry/DeviceTelemetryManagement';
 import DevicePolicyManagement from './Policy/DevicePolicyManagement';
 import DevicePolicyStatusManagement from './PolicyStatus/DevicePolicyStatusManagement';
+import DeviceAutoRecoveryManagement from './AutoRecovery/DeviceAutoRecoveryManagement';
 import DevicePeerRecoveryManagement from './PeerRecovery/DevicePeerRecoveryManagement';
 
 export default class DeviceManagement {
@@ -52,6 +53,7 @@ export default class DeviceManagement {
 	public telemetry: DeviceTelemetryManagement;
 	public policy: DevicePolicyManagement;
 	public policyStatus: DevicePolicyStatusManagement;
+	public autoRecovery: DeviceAutoRecoveryManagement;
 	public peerRecovery: DevicePeerRecoveryManagement;
 
 	constructor(private accountOptions: IOptions, private organizationOptions: IOptions) {
@@ -77,6 +79,7 @@ export default class DeviceManagement {
 		this.telemetry = new DeviceTelemetryManagement(organizationOptions);
 		this.policy = new DevicePolicyManagement(organizationOptions);
 		this.policyStatus = new DevicePolicyStatusManagement(organizationOptions);
+		this.autoRecovery = new DeviceAutoRecoveryManagement(organizationOptions);
 		this.peerRecovery = new DevicePeerRecoveryManagement(organizationOptions);
 	}
 
