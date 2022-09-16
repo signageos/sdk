@@ -21,6 +21,7 @@ describe('DeviceManagement', () => {
 		'firmwareVersion': '0.6.2',
 		'model': 'rk30sdk-PN_B_series',
 		'serialNumber': '8F047121',
+		'brand': 'Sony',
 		'timezone': null,
 		'organizationUid': 'f4dc88XXXXXXfba4c',
 		'networkInterfaces': {
