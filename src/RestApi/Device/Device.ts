@@ -15,6 +15,7 @@ export default class Device implements IDevice {
 	public readonly firmwareVersion: IDevice['firmwareVersion'];
 	public readonly model: IDevice['model'];
 	public readonly serialNumber: IDevice['serialNumber'];
+	public readonly brand: IDevice['brand'];
 	public readonly timezone: IDevice['timezone'];
 	public readonly organizationUid: IDevice['organizationUid'];
 	public readonly networkInterfaces: IDevice['networkInterfaces'];
