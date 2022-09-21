@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Device screenshot `listLastScreenshotsByDevices` method to fetch list of last screenshots for devices. One last screenshot for each device
 - Device brand property
+- Filter by `organizationUid` into `emulator.list()` method
 
 ## [1.14.0] - 2022-08-03
 ### Added

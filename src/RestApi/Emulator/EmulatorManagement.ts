@@ -2,14 +2,15 @@ import { getResource, postResource, deleteResource, parseJSONResponse } from '..
 import IOptions from "../IOptions";
 import IEmulator, { IEmulatorCreatable } from './IEmulator';
 import Emulator from './Emulator';
+import { IEmulatorFilter } from './IEmulatorFilter';
 
 export default class EmulatorManagement {
 	public static readonly RESOURCE: string = 'emulator';
 
 	constructor(private options: IOptions) {}
 
-	public async list() {
-		const response = await getResource(this.options, EmulatorManagement.RESOURCE);
+	public async list(filter?: IEmulatorFilter) {
+		const response = await getResource(this.options, EmulatorManagement.RESOURCE, filter);
 		const data: IEmulator[] = await parseJSONResponse(response);
 		return data.map((item: IEmulator) => new Emulator(item));
 	}
