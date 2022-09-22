@@ -24,6 +24,7 @@ describe('EmulatorManagement', () => {
 			},
 		},
 	).get('/v1/emulator').reply(200, validListResp)
+	.get('/v1/emulator?organizationUid=default-org').reply(200, validListResp)
 	.post('/v1/emulator').reply(201, 'Created')
 	.delete(/v1\/emulator\/[a-zA-Z0-9]+$/).reply(204, 'Deleted');
 
@@ -37,6 +38,12 @@ describe('EmulatorManagement', () => {
 
 	it('should get list of emulators assigned under the authenticized account', async () => {
 		const emulators = await em.list();
+		should(emulators.length).be.equal(1);
+		assertEmulator(emulators[0]);
+	});
+
+	it('should get list of emulators of organization', async () => {
+		const emulators = await em.list({ organizationUid: 'default-org' });
 		should(emulators.length).be.equal(1);
 		assertEmulator(emulators[0]);
 	});
