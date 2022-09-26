@@ -29,15 +29,19 @@ export default class BulkOperationManagement {
 	}
 
 	public async stop(bulkOperationUid: string): Promise<void> {
-		await putResource(this.options, `${BulkOperationManagement.RESOURCE}/stop/${bulkOperationUid}`, JSON.stringify({}));
+		await putResource(this.options, `${BulkOperationManagement.RESOURCE}/${bulkOperationUid}/stop`, JSON.stringify({}));
 	}
 
 	public async pause(bulkOperationUid: string): Promise<void> {
-		await putResource(this.options, `${BulkOperationManagement.RESOURCE}/pause/${bulkOperationUid}`, JSON.stringify({}));
+		await putResource(this.options, `${BulkOperationManagement.RESOURCE}/${bulkOperationUid}/pause`, JSON.stringify({}));
 	}
 
 	public async resume(bulkOperationUid: string, rollingUpdate?: { rollingUpdate: IRollingUpdate }): Promise<void> {
-		await putResource(this.options, `${BulkOperationManagement.RESOURCE}/resume/${bulkOperationUid}`, JSON.stringify(rollingUpdate));
+		await putResource(this.options, `${BulkOperationManagement.RESOURCE}/${bulkOperationUid}/resume`, JSON.stringify(rollingUpdate));
+	}
+
+	public async archive(bulkOperationUid: string): Promise<void> {
+		await putResource(this.options, `${BulkOperationManagement.RESOURCE}/${bulkOperationUid}/archive`, JSON.stringify({}));
 	}
 
 	private async extractLocationFromHeader(headers: Headers, message: string) {

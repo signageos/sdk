@@ -86,11 +86,13 @@ describe('BulkOperationManagement', () => {
 		.reply(200, bulkOperationDb)
 		.post(`/v1/${bulkOperationResource}`, bulkOperationRequestCreate)
 		.reply(201, successRes, getLocationHeader(`bulkOperationUid`))
-		.put(`/v1/${bulkOperationResource}/stop/bulkOperationUid`, {})
+		.put(`/v1/${bulkOperationResource}/bulkOperationUid/stop`, {})
 		.reply(200, successRes)
-		.put(`/v1/${bulkOperationResource}/pause/bulkOperationUid`, {})
+		.put(`/v1/${bulkOperationResource}/bulkOperationUid/pause`, {})
 		.reply(200, successRes)
-		.put(`/v1/${bulkOperationResource}/resume/bulkOperationUid`, rollingUpdateRequest)
+		.put(`/v1/${bulkOperationResource}/bulkOperationUid/archive`, {})
+		.reply(200, successRes)
+		.put(`/v1/${bulkOperationResource}/bulkOperationUid/resume`, rollingUpdateRequest)
 		.reply(200, successRes);
 
 	const bulkOperationManagement = new BulkOperationManagement(nockOpts);
@@ -115,6 +117,10 @@ describe('BulkOperationManagement', () => {
 
 	it('should stop bulk operation by uid', async () => {
 		await should(bulkOperationManagement.stop('bulkOperationUid')).be.fulfilled();
+	});
+
+	it('should archive bulk operation by uid', async () => {
+		await should(bulkOperationManagement.archive('bulkOperationUid')).be.fulfilled();
 	});
 
 	it('should pause bulk operation by uid', async () => {
