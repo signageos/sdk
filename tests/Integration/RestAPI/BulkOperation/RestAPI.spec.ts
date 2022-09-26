@@ -88,6 +88,18 @@ describe('RestAPI - BulkOperation', function () {
 		should('stoppedAt' in bulkOperationGet).be.eql(true);
 	});
 
+	it('should archive bulk operation by uid', async () => {
+		createdBulkOperation = await should(
+			api.bulkOperation.create(testingBulkOperation),
+		).be.fulfilled();
+
+		await api.bulkOperation.archive(createdBulkOperation.uid);
+
+		const bulkOperationGet = await api.bulkOperation.get(createdBulkOperation.uid);
+
+		should('archivedAt' in bulkOperationGet).be.eql(true);
+	});
+
 	it('should pause bulk operation by uid', async () => {
 		createdBulkOperation = await should(
 			api.bulkOperation.create(testingBulkOperation),
