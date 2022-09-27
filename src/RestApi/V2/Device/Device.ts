@@ -14,6 +14,7 @@ export interface IDevice {
 	model: string;
 	serialNumber: string;
 	brand: string | null;
+	osVersion: string | null;
 	organizationUid: string;
 	locationUid?: string;
 	connectionMethod?: SocketDriver | null;
@@ -34,6 +35,7 @@ export default class Device implements IDevice {
 	public readonly model: IDevice['model'];
 	public readonly serialNumber: IDevice['serialNumber'];
 	public readonly brand: IDevice['brand'];
+	public readonly osVersion: IDevice['osVersion'];
 	public readonly organizationUid: IDevice['organizationUid'];
 	public readonly locationUid: IDevice['locationUid'];
 	public readonly connectionMethod: IDevice['connectionMethod'];
