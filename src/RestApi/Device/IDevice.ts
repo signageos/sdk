@@ -22,6 +22,7 @@ export default interface IDevice {
 	model: string;
 	serialNumber: string;
 	brand: string | null;
+	osVersion: string | null;
 	organizationUid: string;
 	timezone: string | null;
 	networkInterfaces: {

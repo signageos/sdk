@@ -18,6 +18,7 @@ export const DEVICE_1: IDevice = {
 	model: 'rk30sdk-PN_B_series',
 	serialNumber: '8F047121',
 	brand: 'Sony',
+	osVersion: '1.2.3',
 	timezone: null,
 	organizationUid: 'f4dc88XXXXXXfba4c',
 	networkInterfaces: {
@@ -64,6 +65,7 @@ export const DEVICE_2: IDevice = {
 	model: 'rk30sdk-PN_B_series',
 	serialNumber: '8F042222',
 	brand: 'Sony',
+	osVersion: '1.2.3',
 	timezone: 'Europe/Prague',
 	networkInterfaces: {
 		ethernet: {
@@ -110,6 +112,7 @@ export const DEVICE_3: IDevice = {
 	model: 'rk30sdk-PN_B_series',
 	serialNumber: '8F043333',
 	brand: 'Sony',
+	osVersion: '1.2.3',
 	timezone: 'Europe/Prague',
 	networkInterfaces: {
 		ethernet: {

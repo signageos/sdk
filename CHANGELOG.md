@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Device brand property
 - Filter by `organizationUid` into `emulator.list()` method
 - Bulk operation method to archive bulk operations
+- Device OS version property
 
 ## [1.14.0] - 2022-08-03
 ### Added
