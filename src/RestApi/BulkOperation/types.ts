@@ -19,12 +19,6 @@ export interface ITimer {
 	timeOff: string | null;
 }
 
-export interface DateFormat {
-	timestamp: number;
-	/** specified in minutes */
-	timeZoneOffset: number;
-}
-
 export type LogData = {
 	[DeviceActionType.SET_APPLICATION_VERSION]: {
 		applicationType: ApplicationType;
