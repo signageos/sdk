@@ -39,7 +39,7 @@ export default interface IBulkOperation<T extends DeviceActionType> {
 	schedule?: {
 		datetime: Date,
 		timezone: string,
-		deferFilter: boolean,
+		deferFilter?: boolean,
 	};
 	rollingUpdate?: IRollingUpdate;
 	operationType: T;
