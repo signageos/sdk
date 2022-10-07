@@ -75,6 +75,7 @@ export enum DeviceTelemetryType {
 	OFFLINE_RANGE = 'OFFLINE_RANGE',
 	ONLINE_STATUS = 'ONLINE_STATUS',
 	BUNDLED_APPLET = 'BUNDLED_APPLET',
+	AUTO_RECOVERY = 'AUTO_RECOVERY',
 	PEER_RECOVERY = 'PEER_RECOVERY',
 }
 
@@ -141,9 +142,11 @@ export type LogData = {
 			[key: string]: string;
 		};
 	};
-	[DeviceTelemetryType.PEER_RECOVERY]: {
-		enabled: boolean;
-	}
+	[DeviceTelemetryType.AUTO_RECOVERY]: {
+		enabled: true;
+		healthcheckIntervalMs: number;
+	};
+	[DeviceTelemetryType.PEER_RECOVERY]: { enabled: false } | { enabled: true; healthcheckIntervalMs: number; };
 };
 
 export default interface IDeviceTelemetry {
