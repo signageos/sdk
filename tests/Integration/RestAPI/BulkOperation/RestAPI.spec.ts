@@ -11,9 +11,9 @@ const testingBulkOperation = {
 	filter: {
 		applicationType: 'tizen',
 	},
-	scheduleDate: {
-		timestamp: Date.now(),
-		timeZoneOffset: new Date().getTimezoneOffset(),
+	schedule: {
+		datetime: new Date(),
+		timezone: 'Europe/Prague',
 	},
 	rollingUpdate: {
 		batchSize: 10,

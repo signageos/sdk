@@ -1,5 +1,5 @@
 import { DeviceActionType } from "./enums";
-import { DateFormat, IDeviceUids, IFilter, IRollingUpdate, LogData } from "./types";
+import { IDeviceUids, IFilter, IRollingUpdate, LogData } from "./types";
 
 export interface IBulkOperationFilter {
 	limit?: number;
@@ -9,10 +9,16 @@ export interface IBulkOperationFilter {
 export interface IBulkOperationCreatable<T extends DeviceActionType> {
 	name?: string;
 	filter: IFilter;
-	scheduleDate?: DateFormat;
+	schedule?: {
+		datetime: Date;
+		timezone?: string;
+		/** Resolve filter at the time of execution instead of creation time */
+		deferFilter?: boolean;
+	};
 	rollingUpdate?: IRollingUpdate;
 	operationType: T;
 	data: LogData[T];
+	isDraft?: boolean;
 }
 
 export default interface IBulkOperation<T extends DeviceActionType> {
@@ -22,6 +28,7 @@ export default interface IBulkOperation<T extends DeviceActionType> {
 	deviceUids: IDeviceUids[];
 	failedDeviceUids: string[];
 	successfulDeviceUids: string[];
+	skippedDeviceUids: string[];
 	createdAt: string | null;
 	pausedAt?: string | null;
 	stoppedAt?: string | null;
@@ -29,7 +36,11 @@ export default interface IBulkOperation<T extends DeviceActionType> {
 	archivedAt?: string | null;
 	finishedAt?: string | null;
 	isRunning?: boolean;
-	scheduleDate?: string | null;
+	schedule?: {
+		datetime: Date,
+		timezone: string,
+		deferFilter?: boolean,
+	};
 	rollingUpdate?: IRollingUpdate;
 	operationType: T;
 	data: LogData[T];
@@ -39,5 +50,6 @@ export default interface IBulkOperation<T extends DeviceActionType> {
 		inProgress: number,
 		succeeded: number,
 	};
-	organizationUid: string | undefined;
+	organizationUids: string[];
+	isDraft?: boolean;
 }

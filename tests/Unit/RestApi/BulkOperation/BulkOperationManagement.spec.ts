@@ -15,17 +15,23 @@ describe('BulkOperationManagement', () => {
 		Location: `${nockOpts.url}/${nockOpts.version}/${bulkOperationResource}/${bulkOperationUid}`,
 	});
 
+	const testingDate = new Date();
+
 	const bulkOperationDb = new BulkOperation({
 		uid: 'testingUid',
 		deviceUids: [],
 		successfulDeviceUids: [],
 		failedDeviceUids: [],
+		skippedDeviceUids: [],
 		name: 'testingName4',
 		filter: {
 			applicationType: 'tizen',
 		},
 		createdAt: 'createdAtDate',
-		scheduleDate: 'testingDate',
+		schedule: {
+			datetime: testingDate,
+			timezone: 'Europe/Prague',
+		},
 		rollingUpdate: {
 			batchSize: 10,
 			batchDelay: 1000,
@@ -42,7 +48,7 @@ describe('BulkOperationManagement', () => {
 			failed: 0,
 			inProgress: 0,
 		},
-		organizationUid: 'testingOrganizationUid',
+		organizationUids: ['testingOrganizationUid'],
 	});
 
 	const rollingUpdateRequest = {
@@ -58,9 +64,9 @@ describe('BulkOperationManagement', () => {
 		filter: {
 			applicationType: 'tizen',
 		},
-		scheduleDate: {
-			timestamp: Date.now(),
-			timeZoneOffset: new Date().getTimezoneOffset(),
+		schedule: {
+			datetime: testingDate,
+			timezone: 'Europe/Prague',
 		},
 		rollingUpdate: {
 			batchSize: 10,
@@ -84,7 +90,7 @@ describe('BulkOperationManagement', () => {
 		.reply(200, [bulkOperationDb])
 		.get(`/v1/${bulkOperationResource}/bulkOperationUid`)
 		.reply(200, bulkOperationDb)
-		.post(`/v1/${bulkOperationResource}`, bulkOperationRequestCreate)
+		.post(`/v1/${bulkOperationResource}`, JSON.stringify(bulkOperationRequestCreate))
 		.reply(201, successRes, getLocationHeader(`bulkOperationUid`))
 		.put(`/v1/${bulkOperationResource}/bulkOperationUid/stop`, {})
 		.reply(200, successRes)

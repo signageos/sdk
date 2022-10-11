@@ -11,6 +11,7 @@ export default class BulkOperation implements IBulkOperationAlias {
 	public readonly deviceUids: IBulkOperationAlias['deviceUids'];
 	public readonly failedDeviceUids: IBulkOperationAlias['failedDeviceUids'];
 	public readonly successfulDeviceUids: IBulkOperationAlias['successfulDeviceUids'];
+	public readonly skippedDeviceUids: IBulkOperationAlias['skippedDeviceUids'];
 	public readonly createdAt: IBulkOperationAlias['createdAt'];
 	public readonly pausedAt: IBulkOperationAlias['pausedAt'];
 	public readonly stoppedAt: IBulkOperationAlias['stoppedAt'];
@@ -18,12 +19,13 @@ export default class BulkOperation implements IBulkOperationAlias {
 	public readonly archivedAt: IBulkOperationAlias['archivedAt'];
 	public readonly finishedAt: IBulkOperationAlias['finishedAt'];
 	public readonly isRunning: IBulkOperationAlias['isRunning'];
-	public readonly scheduleDate: IBulkOperationAlias['scheduleDate'];
+	public readonly schedule: IBulkOperationAlias['schedule'];
 	public readonly rollingUpdate: IBulkOperationAlias['rollingUpdate'];
 	public readonly operationType: IBulkOperationAlias['operationType'];
 	public readonly data: IBulkOperationAlias['data'];
 	public readonly progress: IBulkOperationAlias['progress'];
-	public readonly organizationUid: IBulkOperationAlias['organizationUid'];
+	public readonly organizationUids: IBulkOperationAlias['organizationUids'];
+	public readonly isDraft: IBulkOperationAlias['isDraft'];
 
 	constructor(data: IBulkOperationAlias) {
 		fillDataToEntity(this, data);
