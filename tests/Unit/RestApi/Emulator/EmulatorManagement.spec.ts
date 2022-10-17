@@ -4,6 +4,7 @@ import * as nock from 'nock';
 import { getNockOpts } from '../helper';
 import IEmulator, { IEmulatorCreatable } from '../../../../src/RestApi/Emulator/IEmulator';
 import EmulatorManagement from '../../../../src/RestApi/Emulator/EmulatorManagement';
+import DeviceManagement from '../../../../src/RestApi/Device/DeviceManagement';
 
 const nockOpts = getNockOpts({});
 
@@ -16,6 +17,9 @@ describe('EmulatorManagement', () => {
 	};
 	const validListResp: IEmulator[] = [emulator];
 	const validCreateReq: IEmulatorCreatable = { organizationUid: 'default-org' };
+	const validPostRespHeaders: nock.HttpHeaders = {
+		Location: 'https://example.com/v1/device/someIdentityHash',
+	};
 
 	nock(
 		nockOpts.url, {
@@ -25,10 +29,11 @@ describe('EmulatorManagement', () => {
 		},
 	).get('/v1/emulator').reply(200, validListResp)
 	.get('/v1/emulator?organizationUid=default-org').reply(200, validListResp)
-	.post('/v1/emulator').reply(201, 'Created')
+	.post('/v1/emulator').reply(201, 'Created', validPostRespHeaders)
+	.get('/v1/device/someIdentityHash').reply(200, { uid: 'someIdentityHash' })
 	.delete(/v1\/emulator\/[a-zA-Z0-9]+$/).reply(204, 'Deleted');
 
-	const em = new EmulatorManagement(nockOpts);
+	const em = new EmulatorManagement(nockOpts, new DeviceManagement(nockOpts, nockOpts));
 	const assertEmulator = (emul: IEmulator) => {
 		should(emul.uid).be.equal(emulator.uid);
 		should(emul.duid).be.equal(emulator.duid);
@@ -49,8 +54,8 @@ describe('EmulatorManagement', () => {
 	});
 
 	it('should create new emulator', async () => {
-		await em.create(validCreateReq);
-		should(true).be.true();
+		const device = await em.create(validCreateReq);
+		should(device.uid).be.equal('someIdentityHash');
 	});
 
 	it('should delete old emulator', async () => {
