@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Device auto recovery
 - Update types for bulk operations
 - Device is returned after Emulator creation
+- Field `duid` to Device entity
 
 ## [1.14.0] - 2022-08-03
 ### Added

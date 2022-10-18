@@ -5,6 +5,7 @@ export default class Device implements IDevice {
 
 	// public readonly [P in keyof IDevice]: IDevice[P]; // Generalized TS doesn't support
 	public readonly uid: IDevice['uid'];
+	public readonly duid: IDevice['duid'];
 	public readonly name: IDevice['name'];
 	public readonly createdAt: IDevice['createdAt'];
 	public readonly aliveAt: IDevice['aliveAt'];
