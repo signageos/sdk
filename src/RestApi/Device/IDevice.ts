@@ -11,6 +11,7 @@ export declare type ResolutionItem = {
 
 export default interface IDevice {
 	uid: string;
+	duid: string;
 	name: string;
 	createdAt: Date;
 	aliveAt: Date;

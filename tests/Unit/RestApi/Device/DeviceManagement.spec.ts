@@ -11,6 +11,7 @@ const nockOpts = getNockOpts({});
 describe('DeviceManagement', () => {
 	const validGetResp: IDevice = {
 		'uid': 'someUid',
+		'duid': 'someDeviceUid',
 		'name': 'Display 1',
 		'createdAt': new Date('2018-07-09T14:53:15.272Z'),
 		'aliveAt': new Date('2018-09-04T08:48:07.838Z'),

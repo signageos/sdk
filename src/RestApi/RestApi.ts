@@ -23,7 +23,6 @@ export default class RestApi {
 		this.organizationOptions,
 	);
 	public readonly company: CompanyManagement = new CompanyManagement(this.accountOptions);
-	public readonly emulator: EmulatorManagement = new EmulatorManagement(this.accountOptions);
 	public readonly firmwareVersion: FirmwareVersionManagement = new FirmwareVersionManagement(this.accountOptions);
 
 	public readonly timing: TimingManagement = new TimingManagement(this.organizationOptions);
@@ -33,6 +32,7 @@ export default class RestApi {
 	public readonly policy: PolicyManagement = new PolicyManagement(this.organizationOptions);
 	public readonly bulkOperation: BulkOperationManagement = new BulkOperationManagement(this.organizationOptions);
 	public readonly device: DeviceManagement = new DeviceManagement(this.accountOptions, this.organizationOptions);
+	public readonly emulator: EmulatorManagement = new EmulatorManagement(this.accountOptions, this.device);
 	public readonly deviceAlive: DeviceAliveManagement = new DeviceAliveManagement(this.organizationOptions);
 	public readonly deviceLocation: DeviceLocationManagement = new DeviceLocationManagement(this.organizationOptions);
 

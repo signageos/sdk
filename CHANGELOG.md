@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Optional field `autoEnableTimeoutMs` when disabling device peer recovery
 - Device auto recovery
 - Update types for bulk operations
+- Device is returned after Emulator creation
+- Field `duid` to Device entity
+- Telemetry schema for `MANAGEMENT_CAPABILITIES` and `FRONT_CAPABILITIES` types
 
 ## [1.14.0] - 2022-08-03
 ### Added
