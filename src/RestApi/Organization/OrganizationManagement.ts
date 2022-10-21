@@ -61,4 +61,12 @@ export default class OrganizationManagement {
 		);
 	}
 
+	public async update(organizationUid: string, title: string): Promise<void> {
+		await putResource(
+			this.options,
+			`${OrganizationManagement.RESOURCE}/${organizationUid}`,
+			JSON.stringify({ title }),
+		);
+	}
+
 }
