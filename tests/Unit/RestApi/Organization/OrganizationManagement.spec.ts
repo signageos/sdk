@@ -28,6 +28,10 @@ describe('OrganizationManagement', () => {
 		title: 'signageOS.io organization',
 	};
 
+	const validUpdateReqBody = {
+		title: 'newTitle',
+	};
+
 	nock(nockOpts.url, nockAuthHeader1)
 		.get('/v1/organization').reply(200, validListResp)
 		.get('/v1/organization/someUid').reply(200, validGetResp)
@@ -35,7 +39,8 @@ describe('OrganizationManagement', () => {
 		.post('/v1/organization', validCreateReq).reply(200, 'Created', validPostRespHeaders)
 		.get('/v1/organization/someUid').reply(200, validGetResp)
 		.put('/v1/organization/someUid/subscriptionType/medium').reply(200, '')
-		.delete('/v1/organization/someUid').reply(200, '');
+		.delete('/v1/organization/someUid').reply(200, '')
+		.put('/v1/organization/someUid', validUpdateReqBody).reply(200, '');
 
 	const om = new OrganizationManagement(nockOpts);
 	const assertOrg = (org: IOrganization) => {
@@ -75,6 +80,11 @@ describe('OrganizationManagement', () => {
 
 	it('should delete organization', async () => {
 		await om.delete('someUid');
+		should(true).true();
+	});
+
+	it('should update organization', async () => {
+		await om.update('someUid', 'newTitle');
 		should(true).true();
 	});
 });
