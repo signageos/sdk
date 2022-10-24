@@ -1,15 +1,12 @@
 import * as should from 'should';
+import * as faker from 'faker';
 
-import { Api } from "../../../../src";
-import IOrganization from "../../../../src/RestApi/Organization/IOrganization";
-import Organization from "../../../../src/RestApi/Organization/Organization";
-import { opts, ALLOWED_TIMEOUT, preRunCheck } from "../helper";
+import { Api } from '../../../../src';
+import IOrganization from '../../../../src/RestApi/Organization/IOrganization';
+import Organization from '../../../../src/RestApi/Organization/Organization';
+import { opts, ALLOWED_TIMEOUT, preRunCheck } from '../helper';
 
 const api = new Api(opts);
-
-function getRandomInt(max: number) {
-	return Math.floor(Math.random() * max);
-}
 
 describe('RestAPI - Organization', () => {
 
@@ -51,8 +48,8 @@ describe('RestAPI - Organization', () => {
 
 	it('should get the organizations by Uid', async () => {
 		const createdOrg = await api.organization.create({
-			name: `TestingName${getRandomInt(10000)}`,
-			title: `TestingTitle${getRandomInt(10000)}`,
+			name: faker.random.alphaNumeric(10),
+			title: faker.company.companyName(),
 		});
 
 		const orgGetFromDb = await api.organization.get(createdOrg.uid);
@@ -63,14 +60,15 @@ describe('RestAPI - Organization', () => {
 
 	it('should delete the organizations by Uid', async () => {
 		let org = await api.organization.create({
-			name: `TestingName${getRandomInt(10000)}`,
-			title: `TestingTitle${getRandomInt(10000)}`,
+			name: faker.random.alphaNumeric(10),
+			title: faker.company.companyName(),
 		});
 
 		await api.organization.delete(org.uid);
 
 		try {
 			await api.organization.get(org.uid);
+			should(true).eql(false);
 		} catch (err) {
 			should(err.errorName).eql('NO_ORGANIZATION_TO_READ');
 			should(err.errorCode).eql(404113);
@@ -79,9 +77,10 @@ describe('RestAPI - Organization', () => {
 	}).timeout(ALLOWED_TIMEOUT);
 
 	it('should update the organization title by Uid', async () => {
-		let title = `TestingTitle${getRandomInt(10000)}`;
+		let title = faker.company.companyName();
+
 		let org = await api.organization.create({
-			name: `TestingName${getRandomInt(10000)}`,
+			name: faker.random.alphaNumeric(10),
 			title,
 		});
 
@@ -90,7 +89,7 @@ describe('RestAPI - Organization', () => {
 
 		title = 'NewTestingTitle';
 
-		await api.organization.update(org.uid, title);
+		await api.organization.update(org.uid, { title });
 
 		org = await api.organization.get(org.uid);
 

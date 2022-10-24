@@ -6,6 +6,10 @@ import { IOrganizationFilter } from './IOrganizationFilter';
 import { omit } from 'lodash';
 import CompanyManagement from '../Company/CompanyManagement';
 
+interface OrganizationUpdatableValues {
+	title: string;
+}
+
 export default class OrganizationManagement {
 
 	public static readonly RESOURCE: string = 'organization';
@@ -61,11 +65,11 @@ export default class OrganizationManagement {
 		);
 	}
 
-	public async update(organizationUid: string, title: string): Promise<void> {
+	public async update(organizationUid: string, values: OrganizationUpdatableValues): Promise<void> {
 		await putResource(
 			this.options,
 			`${OrganizationManagement.RESOURCE}/${organizationUid}`,
-			JSON.stringify({ title }),
+			JSON.stringify(values),
 		);
 	}
 

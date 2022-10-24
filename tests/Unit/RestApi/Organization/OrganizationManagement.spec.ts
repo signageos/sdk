@@ -84,7 +84,9 @@ describe('OrganizationManagement', () => {
 	});
 
 	it('should update organization', async () => {
-		await om.update('someUid', 'newTitle');
+		await om.update('someUid', {
+			title: 'newTitle',
+		});
 		should(true).true();
 	});
 });
