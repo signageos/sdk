@@ -10,7 +10,7 @@ npm install @signageos/sdk
 
 ### Environment variables
 
-Mandatory ENV variables:
+Mandatory ENV variables (when using SDK api/rest singleton - deprecated. Use factories `createApiV1` or `createApiV2` instead):
 
 in `.env` file:
 
@@ -27,7 +27,9 @@ SOS_API_SECURITY_TOKEN="...apiSecurityToken..."
 Optional ENV variable adjustment (with default values):
 
 ```
+# REST API URL (default to the production server)
 SOS_API_URL="https://api.signageos.io"
+# How many times to retry request until it fails
 SOS_REQUEST_MAX_ATTEMPTS="3"
 ```
 

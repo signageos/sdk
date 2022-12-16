@@ -4,13 +4,12 @@ import { ApiVersions } from '../../../src/RestApi/apiVersions';
 
 export const RUN_INTEGRATION_TESTS = parameters.runIntegrationTests === 'true';
 
-// api host
-const host = parameters.apiUrl;
+const apiUrl = parameters.apiUrl;
 const version = ApiVersions.V1;
 const organizationUid = parameters.organizationUid;
 
 export const opts: IOptions = {
-	url: host,
+	url: apiUrl,
 	version: version,
 	organizationUid,
 	organizationAuth: parameters.organizationAuth,
