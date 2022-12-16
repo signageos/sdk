@@ -4,14 +4,11 @@ import { Api } from '../../../../../src';
 import IDevice from '../../../../../src/RestApi/Device/IDevice';
 import { getOrganizationUid } from '../../../../fixtures/Organization/organization.fixtures';
 import { LOCATION_CREATE_1, handleCreateLocation } from '../../../../fixtures/Location/location.fixtures';
-import { opts, ALLOWED_TIMEOUT, preRunCheck } from '../../helper';
+import { opts } from '../../helper';
 
 const api = new Api(opts);
 
 describe('Integration.RestAPI.Device.Location.DeviceLocation', async () => {
-	before(function () {
-		preRunCheck(this.skip.bind(this));
-	});
 
 	it('should assign and unassign location to and from device', async function () {
 		const createdLocation = await handleCreateLocation(api, {
@@ -27,10 +24,6 @@ describe('Integration.RestAPI.Device.Location.DeviceLocation', async () => {
 		const device: IDevice = devices[0];
 		const deviceUid: IDevice['uid'] = device?.uid;
 
-		if (!device || !deviceUid) {
-			return this.skip();
-		}
-
 		await api.deviceLocation.assign(deviceUid, createdLocation.uid);
 		const deviceWithAssignedLocation = await api.device.get(deviceUid);
 
@@ -39,6 +32,6 @@ describe('Integration.RestAPI.Device.Location.DeviceLocation', async () => {
 		await api.deviceLocation.unassign(deviceUid, createdLocation.uid);
 		const deviceWithUnassignedLocation = await api.device.get(deviceUid);
 
-		should(deviceWithUnassignedLocation.locationUid).be.eql(createdLocation.uid);
-	}).timeout(ALLOWED_TIMEOUT);
+		should(deviceWithUnassignedLocation.locationUid).be.null();
+	});
 });

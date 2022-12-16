@@ -1,0 +1,6 @@
+--require should
+--require ts-node/register
+--ui bdd
+--watch-extensions ts
+--timeout 30000
+tests/Integration/**/*.spec.ts

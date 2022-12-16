@@ -1,31 +1,47 @@
 import * as should from 'should';
 
 import { Api } from '../../../../../src';
+import IDevice from '../../../../../src/RestApi/Device/IDevice';
 import DeviceTelemetry from '../../../../../src/RestApi/Device/Telemetry/DeviceTelemetry';
 import { DeviceTelemetryType } from '../../../../../src/RestApi/Device/Telemetry/IDeviceTelemetry';
-import { ALLOWED_TIMEOUT, opts, preRunCheck } from '../../helper';
+import { opts } from '../../helper';
 
 const api = new Api(opts);
 
-const TEST_DEVICE_UID = 'b7b04e7a8a2092a2d74656ca0eb7a07a74da361e490a3753f1987';
-
 describe('RestAPI - Policy', () => {
-	before(function () {
-		this.timeout(ALLOWED_TIMEOUT);
 
-		preRunCheck(this.skip.bind(this));
+	let device: IDevice;
+
+	before('create device', async function () {
+		device = await api.emulator.create({ organizationUid: opts.organizationUid! });
+	});
+
+	after('remove organization', async function () {
+		await api.emulator.delete(device.uid);
 	});
 
 	const assertDeviceTelemetry = (deviceTelemetry: DeviceTelemetry) => {
 		should(deviceTelemetry).be.ok();
-		should(deviceTelemetry!.deviceUid).be.equal(TEST_DEVICE_UID);
+		should(deviceTelemetry!.deviceUid).be.equal(device.uid);
 		should(deviceTelemetry!.type).be.equal(DeviceTelemetryType.BRIGHTNESS);
 		should(deviceTelemetry!.updatedAt).be.Date();
 		should(deviceTelemetry!.data).has.ownProperty('brightness').of.Number();
 	};
 
-	it('should fetch latest brightness telemetry for given device', async () => {
-		const latestBrightness = await api.device.telemetry.getLatest(TEST_DEVICE_UID, DeviceTelemetryType.BRIGHTNESS);
+	it.skip('should fetch latest brightness telemetry for given device', async () => {
+		const latestBrightness = await api.device.telemetry.getLatest(device.uid, DeviceTelemetryType.BRIGHTNESS);
 		assertDeviceTelemetry(latestBrightness);
+	});
+
+	it('should throw error on latest brightness telemetry for just created device', async () => {
+		await should(api.device.telemetry.getLatest(device.uid, DeviceTelemetryType.BRIGHTNESS)).rejectedWith(
+			`Request failed with status code 404. Body: ${JSON.stringify({
+				status: 404,
+				message: 'Resource not found',
+				errorCode: 404135,
+				errorName: 'NO_DEVICE_TELEMETRY_LATEST_TO_READ',
+				errorDetail: 'No telemetry data found for given device and their type specified in URI path',
+			})}`,
+		);
 	});
 });

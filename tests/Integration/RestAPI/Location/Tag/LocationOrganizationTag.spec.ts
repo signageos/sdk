@@ -7,14 +7,11 @@ import {
 	ORGANIZATION_TAG_CREATE_2,
 } from '../../../../fixtures/Organization/Tag/organizationTag.fixtures';
 import { LOCATION_CREATE_1, handleCreateLocation } from '../../../../fixtures/Location/location.fixtures';
-import { opts, ALLOWED_TIMEOUT, preRunCheck } from '../../helper';
+import { opts } from '../../helper';
 
 const api = new Api(opts);
 
 describe('Integration.RestAPI.Device.Location.Tag.LocationOrganizationTag', async () => {
-	before(function () {
-		preRunCheck(this.skip.bind(this));
-	});
 
 	it('should assign and unassign organization tag to and from location', async function () {
 		const createdLocation1 = await handleCreateLocation(api, {
@@ -44,5 +41,5 @@ describe('Integration.RestAPI.Device.Location.Tag.LocationOrganizationTag', asyn
 		const locationWithOrganizationTag4 = await api.location.get(createdLocation1.uid);
 
 		should(locationWithOrganizationTag4.tagUids).be.deepEqual([]);
-	}).timeout(ALLOWED_TIMEOUT);
+	});
 });

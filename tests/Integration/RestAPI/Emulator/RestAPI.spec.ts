@@ -2,20 +2,12 @@ import * as should from 'should';
 
 import { Api } from "../../../../src";
 import Emulator from '../../../../src/RestApi/Emulator/Emulator';
-import { opts, preRunCheck } from "../helper";
+import { opts } from "../helper";
 
 const api = new Api(opts);
 
 describe('RestAPI - Emulator', () => {
 	let emulatorUid: string;
-	before(function () {
-		preRunCheck(this.skip.bind(this));
-
-		if (!opts.organizationUid) {
-			console.warn('you must set organizationUid in order to run this test');
-			this.skip();
-		}
-	});
 
 	it('should create new emulator', async () => {
 		await api.emulator.create({ organizationUid: opts.organizationUid! });

@@ -2,4 +2,4 @@
 --require ts-node/register
 --ui bdd
 --watch-extensions ts
-tests/**/*.spec.ts
+tests/Unit/**/*.spec.ts

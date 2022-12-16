@@ -165,12 +165,11 @@ The most useful documentation pages:
 Setup `env` variables:
 
 ```
-RUN_INTEGRATION_TESTS=true // Controls if integration tests are running
 SOS_ORGANIZATION_UID=[ORGANIZATION_UID] // Add `organizationUid` on which will be the tests running
 ```
 
 This SDK library contains several unit and integration tests, You may locate inside the `sdk` root directory and run
-`npm run test` command.
+`npm run test` or `npm run test-integration` command.
 
 If you properly configured all the mandatory environment variables either in `.env` file inside the sdk root or on your
 machine, and you set  

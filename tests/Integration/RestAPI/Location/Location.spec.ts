@@ -11,14 +11,11 @@ import {
 	LOCATION_UPDATE_1,
 	handleCreateLocation,
 } from '../../../fixtures/Location/location.fixtures';
-import { opts, ALLOWED_TIMEOUT, preRunCheck } from '../helper';
+import { opts } from '../helper';
 
 const api = new Api(opts);
 
 describe('Integration.RestAPI.Location', async () => {
-	before(function () {
-		preRunCheck(this.skip.bind(this));
-	});
 
 	it('should create location', async () => {
 		const createdLocation = await handleCreateLocation(api, {
@@ -27,7 +24,7 @@ describe('Integration.RestAPI.Location', async () => {
 		});
 
 		should(createdLocation.uid).not.be.eql(null);
-	}).timeout(ALLOWED_TIMEOUT);
+	});
 
 	it('should get one location', async () => {
 		const createdLocation = await handleCreateLocation(api, {
@@ -37,7 +34,7 @@ describe('Integration.RestAPI.Location', async () => {
 		const location = await api.location.get(createdLocation.uid);
 
 		should(location.uid).not.be.eql(null);
-	}).timeout(ALLOWED_TIMEOUT);
+	});
 
 	it('should get two locations', async () => {
 		const expectedNames = [LOCATION_CREATE_1.name, LOCATION_CREATE_2.name];
@@ -53,7 +50,7 @@ describe('Integration.RestAPI.Location', async () => {
 
 			should(location.name).be.eql(expectedName);
 		});
-	}).timeout(ALLOWED_TIMEOUT);
+	});
 
 	it('should update location', async () => {
 		const createdLocation = await handleCreateLocation(api, {
@@ -67,7 +64,7 @@ describe('Integration.RestAPI.Location', async () => {
 		const updatedLocation = await api.location.get(createdLocation.uid);
 
 		should(updatedLocation.name).be.eql(LOCATION_UPDATE_1.name);
-	}).timeout(ALLOWED_TIMEOUT);
+	});
 
 	it('should add attachment', async () => {
 		const createdLocation = await handleCreateLocation(api, {
@@ -112,5 +109,5 @@ describe('Integration.RestAPI.Location', async () => {
 		const response = await api.location.get(createdLocation.uid);
 
 		should(response.archivedAt instanceof Date).be.eql(true);
-	}).timeout(ALLOWED_TIMEOUT);
+	});
 });
