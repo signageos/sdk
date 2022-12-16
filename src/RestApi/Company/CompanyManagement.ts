@@ -26,13 +26,13 @@ export default class CompanyManagement {
 		const response = await getResource(this.options, CompanyManagement.RESOURCE, filter);
 		const data: IOrganization[] = await parseJSONResponse(response);
 
-		return data.map((item: IOrganization) => new Company(item));
+		return data.map((item: IOrganization) => new Company(item, this.options));
 	}
 
 	public async get(companyUid: string, filter: ICompanyFilter = {}): Promise<IOrganization> {
 		const response = await getResource(this.options, CompanyManagement.RESOURCE + '/' + companyUid, filter);
 
-		return new Company(await parseJSONResponse(response));
+		return new Company(await parseJSONResponse(response), this.options);
 	}
 
 	public async setBillingPlan(companyUid: string, billingPlan: BillingPlan): Promise<void> {

@@ -28,16 +28,16 @@ export default class OrganizationManagement {
 			: await getResource(this.options, OrganizationManagement.RESOURCE, filter);
 		const data: IOrganization[] = await parseJSONResponse(response);
 
-		return data.map((item: IOrganization) => new Organization(item));
+		return data.map((item: IOrganization) => new Organization(item, this.options));
 	}
 
-	public async get(orgUid: string, filter: IOrganizationFilter = {}): Promise<IOrganization> {
+	public async get(orgUid: string, filter: IOrganizationFilter = {}): Promise<Organization> {
 		const response = await getResource(this.options, OrganizationManagement.RESOURCE + '/' + orgUid, filter);
 
-		return new Organization(await parseJSONResponse(response));
+		return new Organization(await parseJSONResponse(response), this.options);
 	}
 
-	public async create(settings: IOrganizationCreatable): Promise<IOrganization> {
+	public async create(settings: IOrganizationCreatable): Promise<Organization> {
 		const { headers } = await postResource(this.options, OrganizationManagement.RESOURCE, JSON.stringify(settings));
 		const headerLocation = headers.get('location');
 
