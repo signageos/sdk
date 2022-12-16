@@ -27,6 +27,8 @@ export default class FirmwareVersionManagement {
 	 * Finalize the uploaded firmware with settings uploaded: true.
 	 * This method has to be called when successfully FW uploaded files to S3.
 	 * @param force is applicable when FW cannot be uploaded because of non-existent firmware type.
+	 * @deprecated Use create method instead. It does the confirmation automatically under the hood.
+	 * TODO make this method private in the next major release.
 	 */
 	public async set(
 		applicationType: string,

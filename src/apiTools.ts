@@ -31,7 +31,9 @@ export interface IOptions {
 	};
 }
 
-export function createDefaultOptions(version: ApiVersions.V1 | ApiVersions.V2 = ApiVersions.V1): IOptions {
+export function createDefaultOptions(
+	version: ApiVersions.V1 | ApiVersions.V2 = ApiVersions.V1,
+): IOptions & Required<Pick<IOptions, 'url'>> {
 	return {
 		url: parameters.apiUrl,
 		version: version,

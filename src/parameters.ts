@@ -25,7 +25,6 @@ export const parameters = {
 		distPath,
 	},
 	apiUrl,
-	runIntegrationTests: process.env.RUN_INTEGRATION_TESTS,
 	requestMaxAttempts,
 	organizationUid: process.env.SOS_ORGANIZATION_UID,
 	organizationAuth: process.env.SOS_AUTH_CLIENT_ID && process.env.SOS_AUTH_SECRET ? {

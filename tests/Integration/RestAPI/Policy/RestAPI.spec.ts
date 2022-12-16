@@ -2,16 +2,11 @@ import * as should from 'should';
 
 import { Api } from '../../../../src';
 import Policy from '../../../../src/RestApi/Policy/Policy';
-import { ALLOWED_TIMEOUT, opts, preRunCheck } from '../helper';
+import { opts } from '../helper';
 
 const api = new Api(opts);
 
 describe('RestAPI - Policy', () => {
-	before(function () {
-		this.timeout(ALLOWED_TIMEOUT);
-
-		preRunCheck(this.skip.bind(this));
-	});
 
 	const testEmptyPolicyName = `testEmptyPolicy${Date.now()}`;
 	const testFilledPolicyName = `testFilledPolicy${Date.now()}`;
@@ -43,13 +38,11 @@ describe('RestAPI - Policy', () => {
 
 	let fetchedPolicy: Policy | undefined;
 
-	it('should create new policy', async () => {
-		fetchedPolicy = await should(
-			api.policy.create({
-				name: testEmptyPolicyName,
-				organizationUid: opts.organizationUid!,
-			}),
-		).be.fulfilled();
+	before('create new policy', async () => {
+		fetchedPolicy = await api.policy.create({
+			name: testEmptyPolicyName,
+			organizationUid: opts.organizationUid!,
+		});
 	});
 
 	it('should fetch policy list which should contain just created policy', async () => {

@@ -2,10 +2,9 @@ import * as should from 'should';
 
 import { Api } from '../../../../src';
 import BulkOperation from '../../../../src/RestApi/BulkOperation/BulkOperation';
-import { opts, ALLOWED_TIMEOUT, preRunCheck } from '../helper';
+import { opts } from '../helper';
 import { DeviceActionType } from '../../../../src/RestApi/BulkOperation/enums';
 
-const testingOrganizationUid = '43259e30b1423d4171e348d6a1a1222e3b0075c8d7ebac868a';
 const testingBulkOperation = {
 	name: 'testingName4',
 	filter: {
@@ -29,15 +28,10 @@ const testingBulkOperation = {
 const api = new Api(opts);
 
 describe('RestAPI - BulkOperation', function () {
-	this.timeout(ALLOWED_TIMEOUT);
-
-	before(function () {
-		preRunCheck(this.skip.bind(this));
-	});
 
 	let createdBulkOperation: BulkOperation;
 
-	it('should create new bulk operation', async () => {
+	before('create new bulk operation', async () => {
 		createdBulkOperation = await should(
 			api.bulkOperation.create(testingBulkOperation),
 		).be.fulfilled();
@@ -55,7 +49,7 @@ describe('RestAPI - BulkOperation', function () {
 		should(bulkOperationGet.operationType).be.eql(testingBulkOperation.operationType);
 		should(bulkOperationGet.rollingUpdate).be.deepEqual(testingBulkOperation.rollingUpdate);
 		should(bulkOperationGet.data).be.deepEqual(testingBulkOperation.data);
-		should(bulkOperationGet.organizationUids[0]).be.eql(testingOrganizationUid);
+		should(bulkOperationGet.organizationUids[0]).be.eql(opts.organizationUid!);
 		should('createdAt' in bulkOperationGet).be.eql(true);
 	});
 
@@ -72,7 +66,7 @@ describe('RestAPI - BulkOperation', function () {
 		should(bulkOperationGetArray[0].operationType).be.eql(testingBulkOperation.operationType);
 		should(bulkOperationGetArray[0].rollingUpdate).be.deepEqual(testingBulkOperation.rollingUpdate);
 		should(bulkOperationGetArray[0].data).be.deepEqual(testingBulkOperation.data);
-		should(bulkOperationGetArray[0].organizationUids[0]).be.eql(testingOrganizationUid);
+		should(bulkOperationGetArray[0].organizationUids[0]).be.eql(opts.organizationUid!);
 		should('createdAt' in bulkOperationGetArray[0]).be.eql(true);
 	});
 

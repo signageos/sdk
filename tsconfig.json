@@ -20,7 +20,6 @@
         "lib": ["dom", "es5", "scripthost", "esnext"]
     },
     "include": [
-        "src/**/*.ts",
-        "src/**/*.tsx"
+        "src/**/*.ts"
     ]
 }

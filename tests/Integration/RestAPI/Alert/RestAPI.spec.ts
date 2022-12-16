@@ -1,4 +1,4 @@
-import { ALLOWED_TIMEOUT, opts, preRunCheck } from "../helper";
+import { opts } from "../helper";
 import { Api } from "../../../../src";
 import IAlert from "../../../../src/RestApi/Alerts/IAlert";
 import * as should from "should";
@@ -8,11 +8,20 @@ const api = new Api(opts);
 
 describe("RestAPI - Alerts", () => {
 
-	before(function () {
-		preRunCheck(this.skip.bind(this));
-	});
+	let createdAlert: IAlert;
 
-	let createdAlert: IAlert | undefined;
+	before('create alertRule and alert', async function () {
+		const createdAlertRule: IAlertRule = await api.alert.rules.create({ name: 'Test alert rule' });
+		await api.alert.rules.update(createdAlertRule.alertRuleUid, {
+			organizationUids: [opts.organizationUid!],
+		});
+		createdAlert = await api.alert.create({
+			name: 'Test Alert',
+			organizationUid: opts.organizationUid!,
+			description: 'Api request created alert.',
+			alertRuleUid: createdAlertRule.alertRuleUid,
+		});
+	});
 
 	it('should get list of alerts', async () => {
 		const alertList: IAlert[] = await api.alert.list();
@@ -25,23 +34,13 @@ describe("RestAPI - Alerts", () => {
 		should(alertList[0].createdAt.getTime() > 0).be.true();
 	});
 
-	it('should create new alert', async () => {
-		const createdAlertRule: IAlertRule = await api.alert.rules.create({ name: 'Test alert rule' });
-		createdAlert = await api.alert.create({
-			name: 'Test Alert',
-			organizationUid: opts.organizationUid!,
-			description: 'Api request created alert.',
-			alertRuleUid: createdAlertRule.alertRuleUid,
-		});
+	it('should new alert been created', async () => {
 		should(createdAlert.alertUid.length > 0).be.true();
 		should(createdAlert.description!.length > 0).be.true();
 		should(createdAlert.alertRuleUid.length > 0).be.true();
 	});
 
 	it('should get alert by uid', async () => {
-		if (!createdAlert || !createdAlert.alertUid) {
-			return;
-		}
 		const alertObject: IAlert = await api.alert.get(createdAlert.alertUid);
 		should(createdAlert.alertUid).equal(alertObject.alertUid);
 	});
@@ -77,4 +76,4 @@ describe("RestAPI - Alerts", () => {
 	it('should unpause alert', async () => {
 		await should(api.alert.unsnooze(createdAlert!.alertUid)).be.fulfilled();
 	});
-}).timeout(ALLOWED_TIMEOUT);
+});

@@ -4,15 +4,11 @@ import * as faker from 'faker';
 import { Api } from '../../../../src';
 import IOrganization from '../../../../src/RestApi/Organization/IOrganization';
 import Organization from '../../../../src/RestApi/Organization/Organization';
-import { opts, ALLOWED_TIMEOUT, preRunCheck } from '../helper';
+import { opts } from '../helper';
 
 const api = new Api(opts);
 
 describe('RestAPI - Organization', () => {
-
-	before(function () {
-		preRunCheck(this.skip.bind(this));
-	});
 
 	const assertOrg = (org: IOrganization) => {
 		should(org instanceof Organization).true();
@@ -30,7 +26,7 @@ describe('RestAPI - Organization', () => {
 			title: `Integration test organization created on ${now.toISOString()}`,
 		});
 		should(true).true();
-	}).timeout(ALLOWED_TIMEOUT);
+	});
 
 	it('should get the list of existing organizations', async () => {
 		const orgs = await api.organization.list({});
@@ -44,7 +40,7 @@ describe('RestAPI - Organization', () => {
 			const org = await api.organization.get(orgs[0].uid);
 			assertOrg(org);
 		}
-	}).timeout(ALLOWED_TIMEOUT);
+	});
 
 	it('should get the organizations by Uid', async () => {
 		const createdOrg = await api.organization.create({
@@ -56,7 +52,7 @@ describe('RestAPI - Organization', () => {
 		assertOrg(orgGetFromDb);
 		should.deepEqual(createdOrg, orgGetFromDb, 'inconsistency in organizations data');
 
-	}).timeout(ALLOWED_TIMEOUT);
+	});
 
 	it('should delete the organizations by Uid', async () => {
 		let org = await api.organization.create({
@@ -74,7 +70,7 @@ describe('RestAPI - Organization', () => {
 			should(err.errorCode).eql(404113);
 		}
 
-	}).timeout(ALLOWED_TIMEOUT);
+	});
 
 	it('should update the organization title by Uid', async () => {
 		let title = faker.company.companyName();
@@ -95,5 +91,5 @@ describe('RestAPI - Organization', () => {
 
 		assertOrg(org);
 		should(org.title).eql(title);
-	}).timeout(ALLOWED_TIMEOUT);
+	});
 });

@@ -1,4 +1,4 @@
-import { ALLOWED_TIMEOUT, opts, preRunCheck } from "../../helper";
+import { opts } from "../../helper";
 import IAlertRule from "../../../../../src/RestApi/Alerts/Rules/IAlertRule";
 import { Api } from "../../../../../src";
 import * as should from "should";
@@ -7,11 +7,14 @@ const api = new Api(opts);
 
 describe('RestAPI - Alert Rules', () => {
 
-	before(function () {
-		preRunCheck(this.skip.bind(this));
-	});
-
 	let createdAlertRule: IAlertRule | undefined;
+
+	before('create new alert rule', async () => {
+		createdAlertRule = await api.alert.rules.create({name: 'Test alert rule'});
+		should(createdAlertRule.alertRuleUid.length > 0).be.true();
+		should(createdAlertRule.name.length > 0).be.true();
+		should(createdAlertRule.companyUid.length > 0).be.true();
+	});
 
 	it('should get list of all alert rules', async () => {
 		const alertRuleList: IAlertRule[] = await api.alert.rules.list();
@@ -22,13 +25,6 @@ describe('RestAPI - Alert Rules', () => {
 		should(alertRuleList[0].name.length > 0).be.true();
 		should(alertRuleList[0].companyUid.length > 0).be.true();
 		should(alertRuleList[0].createdAt.getTime() > 0).be.true();
-	});
-
-	it('should create new alert rule', async () => {
-		createdAlertRule = await api.alert.rules.create({name: 'Test alert rule'});
-		should(createdAlertRule.alertRuleUid.length > 0).be.true();
-		should(createdAlertRule.name.length > 0).be.true();
-		should(createdAlertRule.companyUid.length > 0).be.true();
 	});
 
 	it('should get one alert rule by uid', async () => {
@@ -63,4 +59,4 @@ describe('RestAPI - Alert Rules', () => {
 		should(Array.isArray(archivedRules)).true();
 		should(archivedRules.length > 0).true();
 	});
-}).timeout(ALLOWED_TIMEOUT);
+});
