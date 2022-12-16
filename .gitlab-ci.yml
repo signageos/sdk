@@ -37,10 +37,6 @@ test:general:
   stage: test
   except:
     - tags
-  services:
-    - rabbitmq:3.6.6-alpine
-  variables:
-    amqp_dsn: amqp://guest:guest@rabbitmq:5672/
   script:
     - cp .env.amy .env
     - npm test
