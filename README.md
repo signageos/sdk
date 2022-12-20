@@ -31,6 +31,8 @@ Optional ENV variable adjustment (with default values):
 SOS_API_URL="https://api.signageos.io"
 # How many times to retry request until it fails
 SOS_REQUEST_MAX_ATTEMPTS="3"
+# You can setup which profile to use when loading from `~/.sosrc` file (see details in https://github.com/signageos/cli#run-control-file)
+SOS_PROFILE=
 ```
 
 #### How to obtain Organization API SECURITY TOKENS

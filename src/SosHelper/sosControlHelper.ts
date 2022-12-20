@@ -5,6 +5,7 @@ import * as os from 'os';
 import IRestApiOptions, { IAuthOptions } from '../RestApi/IOptions';
 import { AccountAuthMissingError, DefaultOrganizationMissingError } from './errors';
 import OrganizationManagement from '../RestApi/Organization/OrganizationManagement';
+import { parameters } from '../parameters';
 
 const RUN_CONTROL_FILENAME = '.sosrc';
 
@@ -14,22 +15,9 @@ export interface IConfig {
 	defaultOrganizationUid?: string;
 }
 
-export async function saveConfig(config: IConfig) {
-	const runControlFilePath = getConfigFilePath();
-	const runControlFileContent = ini.encode(config);
-	await fs.writeFile(runControlFilePath, runControlFileContent, {
-		mode: 0o600,
-	});
-}
-
-export async function updateConfig(partialConfig: Partial<IConfig>) {
-	const currentConfig = await loadConfig();
-	const newConfig = {
-		...currentConfig,
-		...partialConfig,
-	};
-	await saveConfig(newConfig);
-}
+type IConfigFile = IConfig & {
+	[P in `profile ${string}`]?: IConfig;
+};
 
 export async function loadConfig(): Promise<IConfig> {
 	const runControlFilePath = getConfigFilePath();
@@ -37,7 +25,11 @@ export async function loadConfig(): Promise<IConfig> {
 		return {};
 	}
 	const runControlFileContent = await fs.readFile(runControlFilePath);
-	return ini.decode(runControlFileContent.toString()) as IConfig;
+	const configFile = ini.decode(runControlFileContent.toString()) as IConfigFile;
+
+	const profile = parameters.profile;
+	const config = profile ? configFile[`profile ${profile}`] ?? {} : configFile;
+	return config;
 }
 
 export function getConfigFilePath() {

@@ -11,6 +11,21 @@ require('dotenv').config({ path: path.join(rootPath, '.env') }); // default look
 const requestMaxAttempts = process.env.SOS_REQUEST_MAX_ATTEMPTS ? parseInt(process.env.SOS_REQUEST_MAX_ATTEMPTS) : 3;
 const apiUrl = process.env.SOS_API_URL;
 
+const configurableEnvVars = [
+	'SOS_PROFILE',
+	'SOS_API_IDENTIFICATION',
+	'SOS_API_SECURITY_TOKEN',
+	'SOS_AUTH_CLIENT_ID',
+	'SOS_AUTH_SECRET',
+	'SOS_ORGANIZATION_UID',
+] as const;
+
+for (const envVar of configurableEnvVars) {
+	if (process.env[envVar]) {
+		console.warn(`Environment variable ${envVar} found. Will override default credentials from ~/.sosrc`);
+	}
+}
+
 if (!apiUrl) {
 	throw new Error(`Environment variable SOS_API_URL is required`);
 }
@@ -24,6 +39,7 @@ export const parameters = {
 		testsPath,
 		distPath,
 	},
+	profile: process.env.SOS_PROFILE,
 	apiUrl,
 	requestMaxAttempts,
 	organizationUid: process.env.SOS_ORGANIZATION_UID,
