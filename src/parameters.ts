@@ -9,8 +9,6 @@ require('dotenv').config(); // try CWD path first
 require('dotenv').config({ path: path.join(rootPath, '.env') }); // default looks to lib path
 
 const requestMaxAttempts = process.env.SOS_REQUEST_MAX_ATTEMPTS ? parseInt(process.env.SOS_REQUEST_MAX_ATTEMPTS) : 3;
-const apiUrl = process.env.SOS_API_URL;
-
 const configurableEnvVars = [
 	'SOS_PROFILE',
 	'SOS_API_IDENTIFICATION',
@@ -22,9 +20,11 @@ const configurableEnvVars = [
 
 for (const envVar of configurableEnvVars) {
 	if (process.env[envVar]) {
-		console.warn(`Environment variable ${envVar} found. Will override default credentials from ~/.sosrc`);
+		console.warn(`Environment variable ${envVar} found. Will override default values from ~/.sosrc`);
 	}
 }
+
+const apiUrl = process.env.SOS_API_URL;
 
 if (!apiUrl) {
 	throw new Error(`Environment variable SOS_API_URL is required`);
