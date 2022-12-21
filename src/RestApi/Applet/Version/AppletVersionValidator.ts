@@ -1,3 +1,4 @@
+import { log } from '../../../Console/log';
 import { IAppletVersionCreatable, IAppletVersionUpdatable } from './IAppletVersion';
 
 export const checkAppletVersionUpdatable = (updatable: IAppletVersionUpdatable) => {
@@ -5,7 +6,10 @@ export const checkAppletVersionUpdatable = (updatable: IAppletVersionUpdatable) 
 		throw new Error('Applet version can\'t have both entryFile and binary.');
 	}
 	if (updatable.binary) {
-		console.warn('Applet binary option is deprecated. Please use the entryFile option if possible.');
+		log(
+			'warning',
+			'Applet binary option is deprecated. Please use the entryFile option if possible.',
+		);
 	}
 };
 

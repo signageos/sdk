@@ -3,6 +3,7 @@ import { parameters } from './parameters';
 import { cacheFunctionResult } from './SosHelper/cache';
 import { loadAccountAuthOptions, loadOrganizationAuthOptions } from './SosHelper/sosControlHelper';
 import { ApiVersions } from './RestApi/apiVersions';
+import { log } from './Console/log';
 
 export interface IOptions {
 	url?: string;
@@ -48,12 +49,14 @@ export function createApiOrgAndAccountOptions(options: IOptions, version?: ApiVe
 	organizationOptions: IRestApiOptions,
 } {
 	if (options.accountAuth && 'accountId' in options.accountAuth) {
-		console.warn(
+		log(
+			'warning',
 			`Option "accountAuth.accountId" is deprecated and will be removed in next major version. Use "accountAuth.tokenId" instead.`,
 		);
 	}
 	if (options.accountAuth && 'secret' in options.accountAuth) {
-		console.warn(
+		log(
+			'warning',
 			`Option "accountAuth.secret" is deprecated and will be removed in next major version. Use "accountAuth.token" instead.`,
 		);
 	}

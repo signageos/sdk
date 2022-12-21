@@ -1,3 +1,5 @@
+import { log } from "./Console/log";
+
 const path = require('path');
 const packageConfig = require('../package.json');
 const environment = process.env.NODE_ENV || 'dev';
@@ -20,7 +22,10 @@ const configurableEnvVars = [
 
 for (const envVar of configurableEnvVars) {
 	if (process.env[envVar]) {
-		console.warn(`Environment variable ${envVar} found. Will override default values from ~/.sosrc`);
+		log(
+			'warning',
+			`Environment variable ${envVar} found. Will override default values from ~/.sosrc`,
+		);
 	}
 }
 
