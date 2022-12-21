@@ -4,11 +4,9 @@
   "main": "./dist",
   "files": [
     "dist",
-    "config",
     ".env",
     "README.md",
-    "package.json",
-    "package-lock.json"
+    "package.json"
   ],
   "repository": {
     "url": "https://github.com/signageos/sdk",
