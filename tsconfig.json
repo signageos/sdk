@@ -11,6 +11,7 @@
         "pretty": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
+        "skipLibCheck": true,
         "noImplicitThis": true,
         "noUnusedParameters": true,
         "noUnusedLocals": true,

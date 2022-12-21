@@ -1,4 +1,4 @@
 
 export default function wait(timeout: number) {
-	return new Promise((resolve: () => void) => setTimeout(() => resolve(), timeout));
+	return new Promise<void>((resolve: () => void) => setTimeout(() => resolve(), timeout));
 }
