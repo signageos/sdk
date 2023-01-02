@@ -28,8 +28,8 @@
   "author": "Michael Zabka <zabka.michael@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=12.0.0",
-    "npm": ">=6.0.0"
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
   },
   "engineStrict": false,
   "publishConfig": {
@@ -47,7 +47,7 @@
     "@types/mocha": "7.0.1",
     "@types/moment-timezone": "0.5.4",
     "@types/nock": "10.0.3",
-    "@types/node": "12.12.29",
+    "@types/node": "16.18.11",
     "@types/node-fetch": "2.1.2",
     "@types/should": "8.3.0",
     "@types/sinon": "9.0.8",
