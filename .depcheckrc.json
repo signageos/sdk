@@ -2,7 +2,6 @@
 	"specials": [ "mocha" ],
 	"parsers": {
 		"**/*.ts": "typescript",
-		"**/*.tsx": "typescript",
 		"**/*.js": "es6"
 	},
 	"detectors": [
