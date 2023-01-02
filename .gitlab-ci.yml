@@ -122,6 +122,9 @@ publish:docs:
   stage: publish
   only:
     - tags
+  environment:
+    name: docs
+    url: https://signageos-documentation.s3.eu-central-1.amazonaws.com/sdk/latest/index.html
   needs:
     - prepare
     - build

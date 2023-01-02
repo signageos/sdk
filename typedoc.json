@@ -1,7 +1,5 @@
 {
-  "mode": "file",
   "out": "docs",
-  "theme": "minimal",
-  "excludeNotExported": true,
+  "excludeExternals": true,
   "excludePrivate": false
 }

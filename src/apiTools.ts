@@ -25,7 +25,7 @@ export interface IOptions {
 	version?: ApiVersions.V1 | ApiVersions.V2;
 	/**
 	 * Define the user custom client versions which is used for header User-Agent.
-	 * E.g.: { "signageOS_CLI": "1.0.3" }
+	 * E.g.: `{ "signageOS_CLI": "1.0.3" }`
 	 */
 	clientVersions?: {
 		[clientName: string]: string;
