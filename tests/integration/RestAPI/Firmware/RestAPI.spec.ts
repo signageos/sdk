@@ -4,7 +4,7 @@ import { Api } from "../../../../src";
 import { opts } from "../helper";
 import IFirmwareVersion from '../../../../src/RestApi/Firmware/Version/IFirmwareVersion';
 import FirmwareVersion from '../../../../src/RestApi/Firmware/Version/FirmwareVersion';
-import { createReadableStream } from '../../../Unit/RestApi/Applet/Version/File/helper';
+import { createReadableStream } from '../../../unit/RestApi/Applet/Version/File/helper';
 
 const api = new Api(opts);
 
