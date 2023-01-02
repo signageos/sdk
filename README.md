@@ -68,7 +68,7 @@ Just by setting ENV variables properly, you are ready to go and may use the api.
 node.js app, it tries to get values from user's `~/.sosrc` which is configured by
 [`@signageos/cli`](https://github.com/signageos/cli) dependency.
 
-```ecmascript 6
+```javascript
 import { createApiV1 } from "@signageos/sdk";
 
 const api = createApiV1(
@@ -91,7 +91,7 @@ const devices = await api.device.list();
 // ...
 ```
 
-```ecmascript 6
+```javascript
 import { createApiV2 } from "@signageos/sdk";
 
 const api = createApiV2(
@@ -116,7 +116,7 @@ const devices = await api.device.list();
 
 ### Credentials from ENV Variables
 
-```ecmascript 6
+```javascript
 import { createApiV1 } from "@signageos/sdk";
 
 // takes parameters from env vars
@@ -128,7 +128,7 @@ const devices = await api.device.list();
 // ...
 ```
 
-```ecmascript 6
+```javascript
 import { createApiV2 } from "@signageos/sdk";
 
 // takes parameters from env vars
