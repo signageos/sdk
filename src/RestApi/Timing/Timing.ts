@@ -69,10 +69,15 @@ import {
 import IFile from "@signageos/front-applet/es6/FrontApplet/Offline/Cache/IFile";
 
 export interface IHtml {
+	/** @returns Promise<[HTMLDocument](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument)> */
 	getDOMDocument(): Promise<HTMLDocument>;
 }
 
 export interface IOffline {
+	/**
+	 * @description See the documentation
+	 * [Offline Cache for media files (File API)](https://sdk.docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
+	 */
 	cache: {
 		listFiles(): Promise<string[]>;
 		loadFile(uid: string): Promise<IFile>;
@@ -82,6 +87,9 @@ export interface IOffline {
 	};
 }
 
+/**
+ * @description See the documentation [File System](https://sdk.docs.signageos.io/api/js/content/5.5.0/js-file-system)
+ */
 export interface IFileSystem {
 	listStorageUnits(): Promise<IStorageUnit[]>;
 	listFiles(directoryPath: IFilePath): Promise<IFilePath[]>;
@@ -114,6 +122,11 @@ export interface IConsole {
 type IVideoOperations = {
 	getAll(since?: Date): Promise<IVideoProperties[]>;
 };
+/**
+ * @description See the documentation [Video](https://sdk.docs.signageos.io/api/js/content/latest/js-video)
+ * <br>The difference from Applet SDK here is that the operations is not function but object with function `getAll()`
+ * that returns all calls of the operation.
+ */
 export interface IVideo {
 	play: IVideoOperations;
 	stop: IVideoOperations;
@@ -300,6 +313,7 @@ export default class Timing implements ITiming {
 			},
 		},
 	};
+	/** @see IVideo */
 	public readonly video: IVideo = videoStates.reduce<any>(
 		(videoMemo: IVideo, state: VideoStateChanged['state']) => ({
 			...videoMemo,
@@ -331,6 +345,7 @@ export default class Timing implements ITiming {
 		}),
 		{},
 	);
+	/** @see IFileSystem */
 	public readonly fileSystem: IFileSystem = {
 		appendFile: async (filePath: IFilePath, content: string): Promise<void> => {
 			const appendFileCommand = await this.timingCommandManagement.create<FileSystemAppendFileRequest>({
