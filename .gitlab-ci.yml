@@ -33,6 +33,17 @@ prepare:
       - ./VERSION
       - ./PRERELEASE
 
+prepare:api:
+  image: $ECR_REGISTRY/signageos/docker:kytart-deploy-standalone-script
+  stage: prepare
+  before_script: []
+  environment:
+    name: amy
+  tags:
+    - amy
+  script:
+    - ci-deploy-standalone -s api
+
 test:general:
   stage: test
   except:
@@ -52,6 +63,7 @@ test:integration:
     - npm run test-integration
   needs:
     - prepare
+    - prepare:api
 
 test:lint:
   stage: test
