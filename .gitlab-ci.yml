@@ -46,8 +46,13 @@ prepare:api:
 
 test:general:
   stage: test
-  except:
-    - tags
+  rules:
+    # don't run if running for tag
+    - if: '$CI_COMMIT_TAG'
+      when: never
+    # don't run if triggered from another pipeline
+    - if: '$CI_PIPELINE_SOURCE'
+      when: never
   script:
     - cp .env.amy .env
     - npm test
@@ -56,8 +61,10 @@ test:general:
 
 test:integration:
   stage: test
-  except:
-    - tags
+  rules:
+    # don't run if running for tag
+    - if: '$CI_COMMIT_TAG'
+      when: never
   script:
     - cp .env.amy .env
     - npm run test-integration
@@ -67,8 +74,13 @@ test:integration:
 
 test:lint:
   stage: test
-  except:
-    - tags
+  rules:
+    # don't run if running for tag
+    - if: '$CI_COMMIT_TAG'
+      when: never
+    # don't run if triggered from another pipeline
+    - if: '$CI_PIPELINE_SOURCE'
+      when: never
   script:
     - if [ `find tests -name '*\.ts' -type f -print0 | xargs -0 grep "\.only" | wc -l` -gt 0 ]; then echo "You forgot the .only in tests" && exit 1; fi
     - npm run lint
@@ -78,9 +90,14 @@ test:lint:
 test:changelog:
   image: $CI_REGISTRY/signageos/docker:master
   stage: test
-  except:
-    - tags
   allow_failure: true
+  rules:
+    # don't run if running for tag
+    - if: '$CI_COMMIT_TAG'
+      when: never
+    # don't run if triggered from another pipeline
+    - if: '$CI_PIPELINE_SOURCE'
+      when: never
   script:
     - ci-test-changelog
   needs:
@@ -88,8 +105,13 @@ test:changelog:
 
 test:check:
   stage: test
-  except:
-    - tags
+  rules:
+    # don't run if running for tag
+    - if: '$CI_COMMIT_TAG'
+      when: never
+    # don't run if triggered from another pipeline
+    - if: '$CI_PIPELINE_SOURCE'
+      when: never
   script:
     - npm run check
   needs:
@@ -111,6 +133,8 @@ publish:npm:
   needs:
     - prepare
     - build
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "pipeline"
   script:
     - cp .env.production .env
     - npm publish --ignore-scripts --tag $TAG
