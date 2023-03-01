@@ -1,5 +1,5 @@
-import { DeviceActionType } from "./enums";
-import { IDeviceUids, IFilter, IRollingUpdate, LogData } from "./types";
+import { DeviceActionType } from './BulkOperation.enums';
+import { IDeviceUids, IFilter, IRollingUpdate, LogData } from './BulkOperation.types';
 
 export interface IBulkOperationFilter {
 	limit?: number;
@@ -37,18 +37,18 @@ export default interface IBulkOperation<T extends DeviceActionType> {
 	finishedAt?: string | null;
 	isRunning?: boolean;
 	schedule?: {
-		datetime: Date,
-		timezone: string,
-		deferFilter?: boolean,
+		datetime: Date;
+		timezone: string;
+		deferFilter?: boolean;
 	};
 	rollingUpdate?: IRollingUpdate;
 	operationType: T;
 	data: LogData[T];
 	progress: {
-		total: number,
-		failed: number,
-		inProgress: number,
-		succeeded: number,
+		total: number;
+		failed: number;
+		inProgress: number;
+		succeeded: number;
 	};
 	organizationUids: string[];
 	isDraft?: boolean;

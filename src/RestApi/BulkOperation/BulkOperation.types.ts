@@ -1,6 +1,8 @@
 import { InputSource } from '../Device/InputSource';
-import { TResolutionItem } from '../Device/Resolution/IDeviceResolution';
-import { ApplicationType, DeviceActionType, Orientation, VideoOrientation } from './enums';
+import { ApplicationType, DeviceActionType, Orientation, VideoOrientation } from './BulkOperation.enums';
+import { ResolutionItem } from '../Device/IDevice';
+import { FinishEventType } from '../Timing/Timing.types';
+import { TelemetryCheckIntervals } from '../Device/Monitoring/DeviceMonitoring.types';
 
 export interface IConfigValues {
 	platformUri?: string | null;
@@ -60,7 +62,8 @@ export type LogData = {
 	[DeviceActionType.UNINSTALL_PACKAGE]: {
 		packageName: string;
 		applicationType: ApplicationType;
-		specs: Record<string, unknown>;
+		// eslint-disable-next-line @typescript-eslint/ban-types
+		specs: object;
 	};
 	[DeviceActionType.POWER_ACTION]: {
 		powerType: string;
@@ -77,7 +80,7 @@ export type LogData = {
 		enabled: boolean;
 	};
 	[DeviceActionType.RESIZE]: {
-		resolution: TResolutionItem;
+		resolution: ResolutionItem;
 		orientation: Orientation;
 		videoOrientation?: VideoOrientation;
 	};
@@ -98,37 +101,53 @@ export type LogData = {
 	[DeviceActionType.CREATE_TIMING]: {
 		appletUid: string;
 		appletVersion: string;
+		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
 		startsAt: Date;
+		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
 		endsAt: Date;
 		configuration: Record<string, unknown>;
+		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
 		finishEvent: {
-			type: 'DURATION' | 'IDLE_TIMEOUT' | 'SCREEN_TAP';
+			type: FinishEventType;
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			data?: any;
 		};
+		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
 		position: number;
 	};
 	[DeviceActionType.UPDATE_TIMING]: {
 		appletUid: string;
 		appletVersion: string | undefined;
+		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
 		startsAt: Date | undefined;
+		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
 		endsAt: Date | undefined;
 		configuration: Record<string, unknown> | undefined;
-		finishEvent: {
-			type: 'DURATION' | 'IDLE_TIMEOUT' | 'SCREEN_TAP' | undefined;
-			data?: any | undefined;
-		} | undefined;
+		configurationSet: Record<string, unknown> | undefined;
+		configurationRemoveKeys: string[] | undefined;
+		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
+		finishEvent:
+			| {
+					type: FinishEventType | undefined;
+					data?: any | undefined;
+		}
+			| undefined;
+		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
 		position: number | undefined;
 	};
 	[DeviceActionType.DELETE_TIMING]: {
+		uid: string;
 		appletUid: string;
-		appletVersion: string | undefined;
+		appletVersion: string;
 	};
 	[DeviceActionType.SET_DEVICE_APPLET_TEST_SUITE]: {
 		appletUid: string;
 		appletVersion: string;
 		tests: string[];
 	};
-	[DeviceActionType.SET_TEST_SUITE]: Record<string, never>;
+	[DeviceActionType.SET_TEST_SUITE]: {
+		tests: string[];
+	};
 	[DeviceActionType.START_PACKAGE]: {
 		packageName: string;
 		applicationType: ApplicationType;
@@ -179,6 +198,37 @@ export type LogData = {
 	};
 	[DeviceActionType.SET_ORGANIZATION]: {
 		organizationUid: string;
+	};
+	[DeviceActionType.SET_AUTO_RECOVERY]:
+		| {
+				enabled: true;
+				/** It defines in miliseconds period whose elapsing leads to mark browser process as unresponding. */
+				healthcheckIntervalMs: number;
+	}
+		| {
+				enabled: false;
+				/** When specified it defines period until automatic enabling auto recovery process in miliseconds. */
+				autoEnableTimeoutMs?: number;
+	};
+	[DeviceActionType.SET_PEER_RECOVERY]:
+		| {
+				enabled: true;
+	}
+		| {
+				enabled: false;
+				/** When specified it defines period until automatic enabling peer recovery process in miliseconds. */
+				autoEnableTimeoutMs?: number;
+	};
+	[DeviceActionType.ENABLE_EXTENDED_TELEMETRY]: {
+		deviceIdentityHash: string;
+		duration: number;
+	};
+	[DeviceActionType.DISABLE_EXTENDED_TELEMETRY]: {
+		deviceIdentityHash: string;
+	};
+	[DeviceActionType.TELEMETRY_INTERVALS]: {
+		deviceIdentityHash: string;
+		telemetryCheckIntervals: TelemetryCheckIntervals;
 	};
 };
 

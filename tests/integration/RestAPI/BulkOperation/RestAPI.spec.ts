@@ -1,9 +1,9 @@
 import * as should from 'should';
 
 import { Api } from '../../../../src';
-import BulkOperation from '../../../../src/RestApi/BulkOperation/BulkOperation';
 import { opts } from '../helper';
-import { DeviceActionType } from '../../../../src/RestApi/BulkOperation/enums';
+import { DeviceActionType } from '../../../../src/RestApi/BulkOperation/BulkOperation.enums';
+import { LogDataMock } from './BulkOperation.fixtures';
 
 const testingBulkOperation = {
 	name: 'testingName4',
@@ -25,25 +25,21 @@ const testingBulkOperation = {
 		version: 'testingVersion',
 	},
 };
+
 const api = new Api(opts);
 
 describe('RestAPI - BulkOperation', function () {
-
-	let createdBulkOperation: BulkOperation;
-
-	before('create new bulk operation', async () => {
-		createdBulkOperation = await should(
-			api.bulkOperation.create(testingBulkOperation),
-		).be.fulfilled();
+	it('should create new bulk operation', async () => {
+		const createdBulkOperation = await should(api.bulkOperation.create(testingBulkOperation)).be.fulfilled();
 		should(createdBulkOperation.name).be.eql(testingBulkOperation.name);
 		should(createdBulkOperation.operationType).be.eql(testingBulkOperation.operationType);
 		should(createdBulkOperation.data).be.eql(testingBulkOperation.data);
 		should(createdBulkOperation.rollingUpdate).be.eql(testingBulkOperation.rollingUpdate);
 		should('createdAt' in createdBulkOperation).be.eql(true);
-
 	});
 
 	it('should get bulk operation by uid', async () => {
+		const createdBulkOperation = await should(api.bulkOperation.create(testingBulkOperation)).be.fulfilled();
 		const bulkOperationGet = await api.bulkOperation.get(createdBulkOperation.uid);
 		should(bulkOperationGet.name).be.eql(testingBulkOperation.name);
 		should(bulkOperationGet.operationType).be.eql(testingBulkOperation.operationType);
@@ -54,9 +50,8 @@ describe('RestAPI - BulkOperation', function () {
 	});
 
 	it('should get bulk operation by organization uid', async () => {
-		createdBulkOperation = await should(
-			api.bulkOperation.create(testingBulkOperation),
-		).be.fulfilled();
+		await should(api.bulkOperation.create(testingBulkOperation)).be.fulfilled();
+		await should(api.bulkOperation.create(testingBulkOperation)).be.fulfilled();
 
 		const bulkOperationGetArray = await api.bulkOperation.list({
 			limit: 1,
@@ -71,9 +66,7 @@ describe('RestAPI - BulkOperation', function () {
 	});
 
 	it('should stop bulk operation by uid', async () => {
-		createdBulkOperation = await should(
-			api.bulkOperation.create(testingBulkOperation),
-		).be.fulfilled();
+		const createdBulkOperation = await should(api.bulkOperation.create(testingBulkOperation)).be.fulfilled();
 
 		await api.bulkOperation.stop(createdBulkOperation.uid);
 
@@ -83,9 +76,7 @@ describe('RestAPI - BulkOperation', function () {
 	});
 
 	it('should archive bulk operation by uid', async () => {
-		createdBulkOperation = await should(
-			api.bulkOperation.create(testingBulkOperation),
-		).be.fulfilled();
+		const createdBulkOperation = await should(api.bulkOperation.create(testingBulkOperation)).be.fulfilled();
 
 		await api.bulkOperation.archive(createdBulkOperation.uid);
 
@@ -95,9 +86,7 @@ describe('RestAPI - BulkOperation', function () {
 	});
 
 	it('should pause bulk operation by uid', async () => {
-		createdBulkOperation = await should(
-			api.bulkOperation.create(testingBulkOperation),
-		).be.fulfilled();
+		const createdBulkOperation = await should(api.bulkOperation.create(testingBulkOperation)).be.fulfilled();
 
 		await api.bulkOperation.pause(createdBulkOperation.uid);
 
@@ -107,9 +96,7 @@ describe('RestAPI - BulkOperation', function () {
 	});
 
 	it('should pause and resume bulk operation by uid', async () => {
-		createdBulkOperation = await should(
-			api.bulkOperation.create(testingBulkOperation),
-		).be.fulfilled();
+		const createdBulkOperation = await should(api.bulkOperation.create(testingBulkOperation)).be.fulfilled();
 
 		await api.bulkOperation.pause(createdBulkOperation.uid);
 
@@ -127,5 +114,21 @@ describe('RestAPI - BulkOperation', function () {
 
 		should('resumedAt' in bulkOperationGet).be.eql(true);
 		should(bulkOperationGet.rollingUpdate).be.deepEqual(newRollingUpdate.rollingUpdate);
+	});
+
+	describe('Bulk operation all possible payloads', async function () {
+		for (const operationType of Object.values(DeviceActionType)) {
+			const bulkData = LogDataMock[operationType];
+			it(`should create bulk operation with payload of - ${operationType}`, async function () {
+				const createdBulkOperation = await should(
+					api.bulkOperation.create({ ...testingBulkOperation, operationType, ...{ data: bulkData } }),
+				).be.fulfilled();
+				should(createdBulkOperation.name).be.eql(testingBulkOperation.name);
+				should(createdBulkOperation.operationType).be.eql(operationType);
+				should(createdBulkOperation.data).deepEqual(bulkData);
+				should(createdBulkOperation.rollingUpdate).be.eql(testingBulkOperation.rollingUpdate);
+				should('createdAt' in createdBulkOperation).be.eql(true);
+			});
+		}
 	});
 });

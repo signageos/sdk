@@ -2,15 +2,14 @@ import { getResource, parseJSONResponse, postResource, putResource } from '../re
 import IOptions from '../IOptions';
 import BulkOperation from './BulkOperation';
 import IBulkOperation, { IBulkOperationCreatable, IBulkOperationFilter } from './IBulkOperation';
-import { DeviceActionType } from './enums';
+import { DeviceActionType } from './BulkOperation.enums';
 import { Headers } from 'node-fetch';
-import { IRollingUpdate } from './types';
+import { IRollingUpdate } from './BulkOperation.types';
 
 export default class BulkOperationManagement {
 	public static readonly RESOURCE: string = 'bulk-operation';
 
-	constructor(private options: IOptions) {
-	}
+	constructor(private options: IOptions) {}
 
 	public async get(bulkOperationUid: string): Promise<BulkOperation> {
 		const response = await getResource(this.options, `${BulkOperationManagement.RESOURCE}/${bulkOperationUid}`);

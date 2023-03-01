@@ -3,7 +3,7 @@ import * as nock from 'nock';
 
 import { getNockOpts, nockAuthHeader1, successRes } from '../helper';
 import { IBulkOperationCreatable } from '../../../../src/RestApi/BulkOperation/IBulkOperation';
-import { DeviceActionType } from '../../../../src/RestApi/BulkOperation/enums';
+import { DeviceActionType } from '../../../../src/RestApi/BulkOperation/BulkOperation.enums';
 import BulkOperation from '../../../../src/RestApi/BulkOperation/BulkOperation';
 import BulkOperationManagement from '../../../../src/RestApi/BulkOperation/BulkOperationManagement';
 
