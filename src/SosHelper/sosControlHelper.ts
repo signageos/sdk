@@ -20,6 +20,8 @@ export interface IConfig {
 	emulatorUid?: string;
 }
 
+type ISafeConfig = IConfig & Required<Pick<IConfig, 'apiUrl'>>;
+
 export type IConfigFile = IConfig & {
 	[P in `profile ${string}`]?: IConfig;
 };
@@ -29,7 +31,7 @@ export interface IConfigOptions {
 	profile?: string;
 }
 
-export async function loadConfig(options?: IConfigOptions): Promise<IConfig> {
+export async function loadConfig(options?: IConfigOptions): Promise<ISafeConfig> {
 	const runControlFilePath = getConfigFilePath();
 	let configFile: IConfigFile = {};
 	if (await fs.pathExists(runControlFilePath)) {
@@ -63,7 +65,8 @@ export async function loadConfig(options?: IConfigOptions): Promise<IConfig> {
 		log('info', 'After the log in, commands are becoming almost 10x faster.');
 	}
 
-	return config;
+	// Return value has to always contain apiUrl since it's default from parameters that is always set
+	return config as ISafeConfig;
 }
 
 export async function saveConfig(newConfig: IConfig, options?: IConfigOptions) {
