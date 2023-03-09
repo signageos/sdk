@@ -1,6 +1,7 @@
 import * as fs from 'fs-extra';
 import * as ini from 'ini';
 import * as path from 'path';
+import * as _ from 'lodash';
 import * as os from 'os';
 import chalk from 'chalk';
 import IRestApiOptions, { IAuthOptions } from '../RestApi/IOptions';
@@ -23,7 +24,12 @@ export type IConfigFile = IConfig & {
 	[P in `profile ${string}`]?: IConfig;
 };
 
-export async function loadConfig(): Promise<IConfig> {
+export interface IConfigOptions {
+	/** The profile used on .sosrc file. Defaults to AWS_PROFILE environment variable */
+	profile?: string;
+}
+
+export async function loadConfig(options?: IConfigOptions): Promise<IConfig> {
 	const runControlFilePath = getConfigFilePath();
 	let configFile: IConfigFile = {};
 	if (await fs.pathExists(runControlFilePath)) {
@@ -31,7 +37,7 @@ export async function loadConfig(): Promise<IConfig> {
 		configFile = ini.decode(runControlFileContent.toString()) as IConfigFile;
 	}
 
-	const profile = parameters.profile;
+	const profile = options?.profile ?? parameters.profile;
 	const config = profile ? configFile[`profile ${profile}`] ?? {} : configFile;
 
 	// Overriding from env vars if available
@@ -58,6 +64,38 @@ export async function loadConfig(): Promise<IConfig> {
 	}
 
 	return config;
+}
+
+export async function saveConfig(newConfig: IConfig, options?: IConfigOptions) {
+	newConfig = _.omitBy(newConfig, _.isNil);
+	const runControlFilePath = getConfigFilePath();
+	let configFile: IConfigFile = {};
+	if (await fs.pathExists(runControlFilePath)) {
+		const originalRCFileContent = await fs.readFile(runControlFilePath);
+		configFile = ini.decode(originalRCFileContent.toString()) as IConfigFile;
+	}
+
+	const profile = options?.profile ?? parameters.profile;
+	if (profile) {
+		configFile[`profile ${profile}`] = newConfig;
+	} else {
+		configFile = _.omitBy(configFile, (_val, key) => !key.startsWith('profile '));
+		Object.assign(configFile, newConfig);
+	}
+
+	const newRCFileContent = ini.encode(configFile);
+	await fs.writeFile(runControlFilePath, newRCFileContent, {
+		mode: 0o600,
+	});
+}
+
+export async function updateConfig(partialConfig: Partial<IConfig>, options?: IConfigOptions) {
+	const currentConfig = await loadConfig();
+	const newConfig = {
+		...currentConfig,
+		...partialConfig,
+	};
+	await saveConfig(newConfig, options);
 }
 
 export function getConfigFilePath() {
