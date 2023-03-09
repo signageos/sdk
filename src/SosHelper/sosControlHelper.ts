@@ -2,33 +2,61 @@ import * as fs from 'fs-extra';
 import * as ini from 'ini';
 import * as path from 'path';
 import * as os from 'os';
+import chalk from 'chalk';
 import IRestApiOptions, { IAuthOptions } from '../RestApi/IOptions';
 import { AccountAuthMissingError, DefaultOrganizationMissingError } from './errors';
 import OrganizationManagement from '../RestApi/Organization/OrganizationManagement';
 import { parameters } from '../parameters';
+import { log } from '../Console/log';
 
 const RUN_CONTROL_FILENAME = '.sosrc';
 
 export interface IConfig {
+	apiUrl?: string;
 	identification?: string;
 	apiSecurityToken?: string;
 	defaultOrganizationUid?: string;
+	emulatorUid?: string;
 }
 
-type IConfigFile = IConfig & {
+export type IConfigFile = IConfig & {
 	[P in `profile ${string}`]?: IConfig;
 };
 
 export async function loadConfig(): Promise<IConfig> {
 	const runControlFilePath = getConfigFilePath();
-	if (!await fs.pathExists(runControlFilePath)) {
-		return {};
+	let configFile: IConfigFile = {};
+	if (await fs.pathExists(runControlFilePath)) {
+		const runControlFileContent = await fs.readFile(runControlFilePath);
+		configFile = ini.decode(runControlFileContent.toString()) as IConfigFile;
 	}
-	const runControlFileContent = await fs.readFile(runControlFilePath);
-	const configFile = ini.decode(runControlFileContent.toString()) as IConfigFile;
 
 	const profile = parameters.profile;
 	const config = profile ? configFile[`profile ${profile}`] ?? {} : configFile;
+
+	// Overriding from env vars if available
+	if (parameters.accountAuth?.tokenId) {
+		config.identification = parameters.accountAuth.tokenId;
+	}
+	if (parameters.accountAuth?.token) {
+		config.apiSecurityToken = parameters.accountAuth.token;
+	}
+	if (parameters.organizationUid) {
+		config.defaultOrganizationUid = parameters.organizationUid;
+	}
+	if (!config.apiUrl) {
+		config.apiUrl = parameters.apiUrl;
+	}
+
+	// Temporary suggestion to login getting faster token
+	if (config.identification && !config.identification.match(/[0-9a-f]{20,20}/)) {
+		log(
+			'warning',
+			`Your authentication token is outdated. Please do the ${chalk.green('sos login')} again.`,
+		);
+		log('info', 'After the log in, commands are becoming almost 10x faster.');
+	}
+
 	return config;
 }
 
