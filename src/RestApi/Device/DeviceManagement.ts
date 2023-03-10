@@ -29,6 +29,7 @@ import DevicePolicyStatusManagement from './PolicyStatus/DevicePolicyStatusManag
 import DeviceAutoRecoveryManagement from './AutoRecovery/DeviceAutoRecoveryManagement';
 import DevicePeerRecoveryManagement from './PeerRecovery/DevicePeerRecoveryManagement';
 import DeviceConfigurationManagement from './Configuration/DeviceConfigurationManagement';
+import DeviceConnectManagement from './Connect/DeviceConnectManagement';
 
 export default class DeviceManagement {
 
@@ -57,6 +58,7 @@ export default class DeviceManagement {
 	public autoRecovery: DeviceAutoRecoveryManagement;
 	public peerRecovery: DevicePeerRecoveryManagement;
 	public configuration: DeviceConfigurationManagement;
+	public connect: DeviceConnectManagement;
 
 	constructor(private accountOptions: IOptions, private organizationOptions: IOptions) {
 		this.appVersion = new DeviceAppVersionManagement(organizationOptions);
@@ -84,6 +86,7 @@ export default class DeviceManagement {
 		this.autoRecovery = new DeviceAutoRecoveryManagement(organizationOptions);
 		this.peerRecovery = new DevicePeerRecoveryManagement(organizationOptions);
 		this.configuration = new DeviceConfigurationManagement(organizationOptions);
+		this.connect = new DeviceConnectManagement(organizationOptions);
 	}
 
 	/**
