@@ -9,6 +9,7 @@ import {
 	createDefaultOptions,
 	IOptions,
 } from './apiTools';
+import { Development } from './Development/Development';
 
 /** @deprecated, use createApiV1, or createApiV2 functions instead */
 export class Api extends RestApi {
@@ -46,6 +47,26 @@ export const api = rest;
 export const timing = rest.timing;
 /** @deprecated use api.timingCommand instead */
 export const timingCommand = rest.timingCommand;
+
+/**
+ * Development API
+ * Allows to do some fency stuff, like:
+ * - connect/disconnect devices,
+ * - build/compile applet,
+ * - hot reload applet,
+ * - watch applet changes,
+ * - etc.
+ */
+export function createDevelopment(options: IOptions = createDefaultOptions()) {
+	const development = new Development(createApiV1(options), createApiV2(options));
+	return development;
+}
+
+/**
+ * A singleton instance of Development API
+ * @see createDevelopment
+ */
+export const dev = createDevelopment();
 
 export function now() {
 	return new Date();
