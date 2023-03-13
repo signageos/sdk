@@ -1,7 +1,6 @@
 import { InputSource } from '../Device/InputSource';
 import { ApplicationType, DeviceActionType, Orientation, VideoOrientation } from './BulkOperation.enums';
 import { ResolutionItem } from '../Device/IDevice';
-import { FinishEventType } from '../Timing/Timing.types';
 import { TelemetryCheckIntervals } from '../Device/Monitoring/DeviceMonitoring.types';
 
 export interface IConfigValues {
@@ -101,39 +100,14 @@ export type LogData = {
 	[DeviceActionType.CREATE_TIMING]: {
 		appletUid: string;
 		appletVersion: string;
-		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
-		startsAt: Date;
-		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
-		endsAt: Date;
 		configuration: Record<string, unknown>;
-		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
-		finishEvent: {
-			type: FinishEventType;
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			data?: any;
-		};
-		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
-		position: number;
 	};
 	[DeviceActionType.UPDATE_TIMING]: {
 		appletUid: string;
 		appletVersion: string | undefined;
-		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
-		startsAt: Date | undefined;
-		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
-		endsAt: Date | undefined;
 		configuration: Record<string, unknown> | undefined;
 		configurationSet: Record<string, unknown> | undefined;
 		configurationRemoveKeys: string[] | undefined;
-		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
-		finishEvent:
-			| {
-					type: FinishEventType | undefined;
-					data?: any | undefined;
-		}
-			| undefined;
-		/** @deprecated It stays because of backward compatibility and shouldn´t be used anymore in new implementations */
-		position: number | undefined;
 	};
 	[DeviceActionType.DELETE_TIMING]: {
 		uid: string;

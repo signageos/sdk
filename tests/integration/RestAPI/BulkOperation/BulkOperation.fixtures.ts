@@ -1,7 +1,6 @@
 import { DeviceActionType, Orientation, VideoOrientation } from '../../../../src/RestApi/BulkOperation/BulkOperation.enums';
 import { LogData } from '../../../../src/RestApi/BulkOperation/BulkOperation.types';
 import { SocketDriver } from '../../../../src/RestApi/V2/Device/Device';
-import { FinishEventType } from '../../../../src/RestApi/Timing/Timing.types';
 import { InputSource } from '../../../../src/RestApi/Device/InputSource';
 
 export const LogDataMock: LogData = {
@@ -96,26 +95,13 @@ export const LogDataMock: LogData = {
 	[DeviceActionType.CREATE_TIMING]: {
 		appletUid: 'testingAppletUid',
 		appletVersion: 'testingAppletVersion',
-		startsAt: new Date(100000),
-		endsAt: new Date(100000),
 		configuration: {
 			someField: 'someValue,',
 		},
-		finishEvent: {
-			type: FinishEventType.DURATION,
-			data: {
-				someField: 'someValue,',
-				deviceIdentityHash: 'testingHash',
-				type: '',
-			},
-		},
-		position: 10,
 	},
 	[DeviceActionType.UPDATE_TIMING]: {
 		appletUid: 'testingAppletUid',
 		appletVersion: 'testingAppletVersion',
-		startsAt: new Date(100000),
-		endsAt: new Date(100000),
 		configuration: {
 			someField: 'someValue,',
 		},
@@ -123,15 +109,6 @@ export const LogDataMock: LogData = {
 			someField: 'someValue,',
 		},
 		configurationRemoveKeys: ['someFiled'],
-		finishEvent: {
-			type: FinishEventType.DURATION,
-			data: {
-				someField: 'someValue,',
-				deviceIdentityHash: 'testingHash',
-				type: '',
-			},
-		},
-		position: 10,
 	},
 	[DeviceActionType.DELETE_TIMING]: {
 		uid: 'testingUid',
