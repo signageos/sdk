@@ -27,7 +27,8 @@ export function createApiV1(options: IOptions = createDefaultOptions()): RestApi
 }
 
 export function createApiV2(options: IOptions = createDefaultOptions(ApiVersions.V2)): RestApiV2 {
-	const { accountOptions, organizationOptions } = createApiOrgAndAccountOptions(options, ApiVersions.V2);
+	// V1 used because organization is not supported in V2 yet
+	const { accountOptions, organizationOptions } = createApiOrgAndAccountOptions(options, ApiVersions.V1);
 	return new RestApiV2(accountOptions, organizationOptions);
 }
 
