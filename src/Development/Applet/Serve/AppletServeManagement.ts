@@ -61,13 +61,23 @@ export class AppletServeManagement {
 		);
 	}
 
-	private async validateRunningServer(appletUid: string, appletVersion: string) {
+	public async getRunningPort(appletUid: string, appletVersion: string) {
 		const portFilePath = this.getRuntimePortFile(appletUid, appletVersion);
 		if (await fs.pathExists(portFilePath)) {
 			const port = parseInt(await fs.readFile(portFilePath, 'utf8'));
+			return port;
+		} else {
+			return null;
+		}
+	}
+
+	private async validateRunningServer(appletUid: string, appletVersion: string) {
+		const port = await this.getRunningPort(appletUid, appletVersion);
+		if (port !== null) {
 			if (await this.isPortInUse(appletUid, appletVersion, port)) {
 				throw new Error(`Applet server ${appletUid}@${appletVersion} is already running on port ${port}`);
 			} else {
+				// Only clean up the port file if the port is not in use anymore
 				await this.deletePortFile(appletUid);
 			}
 		}
