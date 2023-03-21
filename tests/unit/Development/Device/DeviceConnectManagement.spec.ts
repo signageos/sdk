@@ -58,7 +58,7 @@ describe('Development.Device.DeviceConnectManagement', function () {
 			const deviceConnection = await deviceConnectManagement.connect('deviceUid', {
 				appletUid: 'appletUid',
 				appletVersion: '0.0.1',
-				remoteIp: '192.168.1.10',
+				appletPublicUrl: '192.168.1.10',
 			});
 
 			const connectionsDir = path.join(os.tmpdir(), 'signageos', 'device_connections');
@@ -75,7 +75,7 @@ describe('Development.Device.DeviceConnectManagement', function () {
 			should(connects).eql([{ deviceUid: 'deviceUid', options: {
 				appletUid: 'appletUid',
 				appletVersion: '0.0.1',
-				remoteIp: '192.168.1.10',
+				appletPublicUrl: '192.168.1.10',
 			}}]);
 			should(disconnects).eql([]);
 
@@ -85,7 +85,7 @@ describe('Development.Device.DeviceConnectManagement', function () {
 			should(connects).eql([{ deviceUid: 'deviceUid', options: {
 				appletUid: 'appletUid',
 				appletVersion: '0.0.1',
-				remoteIp: '192.168.1.10',
+				appletPublicUrl: '192.168.1.10',
 			}}]);
 			should(disconnects).eql([{ deviceUid: 'deviceUid' }]);
 		});
@@ -97,12 +97,12 @@ describe('Development.Device.DeviceConnectManagement', function () {
 			const deviceConnection1 = await deviceConnectManagement.connect('deviceUid1', {
 				appletUid: 'appletUid',
 				appletVersion: '0.0.1',
-				remoteIp: '192.168.1.10',
+				appletPublicUrl: '192.168.1.10',
 			});
 			const deviceConnection2 = await deviceConnectManagement.connect('deviceUid2', {
 				appletUid: 'appletUid',
 				appletVersion: '0.0.1',
-				remoteIp: '192.168.1.10',
+				appletPublicUrl: '192.168.1.10',
 			});
 
 			await deviceConnectManagement.reloadConnected();

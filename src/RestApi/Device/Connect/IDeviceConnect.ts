@@ -1,6 +1,6 @@
 
 export interface IDeviceConnectCreatable {
 	appletUid: string;
-	remoteIp: string;
+	appletPublicUrl: string;
 	appletVersion: string;
 }
