@@ -18,11 +18,8 @@ describe('Development.Applet.AppletBuildManagement', function () {
 		const applet1Dirname = path.join(fixturesDirename, 'applet-1');
 
 		beforeEach(async function () {
-			fs.ensureDir(targetDir);
-		});
-
-		afterEach(async function () {
 			fs.remove(targetDir);
+			fs.ensureDir(targetDir);
 		});
 
 		it('should build applet files into single .package.zip archive', async function () {

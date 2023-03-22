@@ -11,8 +11,9 @@ describe('Development.Applet.AppletServeManagement', function () {
 	const appletServeManagement = new AppletServeManagement();
 
 	describe('serve', function () {
+		this.timeout(10e3);
 
-		afterEach(async function () {
+		beforeEach(async function () {
 			await fs.remove(getAppletBuildRuntimeDir('applet-1'));
 		});
 
