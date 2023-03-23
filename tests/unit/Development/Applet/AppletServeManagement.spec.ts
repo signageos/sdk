@@ -105,7 +105,7 @@ describe('Development.Applet.AppletServeManagement', function () {
 				appletUid: 'applet-1',
 				appletVersion: '1.0.0',
 				port: appletServer1.port + 1,
-			})).rejectedWith(`Applet server applet-1@1.0.0 is already running on port 8080 so it cannot be started on port 8081`);
+			})).rejectedWith(`Applet server applet-1@1.0.0 is already running on port 8091 so it cannot be started on port 8092`);
 
 			await appletServer1.stop();
 		});
@@ -114,12 +114,12 @@ describe('Development.Applet.AppletServeManagement', function () {
 			appletServer1 = await appletServeManagement.serve({
 				appletUid: 'applet-1',
 				appletVersion: '1.0.0',
-				port: 8080,
+				port: 8091,
 			});
 			appletServer2 = await appletServeManagement.serve({
 				appletUid: 'applet-1',
 				appletVersion: '1.0.1',
-				port: 8081,
+				port: 8092,
 			});
 
 			const response1 = await getRequest(appletServer1.port, '/applet/applet-1/1.0.0-xxx/.package.zip');
@@ -146,7 +146,7 @@ describe('Development.Applet.AppletServeManagement', function () {
 			await should(appletServeManagement.serve({
 				appletUid: 'applet-1',
 				appletVersion: '1.0.1',
-			})).rejectedWith(`Requested port 8080 is already in use by another process`);
+			})).rejectedWith(`Requested port 8091 is already in use by another process`);
 
 			await appletServer1.stop();
 		});

@@ -13,7 +13,7 @@ import wait from '../../../Timer/wait';
 const debug = Debug('@signageos/sdk:Development:Applet:Serve:AppletServeManagement');
 
 const GRACEFUL_KILL_TIMEOUT_MS = 5000;
-const DEFAULT_SERVER_PORT = 8080;
+const DEFAULT_SERVER_PORT = 8091;
 const PORT_FILENAME = 'port';
 const PID_FILENAME = 'pid';
 const PARENTS_FILENAME = 'parents';
@@ -32,7 +32,7 @@ export interface IServeOptions {
 	appletVersion: string;
 	/**
 	 * The port on which the applet will be served.
-	 * If not specified, the default port 8080 will be used.
+	 * If not specified, the default port 8091 will be used.
 	 */
 	port?: number;
 	/**
