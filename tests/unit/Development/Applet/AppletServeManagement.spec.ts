@@ -8,6 +8,7 @@ import { getRequest } from '../../Utils/requestHelper';
 import { AppletServer } from '../../../../src/Development/Applet/Serve/AppletServer';
 
 describe('Development.Applet.AppletServeManagement', function () {
+	this.timeout(10e3);
 
 	const appletServeManagement = new AppletServeManagement();
 
@@ -20,22 +21,21 @@ describe('Development.Applet.AppletServeManagement', function () {
 		delete process.env.SOS_DEVELOPMENT_APPLET_SERVE_EXEC_ARGV;
 	});
 
+	let appletServer1: AppletServer | null = null;
+	let appletServer2: AppletServer | null = null;
+
+	beforeEach(async function () {
+		await fs.remove(getAppletBuildRuntimeDir('applet-1'));
+	});
+
+	afterEach(async function () {
+		await appletServer1?.stop();
+		await appletServer2?.stop();
+		appletServer1 = null;
+		appletServer2 = null;
+	});
+
 	describe('serve', function () {
-		this.timeout(10e3);
-
-		let appletServer1: AppletServer | null = null;
-		let appletServer2: AppletServer | null = null;
-
-		beforeEach(async function () {
-			await fs.remove(getAppletBuildRuntimeDir('applet-1'));
-		});
-
-		afterEach(async function () {
-			await appletServer1?.stop();
-			await appletServer2?.stop();
-			appletServer1 = null;
-			appletServer2 = null;
-		});
 
 		it('should start serving applet files', async function () {
 			appletServer1 = await appletServeManagement.serve({
@@ -149,6 +149,27 @@ describe('Development.Applet.AppletServeManagement', function () {
 			})).rejectedWith(`Requested port 8080 is already in use by another process`);
 
 			await appletServer1.stop();
+		});
+	});
+
+	describe('killRunningServer', function () {
+
+		it('should kill running server', async function () {
+			appletServer1 = await appletServeManagement.serve({
+				appletUid: 'applet-1',
+				appletVersion: '1.0.0',
+			});
+
+			const response1 = await getRequest(appletServer1.port, '/applet/applet-1/1.0.0-xxx/.package.zip');
+			should(response1.statusCode).equal(404);
+
+			// We have to remove parents because it would kill test process
+			const parentsPath = path.join(os.tmpdir(), 'signageos', 'applet_servers', 'applet-1', '1.0.0', 'parents');
+			await fs.remove(parentsPath);
+
+			await appletServeManagement.killRunningServer('applet-1', '1.0.0');
+
+			await should(getRequest(appletServer1.port, '/applet/applet-1/1.0.0-xxx/.package.zip')).rejected();
 		});
 	});
 });

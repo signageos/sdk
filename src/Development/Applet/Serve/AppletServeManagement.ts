@@ -12,13 +12,14 @@ import wait from '../../../Timer/wait';
 
 const debug = Debug('@signageos/sdk:Development:Applet:Serve:AppletServeManagement');
 
+const GRACEFUL_KILL_TIMEOUT_MS = 5000;
 const DEFAULT_SERVER_PORT = 8080;
 const PORT_FILENAME = 'port';
 const PID_FILENAME = 'pid';
 const PARENTS_FILENAME = 'parents';
 const APPLET_SERVERS_DIRENAME = 'applet_servers';
 
-interface AppletDetachedProcess {
+interface DetachedProcess {
 	pid: number;
 	kill(signal: NodeJS.Signals): boolean;
 	once(event: 'close', listener: () => void): void;
@@ -61,7 +62,7 @@ export class AppletServeManagement {
 		const processPid = process.pid;
 		const processUid = Math.random().toString(36).substring(7);
 
-		let serverProcess: AppletDetachedProcess;
+		let serverProcess: DetachedProcess;
 
 		const cleanUp = async () => {
 			process.removeListener('exit', cleanUp);
@@ -74,7 +75,7 @@ export class AppletServeManagement {
 		await this.addToParentsFile(options.appletUid, options.appletVersion, processPid, processUid);
 
 		if (running) {
-			serverProcess = await this.getRunningServerProcess(running.pid);
+			serverProcess = await this.getRunningProcess(running.pid);
 			return new AppletServer(
 				processUid,
 				running.port,
@@ -121,10 +122,34 @@ export class AppletServeManagement {
 		}
 	}
 
+	/**
+	 * Kill the running applet server if it is running.
+	 * It does not throw an error if the server is not running.
+	 * It tries to kill the server gracefully and if it fails it kills it with SIGKILL.
+	 * It will kill even the parent process if it is still running.
+	 * If parent process is not running it will kill only the orphant server process.
+	 */
+	public async killRunningServer(appletUid: string, appletVersion: string) {
+		const parents = await this.getParents(appletUid, appletVersion);
+		if (parents.length > 0) {
+			for (const parent of parents) {
+				const { pid: parentPid } = this.parseParentPidAndUid(parent);
+				const parentProcess = await this.getRunningProcess(parentPid);
+				await killGracefullyWithTimeoutSigKill(parentProcess, GRACEFUL_KILL_TIMEOUT_MS);
+			}
+		}
+
+		const runningPid = await this.getRunningPid(appletUid, appletVersion);
+		if (runningPid) {
+			const serverProcess = await this.getRunningProcess(runningPid);
+			await killGracefullyWithTimeoutSigKill(serverProcess, GRACEFUL_KILL_TIMEOUT_MS);
+		}
+	}
+
 	private async cleanUpServer(
 		appletUid: string,
 		appletVersion: string,
-		serverProcess: AppletDetachedProcess,
+		serverProcess: DetachedProcess,
 		parentPid: number,
 		processUid: string,
 	) {
@@ -132,7 +157,7 @@ export class AppletServeManagement {
 
 		const parents = await this.getParents(appletUid, appletVersion);
 		if (parents.length === 0) {
-			await killGracefullyWithTimeoutSigKill(serverProcess, 5000);
+			await killGracefullyWithTimeoutSigKill(serverProcess, GRACEFUL_KILL_TIMEOUT_MS);
 			await this.deleteAppletRuntimeDir(appletUid);
 		}
 	}
@@ -158,17 +183,22 @@ export class AppletServeManagement {
 		const parentsFilePath = this.getRuntimeParentsFile(appletUid, appletVersion);
 		if (await fs.pathExists(parentsFilePath)) {
 			const possibleParents = await this.readParentsFile(parentsFilePath);
-			const parents = possibleParents.filter((parent) => this.isProcessRunningByPid(parseInt(parent.split('/')[0])));
+			const parents = possibleParents.filter((parent) => this.isProcessRunningByPid(this.parseParentPidAndUid(parent).pid));
 			const notRunningParents = possibleParents.filter((parent) => !parents.includes(parent));
 			debug('Parents file exists', possibleParents, parents, notRunningParents);
 			for (const notRunningParent of notRunningParents) {
-				const [notRunningPid, notRunningProcessUid] = notRunningParent.split('/');
-				await this.removeFromParentsFile(appletUid, appletVersion, parseInt(notRunningPid), notRunningProcessUid);
+				const { pid: notRunningPid, uid: notRunningProcessUid } = this.parseParentPidAndUid(notRunningParent);
+				await this.removeFromParentsFile(appletUid, appletVersion, notRunningPid, notRunningProcessUid);
 			}
 			return parents;
 		} else {
 			return [];
 		}
+	}
+
+	private parseParentPidAndUid(parent: string) {
+		const [pid, uid] = parent.split('/');
+		return { pid: parseInt(pid), uid };
 	}
 
 	private async validateRunningServer(appletUid: string, appletVersion: string, port: number) {
@@ -247,8 +277,8 @@ export class AppletServeManagement {
 		};
 	}
 
-	private async getRunningServerProcess(pid: number): Promise<AppletDetachedProcess> {
-		const appletServerProcess: AppletDetachedProcess = {
+	private async getRunningProcess(pid: number): Promise<DetachedProcess> {
+		const appletServerProcess: DetachedProcess = {
 			pid,
 			kill: (signal: NodeJS.Signals) => {
 				try {
@@ -290,7 +320,7 @@ export class AppletServeManagement {
 		while (!await this.isPortInUse(appletUid, appletVersion, port)) {
 			await wait(100);
 		}
-		return serverProcess as AppletDetachedProcess;
+		return serverProcess as DetachedProcess;
 	}
 
 	private async deleteAppletRuntimeDir(appletUid: string) {
