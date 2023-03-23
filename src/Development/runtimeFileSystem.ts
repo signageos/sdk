@@ -14,6 +14,10 @@ export function getAppletPackageArchivePath(appletUid: string, appletVersion: st
 	return path.join(appletBuildPath, PACKAGE_ARCHIVE_FILENAME);
 }
 
+export function getPackagePublicPath(appletUid: string, appletVersion: string) {
+	return `/applet/${appletUid}/${appletVersion}-:buildRequestUid/${PACKAGE_ARCHIVE_FILENAME}`;
+}
+
 export function getAppletVersionBuildRuntimeDir(appletUid: string, appletVersion: string) {
 	const tempDir = path.join(getAppletBuildRuntimeDir(appletUid), appletVersion);
 	return tempDir;

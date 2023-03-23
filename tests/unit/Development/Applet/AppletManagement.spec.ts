@@ -37,6 +37,15 @@ describe('Development.Applet.AppletManagement', function () {
 	const fixturesDirename = path.normalize(__dirname + '/../fixtures');
 	const applet1Dirname = path.join(fixturesDirename, 'applet-1');
 
+	before(function () {
+		// In tests the typescript is not compiled and the AppletServerProcess is running as separate process.
+		process.env.SOS_DEVELOPMENT_APPLET_SERVE_EXEC_ARGV = '-r ts-node/register';
+	});
+
+	after(function () {
+		delete process.env.SOS_DEVELOPMENT_APPLET_SERVE_EXEC_ARGV;
+	});
+
 	beforeEach(async function () {
 		deviceUids = [];
 		applets = [];
