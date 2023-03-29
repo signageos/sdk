@@ -10,6 +10,7 @@ import InternalApiError from './Error/InternalApiError';
 import GatewayError from './Error/GatewayError';
 import ResponseBodyFormatError from './Error/ResponseBodyFormatError';
 import { parameters } from '../parameters';
+import { deserializeJSON } from '../Utils/json';
 const debug = Debug('@signageos/sdk:RestApi:requester');
 
 async function createOptions(
@@ -63,16 +64,6 @@ async function parseJSON(text: string): Promise<any> {
 	} catch (error) {
 		throw new ResponseBodyFormatError(text);
 	}
-}
-
-function deserializeJSON(_key: string, value: any) {
-	if (typeof value === 'string') {
-		const regexp = /^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ$/.exec(value);
-		if (regexp) {
-			return new Date(value);
-		}
-	}
-	return value;
 }
 
 function prepareQueryParams(qp: any): string {

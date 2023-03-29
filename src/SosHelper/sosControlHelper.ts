@@ -1,35 +1,104 @@
 import * as fs from 'fs-extra';
 import * as ini from 'ini';
 import * as path from 'path';
+import * as _ from 'lodash';
 import * as os from 'os';
+import chalk from 'chalk';
 import IRestApiOptions, { IAuthOptions } from '../RestApi/IOptions';
 import { AccountAuthMissingError, DefaultOrganizationMissingError } from './errors';
 import OrganizationManagement from '../RestApi/Organization/OrganizationManagement';
 import { parameters } from '../parameters';
+import { log } from '../Console/log';
 
 const RUN_CONTROL_FILENAME = '.sosrc';
 
 export interface IConfig {
+	apiUrl?: string;
 	identification?: string;
 	apiSecurityToken?: string;
 	defaultOrganizationUid?: string;
+	emulatorUid?: string;
 }
 
-type IConfigFile = IConfig & {
+type ISafeConfig = IConfig & Required<Pick<IConfig, 'apiUrl'>>;
+
+export type IConfigFile = IConfig & {
 	[P in `profile ${string}`]?: IConfig;
 };
 
-export async function loadConfig(): Promise<IConfig> {
-	const runControlFilePath = getConfigFilePath();
-	if (!await fs.pathExists(runControlFilePath)) {
-		return {};
-	}
-	const runControlFileContent = await fs.readFile(runControlFilePath);
-	const configFile = ini.decode(runControlFileContent.toString()) as IConfigFile;
+export interface IConfigOptions {
+	/** The profile used on .sosrc file. Defaults to AWS_PROFILE environment variable */
+	profile?: string;
+}
 
-	const profile = parameters.profile;
+export async function loadConfig(options?: IConfigOptions): Promise<ISafeConfig> {
+	const runControlFilePath = getConfigFilePath();
+	let configFile: IConfigFile = {};
+	if (await fs.pathExists(runControlFilePath)) {
+		const runControlFileContent = await fs.readFile(runControlFilePath);
+		configFile = ini.decode(runControlFileContent.toString()) as IConfigFile;
+	}
+
+	const profile = options?.profile ?? parameters.profile;
 	const config = profile ? configFile[`profile ${profile}`] ?? {} : configFile;
-	return config;
+
+	// Overriding from env vars if available
+	if (parameters.accountAuth?.tokenId) {
+		config.identification = parameters.accountAuth.tokenId;
+	}
+	if (parameters.accountAuth?.token) {
+		config.apiSecurityToken = parameters.accountAuth.token;
+	}
+	if (parameters.organizationUid) {
+		config.defaultOrganizationUid = parameters.organizationUid;
+	}
+	if (!config.apiUrl) {
+		config.apiUrl = parameters.apiUrl;
+	}
+
+	// Temporary suggestion to login getting faster token
+	if (config.identification && !config.identification.match(/[0-9a-f]{20,20}/)) {
+		log(
+			'warning',
+			`Your authentication token is outdated. Please do the ${chalk.green('sos login')} again.`,
+		);
+		log('info', 'After the log in, commands are becoming almost 10x faster.');
+	}
+
+	// Return value has to always contain apiUrl since it's default from parameters that is always set
+	return config as ISafeConfig;
+}
+
+export async function saveConfig(newConfig: IConfig, options?: IConfigOptions) {
+	newConfig = _.omitBy(newConfig, _.isNil);
+	const runControlFilePath = getConfigFilePath();
+	let configFile: IConfigFile = {};
+	if (await fs.pathExists(runControlFilePath)) {
+		const originalRCFileContent = await fs.readFile(runControlFilePath);
+		configFile = ini.decode(originalRCFileContent.toString()) as IConfigFile;
+	}
+
+	const profile = options?.profile ?? parameters.profile;
+	if (profile) {
+		configFile[`profile ${profile}`] = newConfig;
+	} else {
+		configFile = _.omitBy(configFile, (_val, key) => !key.startsWith('profile '));
+		Object.assign(configFile, newConfig);
+	}
+
+	const newRCFileContent = ini.encode(configFile);
+	await fs.writeFile(runControlFilePath, newRCFileContent, {
+		mode: 0o600,
+	});
+}
+
+export async function updateConfig(partialConfig: Partial<IConfig>, options?: IConfigOptions) {
+	const currentConfig = await loadConfig();
+	const newConfig = {
+		...currentConfig,
+		...partialConfig,
+	};
+	await saveConfig(newConfig, options);
 }
 
 export function getConfigFilePath() {

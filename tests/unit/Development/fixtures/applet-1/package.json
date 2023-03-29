@@ -1,0 +1,8 @@
+{
+	"name": "my-first-applet",
+	"version": "1.0.0",
+	"files": [
+		"file-1",
+		"dir-1"
+	]
+}
