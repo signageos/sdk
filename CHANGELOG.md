@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Fixed
 - Development API - Reload devices when no one has connected yet
+- Development API - Hot Reload works correctly even on Windows systems
 
 ## [1.19.0] - 2023-03-29
 ### Added

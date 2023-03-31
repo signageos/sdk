@@ -305,6 +305,7 @@ export class AppletServeManagement {
 		const serverPath = path.join(__dirname, 'AppletServerProcess');
 		const serverProcess = child_process.fork(serverPath, [appletUid, appletVersion, port.toString(), publicUrl], {
 			detached: true,
+			stdio: 'ignore',
 			execArgv: process.env.SOS_DEVELOPMENT_APPLET_SERVE_EXEC_ARGV?.split(' '),
 		});
 		const message = await new Promise((resolve, reject) => {
