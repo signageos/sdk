@@ -3,4 +3,5 @@ export enum Resources {
 	DeviceTelemetry = 'telemetry',
 	Location = 'location',
 	OrganizationTag = 'organization-tag',
+	Timing = 'timing',
 }
