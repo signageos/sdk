@@ -48,6 +48,7 @@ export class DeviceConnectManagement {
 	 */
 	public async reloadConnected() {
 		const runtimeDir = this.getDevicesRuntimeDir();
+		await fs.ensureDir(runtimeDir);
 		const deviceUids = await fs.readdir(runtimeDir);
 		for (const deviceUid of deviceUids) {
 			await this.restApiV1.device.powerAction.set(deviceUid, {
