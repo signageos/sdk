@@ -13,6 +13,7 @@ import { AppletServer } from './AppletServer';
 const debug = Debug('@signageos/sdk:Development:Applet:Serve:AppletServeManagement');
 
 const GRACEFUL_KILL_TIMEOUT_MS = 5000;
+const PORT_IN_USE_TIMEOUT_MS = 2000;
 const DEFAULT_SERVER_PORT = 8091;
 const PORT_FILENAME = 'port';
 const PID_FILENAME = 'pid';
@@ -232,7 +233,11 @@ export class AppletServeManagement {
 			request.once('error', () => resolve(false));
 		});
 		request.end();
-		return await promise;
+		const timeoutPromise = new Promise<boolean>((resolve) => setTimeout(() => resolve(false), PORT_IN_USE_TIMEOUT_MS));
+		return await Promise.race([
+			promise,
+			timeoutPromise,
+		]);
 	}
 
 	private isProcessRunningByPid(pid: number) {
