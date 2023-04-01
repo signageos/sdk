@@ -20,6 +20,7 @@ describe('Development.Applet.AppletBuildManagement', function () {
 		beforeEach(async function () {
 			fs.remove(targetDir);
 			fs.ensureDir(targetDir);
+			await fs.remove(path.join(applet1Dirname, 'dir-1', 'file-X'));
 		});
 
 		it('should build applet files into single .package.zip archive', async function () {

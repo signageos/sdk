@@ -33,6 +33,10 @@ describe('Development.Applet.AppletFilesManagement', function () {
 			await fs.writeFile(path.join(applet3Dirname, 'dir-1', 'dir-2', 'file-3'), '');
 		});
 
+		beforeEach(async function () {
+			await fs.remove(path.join(applet1Dirname, 'dir-1', 'file-X'));
+		});
+
 		it('should list all files in package.json "files"', async function () {
 			const filePaths = await appletFilesManagement.listAppletFiles({
 				appletPath: applet1Dirname,
