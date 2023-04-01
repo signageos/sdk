@@ -1,23 +1,39 @@
-import chalk from 'chalk';
 import * as cors from 'cors';
 import * as express from 'express';
 import * as http from 'http';
 import { log } from '../../../Console/log';
 import { getAppletPackageArchivePath, getPackagePublicPath } from '../../runtimeFileSystem';
+import { forward } from '@signageos/forward-server-bridge/dist/client';
+import { getServerMessage } from './appletServerHelper';
 
 interface IServerOptions {
 	appletUid: string;
 	appletVersion: string;
 	port: number;
 	publicUrl?: string;
+	forwardServerUrl: string;
 }
 
-function startServer({ appletUid, appletVersion, port, publicUrl }: IServerOptions) {
+async function startServer({ appletUid, appletVersion, port, publicUrl: defaultPublicUrl, forwardServerUrl }: IServerOptions) {
 	const server = createHttpServer(appletUid, appletVersion);
-	server.listen(port, () => {
-		log('info', getServerMessage(appletUid, appletVersion, port, publicUrl));
-		process.send?.('ready');
+	const forwarding = await forward({
+		localPort: port,
+		serverUrl: forwardServerUrl,
 	});
+	server.listen(port, () => {
+		const publicUrl = defaultPublicUrl ?? forwarding.publicUrl;
+		log('info', getServerMessage(appletUid, appletVersion, port, publicUrl));
+		process.send?.({ type: 'ready', publicUrl });
+	});
+
+	const stopServer = async () => {
+		const closeHttpPromise = new Promise<void>((resolve, reject) => server.close((error) => (error ? reject(error) : resolve())));
+		await Promise.all([closeHttpPromise, forwarding.stop()]);
+		process.exit(0);
+	};
+
+	process.on('SIGINT', stopServer);
+	process.on('SIGTERM', stopServer);
 }
 
 function createHttpServer(appletUid: string, appletVersion: string) {
@@ -38,13 +54,8 @@ const noCacheMiddleware = (_req: express.Request, res: express.Response, next: e
 	next();
 };
 
-function getServerMessage(
-	appletUid: string,
-	appletVersion: string,
-	port: number,
-	publicUrl: string | undefined = `http://localhost:${port}`,
-) {
-	return `Serving applet on ${chalk.blue(chalk.bold(publicUrl))} (${chalk.green(appletUid)}@${chalk.green(appletVersion)})`;
+if (!process.env.SOS_FORWARD_SERVER_URL) {
+	throw new Error('Missing SOS_FORWARD_SERVER_URL environment variable');
 }
 
 const options = {
@@ -52,6 +63,7 @@ const options = {
 	appletVersion: process.argv[3],
 	port: parseInt(process.argv[4]),
 	publicUrl: process.argv[5],
+	forwardServerUrl: process.env.SOS_FORWARD_SERVER_URL,
 };
 
 if (!options.appletUid || !options.appletVersion || !options.port) {

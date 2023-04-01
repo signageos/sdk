@@ -9,6 +9,8 @@ import { getMachineRemoteAddr } from '../../../Utils/network';
 import { killGracefullyWithTimeoutSigKill } from '../../../Utils/process';
 import { getPackagePublicPath, RUNTIME_DIRNAME } from '../../runtimeFileSystem';
 import { AppletServer } from './AppletServer';
+import { log } from '../../../Console/log';
+import { getServerMessage } from './appletServerHelper';
 
 const debug = Debug('@signageos/sdk:Development:Applet:Serve:AppletServeManagement');
 
@@ -18,6 +20,7 @@ const DEFAULT_SERVER_PORT = 8091;
 const PORT_FILENAME = 'port';
 const PID_FILENAME = 'pid';
 const PARENTS_FILENAME = 'parents';
+const PUBLIC_URL_FILENAME = 'public_url';
 const APPLET_SERVERS_DIRENAME = 'applet_servers';
 
 interface DetachedProcess {
@@ -58,11 +61,12 @@ export class AppletServeManagement {
 	 * The option `publicUrl` is not validated and it is used only for logging into console.
 	 */
 	public async serve(options: IServeOptions) {
-		const { port, publicUrl, remoteAddr } = this.getServerProperties(options);
+		const { port, defaultPublicUrl, remoteAddr } = this.getServerProperties(options);
 		const processPid = process.pid;
 		const processUid = Math.random().toString(36).substring(7);
 
 		let serverProcess: DetachedProcess;
+		let publicUrl: string | undefined;
 
 		const cleanUp = async () => {
 			process.removeListener('exit', cleanUp);
@@ -75,17 +79,21 @@ export class AppletServeManagement {
 		await this.addToParentsFile(options.appletUid, options.appletVersion, processPid, processUid);
 
 		if (running) {
-			serverProcess = await this.getRunningProcess(running.pid);
-			return new AppletServer(processUid, running.port, publicUrl, remoteAddr, cleanUp);
+			({ serverProcess, publicUrl } = await this.getRunningProcess(options.appletUid, options.appletVersion, running.pid));
+			const finalPublicUrl = publicUrl ?? defaultPublicUrl;
+			log('info', getServerMessage(options.appletUid, options.appletVersion, port, finalPublicUrl));
+			return new AppletServer(processUid, running.port, finalPublicUrl, remoteAddr, cleanUp);
 		}
 
 		await this.createPortFile(options.appletUid, options.appletVersion, port);
 
-		serverProcess = await this.startServerProcess(options.appletUid, options.appletVersion, port, publicUrl);
+		({ serverProcess, publicUrl } = await this.startServerProcess(options.appletUid, options.appletVersion, port, options.publicUrl));
 		await this.createPidFile(options.appletUid, options.appletVersion, serverProcess.pid);
 		debug('Server process started', serverProcess.pid);
 
-		return new AppletServer(processUid, port, publicUrl, remoteAddr, cleanUp);
+		const finalNewPublicUrl = publicUrl ?? defaultPublicUrl;
+		log('info', getServerMessage(options.appletUid, options.appletVersion, port, finalNewPublicUrl));
+		return new AppletServer(processUid, port, finalNewPublicUrl, remoteAddr, cleanUp);
 	}
 
 	/**
@@ -122,14 +130,14 @@ export class AppletServeManagement {
 		if (parents.length > 0) {
 			for (const parent of parents) {
 				const { pid: parentPid } = this.parseParentPidAndUid(parent);
-				const parentProcess = await this.getRunningProcess(parentPid);
+				const { serverProcess: parentProcess } = await this.getRunningProcess(appletUid, appletVersion, parentPid);
 				await killGracefullyWithTimeoutSigKill(parentProcess, GRACEFUL_KILL_TIMEOUT_MS);
 			}
 		}
 
 		const runningPid = await this.getRunningPid(appletUid, appletVersion);
 		if (runningPid) {
-			const serverProcess = await this.getRunningProcess(runningPid);
+			const { serverProcess } = await this.getRunningProcess(appletUid, appletVersion, runningPid);
 			await killGracefullyWithTimeoutSigKill(serverProcess, GRACEFUL_KILL_TIMEOUT_MS);
 		}
 	}
@@ -234,10 +242,7 @@ export class AppletServeManagement {
 		});
 		request.end();
 		const timeoutPromise = new Promise<boolean>((resolve) => setTimeout(() => resolve(false), PORT_IN_USE_TIMEOUT_MS));
-		return await Promise.race([
-			promise,
-			timeoutPromise,
-		]);
+		return await Promise.race([promise, timeoutPromise]);
 	}
 
 	private isProcessRunningByPid(pid: number) {
@@ -252,17 +257,28 @@ export class AppletServeManagement {
 	private getServerProperties(options: IServeOptions) {
 		const remoteAddr = getMachineRemoteAddr();
 		const port = options.port ?? DEFAULT_SERVER_PORT;
-		const publicUrl = options.publicUrl ?? `http://${remoteAddr}:${port}`;
+		const defaultPublicUrl = options.publicUrl ?? `http://${remoteAddr}:${port}`;
 
 		return {
 			port,
-			publicUrl,
 			remoteAddr,
+			defaultPublicUrl,
 		};
 	}
 
-	private async getRunningProcess(pid: number): Promise<DetachedProcess> {
-		const appletServerProcess: DetachedProcess = {
+	private async getRunningPublicUrl(appletUid: string, appletVersion: string) {
+		const publicUrlFilePath = this.getRuntimePublicUrlFile(appletUid, appletVersion);
+		if (await fs.pathExists(publicUrlFilePath)) {
+			const publicUrl = await fs.readFile(publicUrlFilePath, 'utf8');
+			debug('Public URL file exists', publicUrl);
+			return publicUrl;
+		} else {
+			return undefined;
+		}
+	}
+
+	private async getRunningProcess(appletUid: string, appletVersion: string, pid: number) {
+		const serverProcess: DetachedProcess = {
 			pid,
 			kill: (signal: NodeJS.Signals) => {
 				try {
@@ -282,22 +298,26 @@ export class AppletServeManagement {
 				listener();
 			},
 		};
-		return appletServerProcess;
+		const publicUrl = await this.getRunningPublicUrl(appletUid, appletVersion);
+		return { serverProcess, publicUrl };
 	}
 
-	private async startServerProcess(appletUid: string, appletVersion: string, port: number, publicUrl: string) {
+	private async startServerProcess(appletUid: string, appletVersion: string, port: number, publicUrl: string | undefined) {
 		const serverPath = path.join(__dirname, 'AppletServerProcess');
-		const serverProcess = child_process.fork(serverPath, [appletUid, appletVersion, port.toString(), publicUrl], {
+		const serverProcess = child_process.fork(serverPath, [appletUid, appletVersion, port.toString(), ...(publicUrl ? [publicUrl] : [])], {
 			detached: true,
 			stdio: 'ignore',
 			execArgv: process.env.SOS_DEVELOPMENT_APPLET_SERVE_EXEC_ARGV?.split(' '),
+			env: {
+				...process.env,
+			},
 		});
 		const message = await new Promise((resolve, reject) => {
 			serverProcess.once('message', resolve);
 			serverProcess.once('error', reject);
 		});
-		if (message !== 'ready') {
-			throw new Error(`Unexpected message from server process: ${message}`);
+		if (!this.isReadyMessage(message)) {
+			throw new Error(`Unexpected message from server process: ${JSON.stringify(message)}`);
 		}
 		if (serverProcess.pid === null) {
 			throw new Error('Server process was not started properly');
@@ -305,7 +325,17 @@ export class AppletServeManagement {
 		while (!(await this.isPortInUse(appletUid, appletVersion, port))) {
 			await wait(100);
 		}
-		return serverProcess as DetachedProcess;
+		if (message.publicUrl) {
+			await this.createPublicUrlFile(appletUid, appletVersion, message.publicUrl);
+		}
+		return {
+			serverProcess: serverProcess as DetachedProcess,
+			publicUrl: message.publicUrl,
+		};
+	}
+
+	private isReadyMessage(message: unknown): message is { type: 'ready'; publicUrl: string | undefined } {
+		return Boolean(message && typeof message === 'object' && 'type' in message && message.type === 'ready');
 	}
 
 	private async deleteAppletRuntimeDir(appletUid: string) {
@@ -332,6 +362,13 @@ export class AppletServeManagement {
 
 	private async deletePidFile(appletUid: string, appletVersion: string) {
 		await fs.remove(this.getRuntimePidFile(appletUid, appletVersion));
+	}
+
+	private async createPublicUrlFile(appletUid: string, appletVersion: string, publicUrl: string) {
+		const runtimeDir = this.getAppletVersionRuntimeDir(appletUid, appletVersion);
+		await fs.ensureDir(runtimeDir);
+		const publicUrlFilePath = this.getRuntimePublicUrlFile(appletUid, appletVersion);
+		await fs.writeFile(publicUrlFilePath, publicUrl);
 	}
 
 	private async readParentsFile(parentsFilePath: string) {
@@ -378,6 +415,11 @@ export class AppletServeManagement {
 	private getRuntimeParentsFile(appletUid: string, appletVersion: string) {
 		const runtimeDir = this.getAppletVersionRuntimeDir(appletUid, appletVersion);
 		return path.join(runtimeDir, PARENTS_FILENAME);
+	}
+
+	private getRuntimePublicUrlFile(appletUid: string, appletVersion: string) {
+		const runtimeDir = this.getAppletVersionRuntimeDir(appletUid, appletVersion);
+		return path.join(runtimeDir, PUBLIC_URL_FILENAME);
 	}
 
 	private getAppletVersionRuntimeDir(appletUid: string, appletVersion: string) {
