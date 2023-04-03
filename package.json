@@ -37,7 +37,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@signageos/codestyle": "0.0.22",
+    "@signageos/codestyle": "0.0.23",
     "@types/archiver": "5.3.1",
     "@types/chalk": "2.2.0",
     "@types/cors": "2.8.13",
