@@ -7,6 +7,7 @@ import UnsupportedError from '../Error/UnsupportedError';
 import ITimingFilter from './ITimingFilter';
 import Timing from './Timing';
 import TimingCommandManagement from './Command/TimingCommandManagement';
+import { isEqual } from 'lodash';
 
 export default class TimingManagement {
 
@@ -94,7 +95,7 @@ export default class TimingManagement {
 		if (t1.finishEvent.type !== t2.finishEvent.type) {
 			return false;
 		}
-		if (t1.finishEvent.data !== t2.finishEvent.data) {
+		if (!isEqual(t1.finishEvent.data, t2.finishEvent.data)) {
 			return false;
 		}
 		if (JSON.stringify(t1.configuration) !== JSON.stringify(t2.configuration)) {

@@ -15,7 +15,7 @@ export interface ITimingUpdatable {
 	position: number;
 	finishEvent: {
 		type: 'DURATION' | 'SCREEN_TAP' | 'IDLE_TIMEOUT';
-		data: string | null;
+		data: any;
 	};
 }
 
