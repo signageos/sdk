@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Fixed
 - `finishEvent` field has `data` of type `any` in `ITiming` interface which corresponds with docs
+- `device.set` v2 method accepts connectionMethod
 
 ## [1.19.1] - 2023-04-01
 ### Fixed
