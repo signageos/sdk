@@ -15,7 +15,7 @@ const testingBulkOperation = {
 		timezone: 'Europe/Prague',
 	},
 	rollingUpdate: {
-		batchSize: 10,
+		batchSize: 1,
 		batchDelay: 1000,
 		stopThreshold: 50,
 	},
