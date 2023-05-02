@@ -111,7 +111,7 @@ describe('RestAPI - Timing', function () {
 
 		it('should throw error when timing is not under specified organization', async function () {
 			try {
-				await api.timing.get('59129c92679286ac9c192d337d49a8441d27');
+				await api.timing.get('ed6d1e62792392804b2494f65a44077ffc7b');
 			} catch (e) {
 				should(e.errorCode).be.equal(403064);
 				should(e.errorName).be.equal('NO_OWN_TIMING_TO_READ');
@@ -206,7 +206,7 @@ describe('RestAPI - Timing', function () {
 
 		it('should throw error when timing is not under specified organization', async function () {
 			try {
-				await api.timing.update('59129c92679286ac9c192d337d49a8441d27', {
+				await api.timing.update('ed6d1e62792392804b2494f65a44077ffc7b', {
 					appletVersion: '1.0.0',
 					startsAt: new Date('2023-04-01T12:00:00'),
 					endsAt: new Date('2023-04-02T00:00:00'),
@@ -252,7 +252,7 @@ describe('RestAPI - Timing', function () {
 
 		it('should throw error when timing is not under specified organization', async function () {
 			try {
-				await api.timing.delete('59129c92679286ac9c192d337d49a8441d27');
+				await api.timing.delete('ed6d1e62792392804b2494f65a44077ffc7b');
 			} catch (e) {
 				should(e.errorCode).be.equal(403067);
 				should(e.errorName).be.equal('NO_OWN_TIMING_TO_DELETE');
