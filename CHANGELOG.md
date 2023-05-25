@@ -9,9 +9,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Fix timings comparator in `update` timing function
-
-## [Unreleased]
-### Fixed
 - `setTelemetryIntervals` returns error when value is more than 1 year
 
 ## [1.19.2] - 2023-04-04

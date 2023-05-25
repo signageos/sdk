@@ -1,5 +1,5 @@
 import { getResource, postResource, deleteResource, parseJSONResponse } from '../requester';
-import IOptions from "../IOptions";
+import IOptions from '../IOptions';
 import IEmulator, { IEmulatorCreatable } from './IEmulator';
 import Emulator from './Emulator';
 import { IEmulatorFilter } from './IEmulatorFilter';

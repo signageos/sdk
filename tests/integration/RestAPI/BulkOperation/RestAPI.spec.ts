@@ -4,6 +4,16 @@ import { Api } from '../../../../src';
 import { opts } from '../helper';
 import { DeviceActionType } from '../../../../src/RestApi/BulkOperation/BulkOperation.enums';
 import { LogDataMock } from './BulkOperation.fixtures';
+import IDevice from '../../../../src/RestApi/Device/IDevice';
+import Organization from '../../../../src/RestApi/Organization/Organization';
+import { IPackage } from '../../../../src/RestApi/Package/IPackage';
+import * as faker from 'faker';
+// import { SheduledActionDay } from '../../../../src/RestApi/Device/PowerAction/IScheduledPowerAction';
+// import { DevicePowerAction } from '../../../../src/RestApi/Device/PowerAction/IPowerAction';
+import IPolicy from '../../../../src/RestApi/Policy/IPolicy';
+import IApplet from '../../../../src/RestApi/Applet/IApplet';
+import ITiming from '../../../../src/RestApi/Timing/ITiming';
+import { parameters } from '../../../../src/parameters';
 
 const testingBulkOperation = {
 	name: 'testingName4',
@@ -28,8 +38,134 @@ const testingBulkOperation = {
 
 const api = new Api(opts);
 
-describe('RestAPI - BulkOperation', function () {
-	it('should create new bulk operation', async () => {
+describe.only('RestAPI - BulkOperation', function () {
+	let device: IDevice;
+	let organization: Organization;
+	let testingPackage: IPackage;
+	let scheduledPowerActionUid: string;
+	let policy: IPolicy;
+	let applet: IApplet;
+	let appletVersion: string;
+	let timing: ITiming;
+
+	// packageName: (es: IEventStore, packageName: string): void | string => {
+	// 	const devicePackage = getDevicePackageByPackageName(es, packageName);
+	// 	if (!devicePackage) {
+	// 		return `Package ${packageName} does not exist`;
+	// 	}
+	// },
+	// 	scheduledPowerActionUid: (es: IEventStore, scheduledPowerActionUid: string): void | string => {
+	// 	const scheduledAction = getDeviceScheduledPowerActionByUid(es, scheduledPowerActionUid);
+	// 	if (!scheduledAction) {
+	// 		return `Scheduled power action ${scheduledPowerActionUid} does not exist`;
+	// 	}
+	// 	if (scheduledAction.failedAt || scheduledAction.succeededAt || scheduledAction.canceledAt) {
+	// 		return `Scheduled power action ${scheduledPowerActionUid} was already processed`;
+	// 	}
+	// },
+	// 	verificationHash: (es: IEventStore, verificationHash: string, operationType?: DeviceActionType): void | string => {
+	// 	const verification = getPairedDeviceVerificationByVerificationHash(es, verificationHash);
+	// 	if (operationType === DeviceActionType.PROVISION) {
+	// 		if (verification) {
+	// 			return `Device ${verification.deviceUid} was already provisioned with hash ${verificationHash}`;
+	// 		}
+	// 		return;
+	// 	}
+	// 	// DEPROVISION default behaviour
+	// 	if (!verification) {
+	// 		return `Device with verification hash ${verificationHash} is not provisioned`;
+	// 	}
+	// },
+	// 	appletUid: (es: IEventStore, appletUid: string): void | string => {
+	// 	const appletMap = getAppletToOrganizationMapByOrganizationUid(es, Set().add(appletUid));
+	// 	if (!appletMap.get(appletUid)) {
+	// 		return `Applet ${appletUid} does not exist`;
+	// 	}
+	// },
+	// 	appletVersion: (es: IEventStore, appletVersion: string): void | string => {
+	// 	if (!getAppletVersionByVersion(es, appletVersion)) {
+	// 		return `Applet version ${appletVersion} does not exist`;
+	// 	}
+	// },
+	// 	uid: (es: IEventStore, uid: string): void | string => {
+	// 	if (!getTimingByUid(es, uid)) {
+	// 		return `Timing with uid ${uid} does not exist`;
+	// 	}
+	// },
+	// 	policyUid: (es: IEventStore, policyUid: string): void | string => {
+	// 	if (!getLatestPolicyLogByUid(es, policyUid)) {
+	// 		return `Policy with uid ${policyUid} does not exist`;
+	// 	}
+	// },
+	// 	deviceIdentityHash: (es: IEventStore, deviceIdentityHash: string): void | string => {
+	// 	if (!getDeviceByIdentityHash(es, deviceIdentityHash)) {
+	// 		return `Device with identity hash ${deviceIdentityHash} does not exist`;
+	// 	}
+	// },
+	// 	organizationUid: (es: IEventStore, organizationUid: string): void | string => {
+	// 	if (!getOrganizationByUid(es, organizationUid)) {
+	// 		return `Organization with uid ${organizationUid} does not exist`;
+	// 	}
+	// },
+
+	before('create fixtures', async function () {
+		// const randomString = Math.random().toString(36).substring(7);
+
+		// organization = await api.organization.create({ name: `sdk-test-${randomString}`, title: `SDK test ${randomString}` });
+
+		device = await api.emulator.create({ organizationUid: parameters.organizationUid! });
+
+		testingPackage = await api.package.create({
+			packageName: faker.system.fileName(),
+			label: faker.system.fileName(),
+			description: undefined,
+		});
+		// console.log('testingPackage4');
+		// scheduledPowerActionUid = await api.device.scheduledPowerAction.create(device.uid, {
+		// 	powerAction: DevicePowerAction.SystemReboot,
+		// 	weekdays: [SheduledActionDay.Sunday],
+		// 	time: '00:00',
+		// });
+
+		policy = await api.policy.create({
+			name: faker.system.fileName(),
+			organizationUid: parameters.organizationUid!,
+		});
+
+		applet = await api.applet.create({ name: faker.system.fileName() });
+		appletVersion = faker.system.semver();
+		await api.applet.version.create(applet.uid, { version: appletVersion, entryFile: faker.system.fileName() });
+		timing = await api.timing.create({
+			deviceUid: device.uid,
+			appletUid: applet.uid,
+			appletVersion,
+			startsAt: new Date(),
+			endsAt: new Date(),
+			configuration: {},
+			finishEvent: {
+				type: 'DURATION',
+				data: {},
+			},
+			position: 1,
+		});
+
+		console.log('timing', timing);
+		console.log('organization', organization);
+		console.log('device', device);
+		console.log('package', testingPackage);
+		console.log('scheduledPowerActionUid', scheduledPowerActionUid);
+		console.log('policy', policy);
+		console.log('applet', applet);
+		console.log('appletVersion', appletVersion);
+		console.log('timing', timing);
+	});
+
+	after('remove fixtures', async function () {
+		await api.organization.delete(organization.uid);
+		await api.emulator.delete(device.uid);
+	});
+
+	it.only('should create new bulk operation', async () => {
 		const createdBulkOperation = await should(api.bulkOperation.create(testingBulkOperation)).be.fulfilled();
 		should(createdBulkOperation.name).be.eql(testingBulkOperation.name);
 		should(createdBulkOperation.operationType).be.eql(testingBulkOperation.operationType);
