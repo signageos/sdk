@@ -18,8 +18,13 @@ export default class EmulatorManagement {
 	}
 
 	public async create(settings: IEmulatorCreatable): Promise<IDevice> {
-		const { headers } = await postResource(this.options, EmulatorManagement.RESOURCE, JSON.stringify(settings));
-		const headerLocation = headers.get('location');
+		console.log('settings %o', settings);
+		const response = await postResource(this.options, EmulatorManagement.RESOURCE, JSON.stringify(settings));
+		const headerLocation = response.headers.get('location');
+
+		const body = await response.json();
+
+		console.log('body %o', body);
 
 		if (!headerLocation) {
 			throw new Error(`Api didn't return location header to created ${EmulatorManagement.RESOURCE}.`);
@@ -27,6 +32,28 @@ export default class EmulatorManagement {
 
 		const deviceUid = headerLocation.split('/').slice(-1)[0];
 		return await this.deviceManagement.get(deviceUid);
+	}
+
+	public async createWithoutProvision(settings: IEmulatorCreatable): Promise<{ device: IDevice, verificationHash: string }> {
+		settings.provision = false;
+		const response = await postResource(this.options, EmulatorManagement.RESOURCE, JSON.stringify(settings));
+		const headerLocation = response.headers.get('location');
+
+		const body = await response.json();
+
+		console.log('body %o', body);
+
+		if (!headerLocation) {
+			throw new Error(`Api didn't return location header to created ${EmulatorManagement.RESOURCE}.`);
+		}
+
+		const deviceUid = headerLocation.split('/').slice(-1)[0];
+		const device = await this.deviceManagement.get(deviceUid);
+
+		return {
+			device,
+			verificationHash: body.verificationHash,
+		};
 	}
 
 	public async delete(deviceUid: string): Promise<void> {
