@@ -23,13 +23,14 @@
     "watch": "tsc --watch",
     "docs": "typedoc ./src/index.ts ./src/RestApi/RestApi.ts ./src/RestApi/RestApiV2.ts ./src/Development/Development.ts",
     "check": "npm run depcheck && npx --userconfig ./.npmrc @signageos/lib check-deps",
-    "depcheck": "depcheck --config .depcheckrc.json"
+    "depcheck": "depcheck --config .depcheckrc.json",
+    "check-types": "tsc --noEmit"
   },
   "author": "Michael Zabka <zabka.michael@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=8.0.0"
+    "node": "16",
+    "npm": "8"
   },
   "engineStrict": false,
   "publishConfig": {
@@ -37,7 +38,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@signageos/codestyle": "0.0.22",
+    "@signageos/codestyle": "0.0.23",
     "@types/archiver": "5.3.1",
     "@types/chalk": "2.2.0",
     "@types/cors": "2.8.13",
