@@ -8,8 +8,8 @@ import IDevice from '../../../../src/RestApi/Device/IDevice';
 import Organization from '../../../../src/RestApi/Organization/Organization';
 import { IPackage } from '../../../../src/RestApi/Package/IPackage';
 import * as faker from 'faker';
-// import { SheduledActionDay } from '../../../../src/RestApi/Device/PowerAction/IScheduledPowerAction';
-// import { DevicePowerAction } from '../../../../src/RestApi/Device/PowerAction/IPowerAction';
+import { SheduledActionDay } from '../../../../src/RestApi/Device/PowerAction/IScheduledPowerAction';
+import { DevicePowerAction } from '../../../../src/RestApi/Device/PowerAction/IPowerAction';
 import IPolicy from '../../../../src/RestApi/Policy/IPolicy';
 import IApplet from '../../../../src/RestApi/Applet/IApplet';
 import ITiming from '../../../../src/RestApi/Timing/ITiming';
@@ -109,9 +109,9 @@ describe.only('RestAPI - BulkOperation', function () {
 	// },
 
 	before('create fixtures', async function () {
-		// const randomString = Math.random().toString(36).substring(7);
+		const randomString = Math.random().toString(36).substring(7);
 
-		// organization = await api.organization.create({ name: `sdk-test-${randomString}`, title: `SDK test ${randomString}` });
+		organization = await api.organization.create({ name: `sdk-test-${randomString}`, title: `SDK test ${randomString}` });
 
 		device = await api.emulator.create({ organizationUid: parameters.organizationUid! });
 
@@ -120,12 +120,12 @@ describe.only('RestAPI - BulkOperation', function () {
 			label: faker.system.fileName(),
 			description: undefined,
 		});
-		// console.log('testingPackage4');
-		// scheduledPowerActionUid = await api.device.scheduledPowerAction.create(device.uid, {
-		// 	powerAction: DevicePowerAction.SystemReboot,
-		// 	weekdays: [SheduledActionDay.Sunday],
-		// 	time: '00:00',
-		// });
+		console.log('testingPackage4');
+		scheduledPowerActionUid = await api.device.scheduledPowerAction.create(device.uid, {
+			powerAction: DevicePowerAction.SystemReboot,
+			weekdays: [SheduledActionDay.Sunday],
+			time: '00:00:00',
+		});
 
 		policy = await api.policy.create({
 			name: faker.system.fileName(),
