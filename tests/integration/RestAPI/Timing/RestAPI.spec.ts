@@ -245,7 +245,7 @@ describe('RestAPI - Timing', function () {
 			try {
 				await api.timing.delete('non-existent-timing-uid');
 			} catch (e) {
-				should(e.errorCode).be.equal(403077);
+				should(e.errorCode).be.equal(403099);
 				should(e.errorName).be.equal('NO_TIMING_TO_DELETE');
 			}
 		});
