@@ -37,11 +37,22 @@ test:general:
   stage: test
   except:
     - tags
-  script:
-    - cp .env.amy .env
-    - npm test
   needs:
     - prepare
+  artifacts:
+    expire_in: 1 week
+    name: tests-coverage
+    when: always
+    paths:
+      - coverage/
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
+  script:
+    - cp .env.amy .env
+    - npm install --ignore-scripts
+    - npm run test:coverage
 
 test:integration:
   stage: test

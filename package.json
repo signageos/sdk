@@ -19,6 +19,7 @@
     "prepare": "npm run prebuild && npm run build",
     "test": "env NODE_ENV=test mocha --config .mocharc.unit.json",
     "test-integration": "env NODE_ENV=test mocha --config .mocharc.integration.json",
+    "test:coverage": "c8 npm run test",
     "ci": "npm run lint && npm run test",
     "watch": "tsc --watch",
     "docs": "typedoc ./src/index.ts ./src/RestApi/RestApi.ts ./src/RestApi/RestApiV2.ts ./src/Development/Development.ts",
@@ -38,6 +39,7 @@
     "access": "public"
   },
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "1.0.2",
     "@signageos/codestyle": "0.0.23",
     "@types/archiver": "5.3.1",
     "@types/chalk": "2.2.0",
@@ -55,6 +57,7 @@
     "@types/node-fetch": "2.1.2",
     "@types/should": "8.3.0",
     "@types/sinon": "9.0.8",
+    "c8": "7.13.0",
     "depcheck": "1.4.3",
     "extract-zip": "2.0.1",
     "faker": "4.1.0",

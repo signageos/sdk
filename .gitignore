@@ -1,8 +1,10 @@
 dist/
 node_modules/
-*.sublime-*
 src/**/*.js
 tests/**/*.js
 docs/*
 .idea
 .env
+
+# Test
+coverage/*

@@ -23,6 +23,8 @@
 		"typedoc-plugin-rename-defaults",
 		"prettier",
 		"typescript",
-		"tslint"
+		"tslint",
+		"@istanbuljs/nyc-config-typescript",
+		"c8"
 	]
 }
