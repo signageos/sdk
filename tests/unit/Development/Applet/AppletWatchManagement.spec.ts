@@ -23,6 +23,7 @@ describe('Development.Applet.AppletWatchManagement', function () {
 
 	afterEach(async function () {
 		await watcher?.close();
+		await fs.remove(path.join(applet1Dirname, 'dir-1', 'file-X'));
 	});
 
 	describe('watch', function () {

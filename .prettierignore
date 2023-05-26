@@ -10,3 +10,6 @@ package-lock.json
 # Other
 tsconfig.json
 .prettierignore
+
+# Test
+.c8rc
