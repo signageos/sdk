@@ -34,7 +34,8 @@ const testingBulkOperation = {
 	},
 	rollingUpdate: {
 		batchSize: 1,
-		batchDelay: 1000,
+		// todo: edit to correspond with latest Dusin's API
+		batchDelay: 60_000 * 2,
 		stopThreshold: 50,
 	},
 	operationType: DeviceActionType.SET_APPLICATION_VERSION,
@@ -262,7 +263,7 @@ describe.only('RestAPI - BulkOperation', function () {
 		const newRollingUpdate = {
 			rollingUpdate: {
 				batchSize: 20,
-				batchDelay: 2000,
+				batchDelay: 60_000 * 2,
 				stopThreshold: 75,
 			},
 		};
@@ -275,7 +276,7 @@ describe.only('RestAPI - BulkOperation', function () {
 		should(bulkOperationGet.rollingUpdate).be.deepEqual(newRollingUpdate.rollingUpdate);
 	});
 
-	describe('Bulk operation all possible payloads', async function () {
+	describe.only('Bulk operation all possible payloads', async function () {
 		async function assertBulkOperation(bulkData: LogData, operationType: DeviceActionType) {
 			const toCreate: IBulkOperationCreatable<DeviceActionType> = {
 				...testingBulkOperation,
@@ -476,7 +477,7 @@ describe.only('RestAPI - BulkOperation', function () {
 			await assertBulkOperation(bulkData as LogData, DeviceActionType.RESIZE);
 		});
 
-		it.only('should create new bulk operation with payload deprovision', async function () {
+		it('should create new bulk operation with payload deprovision', async function () {
 			let bulkData = {
 				[DeviceActionType.DEPROVISION]: {
 					verificationHash,
@@ -490,7 +491,7 @@ describe.only('RestAPI - BulkOperation', function () {
 			await assertBulkOperation(bulkData as LogData, DeviceActionType.DEPROVISION);
 		});
 
-		it.only('should create new bulk operation with payload provision', async function () {
+		it('should create new bulk operation with payload provision', async function () {
 			let bulkData = {
 				[DeviceActionType.PROVISION]: {
 					verificationHash,

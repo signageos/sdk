@@ -34,7 +34,7 @@ describe('BulkOperationManagement', () => {
 		},
 		rollingUpdate: {
 			batchSize: 10,
-			batchDelay: 1000,
+			batchDelay: 60_000,
 			stopThreshold: 50,
 		},
 		operationType: DeviceActionType.SET_APPLICATION_VERSION,
@@ -54,7 +54,7 @@ describe('BulkOperationManagement', () => {
 	const rollingUpdateRequest = {
 		rollingUpdate: {
 			batchSize: 10,
-			batchDelay: 5000,
+			batchDelay: 60_000,
 			stopThreshold: 30,
 		},
 	};
@@ -70,7 +70,7 @@ describe('BulkOperationManagement', () => {
 		},
 		rollingUpdate: {
 			batchSize: 10,
-			batchDelay: 1000,
+			batchDelay: 60_000,
 			stopThreshold: 50,
 		},
 		operationType: DeviceActionType.SET_APPLICATION_VERSION,
