@@ -6,7 +6,7 @@ import IEmulator, { IEmulatorCreatable } from '../../../../src/RestApi/Emulator/
 import EmulatorManagement from '../../../../src/RestApi/Emulator/EmulatorManagement';
 import DeviceManagement from '../../../../src/RestApi/Device/DeviceManagement';
 
-const nockOpts = getNockOpts({});
+const nockOpts = { ...getNockOpts({}), url: 'https://example.com' };
 
 describe('EmulatorManagement', () => {
 	const emulator: IEmulator = {

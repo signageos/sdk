@@ -18,18 +18,12 @@ export default class EmulatorManagement {
 	}
 
 	public async create(settings: IEmulatorCreatable): Promise<IDevice> {
-		console.log('settings %o', settings);
 		const response = await postResource(this.options, EmulatorManagement.RESOURCE, JSON.stringify(settings));
 		const headerLocation = response.headers.get('location');
-
-		const body = await response.json();
-
-		console.log('body %o', body);
 
 		if (!headerLocation) {
 			throw new Error(`Api didn't return location header to created ${EmulatorManagement.RESOURCE}.`);
 		}
-
 		const deviceUid = headerLocation.split('/').slice(-1)[0];
 		return await this.deviceManagement.get(deviceUid);
 	}
@@ -38,15 +32,11 @@ export default class EmulatorManagement {
 		settings.provision = false;
 		const response = await postResource(this.options, EmulatorManagement.RESOURCE, JSON.stringify(settings));
 		const headerLocation = response.headers.get('location');
-
 		const body = await response.json();
-
-		console.log('body %o', body);
 
 		if (!headerLocation) {
 			throw new Error(`Api didn't return location header to created ${EmulatorManagement.RESOURCE}.`);
 		}
-
 		const deviceUid = headerLocation.split('/').slice(-1)[0];
 		const device = await this.deviceManagement.get(deviceUid);
 
