@@ -3,7 +3,7 @@ import * as should from 'should';
 
 import { ApiVersions } from '../../../../../src/RestApi/apiVersions';
 import { Resources } from '../../../../../src/RestApi/resources';
-import { IDevicePeerRecovery } from '../../../../../src/RestApi/Device/PeerRecovery/DevicePeerRecovery';
+import {  IDevicePeerRecoveryEnabled } from '../../../../../src/RestApi/Device/PeerRecovery/DevicePeerRecovery';
 import DevicePeerRecoveryManagement from '../../../../../src/RestApi/Device/PeerRecovery/DevicePeerRecoveryManagement';
 import { DEVICE_1 } from '../../../../fixtures/Device/Device.fixtures';
 import { PEER_RECOVERY_1, PEER_RECOVERY_2 } from '../../../../fixtures/Device/PeerRecovery/DevicePeerRecovery.fixtures';
@@ -14,7 +14,7 @@ const devicePeerRecoveryManagement = new DevicePeerRecoveryManagement(nockOpts);
 
 describe('Unit.RestApi.Device.PeerRecovery.DevicePeerRecoveryManagement', () => {
 	it('should get peer recovery list', async () => {
-		const expectedPeerRecoveries: IDevicePeerRecovery[] = [PEER_RECOVERY_1, PEER_RECOVERY_2];
+		const expectedPeerRecoveries = [PEER_RECOVERY_1, PEER_RECOVERY_2];
 
 		nock(nockOpts.url, nockAuthHeader1)
 			.get(`/${ApiVersions.V1}/${Resources.Device}/${DEVICE_1.uid}/peer-recovery`)
@@ -26,7 +26,7 @@ describe('Unit.RestApi.Device.PeerRecovery.DevicePeerRecoveryManagement', () => 
 	});
 
 	it('should set peer recovery', async () => {
-		const peerRecoveryPayload: { enabled: IDevicePeerRecovery['enabled'] } = { enabled: true };
+		const peerRecoveryPayload: { enabled: IDevicePeerRecoveryEnabled['enabled'], urlLauncherAddress: IDevicePeerRecoveryEnabled['urlLauncherAddress'] } = { enabled: true, urlLauncherAddress: 'https://www.t.signageos.io' };
 
 		nock(nockOpts.url, nockAuthHeader1)
 			.put(
