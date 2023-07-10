@@ -7,7 +7,6 @@ import {
 	Orientation,
 	VideoOrientation,
 } from '../../../../src/RestApi/BulkOperation/BulkOperation.enums';
-// import { LogDataMock } from './BulkOperation.fixtures';
 import IDevice from '../../../../src/RestApi/Device/IDevice';
 import Organization from '../../../../src/RestApi/Organization/Organization';
 import { IPackage } from '../../../../src/RestApi/Package/IPackage';
@@ -33,10 +32,9 @@ const testingBulkOperation = {
 		timezone: 'Europe/Prague',
 	},
 	rollingUpdate: {
-		batchSize: 1,
-		// todo: edit to correspond with latest Dusin's API
+		batchSize: 10,
 		batchDelay: 60_000 * 2,
-		stopThreshold: 50,
+		stopThreshold: 100,
 	},
 	operationType: DeviceActionType.SET_APPLICATION_VERSION,
 	data: {
@@ -47,7 +45,7 @@ const testingBulkOperation = {
 
 const api = new Api(opts);
 
-describe.only('RestAPI - BulkOperation', function () {
+describe('RestAPI - BulkOperation', function () {
 	let device: IDevice;
 	let organization: Organization;
 	let testingPackage: IPackage;
@@ -56,112 +54,36 @@ describe.only('RestAPI - BulkOperation', function () {
 	let applet: IApplet;
 	let appletVersion: string;
 	let timing: ITiming;
-	let deviceForProvision: IDevice;
 	let verificationHash: string;
-	// let verificationHash: string = 'asdf';
-
-	// packageName: (es: IEventStore, packageName: string): void | string => {
-	// 	const devicePackage = getDevicePackageByPackageName(es, packageName);
-	// 	if (!devicePackage) {
-	// 		return `Package ${packageName} does not exist`;
-	// 	}
-	// },
-	// 	scheduledPowerActionUid: (es: IEventStore, scheduledPowerActionUid: string): void | string => {
-	// 	const scheduledAction = getDeviceScheduledPowerActionByUid(es, scheduledPowerActionUid);
-	// 	if (!scheduledAction) {
-	// 		return `Scheduled power action ${scheduledPowerActionUid} does not exist`;
-	// 	}
-	// 	if (scheduledAction.failedAt || scheduledAction.succeededAt || scheduledAction.canceledAt) {
-	// 		return `Scheduled power action ${scheduledPowerActionUid} was already processed`;
-	// 	}
-	// },
-	// 	verificationHash: (es: IEventStore, verificationHash: string, operationType?: DeviceActionType): void | string => {
-	// 	const verification = getPairedDeviceVerificationByVerificationHash(es, verificationHash);
-	// 	if (operationType === DeviceActionType.PROVISION) {
-	// 		if (verification) {
-	// 			return `Device ${verification.deviceUid} was already provisioned with hash ${verificationHash}`;
-	// 		}
-	// 		return;
-	// 	}
-	// 	// DEPROVISION default behaviour
-	// 	if (!verification) {
-	// 		return `Device with verification hash ${verificationHash} is not provisioned`;
-	// 	}
-	// },
-	// 	appletUid: (es: IEventStore, appletUid: string): void | string => {
-	// 	const appletMap = getAppletToOrganizationMapByOrganizationUid(es, Set().add(appletUid));
-	// 	if (!appletMap.get(appletUid)) {
-	// 		return `Applet ${appletUid} does not exist`;
-	// 	}
-	// },
-	// 	appletVersion: (es: IEventStore, appletVersion: string): void | string => {
-	// 	if (!getAppletVersionByVersion(es, appletVersion)) {
-	// 		return `Applet version ${appletVersion} does not exist`;
-	// 	}
-	// },
-	// 	uid: (es: IEventStore, uid: string): void | string => {
-	// 	if (!getTimingByUid(es, uid)) {
-	// 		return `Timing with uid ${uid} does not exist`;
-	// 	}
-	// },
-	// 	policyUid: (es: IEventStore, policyUid: string): void | string => {
-	// 	if (!getLatestPolicyLogByUid(es, policyUid)) {
-	// 		return `Policy with uid ${policyUid} does not exist`;
-	// 	}
-	// },
-	// 	deviceIdentityHash: (es: IEventStore, deviceIdentityHash: string): void | string => {
-	// 	if (!getDeviceByIdentityHash(es, deviceIdentityHash)) {
-	// 		return `Device with identity hash ${deviceIdentityHash} does not exist`;
-	// 	}
-	// },
-	// 	organizationUid: (es: IEventStore, organizationUid: string): void | string => {
-	// 	if (!getOrganizationByUid(es, organizationUid)) {
-	// 		return `Organization with uid ${organizationUid} does not exist`;
-	// 	}
-	// },
 
 	before('create fixtures', async function () {
 		organization = await api.organization.get(parameters.organizationUid!);
-		console.log('organization', organization);
 
 		device = await api.emulator.create({ organizationUid: parameters.organizationUid! });
 
-		const x = await api.emulator.createWithoutProvision({ organizationUid: parameters.organizationUid!, provision: false });
-		
-
-		deviceForProvision = x.device;
-		verificationHash = x.verificationHash;
-
-		console.log('device', device);
-		console.log('deviceForProvision', deviceForProvision);
+		({ verificationHash } = await api.emulator.createWithoutProvision({ organizationUid: parameters.organizationUid!, provision: false }));
 
 		testingPackage = await api.package.create({
 			packageName: faker.system.fileName(),
 			label: faker.system.fileName(),
 			description: undefined,
 		});
-		console.log('package', testingPackage);
 
-		console.log('testingPackage4');
 		scheduledPowerActionUid = await api.device.scheduledPowerAction.create(device.uid, {
 			powerAction: DevicePowerAction.SystemReboot,
 			weekdays: [SheduledActionDay.Sunday],
 			time: '00:00:00',
 		});
-		console.log('scheduledPowerActionUid', scheduledPowerActionUid);
 
 		policy = await api.policy.create({
 			name: faker.system.fileName(),
 			organizationUid: parameters.organizationUid!,
 		});
-		console.log('policy', policy);
 
 		applet = await api.applet.create({ name: faker.system.fileName() });
-		console.log('applet', applet);
 
 		appletVersion = faker.system.semver();
 		await api.applet.version.create(applet.uid, { version: appletVersion, entryFile: faker.system.fileName() });
-		console.log('appletVersion', appletVersion);
 
 		timing = await api.timing.create({
 			deviceUid: device.uid,
@@ -176,17 +98,10 @@ describe.only('RestAPI - BulkOperation', function () {
 			},
 			position: 1,
 		});
-		console.log('timing', timing);
-
-		// await api.device.verification.set({ verificationHash });
-
-		// console.log('verificationHash', verificationHash);
 	});
 
 	after('remove fixtures', async function () {
-		console.log('remove fixtures');
 		await api.emulator.delete(device.uid);
-		// await api.organization.delete(organization.uid);
 	});
 
 	it('should create new bulk operation', async () => {
@@ -256,7 +171,18 @@ describe.only('RestAPI - BulkOperation', function () {
 	});
 
 	it('should pause and resume bulk operation by uid', async () => {
-		const createdBulkOperation = await should(api.bulkOperation.create(testingBulkOperation)).be.fulfilled();
+		const createdBulkOperation = await should(
+			api.bulkOperation.create({
+				...testingBulkOperation,
+				...{
+					rollingUpdate: {
+						batchSize: 1,
+						batchDelay: 60_000 * 2,
+						stopThreshold: 50,
+					},
+				},
+			}),
+		).be.fulfilled();
 
 		await api.bulkOperation.pause(createdBulkOperation.uid);
 
@@ -276,7 +202,7 @@ describe.only('RestAPI - BulkOperation', function () {
 		should(bulkOperationGet.rollingUpdate).be.deepEqual(newRollingUpdate.rollingUpdate);
 	});
 
-	describe.only('Bulk operation all possible payloads', async function () {
+	describe('Bulk operation all possible payloads', async function () {
 		async function assertBulkOperation(bulkData: LogData, operationType: DeviceActionType) {
 			const toCreate: IBulkOperationCreatable<DeviceActionType> = {
 				...testingBulkOperation,
@@ -484,10 +410,6 @@ describe.only('RestAPI - BulkOperation', function () {
 				},
 			};
 
-			console.log('bulkData', bulkData);
-			console.log('verificationHash', verificationHash);
-			console.log('deviceForProvision', deviceForProvision);
-
 			await assertBulkOperation(bulkData as LogData, DeviceActionType.DEPROVISION);
 		});
 
@@ -497,10 +419,6 @@ describe.only('RestAPI - BulkOperation', function () {
 					verificationHash,
 				},
 			};
-
-			console.log('bulkData', bulkData);
-			console.log('verificationHash', verificationHash);
-			console.log('deviceForProvision', deviceForProvision);
 
 			await assertBulkOperation(bulkData as LogData, DeviceActionType.PROVISION);
 		});
