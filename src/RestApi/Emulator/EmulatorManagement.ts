@@ -29,7 +29,6 @@ export default class EmulatorManagement {
 	}
 
 	public async createWithoutProvision(settings: IEmulatorCreatable): Promise<{ device: IDevice, verificationHash: string }> {
-		settings.provision = false;
 		const response = await postResource(this.options, EmulatorManagement.RESOURCE, JSON.stringify(settings));
 		const headerLocation = response.headers.get('location');
 		const body = await response.json();

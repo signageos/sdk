@@ -45,7 +45,7 @@ const testingBulkOperation = {
 
 const api = new Api(opts);
 
-describe('RestAPI - BulkOperation', function () {
+describe.only('RestAPI - BulkOperation', function () {
 	let device: IDevice;
 	let organization: Organization;
 	let testingPackage: IPackage;
@@ -61,7 +61,7 @@ describe('RestAPI - BulkOperation', function () {
 
 		device = await api.emulator.create({ organizationUid: parameters.organizationUid! });
 
-		({ verificationHash } = await api.emulator.createWithoutProvision({ organizationUid: parameters.organizationUid!, provision: false }));
+		({ verificationHash } = await api.emulator.createWithoutProvision({ organizationUid: parameters.organizationUid!, skipProvision: true }));
 
 		testingPackage = await api.package.create({
 			packageName: faker.system.fileName(),
