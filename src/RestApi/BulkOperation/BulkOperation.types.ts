@@ -83,12 +83,6 @@ export type LogData = {
 		orientation: Orientation;
 		videoOrientation?: VideoOrientation;
 	};
-	[DeviceActionType.PROVISION]: {
-		verificationHash: string;
-	};
-	[DeviceActionType.DEPROVISION]: {
-		verificationHash: string;
-	};
 	[DeviceActionType.UPDATE_NAME]: {
 		name: string;
 	};

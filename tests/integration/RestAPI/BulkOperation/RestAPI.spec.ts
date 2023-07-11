@@ -45,7 +45,7 @@ const testingBulkOperation = {
 
 const api = new Api(opts);
 
-describe.only('RestAPI - BulkOperation', function () {
+describe('RestAPI - BulkOperation', function () {
 	let device: IDevice;
 	let organization: Organization;
 	let testingPackage: IPackage;
@@ -54,14 +54,11 @@ describe.only('RestAPI - BulkOperation', function () {
 	let applet: IApplet;
 	let appletVersion: string;
 	let timing: ITiming;
-	let verificationHash: string;
 
 	before('create fixtures', async function () {
 		organization = await api.organization.get(parameters.organizationUid!);
 
 		device = await api.emulator.create({ organizationUid: parameters.organizationUid! });
-
-		({ verificationHash } = await api.emulator.createWithoutProvision({ organizationUid: parameters.organizationUid!, skipProvision: true }));
 
 		testingPackage = await api.package.create({
 			packageName: faker.system.fileName(),
@@ -401,26 +398,6 @@ describe.only('RestAPI - BulkOperation', function () {
 			};
 
 			await assertBulkOperation(bulkData as LogData, DeviceActionType.RESIZE);
-		});
-
-		it('should create new bulk operation with payload deprovision', async function () {
-			let bulkData = {
-				[DeviceActionType.DEPROVISION]: {
-					verificationHash,
-				},
-			};
-
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.DEPROVISION);
-		});
-
-		it('should create new bulk operation with payload provision', async function () {
-			let bulkData = {
-				[DeviceActionType.PROVISION]: {
-					verificationHash,
-				},
-			};
-
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.PROVISION);
 		});
 
 		it('should create new bulk operation with payload update name', async function () {
