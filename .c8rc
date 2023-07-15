@@ -6,7 +6,11 @@
         "src/**/!(*.test.*).[tj]s?(x)"
     ],
     "exclude": [
-        "test/**/*.*"
+        "test/**/*.*",
+        "src/RestApi/**/*.types.ts",
+        "src/RestApi/**/I*.ts",
+        "src/RestApi/Device/Location/DeviceLocation.ts",
+        "src/Lib/Pagination/pagination.ts"
     ],
     "lines": "72.78",
     "statements": "72.78",
