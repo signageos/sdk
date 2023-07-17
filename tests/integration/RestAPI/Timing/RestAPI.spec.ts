@@ -127,7 +127,7 @@ describe('RestAPI - Timing', function () {
 				endsAt: new Date('2023-04-02T00:00:00'),
 				configuration: { identification: identification },
 				position: 1,
-				finishEvent: { type: 'DURATION', data: null },
+				finishEvent: { type: 'DURATION', data: 'event-data' },
 			};
 
 			const updatedTiming = await api.timing.update(timingUid, updateProps);
@@ -144,7 +144,7 @@ describe('RestAPI - Timing', function () {
 				endsAt: new Date('2023-04-02T00:00:00'),
 				configuration: {},
 				position: 1,
-				finishEvent: { type: 'DURATION', data: null },
+				finishEvent: { type: 'DURATION', data: 'event-data' },
 			};
 
 			const updatedTiming = await api.timing.update(timingUidWithoutIdentification, updateProps);
