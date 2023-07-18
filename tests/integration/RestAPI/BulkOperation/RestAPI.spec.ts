@@ -200,29 +200,27 @@ describe('RestAPI - BulkOperation', function () {
 	});
 
 	describe('Bulk operation all possible payloads', async function () {
-		async function assertBulkOperation(bulkData: LogData, operationType: DeviceActionType) {
+		async function assertBulkOperation<T extends DeviceActionType>(bulkData: LogData[T], operationType: T) {
 			const toCreate: IBulkOperationCreatable<DeviceActionType> = {
 				...testingBulkOperation,
 				operationType: operationType,
-				...{ data: bulkData[operationType] },
+				...{ data: bulkData },
 			};
 			const createdBulkOperation = await should(api.bulkOperation.create(toCreate)).be.fulfilled();
 			should(createdBulkOperation.name).be.eql(testingBulkOperation.name);
 			should(createdBulkOperation.operationType).be.eql(operationType);
-			should(createdBulkOperation.data).deepEqual(bulkData[operationType]);
+			should(createdBulkOperation.data).deepEqual(bulkData);
 			should(createdBulkOperation.rollingUpdate).be.eql(testingBulkOperation.rollingUpdate);
 			should('createdAt' in createdBulkOperation).be.eql(true);
 		}
 
 		it('should create new bulk operation with payload application version', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_APPLICATION_VERSION]: {
-					applicationType: /* 'tizen' */ device.applicationType as ApplicationType,
-					version: '1.0.0',
-				},
+				applicationType: /* 'tizen' */ device.applicationType as ApplicationType,
+				version: '1.0.0',
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_APPLICATION_VERSION);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_APPLICATION_VERSION);
 		});
 
 		it('should create new bulk operation with payload volume', async function () {
