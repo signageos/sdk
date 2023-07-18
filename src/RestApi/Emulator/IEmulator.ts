@@ -1,5 +1,6 @@
 export interface IEmulatorCreatable {
 	organizationUid: string;
+	skipProvision?: boolean;
 }
 
 export default interface IEmulator {

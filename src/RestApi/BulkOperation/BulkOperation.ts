@@ -1,6 +1,6 @@
-import { fillDataToEntity } from "../mapper";
+import { fillDataToEntity } from '../mapper';
 import IBulkOperation from './IBulkOperation';
-import { DeviceActionType } from "./enums";
+import { DeviceActionType } from './BulkOperation.enums';
 
 type IBulkOperationAlias = IBulkOperation<DeviceActionType>;
 

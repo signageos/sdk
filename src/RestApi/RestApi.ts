@@ -15,13 +15,12 @@ import LocationOrganizationTag from './Location/OrganizationTag/LocationOrganiza
 import DeviceLocationManagement from './Device/Location/DeviceLocationManagement';
 import AlertManagement from './Alerts/AlertManagement';
 import IOptions from './IOptions';
+import PackageManagement from './Package/PackageManagement';
 
 export default class RestApi {
 	// Note: We use different authentication here
 	public readonly organization: OrganizationManagement = new OrganizationManagement(this.accountOptions);
-	public readonly organizationTag: OrganizationTagManagement = new OrganizationTagManagement(
-		this.organizationOptions,
-	);
+	public readonly organizationTag: OrganizationTagManagement = new OrganizationTagManagement(this.organizationOptions);
 	public readonly company: CompanyManagement = new CompanyManagement(this.accountOptions);
 	public readonly firmwareVersion: FirmwareVersionManagement = new FirmwareVersionManagement(this.accountOptions);
 
@@ -37,11 +36,10 @@ export default class RestApi {
 	public readonly deviceLocation: DeviceLocationManagement = new DeviceLocationManagement(this.organizationOptions);
 
 	public readonly alert: AlertManagement = new AlertManagement(this.organizationOptions);
+	public readonly package: PackageManagement = new PackageManagement(this.organizationOptions);
 
 	public readonly location: LocationManagement = new LocationManagement(this.organizationOptions);
-	public readonly locationOrganizationTag: LocationOrganizationTag = new LocationOrganizationTag(
-		this.organizationOptions,
-	);
+	public readonly locationOrganizationTag: LocationOrganizationTag = new LocationOrganizationTag(this.organizationOptions);
 
 	constructor(public readonly accountOptions: IOptions, public readonly organizationOptions: IOptions) {}
 }

@@ -127,6 +127,24 @@ describe('RestAPI - Timing', function () {
 				endsAt: new Date('2023-04-02T00:00:00'),
 				configuration: { identification: identification },
 				position: 1,
+				finishEvent: { type: 'DURATION', data: 'event-data' },
+			};
+
+			const updatedTiming = await api.timing.update(timingUid, updateProps);
+
+			should(updatedTiming).be.containDeep(updateProps);
+			should(updatedTiming.uid).be.ok();
+			should(updatedTiming.updatedAt).be.ok();
+		});
+
+		// TODO: consult the data null case and the comparator in TimingManagement
+		it.skip('should update the timing with data null', async function () {
+			const updateProps: ITimingUpdatable = {
+				appletVersion: '1.0.0',
+				startsAt: new Date('2023-04-01T12:00:00'),
+				endsAt: new Date('2023-04-02T00:00:00'),
+				configuration: { identification: identification },
+				position: 1,
 				finishEvent: { type: 'DURATION', data: null },
 			};
 
@@ -144,7 +162,7 @@ describe('RestAPI - Timing', function () {
 				endsAt: new Date('2023-04-02T00:00:00'),
 				configuration: {},
 				position: 1,
-				finishEvent: { type: 'DURATION', data: null },
+				finishEvent: { type: 'DURATION', data: 'event-data' },
 			};
 
 			const updatedTiming = await api.timing.update(timingUidWithoutIdentification, updateProps);

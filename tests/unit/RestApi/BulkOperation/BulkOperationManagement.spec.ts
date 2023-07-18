@@ -3,7 +3,7 @@ import * as nock from 'nock';
 
 import { getNockOpts, nockAuthHeader1, successRes } from '../helper';
 import { IBulkOperationCreatable } from '../../../../src/RestApi/BulkOperation/IBulkOperation';
-import { DeviceActionType } from '../../../../src/RestApi/BulkOperation/enums';
+import { DeviceActionType } from '../../../../src/RestApi/BulkOperation/BulkOperation.enums';
 import BulkOperation from '../../../../src/RestApi/BulkOperation/BulkOperation';
 import BulkOperationManagement from '../../../../src/RestApi/BulkOperation/BulkOperationManagement';
 
@@ -34,7 +34,7 @@ describe('BulkOperationManagement', () => {
 		},
 		rollingUpdate: {
 			batchSize: 10,
-			batchDelay: 1000,
+			batchDelay: 60_000,
 			stopThreshold: 50,
 		},
 		operationType: DeviceActionType.SET_APPLICATION_VERSION,
@@ -54,7 +54,7 @@ describe('BulkOperationManagement', () => {
 	const rollingUpdateRequest = {
 		rollingUpdate: {
 			batchSize: 10,
-			batchDelay: 5000,
+			batchDelay: 60_000,
 			stopThreshold: 30,
 		},
 	};
@@ -70,7 +70,7 @@ describe('BulkOperationManagement', () => {
 		},
 		rollingUpdate: {
 			batchSize: 10,
-			batchDelay: 1000,
+			batchDelay: 60_000,
 			stopThreshold: 50,
 		},
 		operationType: DeviceActionType.SET_APPLICATION_VERSION,

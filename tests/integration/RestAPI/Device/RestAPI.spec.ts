@@ -13,7 +13,6 @@ import { opts } from '../helper';
 const api = new Api(opts);
 
 describe('RestAPI - Device', function () {
-
 	let device: IDevice;
 	let secondOrganization: Organization;
 

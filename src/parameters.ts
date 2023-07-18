@@ -1,4 +1,4 @@
-import { log } from "./Console/log";
+import { log } from './Console/log';
 
 const path = require('path');
 const packageConfig = require('../package.json');
@@ -22,15 +22,11 @@ const configurableEnvVars = [
 
 for (const envVar of configurableEnvVars) {
 	if (process.env[envVar]) {
-		log(
-			'warning',
-			`Environment variable ${envVar} found. Will override default values from ~/.sosrc`,
-		);
+		log('warning', `Environment variable ${envVar} found. Will override default values from ~/.sosrc`);
 	}
 }
 
 const apiUrl = process.env.SOS_API_URL;
-
 if (!apiUrl) {
 	throw new Error(`Environment variable SOS_API_URL is required`);
 }
@@ -48,12 +44,18 @@ export const parameters = {
 	apiUrl,
 	requestMaxAttempts,
 	organizationUid: process.env.SOS_ORGANIZATION_UID,
-	organizationAuth: process.env.SOS_AUTH_CLIENT_ID && process.env.SOS_AUTH_SECRET ? {
-		clientId: process.env.SOS_AUTH_CLIENT_ID,
-		secret: process.env.SOS_AUTH_SECRET,
-	} : undefined,
-	accountAuth: process.env.SOS_API_IDENTIFICATION && process.env.SOS_API_SECURITY_TOKEN ? {
-		tokenId: process.env.SOS_API_IDENTIFICATION,
-		token: process.env.SOS_API_SECURITY_TOKEN,
-	} : undefined,
+	organizationAuth:
+		process.env.SOS_AUTH_CLIENT_ID && process.env.SOS_AUTH_SECRET
+			? {
+					clientId: process.env.SOS_AUTH_CLIENT_ID,
+					secret: process.env.SOS_AUTH_SECRET,
+			}
+			: undefined,
+	accountAuth:
+		process.env.SOS_API_IDENTIFICATION && process.env.SOS_API_SECURITY_TOKEN
+			? {
+					tokenId: process.env.SOS_API_IDENTIFICATION,
+					token: process.env.SOS_API_SECURITY_TOKEN,
+			}
+			: undefined,
 };
