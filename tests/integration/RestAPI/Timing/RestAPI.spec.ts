@@ -137,6 +137,23 @@ describe('RestAPI - Timing', function () {
 			should(updatedTiming.updatedAt).be.ok();
 		});
 
+		it.skip('should update the timing with data null', async function () {
+			const updateProps: ITimingUpdatable = {
+				appletVersion: '1.0.0',
+				startsAt: new Date('2023-04-01T12:00:00'),
+				endsAt: new Date('2023-04-02T00:00:00'),
+				configuration: { identification: identification },
+				position: 1,
+				finishEvent: { type: 'DURATION', data: null },
+			};
+
+			const updatedTiming = await api.timing.update(timingUid, updateProps);
+
+			should(updatedTiming).be.containDeep(updateProps);
+			should(updatedTiming.uid).be.ok();
+			should(updatedTiming.updatedAt).be.ok();
+		});
+
 		it('should update timing without identification', async function () {
 			const updateProps: ITimingUpdatable = {
 				appletVersion: '1.0.0',
