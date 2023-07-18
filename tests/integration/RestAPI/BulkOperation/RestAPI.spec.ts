@@ -225,499 +225,411 @@ describe('RestAPI - BulkOperation', function () {
 
 		it('should create new bulk operation with payload volume', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_VOLUME]: {
-					volume: 10,
-				},
+				volume: 10,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_VOLUME);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_VOLUME);
 		});
 
 		it('should create new bulk operation with payload brightness', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_BRIGHTNESS]: {
-					brightness1: 10,
-					brightness2: 15,
-					timeFrom1: '10:00:00',
-					timeFrom2: '11:00:00',
-				},
+				brightness1: 10,
+				brightness2: 15,
+				timeFrom1: '10:00:00',
+				timeFrom2: '11:00:00',
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_BRIGHTNESS);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_BRIGHTNESS);
 		});
 
 		it('should create new bulk operation with payload reconnect', async function () {
-			let bulkData = {
-				[DeviceActionType.RECONNECT]: {},
-			};
+			let bulkData = {};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.RECONNECT);
+			await assertBulkOperation(bulkData, DeviceActionType.RECONNECT);
 		});
 
 		it('should create new bulk operation with payload update configuration', async function () {
 			let bulkData = {
-				[DeviceActionType.UPDATE_CONFIGURATION]: {
-					platformUri: 'testingPLatformUri',
-					staticBaseUrl: 'testingStaticBaseUrl',
-					uploadBaseUrl: 'testingUploadBaseUrl',
-					weinreUri: 'testingWeinreUri',
-					extendedManagementUrl: 'testingManagementUrl',
-					socketDriver: SocketDriver.Websocket,
-				},
+				platformUri: 'testingPLatformUri',
+				staticBaseUrl: 'testingStaticBaseUrl',
+				uploadBaseUrl: 'testingUploadBaseUrl',
+				weinreUri: 'testingWeinreUri',
+				extendedManagementUrl: 'testingManagementUrl',
+				socketDriver: SocketDriver.Websocket,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.UPDATE_CONFIGURATION);
+			await assertBulkOperation(bulkData, DeviceActionType.UPDATE_CONFIGURATION);
 		});
 
 		it('should create new bulk operation with payload update time', async function () {
 			let bulkData = {
-				[DeviceActionType.UPDATE_TIME]: {
-					timezone: 'Africa/Accra',
-					timestamp: 10000000,
-					ntpServer: 'testingNtpServer',
-				},
+				timezone: 'Africa/Accra',
+				timestamp: 10000000,
+				ntpServer: 'testingNtpServer',
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.UPDATE_TIME);
+			await assertBulkOperation(bulkData, DeviceActionType.UPDATE_TIME);
 		});
 
 		it('should create new bulk operation with payload set debug', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_DEBUG]: {
-					appletEnabled: false,
-					nativeEnabled: true,
-				},
+				appletEnabled: false,
+				nativeEnabled: true,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_DEBUG);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_DEBUG);
 		});
 
 		it('should create new bulk operation with payload set firmware version', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_FIRMWARE_VERSION]: {
-					version: '1.0.0',
-				},
+				version: '1.0.0',
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_FIRMWARE_VERSION);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_FIRMWARE_VERSION);
 		});
 
 		it('should create new bulk operation with payload install package', async function () {
 			let bulkData = {
-				[DeviceActionType.INSTALL_PACKAGE]: {
-					packageName: /* 'testingPackageName' */ testingPackage.packageName,
-					applicationType: device.applicationType,
-					buildHash: 'testingBuildHash',
-					version: 'testingVersion',
-					build: 'testingBuild',
-				},
+				packageName: /* 'testingPackageName' */ testingPackage.packageName,
+				applicationType: device.applicationType as ApplicationType,
+				buildHash: 'testingBuildHash',
+				version: 'testingVersion',
+				build: 'testingBuild',
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.INSTALL_PACKAGE);
+			await assertBulkOperation(bulkData, DeviceActionType.INSTALL_PACKAGE);
 		});
 
 		it('should create new bulk operation with payload install package from uri', async function () {
 			let bulkData = {
-				[DeviceActionType.INSTALL_PACKAGE_FROM_URI]: {
-					packageUri: 'testingUri',
-				},
+				packageUri: 'testingUri',
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.INSTALL_PACKAGE_FROM_URI);
+			await assertBulkOperation(bulkData, DeviceActionType.INSTALL_PACKAGE_FROM_URI);
 		});
 
 		it('should create new bulk operation with payload uninstall package', async function () {
 			let bulkData = {
-				[DeviceActionType.UNINSTALL_PACKAGE]: {
-					packageName: /* 'testingPackageName' */ testingPackage.packageName,
-					applicationType: device.applicationType,
-					specs: {
-						someField: 'someValue',
-					},
+				packageName: /* 'testingPackageName' */ testingPackage.packageName,
+				applicationType: device.applicationType as ApplicationType,
+				specs: {
+					someField: 'someValue',
 				},
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.UNINSTALL_PACKAGE);
+			await assertBulkOperation(bulkData, DeviceActionType.UNINSTALL_PACKAGE);
 		});
 
 		it('should create new bulk operation with payload power action', async function () {
 			let bulkData = {
-				[DeviceActionType.POWER_ACTION]: {
-					powerType: 'APP_RESTART',
-				},
+				powerType: 'APP_RESTART',
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.POWER_ACTION);
+			await assertBulkOperation(bulkData, DeviceActionType.POWER_ACTION);
 		});
 
 		it('should create new bulk operation with payload scheduled power action', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_SCHEDULED_POWER_ACTION]: {
-					powerType: 'APP_RESTART',
-					weekdays: ['sun'],
-					time: '10:00:00',
-				},
+				powerType: 'APP_RESTART',
+				weekdays: ['sun'],
+				time: '10:00:00',
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_SCHEDULED_POWER_ACTION);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_SCHEDULED_POWER_ACTION);
 		});
 
 		it('should create new bulk operation with payload cancel scheduled power action', async function () {
 			let bulkData = {
-				[DeviceActionType.CANCEL_SCHEDULED_POWER_ACTION]: {
-					scheduledPowerActionUid: /* 'testingPowerActionUid' */ scheduledPowerActionUid,
-				},
+				scheduledPowerActionUid: /* 'testingPowerActionUid' */ scheduledPowerActionUid,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.CANCEL_SCHEDULED_POWER_ACTION);
+			await assertBulkOperation(bulkData, DeviceActionType.CANCEL_SCHEDULED_POWER_ACTION);
 		});
 
 		it('should create new bulk operation with payload set remote control', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_REMOTE_CONTROL]: {
-					enabled: true,
-				},
+				enabled: true,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_REMOTE_CONTROL);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_REMOTE_CONTROL);
 		});
 
 		it('should create new bulk operation with payload resize', async function () {
 			let bulkData = {
-				[DeviceActionType.RESIZE]: {
-					resolution: {
-						width: 100,
-						height: 100,
-						framerate: 100,
-					},
-					orientation: Orientation.LANDSCAPE,
-					videoOrientation: VideoOrientation.LANDSCAPE,
+				resolution: {
+					width: 100,
+					height: 100,
+					framerate: 100,
 				},
+				orientation: Orientation.LANDSCAPE,
+				videoOrientation: VideoOrientation.LANDSCAPE,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.RESIZE);
+			await assertBulkOperation(bulkData, DeviceActionType.RESIZE);
 		});
 
 		it('should create new bulk operation with payload update name', async function () {
 			let bulkData = {
-				[DeviceActionType.UPDATE_NAME]: {
-					name: 'newName',
-				},
+				name: 'newName',
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.UPDATE_NAME);
+			await assertBulkOperation(bulkData, DeviceActionType.UPDATE_NAME);
 		});
 
 		it('should create new bulk operation with payload ban', async function () {
-			let bulkData = {
-				[DeviceActionType.BAN]: {},
-			};
+			let bulkData = {};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.BAN);
+			await assertBulkOperation(bulkData, DeviceActionType.BAN);
 		});
 
 		it('should create new bulk operation with payload approve', async function () {
-			let bulkData = {
-				[DeviceActionType.APPROVE]: {},
-			};
+			let bulkData = {};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.APPROVE);
+			await assertBulkOperation(bulkData, DeviceActionType.APPROVE);
 		});
 
 		it('should create new bulk operation with payload change subscription type', async function () {
 			let bulkData = {
-				[DeviceActionType.CHANGE_SUBSCRIPTION_TYPE]: {
-					subscriptionType: 'basic',
-				},
+				subscriptionType: 'basic',
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.CHANGE_SUBSCRIPTION_TYPE);
+			await assertBulkOperation(bulkData, DeviceActionType.CHANGE_SUBSCRIPTION_TYPE);
 		});
 
 		it('should create new bulk operation with payload create timing', async function () {
 			let bulkData = {
-				[DeviceActionType.CREATE_TIMING]: {
-					appletUid: applet.uid,
-					appletVersion: appletVersion,
-					configuration: {
-						someField: 'someValue',
-					} as Record<string, unknown>,
-				},
+				appletUid: applet.uid,
+				appletVersion: appletVersion,
+				configuration: {
+					someField: 'someValue',
+				} as Record<string, unknown>,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.CREATE_TIMING);
+			await assertBulkOperation(bulkData, DeviceActionType.CREATE_TIMING);
 		});
 
 		it('should create new bulk operation with payload update timing', async function () {
 			let bulkData = {
-				[DeviceActionType.UPDATE_TIMING]: {
-					appletUid: applet.uid,
-					appletVersion,
-					configuration: {
-						someField: 'someValue,',
-					} as Record<string, unknown>,
-					configurationSet: {
-						someField: 'someValue,',
-					} as Record<string, unknown>,
-					configurationRemoveKeys: ['someFiled'],
-				},
+				appletUid: applet.uid,
+				appletVersion,
+				configuration: {
+					someField: 'someValue,',
+				} as Record<string, unknown>,
+				configurationSet: {
+					someField: 'someValue,',
+				} as Record<string, unknown>,
+				configurationRemoveKeys: ['someFiled'],
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.UPDATE_TIMING);
+			await assertBulkOperation(bulkData, DeviceActionType.UPDATE_TIMING);
 		});
 
 		it('should create new bulk operation with payload delete timing', async function () {
 			let bulkData = {
-				[DeviceActionType.DELETE_TIMING]: {
-					uid: timing.uid,
-					appletUid: applet.uid,
-					appletVersion,
-				},
+				uid: timing.uid,
+				appletUid: applet.uid,
+				appletVersion,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.DELETE_TIMING);
+			await assertBulkOperation(bulkData, DeviceActionType.DELETE_TIMING);
 		});
 
 		it('should create new bulk operation with payload set device applet test suite', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_DEVICE_APPLET_TEST_SUITE]: {
-					appletUid: applet.uid,
-					appletVersion,
-					tests: ['default'],
-				},
+				appletUid: applet.uid,
+				appletVersion,
+				tests: ['default'],
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_DEVICE_APPLET_TEST_SUITE);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_DEVICE_APPLET_TEST_SUITE);
 		});
 
 		it('should create new bulk operation with payload set test suite', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_TEST_SUITE]: {
-					tests: ['default'],
-				},
+				tests: ['default'],
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_TEST_SUITE);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_TEST_SUITE);
 		});
 
 		it('should create new bulk operation with payload start package', async function () {
 			let bulkData = {
-				[DeviceActionType.START_PACKAGE]: {
-					packageName: testingPackage.packageName,
-					applicationType: device.applicationType,
-				},
+				packageName: testingPackage.packageName,
+				applicationType: device.applicationType as ApplicationType,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.START_PACKAGE);
+			await assertBulkOperation(bulkData, DeviceActionType.START_PACKAGE);
 		});
 
 		it('should create new bulk operation with payload set timer', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_TIMER]: {
-					type: 'TIMER_3',
-					volume: 10,
-					weekdays: ['sun'],
-					timeOn: null,
-					timeOff: null,
-				},
+				type: 'TIMER_3',
+				volume: 10,
+				weekdays: ['sun'],
+				timeOn: null,
+				timeOff: null,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_TIMER);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_TIMER);
 		});
 
 		it('should create new bulk operation with payload set proprietary timer', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_PROPRIETARY_TIMER]: {
-					type: 'TIMER_3',
-					volume: 10,
-					weekdays: ['sun'],
-					timeOn: null,
-					timeOff: null,
-				},
+				type: 'TIMER_3',
+				volume: 10,
+				weekdays: ['sun'],
+				timeOn: null,
+				timeOff: null,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_PROPRIETARY_TIMER);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_PROPRIETARY_TIMER);
 		});
 
 		it('should create new bulk operation with payload set power status', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_POWER_STATUS]: {
-					turnedOn: true,
-				},
+				turnedOn: true,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_POWER_STATUS);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_POWER_STATUS);
 		});
 
 		it('should create new bulk operation with payload set input source', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_INPUT_SOURCE]: {
-					inputSource: InputSource.URL_LAUNCHER,
-				},
+				inputSource: InputSource.URL_LAUNCHER,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_INPUT_SOURCE);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_INPUT_SOURCE);
 		});
 
 		it('should create new bulk operation with payload set display backlight', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_DISPLAY_BACKLIGHT]: {
-					backlight: 10,
-				},
+				backlight: 10,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_DISPLAY_BACKLIGHT);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_DISPLAY_BACKLIGHT);
 		});
 
 		it('should create new bulk operation with payload set display contrast', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_DISPLAY_CONTRAST]: {
-					contrast: 10,
-				},
+				contrast: 10,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_DISPLAY_CONTRAST);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_DISPLAY_CONTRAST);
 		});
 
 		it('should create new bulk operation with payload set display sharpness', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_DISPLAY_SHARPNESS]: {
-					sharpness: 10,
-				},
+				sharpness: 10,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_DISPLAY_SHARPNESS);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_DISPLAY_SHARPNESS);
 		});
 
 		it('should create new bulk operation with payload set display temperature control', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_DISPLAY_TEMPERATURE_CONTROL]: {
-					maxTemperature: 10,
-				},
+				maxTemperature: 10,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_DISPLAY_TEMPERATURE_CONTROL);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_DISPLAY_TEMPERATURE_CONTROL);
 		});
 
 		it('should create new bulk operation with payload set remote desktop', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_REMOTE_DESKTOP]: {
-					enabled: true,
-					/** URL where the remote desktop will be available (usually for limited amount of time) */
-					remoteDesktopUri: 'testingRemoteDesktopUri',
-				},
+				enabled: true,
+				/** URL where the remote desktop will be available (usually for limited amount of time) */
+				remoteDesktopUri: 'testingRemoteDesktopUri',
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_REMOTE_DESKTOP);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_REMOTE_DESKTOP);
 		});
 
 		it('should create new bulk operation with payload set policy', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_POLICY]: {
-					policyUid: policy.uid,
-					priority: 1,
-				},
+				policyUid: policy.uid,
+				priority: 1,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_POLICY);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_POLICY);
 		});
 
 		it('should create new bulk operation with payload delete policy', async function () {
 			let bulkData = {
-				[DeviceActionType.DELETE_POLICY]: {
-					policyUid: policy.uid,
-				},
+				policyUid: policy.uid,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.DELETE_POLICY);
+			await assertBulkOperation(bulkData, DeviceActionType.DELETE_POLICY);
 		});
 
 		it('should create new bulk operation with payload set organization tags', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_ORGANIZATION_TAGS]: {
-					deviceIdentityHash: device.uid,
-					tagUids: ['tagUid'],
-				},
+				deviceIdentityHash: device.uid,
+				tagUids: ['tagUid'],
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_ORGANIZATION_TAGS);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_ORGANIZATION_TAGS);
 		});
 
 		it('should create new bulk operation with payload delete organization tags', async function () {
 			let bulkData = {
-				[DeviceActionType.DELETE_ORGANIZATION_TAGS]: {
-					deviceIdentityHash: device.uid,
-					tagUids: ['tagUid'],
-				},
+				deviceIdentityHash: device.uid,
+				tagUids: ['tagUid'],
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.DELETE_ORGANIZATION_TAGS);
+			await assertBulkOperation(bulkData, DeviceActionType.DELETE_ORGANIZATION_TAGS);
 		});
 
 		it('should create new bulk operation with payload set organization', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_ORGANIZATION]: {
-					organizationUid: organization.uid,
-				},
+				organizationUid: organization.uid,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_ORGANIZATION);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_ORGANIZATION);
 		});
 
 		it('should create new bulk operation with payload set peer recovery', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_PEER_RECOVERY]: {
-					enabled: true,
-				},
+				enabled: true,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_PEER_RECOVERY);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_PEER_RECOVERY);
 		});
 
 		it('should create new bulk operation with payload set auto recovery', async function () {
 			let bulkData = {
-				[DeviceActionType.SET_AUTO_RECOVERY]: {
-					enabled: true,
-					healthcheckIntervalMs: 1000,
-				},
+				enabled: true,
+				healthcheckIntervalMs: 1000,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.SET_AUTO_RECOVERY);
+			await assertBulkOperation(bulkData, DeviceActionType.SET_AUTO_RECOVERY);
 		});
 
 		it('should create new bulk operation with payload enable extended telemetry', async function () {
 			let bulkData = {
-				[DeviceActionType.ENABLE_EXTENDED_TELEMETRY]: {
-					deviceIdentityHash: device.uid,
-					duration: 60000,
-				},
+				deviceIdentityHash: device.uid,
+				duration: 60000,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.ENABLE_EXTENDED_TELEMETRY);
+			await assertBulkOperation(bulkData, DeviceActionType.ENABLE_EXTENDED_TELEMETRY);
 		});
 
 		it('should create new bulk operation with payload disable extended telemetry', async function () {
 			let bulkData = {
-				[DeviceActionType.DISABLE_EXTENDED_TELEMETRY]: {
-					deviceIdentityHash: device.uid,
-				},
+				deviceIdentityHash: device.uid,
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.DISABLE_EXTENDED_TELEMETRY);
+			await assertBulkOperation(bulkData, DeviceActionType.DISABLE_EXTENDED_TELEMETRY);
 		});
 
 		it('should create new bulk operation with payload telemetry intervals', async function () {
 			let bulkData = {
-				[DeviceActionType.TELEMETRY_INTERVALS]: {
-					deviceIdentityHash: device.uid,
-					telemetryCheckIntervals: {
-						volume: 120000,
-						brightness: 150000,
-					},
+				deviceIdentityHash: device.uid,
+				telemetryCheckIntervals: {
+					volume: 120000,
+					brightness: 150000,
 				},
 			};
 
-			await assertBulkOperation(bulkData as LogData, DeviceActionType.TELEMETRY_INTERVALS);
+			await assertBulkOperation(bulkData, DeviceActionType.TELEMETRY_INTERVALS);
 		});
 	});
 });

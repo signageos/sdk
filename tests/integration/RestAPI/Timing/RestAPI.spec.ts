@@ -137,6 +137,7 @@ describe('RestAPI - Timing', function () {
 			should(updatedTiming.updatedAt).be.ok();
 		});
 
+		// TODO: consult the data null case and the comparator in TimingManagement
 		it.skip('should update the timing with data null', async function () {
 			const updateProps: ITimingUpdatable = {
 				appletVersion: '1.0.0',
