@@ -7,6 +7,7 @@ import DevicePeerRecovery, { IDevicePeerRecovery } from './DevicePeerRecovery';
 interface ISetSettings {
 	enabled: IDevicePeerRecovery['enabled'];
 	autoEnableTimeoutMs?: IDevicePeerRecovery['autoEnableTimeoutMs'];
+	urlLauncherAddress?: IDevicePeerRecovery['urlLauncherAddress'];
 }
 
 export default class DevicePeerRecoveryManagement {
