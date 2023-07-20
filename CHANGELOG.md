@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - Add urlLauncherAddress field to PeerRecoverySettings when enabled equals true
+- add package management unit tests
+
+### Fixed
+- `set` method for device peer recovery
 
 ## [1.20.0] - 2023-07-19
 ### Added
