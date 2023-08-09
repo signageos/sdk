@@ -14,7 +14,7 @@ export default interface IDevice {
 	duid: string;
 	name: string;
 	createdAt: Date;
-	aliveAt: Date;
+	aliveAt: Date | null;
 	pinCode: string;
 	applicationType: string;
 	applicationVersion: string;
