@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Add urlLauncherAddress field to PeerRecoverySettings when enabled equals true
 
+### Fixed
+- correct device aliveAt type to possible null value
+
 ## [1.20.0] - 2023-07-19
 ### Added
 - Finalize bulk operations implementation
