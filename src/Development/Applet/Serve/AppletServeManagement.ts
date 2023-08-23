@@ -59,6 +59,7 @@ export class AppletServeManagement {
 	 */
 	public async serve(options: IServeOptions) {
 		const { port, publicUrl, remoteAddr } = this.getServerProperties(options);
+		console.log("🚀 ~ file: AppletServeManagement.ts:62 ~ AppletServeManagement ~ serve ~ getServerProperties:", port, publicUrl, remoteAddr);
 		const processPid = process.pid;
 		const processUid = Math.random().toString(36).substring(7);
 
@@ -330,6 +331,7 @@ export class AppletServeManagement {
 
 	private async createPortFile(appletUid: string, appletVersion: string, serverPort: number) {
 		const runtimeDir = this.getAppletVersionRuntimeDir(appletUid, appletVersion);
+		console.log("🚀 ~ file: AppletServeManagement.ts:334 ~ AppletServeManagement ~ createPortFile ~ runtimeDir:", runtimeDir)
 		await fs.ensureDir(runtimeDir);
 		const portFilePath = this.getRuntimePortFile(appletUid, appletVersion);
 		await fs.writeFile(portFilePath, serverPort.toString());

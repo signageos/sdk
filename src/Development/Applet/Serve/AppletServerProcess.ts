@@ -13,6 +13,7 @@ interface IServerOptions {
 }
 
 function startServer({ appletUid, appletVersion, port, publicUrl }: IServerOptions) {
+	console.log("🚀 ~ file: AppletServerProcess.ts:16 ~ startServer ~ publicUrl:", publicUrl);
 	const server = createHttpServer(appletUid, appletVersion);
 	server.listen(port, () => {
 		log('info', getServerMessage(appletUid, appletVersion, port, publicUrl));
@@ -22,7 +23,9 @@ function startServer({ appletUid, appletVersion, port, publicUrl }: IServerOptio
 
 function createHttpServer(appletUid: string, appletVersion: string) {
 	const packagePublicPath = getPackagePublicPath(appletUid, appletVersion);
+	console.log("🚀 ~ file: AppletServerProcess.ts:25 ~ createHttpServer ~ packagePublicPath:", packagePublicPath);
 	const packageArchivePath = getAppletPackageArchivePath(appletUid, appletVersion);
+	console.log("🚀 ~ file: AppletServerProcess.ts:26 ~ createHttpServer ~ packageArchivePath:", packageArchivePath);
 
 	const app = express();
 	app.use(cors());
