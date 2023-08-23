@@ -11,6 +11,7 @@ import * as Debug from 'debug';
 import wait from '../../../Timer/wait';
 
 const debug = Debug('@signageos/sdk:Development:Applet:Serve:AppletServeManagement');
+Debug.enable('@signageos/sdk:Development:Applet:*');
 
 const GRACEFUL_KILL_TIMEOUT_MS = 5000;
 const DEFAULT_SERVER_PORT = 8091;
@@ -59,7 +60,7 @@ export class AppletServeManagement {
 	 */
 	public async serve(options: IServeOptions) {
 		const { port, publicUrl, remoteAddr } = this.getServerProperties(options);
-		console.log("🚀 ~ file: AppletServeManagement.ts:62 ~ AppletServeManagement ~ serve ~ getServerProperties:", port, publicUrl, remoteAddr);
+		debug("🚀 ~ file: AppletServeManagement.ts:62 ~ AppletServeManagement ~ serve ~ getServerProperties:", port, publicUrl, remoteAddr);
 		const processPid = process.pid;
 		const processUid = Math.random().toString(36).substring(7);
 
