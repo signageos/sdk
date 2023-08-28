@@ -10,10 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - add package management unit tests
 
 ### Fixed
-- `set` method for device peer recovery
-
-### Fixed
 - correct device aliveAt type to possible null value
+- `set` method for device peer recovery
 
 ## [1.20.0] - 2023-07-19
 ### Added
