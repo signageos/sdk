@@ -67,6 +67,23 @@ import {
 	FileSystemWriteFileResult,
 } from "@signageos/front-applet/es6/Monitoring/FileSystem/fileSystemCommands";
 import IFile from "@signageos/front-applet/es6/FrontApplet/Offline/Cache/IFile";
+import { getStreamState } from './timingUtils';
+import { ITrackInfo, TrackType } from '@signageos/front-applet/es6/FrontApplet/Stream/IStreamTrackInfo';
+import {
+	StreamGetTracksRequest,
+	StreamGetTracksResult,
+	StreamPlayRequest,
+	StreamPlayResult,
+	StreamPrepareRequest,
+	StreamPrepareResult,
+	StreamResetTrackRequest,
+	StreamResetTrackResult,
+	StreamSelectTrackRequest,
+	StreamSelectTrackResult,
+	StreamStopRequest,
+	StreamStopResult,
+} from '@signageos/front-applet/es6/Monitoring/Stream/streamCommands';
+import { IStreamOptions, IStreamPrepareOptions } from '@signageos/front-applet/es6/FrontApplet/Video/IOptions';
 
 export interface IHtml {
 	/** @returns Promise<[HTMLDocument](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument)> */
@@ -135,6 +152,25 @@ export interface IVideo {
 	error: IVideoOperations;
 }
 const videoStates: VideoStateChanged['state'][] = ['play', 'stop', 'pause', 'ended', 'error'];
+
+export type IStreamOperations = {
+	getAll(since?: Date): Promise<IVideoProperties[]>;
+}
+interface IStream {
+	prepare(uri: string, x: number, y: number, width: number, height: number, options: IStreamPrepareOptions): Promise<void>;
+	play(uri: string, x: number, y: number, width: number, height: number, options: IStreamOptions): Promise<void>;
+	stop(uri: string, x: number, y: number, width: number, height: number): Promise<void>;
+	getTracks(videoId: IVideoProperties): Promise<ITrackInfo[]>;
+	selectTrack(videoId: IVideoProperties, trackType: string, groupId: string, trackIndex: number): Promise<void>;
+	resetTrack(videoId: IVideoProperties, trackType: string, groupId?: string): Promise<void>;
+	onPlay(): Promise<IStreamOperations>;
+	onStop(): Promise<IStreamOperations>;
+	onPrepare(): Promise<IStreamOperations>;
+	onConnected(): Promise<IStreamOperations>;
+	onDisconnected(): Promise<IStreamOperations>;
+	onError(): Promise<IStreamOperations>;
+	onTracksChanged(): Promise<IStreamOperations>;
+}
 
 export default class Timing implements ITiming {
 
@@ -345,6 +381,181 @@ export default class Timing implements ITiming {
 		}),
 		{},
 	);
+	/** @see IStream */
+	public readonly stream: IStream = {
+		prepare: async (uri: string, x: number, y: number, width: number, height: number, options: IStreamPrepareOptions): Promise<void> => {
+			const prepareCommand = await this.timingCommandManagement.create<StreamPrepareRequest>({
+				deviceUid: this.deviceUid,
+				appletUid: this.appletUid,
+				commandPayload: {
+					type: StreamPrepareRequest,
+					uri,
+					x,
+					y,
+					width,
+					height,
+					options,
+				}
+			});
+			while (true) {
+				const prepareCommands = await this.timingCommandManagement.getList<StreamPrepareResult>({
+					deviceUid: this.deviceUid,
+					appletUid: this.appletUid,
+					receivedSince: prepareCommand.receivedAt.toISOString(),
+					type: StreamPrepareResult,
+				});
+				if (prepareCommands.length > 0) {
+					return prepareCommands[0].commandPayload.result;
+				}
+				await wait(500);
+			}
+		},
+		play: async (uri: string, x: number, y: number, width: number, height: number, options: IStreamOptions): Promise<void> => {
+			const playCommand = await this.timingCommandManagement.create<StreamPlayRequest>({
+				deviceUid: this.deviceUid,
+				appletUid: this.appletUid,
+				commandPayload: {
+					type: StreamPlayRequest,
+					uri,
+					x,
+					y,
+					width,
+					height,
+					options,
+				}
+			});
+			while (true) {
+				const playCommands = await this.timingCommandManagement.getList<StreamPlayResult>({
+					deviceUid: this.deviceUid,
+					appletUid: this.appletUid,
+					receivedSince: playCommand.receivedAt.toISOString(),
+					type: StreamPlayResult,
+				});
+				if (playCommands.length > 0) {
+					return playCommands[0].commandPayload.result;
+				}
+				await wait(500);
+			}
+		},
+		stop: async (uri: string, x: number, y: number, width: number, height: number): Promise<void> => {
+			const stopCommand = await this.timingCommandManagement.create<StreamStopRequest>({
+				deviceUid: this.deviceUid,
+				appletUid: this.appletUid,
+				commandPayload: {
+					type: StreamStopRequest,
+					uri,
+					x,
+					y,
+					width,
+					height,
+				}
+			});
+			while (true) {
+				const stopCommands = await this.timingCommandManagement.getList<StreamStopResult>({
+					deviceUid: this.deviceUid,
+					appletUid: this.appletUid,
+					receivedSince: stopCommand.receivedAt.toISOString(),
+					type: StreamStopResult,
+				});
+				if (stopCommands.length > 0) {
+					return stopCommands[0].commandPayload.result;
+				}
+				await wait(500);
+			}
+		},
+		getTracks: async (videoId: IVideoProperties): Promise<any[]> => {
+			const getTracksCommand = await this.timingCommandManagement.create<StreamGetTracksRequest>({
+				deviceUid: this.deviceUid,
+				appletUid: this.appletUid,
+				commandPayload: {
+					type: StreamGetTracksRequest,
+					videoId,
+				},
+			});
+			while (true) {
+				const getTracksCommands = await this.timingCommandManagement.getList<StreamGetTracksResult>({
+					deviceUid: this.deviceUid,
+					appletUid: this.appletUid,
+					receivedSince: getTracksCommand.receivedAt.toISOString(),
+					type: StreamGetTracksResult,
+				});
+				if (getTracksCommands.length > 0) {
+					return getTracksCommands[0].commandPayload.tracks;
+				}
+				await wait(500);
+			}
+		},
+		selectTrack: async (videoId: IVideoProperties, trackType: TrackType, groupId: string, trackIndex: number): Promise<void> => {
+			const selectTrackCommand = await this.timingCommandManagement.create<StreamSelectTrackRequest>({
+				deviceUid: this.deviceUid,
+				appletUid: this.appletUid,
+				commandPayload: {
+					type: StreamSelectTrackRequest,
+					videoId,
+					trackType,
+					groupId,
+					trackIndex,
+				},
+			});
+			while (true) {
+				const selectTrackCommands = await this.timingCommandManagement.getList<StreamSelectTrackResult>({
+					deviceUid: this.deviceUid,
+					appletUid: this.appletUid,
+					receivedSince: selectTrackCommand.receivedAt.toISOString(),
+					type: StreamSelectTrackResult,
+				});
+				if (selectTrackCommands.length > 0) {
+					return selectTrackCommands[0].commandPayload.result;
+				}
+				await wait(500);
+			}
+		},
+		resetTrack: async (videoId: IVideoProperties, trackType: TrackType, groupId?: string | undefined): Promise<void> => {
+			const resetTrackCommand = await this.timingCommandManagement.create<StreamResetTrackRequest>({
+				deviceUid: this.deviceUid,
+				appletUid: this.appletUid,
+				commandPayload: {
+					type: StreamResetTrackRequest,
+					videoId,
+					trackType,
+					groupId,
+				},
+			});
+			while (true) {
+				const resetTrackCommands = await this.timingCommandManagement.getList<StreamResetTrackResult>({
+					deviceUid: this.deviceUid,
+					appletUid: this.appletUid,
+					receivedSince: resetTrackCommand.receivedAt.toISOString(),
+					type: StreamResetTrackResult,
+				});
+				if (resetTrackCommands.length > 0) {
+					return resetTrackCommands[0].commandPayload.result;
+				}
+				await wait(500);
+			}
+		},
+		onPlay: async (): Promise<IStreamOperations> => {
+			return getStreamState('onPlay', this.updatedAt, this.timingCommandManagement, this.deviceUid, this.appletUid);
+		},
+		onStop: async (): Promise<IStreamOperations> => {
+			return getStreamState('onStop', this.updatedAt, this.timingCommandManagement, this.deviceUid, this.appletUid);
+		},
+		onPrepare: async (): Promise<IStreamOperations> => {
+			return getStreamState('onPrepare', this.updatedAt, this.timingCommandManagement, this.deviceUid, this.appletUid);
+		},
+		onConnected: async (): Promise<IStreamOperations> => {
+			return getStreamState('onConnected', this.updatedAt, this.timingCommandManagement, this.deviceUid, this.appletUid);
+		},
+		onDisconnected: async (): Promise<IStreamOperations> => {
+			return getStreamState('onDisconnected', this.updatedAt, this.timingCommandManagement, this.deviceUid, this.appletUid);
+		},
+		onError: async (): Promise<IStreamOperations> => {
+			return getStreamState('onError', this.updatedAt, this.timingCommandManagement, this.deviceUid, this.appletUid);
+		},
+		onTracksChanged: async (): Promise<IStreamOperations> => {
+			return getStreamState('onTracksChanged', this.updatedAt, this.timingCommandManagement, this.deviceUid, this.appletUid);
+		}
+	};
 	/** @see IFileSystem */
 	public readonly fileSystem: IFileSystem = {
 		appendFile: async (filePath: IFilePath, content: string): Promise<void> => {
