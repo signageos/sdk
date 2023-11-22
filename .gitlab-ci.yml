@@ -135,7 +135,7 @@ publish:docs:
     - tags
   environment:
     name: docs
-    url: https://signageos-documentation.s3.eu-central-1.amazonaws.com/sdk/latest/index.html
+    url: https://public.docs.signageos.io/sdk/latest/index.html
   needs:
     - prepare
     - build
