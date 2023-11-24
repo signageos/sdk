@@ -2,10 +2,7 @@ import * as should from 'should';
 
 import { Api } from '../../../../../src';
 import { getOrganizationUid } from '../../../../fixtures/Organization/organization.fixtures';
-import {
-	ORGANIZATION_TAG_CREATE_1,
-	ORGANIZATION_TAG_CREATE_2,
-} from '../../../../fixtures/Organization/Tag/organizationTag.fixtures';
+import { generateOrganizationTagCreate } from '../../../../fixtures/Organization/Tag/organizationTag.fixtures';
 import { LOCATION_CREATE_1, handleCreateLocation } from '../../../../fixtures/Location/location.fixtures';
 import { opts } from '../../helper';
 
@@ -19,8 +16,8 @@ describe('Integration.RestAPI.Device.Location.Tag.LocationOrganizationTag', asyn
 			organizationUid: getOrganizationUid(),
 		});
 
-		const organizationTag1 = await api.organizationTag.create(ORGANIZATION_TAG_CREATE_1);
-		const organizationTag2 = await api.organizationTag.create(ORGANIZATION_TAG_CREATE_2);
+		const organizationTag1 = await api.organizationTag.create(generateOrganizationTagCreate());
+		const organizationTag2 = await api.organizationTag.create(generateOrganizationTagCreate());
 
 		await api.locationOrganizationTag.assign(createdLocation1.uid, organizationTag1.uid);
 		const locationWithOrganizationTag1 = await api.location.get(createdLocation1.uid);

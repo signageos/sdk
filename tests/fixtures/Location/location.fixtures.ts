@@ -2,7 +2,7 @@ import { random } from 'faker';
 
 import { Api } from '../../../src';
 import { ILocation, ILocationCreate, ILocationUpdate, Coordinates } from '../../../src/RestApi/Location/Location';
-import { ORGANIZATION_TAG_1 } from '../Organization/Tag/organizationTag.fixtures';
+import { ORGANIZATION_TAG_1 } from '../../unit/RestApi/Organization/Tag/OrganizationTag.fixtures';
 
 export type LocationCreateWithoutOrg = Omit<ILocationCreate, 'organizationUid'>;
 export type LocationWithoutOrg = Omit<ILocation, 'organizationUid'>;
