@@ -2,7 +2,6 @@ import { loadTextEncoderDecoderIfNotExist } from './Polyfill/textCoders';
 loadTextEncoderDecoderIfNotExist();
 import RestApi from './RestApi/RestApi';
 import RestApiV2 from './RestApi/RestApiV2';
-import waitUntilTrue from './Timer/waitUntil';
 import { ApiVersions } from './RestApi/apiVersions';
 import {
 	createApiOrgAndAccountOptions,
@@ -69,22 +68,5 @@ export function createDevelopment(options: IOptions = createDefaultOptions()) {
  */
 export const dev = createDevelopment();
 
-export function now() {
-	return new Date();
-}
-
-export async function waitUntil(waitCallback: () => Promise<void>, timeoutMs: number = 10e3) {
-	const startTimestamp = now().valueOf();
-	await waitUntilTrue(async () => {
-		try {
-			await waitCallback();
-			return true;
-		} catch (error) {
-			const currentTimestamp = now().valueOf();
-			if (currentTimestamp - startTimestamp > timeoutMs) {
-				throw error;
-			}
-			return false;
-		}
-	});
-}
+export { now } from './Utils/time';
+export { waitUntilResolved as waitUntil } from './Timer/waitUntil';
