@@ -11,20 +11,7 @@ const api = new Api(opts);
 describe('RestAPI - FirmwareVersion', () => {
 
 	const randomString = Math.random().toString(36).substring(7);
-	const firmwareVersion: IFirmwareVersion = {
-		'uid': 'someUid',
-		'applicationType': 'webos',
-		'version': `04.01.74-${randomString}`,
-		'createdAt': new Date('2017-05-24T08:56:52.550Z'),
-		'uploaded': false,
-		'files': [
-			{
-				'content': createReadableStream(''),
-				'hash': '8e9c3ded774d7b021be452570e0aba10',
-				'size': 12345,
-			},
-		],
-	};
+	const firmwareVersion = `04.01.74-${randomString}`;
 
 	const assertFwv = (fwv: IFirmwareVersion) => {
 		should(fwv instanceof FirmwareVersion).true();
@@ -47,12 +34,12 @@ describe('RestAPI - FirmwareVersion', () => {
 	it('should create the new firmwareVersion', async () => {
 		await api.firmwareVersion.create({
 			applicationType: `webos`,
-			version: firmwareVersion.version,
+			version: firmwareVersion,
 			files: [
 				{
 					content: createReadableStream('i am very beautiful stream of bytes'),
 					hash: `8e9c3ded774d7b021be452570e0aba10`,
-					size: 12345,
+					size: 35,
 				},
 			],
 		});
