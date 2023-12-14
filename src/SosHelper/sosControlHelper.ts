@@ -93,7 +93,7 @@ export async function saveConfig(newConfig: IConfig, options?: IConfigOptions) {
 }
 
 export async function updateConfig(partialConfig: Partial<IConfig>, options?: IConfigOptions) {
-	const currentConfig = await loadConfig();
+	const currentConfig = await loadConfig(options);
 	const newConfig = {
 		...currentConfig,
 		...partialConfig,
