@@ -76,7 +76,7 @@ export interface IHtml {
 export interface IOffline {
 	/**
 	 * @description See the documentation
-	 * [Offline Cache for media files (File API)](https://sdk.docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
+	 * [Offline Cache for media files (File API)](https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
 	 */
 	cache: {
 		listFiles(): Promise<string[]>;
@@ -88,7 +88,7 @@ export interface IOffline {
 }
 
 /**
- * @description See the documentation [File System](https://sdk.docs.signageos.io/api/js/content/5.5.0/js-file-system)
+ * @description See the documentation [File System](https://developers.signageos.io/sdk/content/js-file-system)
  */
 export interface IFileSystem {
 	listStorageUnits(): Promise<IStorageUnit[]>;
@@ -123,7 +123,7 @@ type IVideoOperations = {
 	getAll(since?: Date): Promise<IVideoProperties[]>;
 };
 /**
- * @description See the documentation [Video](https://sdk.docs.signageos.io/api/js/content/latest/js-video)
+ * @description See the documentation [Video](https://developers.signageos.io/sdk/content/js-video)
  * <br>The difference from Applet SDK here is that the operations is not function but object with function `getAll()`
  * that returns all calls of the operation.
  */
