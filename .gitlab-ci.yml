@@ -50,7 +50,7 @@ test:general:
         coverage_format: cobertura
         path: coverage/cobertura-coverage.xml
   script:
-    - cp .env.amy .env
+    - cp .env.automated.test .env
     - npm install --ignore-scripts
     - npm run test:coverage
 
@@ -59,7 +59,7 @@ test:integration:
   except:
     - tags
   script:
-    - cp .env.amy .env
+    - cp .env.automated.test .env
     - npm run test-integration
   needs:
     - prepare
