@@ -1,6 +1,5 @@
-import * as should from 'should';
 import * as faker from 'faker';
-
+import * as should from 'should';
 import { Api } from '../../../../src';
 import IOrganization from '../../../../src/RestApi/Organization/IOrganization';
 import Organization from '../../../../src/RestApi/Organization/Organization';
@@ -9,7 +8,6 @@ import { opts } from '../helper';
 const api = new Api(opts);
 
 describe('RestAPI - Organization', () => {
-
 	const assertOrg = (org: IOrganization) => {
 		should(org instanceof Organization).true();
 		should(org.name.length).aboveOrEqual(0, 'organization name should never be empty');
@@ -19,12 +17,20 @@ describe('RestAPI - Organization', () => {
 		should(org.oauthClientSecret.length).aboveOrEqual(0, 'organization oauthClientSecret should never be empty');
 	};
 
+	const toDelete: Organization[] = [];
+	after(() => {
+		for (const org of toDelete) {
+			api.organization.delete(org.uid);
+		}
+	});
+
 	it('should create the new organization', async () => {
-		const now = new Date();
-		await api.organization.create({
-			name: `SDK${now.getTime()}`,
-			title: `Integration test organization created on ${now.toISOString()}`,
+		const org = await api.organization.create({
+			name: getOrgName(),
+			title: getOrgTitle(),
 		});
+		toDelete.push(org);
+
 		should(true).true();
 	});
 
@@ -44,21 +50,22 @@ describe('RestAPI - Organization', () => {
 
 	it('should get the organizations by Uid', async () => {
 		const createdOrg = await api.organization.create({
-			name: faker.random.alphaNumeric(10),
-			title: faker.company.companyName(),
+			name: getOrgName(),
+			title: getOrgTitle(),
 		});
+		toDelete.push(createdOrg);
 
 		const orgGetFromDb = await api.organization.get(createdOrg.uid);
 		assertOrg(orgGetFromDb);
 		should.deepEqual(createdOrg, orgGetFromDb, 'inconsistency in organizations data');
-
 	});
 
 	it('should delete the organizations by Uid', async () => {
 		let org = await api.organization.create({
-			name: faker.random.alphaNumeric(10),
-			title: faker.company.companyName(),
+			name: getOrgName(),
+			title: getOrgTitle(),
 		});
+		toDelete.push(org);
 
 		await api.organization.delete(org.uid);
 
@@ -69,16 +76,16 @@ describe('RestAPI - Organization', () => {
 			should(err.errorName).eql('NO_ORGANIZATION_TO_READ');
 			should(err.errorCode).eql(404113);
 		}
-
 	});
 
 	it('should update the organization title by Uid', async () => {
-		let title = faker.company.companyName();
+		let title = getOrgTitle();
 
 		let org = await api.organization.create({
-			name: faker.random.alphaNumeric(10),
+			name: getOrgName(),
 			title,
 		});
+		toDelete.push(org);
 
 		assertOrg(org);
 		should(org.title).eql(title);
@@ -93,3 +100,6 @@ describe('RestAPI - Organization', () => {
 		should(org.title).eql(title);
 	});
 });
+
+const getOrgName = () => `sdk-${faker.commerce.product()}-${faker.random.alphaNumeric(10)}`;
+const getOrgTitle = () => `[SDK] - ${faker.company.companyName()}`;

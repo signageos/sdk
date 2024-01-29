@@ -36,7 +36,10 @@ describe('RestAPI - Package', () => {
 
 	it('should get package', async () => {
 		const testingPackage: IPackageCreatable = {
-			packageName: faker.system.fileName(),
+			packageName: faker.random
+				.words(faker.random.number({ min: 2, max: 6 }))
+				.split(' ')
+				.join('.'),
 			label: faker.system.fileName(),
 			description: undefined,
 		};

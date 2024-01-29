@@ -185,9 +185,9 @@ describe('RestAPI - BulkOperation', function () {
 
 		const newRollingUpdate = {
 			rollingUpdate: {
-				batchSize: 20,
+				batchSize: 1,
 				batchDelay: 60_000 * 2,
-				stopThreshold: 75,
+				stopThreshold: 50,
 			},
 		};
 

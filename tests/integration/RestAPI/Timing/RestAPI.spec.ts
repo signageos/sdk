@@ -14,7 +14,7 @@ describe('RestAPI - Timing', function () {
 	let timingUidWithFinishedEventObject: string;
 
 	const identification = 'identification_123456a+';
-	const sosAppletUid = 'bcac304a2cea4dd0d20fe7bd83953c585bdcd476dfd44e0af2';
+	const sosAppletUid = '658ec4c07707a906e4e3469c959b86f1564f1035a1b50e2cb8';
 
 	const createProps: ITimingCreateOnly & ITimingUpdatable = {
 		appletUid: sosAppletUid,
@@ -111,7 +111,7 @@ describe('RestAPI - Timing', function () {
 
 		it('should throw error when timing is not under specified organization', async function () {
 			try {
-				await api.timing.get('ed6d1e62792392804b2494f65a44077ffc7b');
+				await api.timing.get('527a80735ad1fb8c1a3229103bb5734068e7');
 			} catch (e) {
 				should(e.errorCode).be.equal(403064);
 				should(e.errorName).be.equal('NO_OWN_TIMING_TO_READ');
@@ -224,7 +224,7 @@ describe('RestAPI - Timing', function () {
 
 		it('should throw error when timing is not under specified organization', async function () {
 			try {
-				await api.timing.update('ed6d1e62792392804b2494f65a44077ffc7b', {
+				await api.timing.update('527a80735ad1fb8c1a3229103bb5734068e7', {
 					appletVersion: '1.0.0',
 					startsAt: new Date('2023-04-01T12:00:00'),
 					endsAt: new Date('2023-04-02T00:00:00'),
@@ -270,7 +270,7 @@ describe('RestAPI - Timing', function () {
 
 		it('should throw error when timing is not under specified organization', async function () {
 			try {
-				await api.timing.delete('ed6d1e62792392804b2494f65a44077ffc7b');
+				await api.timing.delete('527a80735ad1fb8c1a3229103bb5734068e7');
 			} catch (e) {
 				should(e.errorCode).be.equal(403067);
 				should(e.errorName).be.equal('NO_OWN_TIMING_TO_DELETE');

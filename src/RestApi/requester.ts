@@ -13,11 +13,7 @@ import { parameters } from '../parameters';
 import { deserializeJSON } from '../Utils/json';
 const debug = Debug('@signageos/sdk:RestApi:requester');
 
-async function createOptions(
-	method: 'POST' | 'GET' | 'PUT' | 'DELETE',
-	options: IOptions,
-	data?: BodyInit | Buffer,
-): Promise<RequestInit> {
+async function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options: IOptions, data?: BodyInit | Buffer): Promise<RequestInit> {
 	const authOptions = typeof options.auth === 'function' ? await options.auth() : options.auth;
 
 	const userAgent = createUserAgent(options);
@@ -151,7 +147,8 @@ function createUserAgent(options: IOptions) {
 		['signageOS_SDK']: parameters.version,
 		...options.clientVersions,
 	};
-	const clients = Object.keys(clientVersions)
-	.map((client: string) => `${encodeURIComponent(client)}/${encodeURIComponent(clientVersions[client])}`);
+	const clients = Object.keys(clientVersions).map(
+		(client: string) => `${encodeURIComponent(client)}/${encodeURIComponent(clientVersions[client])}`,
+	);
 	return clients.join(' ');
 }
