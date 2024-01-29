@@ -1,4 +1,3 @@
-
 export interface IDeviceVerificationUpdatable {
 	verificationHash: string;
 }

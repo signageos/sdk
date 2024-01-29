@@ -1,8 +1,7 @@
-import IAlertRule from "./IAlertRule";
-import { fillDataToEntity } from "../../mapper";
+import IAlertRule from './IAlertRule';
+import { fillDataToEntity } from '../../mapper';
 
 export default class AlertRule implements IAlertRule {
-
 	public readonly alertRuleUid: IAlertRule['alertRuleUid'];
 	public readonly name: IAlertRule['name'];
 	public readonly description: IAlertRule['description'];
@@ -21,5 +20,4 @@ export default class AlertRule implements IAlertRule {
 	constructor(data: IAlertRule) {
 		fillDataToEntity(this, data);
 	}
-
 }

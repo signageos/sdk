@@ -13,9 +13,7 @@ const deviceManagementV2 = new DeviceManagementV2(nockOptsV2);
 
 describe('Unit.RestApi.V2.Device', () => {
 	it('get device list', async () => {
-		nock(nockOptsV2.url, nockAuthHeader1)
-			.get(`/${ApiVersions.V2}/${Resources.Device}`)
-			.reply(200, [DEVICE_V2_1, DEVICE_V2_2]);
+		nock(nockOptsV2.url, nockAuthHeader1).get(`/${ApiVersions.V2}/${Resources.Device}`).reply(200, [DEVICE_V2_1, DEVICE_V2_2]);
 
 		const devices = await deviceManagementV2.list();
 
@@ -23,9 +21,7 @@ describe('Unit.RestApi.V2.Device', () => {
 	});
 
 	it('get one device', async () => {
-		nock(nockOptsV2.url, nockAuthHeader1)
-			.get(`/${ApiVersions.V2}/${Resources.Device}/${DEVICE_V2_1.uid}`)
-			.reply(200, DEVICE_V2_1);
+		nock(nockOptsV2.url, nockAuthHeader1).get(`/${ApiVersions.V2}/${Resources.Device}/${DEVICE_V2_1.uid}`).reply(200, DEVICE_V2_1);
 
 		const device = await deviceManagementV2.get(DEVICE_V2_1.uid);
 
@@ -38,9 +34,7 @@ describe('Unit.RestApi.V2.Device', () => {
 			connectionMethod: SocketDriver.Http,
 		};
 
-		nock(nockOptsV2.url, nockAuthHeader1)
-			.put(`/${ApiVersions.V2}/${Resources.Device}/${DEVICE_V2_1.uid}`)
-			.reply(200);
+		nock(nockOptsV2.url, nockAuthHeader1).put(`/${ApiVersions.V2}/${Resources.Device}/${DEVICE_V2_1.uid}`).reply(200);
 
 		await should(deviceManagementV2.set(DEVICE_V2_1.uid, settings)).be.fulfilled();
 	});

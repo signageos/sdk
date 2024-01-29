@@ -6,15 +6,8 @@ import { AssignLocationToDevice, UnassignLocationFromDevice } from './DeviceLoca
 export default class DeviceLocationManagement {
 	constructor(private options: IOptions) {}
 
-	public async assign(
-		deviceUid: AssignLocationToDevice['deviceUid'],
-		locationUid: AssignLocationToDevice['locationUid'],
-	): Promise<void> {
-		await putResource(
-			this.options,
-			`${Resources.Device}/${deviceUid}/${Resources.Location}/${locationUid}`,
-			JSON.stringify({}),
-		);
+	public async assign(deviceUid: AssignLocationToDevice['deviceUid'], locationUid: AssignLocationToDevice['locationUid']): Promise<void> {
+		await putResource(this.options, `${Resources.Device}/${deviceUid}/${Resources.Location}/${locationUid}`, JSON.stringify({}));
 	}
 
 	public async unassign(

@@ -1,7 +1,6 @@
-
 import { getResource, postResource, parseJSONResponse } from '../../requester';
-import IOptions from "../../IOptions";
-import ITimingCommand, { ITimingCommandPayload, ITimingCommandCreateOnly } from "./ITimingCommand";
+import IOptions from '../../IOptions';
+import ITimingCommand, { ITimingCommandPayload, ITimingCommandCreateOnly } from './ITimingCommand';
 import RequestError from '../../Error/RequestError';
 import ITimingCommandFilter from './ITimingCommandFilter';
 import TimingCommand from './TimingCommand';
@@ -9,7 +8,6 @@ import wait from '../../../Timer/wait';
 import UnsupportedError from '../../Error/UnsupportedError';
 
 export default class TimingCommandManagement {
-
 	private static readonly RESOURCE: string[] = ['device', 'applet', 'command'];
 
 	public readonly DURATION: string = 'DURATION';
@@ -21,35 +19,40 @@ export default class TimingCommandManagement {
 	public async getList<TCommandPayload extends ITimingCommandPayload>(filter: ITimingCommandFilter) {
 		const response = await getResource(
 			this.options,
-			TimingCommandManagement.RESOURCE[0]
-				+ '/' + filter.deviceUid
-				+ '/' + TimingCommandManagement.RESOURCE[1]
-				+ (filter.appletUid ? '/' + filter.appletUid : '')
-				+ '/' + TimingCommandManagement.RESOURCE[2],
+			TimingCommandManagement.RESOURCE[0] +
+				'/' +
+				filter.deviceUid +
+				'/' +
+				TimingCommandManagement.RESOURCE[1] +
+				(filter.appletUid ? '/' + filter.appletUid : '') +
+				'/' +
+				TimingCommandManagement.RESOURCE[2],
 			filter,
 		);
 		const timingCommandsData: ITimingCommand<TCommandPayload>[] = await parseJSONResponse(response);
 		if (response.status === 200) {
-			return timingCommandsData
-				.map((timingCommandData: ITimingCommand<TCommandPayload>) => new TimingCommand<TCommandPayload>(timingCommandData));
+			return timingCommandsData.map(
+				(timingCommandData: ITimingCommand<TCommandPayload>) => new TimingCommand<TCommandPayload>(timingCommandData),
+			);
 		} else {
 			throw new RequestError(response.status, timingCommandsData);
 		}
 	}
 
-	public async get<TCommandPayload extends ITimingCommandPayload>(
-		deviceUid: string,
-		appletUid: string,
-		timingCommandUid: string,
-	) {
+	public async get<TCommandPayload extends ITimingCommandPayload>(deviceUid: string, appletUid: string, timingCommandUid: string) {
 		const response = await getResource(
 			this.options,
-			TimingCommandManagement.RESOURCE[0]
-				+ '/' + deviceUid
-				+ '/' + TimingCommandManagement.RESOURCE[1]
-				+ '/' + appletUid
-				+ '/' + TimingCommandManagement.RESOURCE[2]
-				+ '/' + timingCommandUid,
+			TimingCommandManagement.RESOURCE[0] +
+				'/' +
+				deviceUid +
+				'/' +
+				TimingCommandManagement.RESOURCE[1] +
+				'/' +
+				appletUid +
+				'/' +
+				TimingCommandManagement.RESOURCE[2] +
+				'/' +
+				timingCommandUid,
 		);
 		const timingCommandData: ITimingCommand<TCommandPayload> = await parseJSONResponse(response);
 		if (response.status === 200) {
@@ -59,17 +62,19 @@ export default class TimingCommandManagement {
 		}
 	}
 
-	public async create<TCommandPayload extends ITimingCommandPayload>(
-		timingCommandData: ITimingCommandCreateOnly<TCommandPayload>,
-	) {
+	public async create<TCommandPayload extends ITimingCommandPayload>(timingCommandData: ITimingCommandCreateOnly<TCommandPayload>) {
 		if (this.options.version === 'v1') {
 			const response = await postResource(
 				this.options,
-				TimingCommandManagement.RESOURCE[0]
-					+ '/' + timingCommandData.deviceUid
-					+ '/' + TimingCommandManagement.RESOURCE[1]
-					+ '/' + timingCommandData.appletUid
-					+ '/' + TimingCommandManagement.RESOURCE[2],
+				TimingCommandManagement.RESOURCE[0] +
+					'/' +
+					timingCommandData.deviceUid +
+					'/' +
+					TimingCommandManagement.RESOURCE[1] +
+					'/' +
+					timingCommandData.appletUid +
+					'/' +
+					TimingCommandManagement.RESOURCE[2],
 				JSON.stringify(timingCommandData),
 			);
 			const body = await response.text();
@@ -80,7 +85,11 @@ export default class TimingCommandManagement {
 				while (true) {
 					await wait(500);
 					try {
-						const timingCommand = await this.get<TCommandPayload>(timingCommandData.deviceUid, timingCommandData.appletUid, timingCommandUid);
+						const timingCommand = await this.get<TCommandPayload>(
+							timingCommandData.deviceUid,
+							timingCommandData.appletUid,
+							timingCommandUid,
+						);
 						return timingCommand;
 					} catch (error) {
 						// when 404 command does not exists yet

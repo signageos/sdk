@@ -1,8 +1,7 @@
-import { fillDataToEntity } from "../../mapper";
-import IFirmwareVersion from "./IFirmwareVersion";
+import { fillDataToEntity } from '../../mapper';
+import IFirmwareVersion from './IFirmwareVersion';
 
 export default class FirmwareVersion implements IFirmwareVersion {
-
 	public readonly uid: IFirmwareVersion['uid'];
 	public readonly applicationType: IFirmwareVersion['applicationType'];
 	public readonly type: IFirmwareVersion['type'];

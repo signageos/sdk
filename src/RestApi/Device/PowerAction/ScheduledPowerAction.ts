@@ -1,8 +1,7 @@
-import { fillDataToEntity } from "../../mapper";
-import IScheduledPowerAction from "./IScheduledPowerAction";
+import { fillDataToEntity } from '../../mapper';
+import IScheduledPowerAction from './IScheduledPowerAction';
 
 export default class ScheduledPowerAction implements IScheduledPowerAction {
-
 	// public readonly [P in keyof IScheduledPowerAction]: IScheduledPowerAction[P]; // Generalized TS doesn't support
 	public readonly uid: IScheduledPowerAction['uid'];
 	public readonly deviceUid: IScheduledPowerAction['deviceUid'];

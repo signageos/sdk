@@ -11,33 +11,36 @@ import AppletTestSuiteManagement from '../../../../../src/RestApi/Applet/Version
 const nockOpts = getNockOpts({});
 
 describe('AppletTestSuiteManagement', () => {
-
 	const validGetResp: IAppletTestSuite = {
-		appletUid: "appletUid",
-		appletVersion: "1.0.1",
-		binary: "some binary data",
-		identifier: "testName",
+		appletUid: 'appletUid',
+		appletVersion: '1.0.1',
+		binary: 'some binary data',
+		identifier: 'testName',
 	};
 	const validListResp: IAppletTestSuite[] = [validGetResp];
 	const validCreateReq: IAppletTestSuiteCreatable = {
 		identifier: 'testName',
-		binary: "some binary data",
+		binary: 'some binary data',
 	};
 	const validUpdateReq: IAppletTestSuiteUpdatable = {
-		binary: "some binary data",
+		binary: 'some binary data',
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/applet/appletUid/version/1.0.1/test').reply(200, validListResp)
-		.post('/v1/applet/appletUid/version/1.0.1/test', validCreateReq).reply(200, successRes)
-		.get('/v1/applet/appletUid/version/1.0.1/test/testName').reply(200, validGetResp)
-		.put('/v1/applet/appletUid/version/1.0.1/test/testName').reply(200, successRes)
-		.delete('/v1/applet/appletUid/version/1.0.1/test/testName').reply(200, successRes);
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/applet/appletUid/version/1.0.1/test')
+		.reply(200, validListResp)
+		.post('/v1/applet/appletUid/version/1.0.1/test', validCreateReq)
+		.reply(200, successRes)
+		.get('/v1/applet/appletUid/version/1.0.1/test/testName')
+		.reply(200, validGetResp)
+		.put('/v1/applet/appletUid/version/1.0.1/test/testName')
+		.reply(200, successRes)
+		.delete('/v1/applet/appletUid/version/1.0.1/test/testName')
+		.reply(200, successRes);
 
 	const atsm = new AppletTestSuiteManagement(nockOpts);
 
@@ -72,5 +75,4 @@ describe('AppletTestSuiteManagement', () => {
 		await atsm.delete('appletUid', '1.0.1', 'testName');
 		should(true).true();
 	});
-
 });

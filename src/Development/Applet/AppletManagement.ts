@@ -1,13 +1,13 @@
-import { log } from "../../Console/log";
-import RestApi from "../../RestApi/RestApi";
-import { DeviceConnectManagement } from "../Device/DeviceConnectManagement";
-import { AppletHotReload } from "./AppletHotReload";
-import { AppletBuild } from "./Build/AppletBuild";
-import { AppletBuildManagement } from "./Build/AppletBuildManagement";
-import { AppletFilesManagement } from "./Files/AppletFilesManagement";
-import { AppletIdentificationManagement } from "./Identification/AppletIdentificationManagement";
-import { AppletServeManagement, IServeOptions } from "./Serve/AppletServeManagement";
-import { AppletWatchManagement, IWatchOptions } from "./Watch/AppletWatchManagement";
+import { log } from '../../Console/log';
+import RestApi from '../../RestApi/RestApi';
+import { DeviceConnectManagement } from '../Device/DeviceConnectManagement';
+import { AppletHotReload } from './AppletHotReload';
+import { AppletBuild } from './Build/AppletBuild';
+import { AppletBuildManagement } from './Build/AppletBuildManagement';
+import { AppletFilesManagement } from './Files/AppletFilesManagement';
+import { AppletIdentificationManagement } from './Identification/AppletIdentificationManagement';
+import { AppletServeManagement, IServeOptions } from './Serve/AppletServeManagement';
+import { AppletWatchManagement, IWatchOptions } from './Watch/AppletWatchManagement';
 
 export interface IHotReloadOptions extends Omit<IServeOptions, 'appletUid' | 'appletVersion'>, IWatchOptions {}
 
@@ -15,7 +15,6 @@ export interface IHotReloadOptions extends Omit<IServeOptions, 'appletUid' | 'ap
  * Applet management contains all applet related functionality for development.
  */
 export class AppletManagement {
-
 	public readonly identification: AppletIdentificationManagement;
 	public readonly files: AppletFilesManagement;
 	public readonly watch: AppletWatchManagement;

@@ -2,16 +2,12 @@ import * as should from 'should';
 import * as nock from 'nock';
 
 import { getNockOpts, successRes } from '../../helper';
-import IPowerAction, {
-	DevicePowerAction,
-	IPowerActionUpdatable,
-} from '../../../../../src/RestApi/Device/PowerAction/IPowerAction';
+import IPowerAction, { DevicePowerAction, IPowerActionUpdatable } from '../../../../../src/RestApi/Device/PowerAction/IPowerAction';
 import DevicePowerActionManagement from '../../../../../src/RestApi/Device/PowerAction/DevicePowerActionManagement';
 
 const nockOpts = getNockOpts({});
 
 describe('DevicePowerActionManagement', () => {
-
 	const pa: IPowerAction = {
 		uid: 'someUid',
 		deviceUid: '206aXXXaa72',
@@ -25,14 +21,15 @@ describe('DevicePowerActionManagement', () => {
 		devicePowerAction: DevicePowerAction.SystemReboot,
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/device/someUid/power-action').reply(200, validGetResp)
-		.post('/v1/device/someUid/power-action', validSetReq).reply(200, successRes);
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/device/someUid/power-action')
+		.reply(200, validGetResp)
+		.post('/v1/device/someUid/power-action', validSetReq)
+		.reply(200, successRes);
 
 	const dpam = new DevicePowerActionManagement(nockOpts);
 
@@ -47,5 +44,4 @@ describe('DevicePowerActionManagement', () => {
 		await dpam.set('someUid', validSetReq);
 		should(true).true();
 	});
-
 });

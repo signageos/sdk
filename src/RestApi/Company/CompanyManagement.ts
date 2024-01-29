@@ -1,26 +1,21 @@
 import { getResource, parseJSONResponse, putResource } from '../requester';
-import IOptions from "../IOptions";
+import IOptions from '../IOptions';
 import { IOrganizationFilter } from '../Organization/IOrganizationFilter';
 import IOrganization from '../Organization/IOrganization';
 import Organization from '../Organization/Organization';
 
-export interface ICompany extends IOrganization {
-}
+export interface ICompany extends IOrganization {}
 
-export class Company extends Organization implements ICompany {
-}
+export class Company extends Organization implements ICompany {}
 
-export interface ICompanyFilter extends IOrganizationFilter {
-}
+export interface ICompanyFilter extends IOrganizationFilter {}
 
 export type BillingPlan = 'open' | 'medium' | 'enterprise';
 
 export default class CompanyManagement {
-
 	public static readonly RESOURCE: string = 'company';
 
-	constructor(private options: IOptions) {
-	}
+	constructor(private options: IOptions) {}
 
 	public async list(filter: ICompanyFilter = {}): Promise<ICompany[]> {
 		const response = await getResource(this.options, CompanyManagement.RESOURCE, filter);
@@ -36,11 +31,6 @@ export default class CompanyManagement {
 	}
 
 	public async setBillingPlan(companyUid: string, billingPlan: BillingPlan): Promise<void> {
-		await putResource(
-			this.options,
-			`${CompanyManagement.RESOURCE}/${companyUid}/billingPlan/${billingPlan}`,
-			JSON.stringify({}),
-		);
+		await putResource(this.options, `${CompanyManagement.RESOURCE}/${companyUid}/billingPlan/${billingPlan}`, JSON.stringify({}));
 	}
-
 }

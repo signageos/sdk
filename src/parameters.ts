@@ -49,13 +49,13 @@ export const parameters = {
 			? {
 					clientId: process.env.SOS_AUTH_CLIENT_ID,
 					secret: process.env.SOS_AUTH_SECRET,
-			}
+				}
 			: undefined,
 	accountAuth:
 		process.env.SOS_API_IDENTIFICATION && process.env.SOS_API_SECURITY_TOKEN
 			? {
 					tokenId: process.env.SOS_API_IDENTIFICATION,
 					token: process.env.SOS_API_SECURITY_TOKEN,
-			}
+				}
 			: undefined,
 };

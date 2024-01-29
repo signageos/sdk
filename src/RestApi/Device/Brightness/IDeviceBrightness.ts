@@ -1,4 +1,3 @@
-
 export interface IDeviceBrightnessUpdatable {
 	brightness1: number;
 	timeFrom1: string;

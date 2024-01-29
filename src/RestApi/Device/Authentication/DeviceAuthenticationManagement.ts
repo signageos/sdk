@@ -1,11 +1,10 @@
-import { getResource, parseJSONResponse } from "../../requester";
-import { Resources } from "../../resources";
-import IOptions from "../../IOptions";
-import IDeviceAuthentication from "./IDeviceAuthentication";
-import DeviceAuthentication from "./DeviceAuthentication";
+import { getResource, parseJSONResponse } from '../../requester';
+import { Resources } from '../../resources';
+import IOptions from '../../IOptions';
+import IDeviceAuthentication from './IDeviceAuthentication';
+import DeviceAuthentication from './DeviceAuthentication';
 
 export default class DeviceAuthenticationManagement {
-
 	private static getUrl(deviceUid: string): string {
 		return `${Resources.Device}/${deviceUid}/authentication`;
 	}
@@ -14,8 +13,7 @@ export default class DeviceAuthenticationManagement {
 		return `${Resources.Device}/authentication/${authHash}`;
 	}
 
-	constructor(private options: IOptions) {
-	}
+	constructor(private options: IOptions) {}
 
 	public async get(deviceUid: string): Promise<IDeviceAuthentication> {
 		const response = await getResource(this.options, DeviceAuthenticationManagement.getUrl(deviceUid));
@@ -28,5 +26,4 @@ export default class DeviceAuthenticationManagement {
 
 		return new DeviceAuthentication(await parseJSONResponse(response));
 	}
-
 }

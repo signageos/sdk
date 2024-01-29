@@ -1,13 +1,13 @@
+import * as archiver from 'archiver';
+import * as fs from 'fs-extra';
+import * as path from 'path';
 import {
-	getAppletBuildRuntimeDir,
-	getAppletPackageArchivePath,
-	getAppletVersionBuildRuntimeDir,
-	IFileSystem,
+  getAppletBuildRuntimeDir,
+  getAppletPackageArchivePath,
+  getAppletVersionBuildRuntimeDir,
+  IFileSystem,
 } from '../../runtimeFileSystem';
 import { AppletFilesManagement } from '../Files/AppletFilesManagement';
-import * as archiver from 'archiver';
-import * as path from 'path';
-import * as fs from 'fs-extra';
 import { AppletBuild } from './AppletBuild';
 
 export interface IBuildOptions {
@@ -36,10 +36,7 @@ export interface IBuildOptions {
  * This is an alternative of the build that the server does when applet is uploaded.
  */
 export class AppletBuildManagement {
-
-	constructor(
-		private appletFilesManagement: AppletFilesManagement,
-	) {}
+	constructor(private appletFilesManagement: AppletFilesManagement) {}
 
 	/**
 	 * Builds an applet locally as a single .package.zip file.
@@ -48,12 +45,8 @@ export class AppletBuildManagement {
 		const appletFilePaths = await this.appletFilesManagement.listAppletFiles(options);
 		const packageArchivePath = await this.createPackageArchive(options, appletFilePaths);
 
-		return new AppletBuild(
-			options.appletUid,
-			options.appletVersion,
-			appletFilePaths,
-			packageArchivePath,
-			() => getAppletBuildRuntimeDir(options.appletUid),
+		return new AppletBuild(options.appletUid, options.appletVersion, appletFilePaths, packageArchivePath, () =>
+			getAppletBuildRuntimeDir(options.appletUid),
 		);
 	}
 

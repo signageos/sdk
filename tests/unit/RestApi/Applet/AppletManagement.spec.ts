@@ -8,7 +8,6 @@ import AppletManagement from '../../../../src/RestApi/Applet/AppletManagement';
 const nockOpts = getNockOpts({});
 
 describe('AppletManagement', () => {
-
 	const validGetResp: IApplet = {
 		uid: 'someUid',
 		name: 'signageOS Sample',
@@ -16,23 +15,26 @@ describe('AppletManagement', () => {
 	};
 	const validListResp: IApplet[] = [validGetResp];
 	const validCreateReq: IAppletCreatable = {
-		name: "signageOS Sample",
+		name: 'signageOS Sample',
 	};
 	const successResHeaders = {
 		Link: `<${nockOpts.url}/v1/applet/someUid>`,
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
 		.persist()
-		.get('/v1/applet').reply(200, validListResp)
-		.post('/v1/applet', validCreateReq).reply(200, successRes, successResHeaders)
-		.get('/v1/applet/someUid/').reply(200, validGetResp)
-		.delete('/v1/applet/someUid/').reply(200, successRes);
+		.get('/v1/applet')
+		.reply(200, validListResp)
+		.post('/v1/applet', validCreateReq)
+		.reply(200, successRes, successResHeaders)
+		.get('/v1/applet/someUid/')
+		.reply(200, validGetResp)
+		.delete('/v1/applet/someUid/')
+		.reply(200, successRes);
 
 	const am = new AppletManagement(nockOpts);
 
@@ -62,5 +64,4 @@ describe('AppletManagement', () => {
 		await am.delete('someUid');
 		should(true).true();
 	});
-
 });

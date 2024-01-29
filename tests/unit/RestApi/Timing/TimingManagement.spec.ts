@@ -1,11 +1,10 @@
-import ITiming from '../../../../src/RestApi/Timing/ITiming';
-import { ITimingUpdatable } from '../../../../src/RestApi/Timing/ITiming';
+import * as nock from 'nock';
+import * as should from 'should';
+import ITiming, { ITimingUpdatable } from '../../../../src/RestApi/Timing/ITiming';
 import TimingManagement from '../../../../src/RestApi/Timing/TimingManagement';
 import { ApiVersions } from '../../../../src/RestApi/apiVersions';
 import { Resources } from '../../../../src/RestApi/resources';
 import { getNockOpts, nockAuthHeader1 } from '../helper';
-import * as nock from 'nock';
-import * as should from 'should';
 
 const nockOpts = getNockOpts({});
 const timingManagement = new TimingManagement(nockOpts);

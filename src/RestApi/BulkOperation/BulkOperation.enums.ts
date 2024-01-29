@@ -46,19 +46,9 @@ export enum DeviceActionType {
 	TELEMETRY_INTERVALS = 'TELEMETRY_INTERVALS',
 }
 
-export const ApplicationTypes = [
-	'sssp',
-	'tizen',
-	'webos',
-	'android',
-	'chrome',
-	'brightsign',
-	'linux',
-	'windows',
-	'default',
-] as const;
+export const ApplicationTypes = ['sssp', 'tizen', 'webos', 'android', 'chrome', 'brightsign', 'linux', 'windows', 'default'] as const;
 
-export type ApplicationType = typeof ApplicationTypes[number];
+export type ApplicationType = (typeof ApplicationTypes)[number];
 
 export enum Orientation {
 	PORTRAIT = 'PORTRAIT',

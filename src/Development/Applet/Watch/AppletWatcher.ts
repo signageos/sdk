@@ -6,7 +6,6 @@ import * as _ from 'lodash';
  * It can be used to listen to changes in the applet files (onEdit).
  */
 export class AppletWatcher {
-
 	constructor(
 		private watcher: chokidar.FSWatcher,
 		public readonly filePatterns: string[],

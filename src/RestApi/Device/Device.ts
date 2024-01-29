@@ -1,8 +1,7 @@
-import { fillDataToEntity } from "../mapper";
-import IDevice from "./IDevice";
+import { fillDataToEntity } from '../mapper';
+import IDevice from './IDevice';
 
 export default class Device implements IDevice {
-
 	// public readonly [P in keyof IDevice]: IDevice[P]; // Generalized TS doesn't support
 	public readonly uid: IDevice['uid'];
 	public readonly duid: IDevice['duid'];

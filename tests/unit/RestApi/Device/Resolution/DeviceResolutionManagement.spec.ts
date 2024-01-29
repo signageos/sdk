@@ -12,7 +12,6 @@ import DeviceResolutionManagement from '../../../../../src/RestApi/Device/Resolu
 const nockOpts = getNockOpts({});
 
 describe('DeviceResolutionManagement', () => {
-
 	const resol: IDeviceResolution = {
 		uid: 'someUid',
 		deviceUid: '3caXXX589b',
@@ -29,14 +28,15 @@ describe('DeviceResolutionManagement', () => {
 		resolution: Resolution.FullHD,
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/device/someUid/resolution').reply(200, validGetResp)
-		.put('/v1/device/someUid/resolution', validSetReq).reply(200, successRes);
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/device/someUid/resolution')
+		.reply(200, validGetResp)
+		.put('/v1/device/someUid/resolution', validSetReq)
+		.reply(200, successRes);
 
 	const drm = new DeviceResolutionManagement(nockOpts);
 

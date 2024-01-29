@@ -1,11 +1,11 @@
-import * as path from 'path';
-import * as fs from 'fs-extra';
-import * as nativefs from 'fs';
-import * as globby from 'globby';
-import { loadPackage } from "../../../FileSystem/packageConfig";
 import chalk from 'chalk';
-import { log } from '../../../Console/log';
 import * as Debug from 'debug';
+import * as nativefs from 'fs';
+import * as fs from 'fs-extra';
+import * as globby from 'globby';
+import * as path from 'path';
+import { log } from '../../../Console/log';
+import { loadPackage } from '../../../FileSystem/packageConfig';
 import { IFileSystem } from '../../runtimeFileSystem';
 
 const debug = Debug('@signageos/sdk:Development:Applet:AppletFilesManagement');
@@ -14,11 +14,7 @@ const DEFAULT_IGNORE_FILE = '.sosignore';
 const GIT_IGNORE_FILE = '.gitignore';
 const NPM_IGNORE_FILE = '.npmignore';
 
-const IGNORE_FILES = [
-	DEFAULT_IGNORE_FILE,
-	NPM_IGNORE_FILE,
-	GIT_IGNORE_FILE,
-];
+const IGNORE_FILES = [DEFAULT_IGNORE_FILE, NPM_IGNORE_FILE, GIT_IGNORE_FILE];
 
 export interface IFilesOptions {
 	/** Applet root path where the package.json is located */
@@ -41,7 +37,6 @@ export interface IFilesOptions {
  * It is based on the package.json "files" property or .sosignore file (or .gitignore, .npmignore as failover).
  */
 export class AppletFilesManagement {
-
 	/**
 	 * Lists all files that should be included in the applet package.
 	 * It is based on the package.json "files" property or .sosignore file (or .gitignore, .npmignore as failover).
@@ -59,7 +54,7 @@ export class AppletFilesManagement {
 	 * Unlike the listAppletFiles, it does not resolve the patterns to the actual file paths.
 	 */
 	public async getAppletFilePatterns(options: IFilesOptions) {
-		const packageConfig = await loadPackage(options.appletPath) ?? {};
+		const packageConfig = (await loadPackage(options.appletPath)) ?? {};
 		const ignoreBasePath = options.ignoreBasePath ?? options.appletPath;
 		if (packageConfig.files) {
 			if (!(packageConfig.files instanceof Array)) {
@@ -73,21 +68,16 @@ export class AppletFilesManagement {
 
 	private async resolveIncludeFiles(appletPath: string, files: string[], fileSystems: IFileSystem[] = [nativefs]) {
 		debug('resolveIncludeFiles', appletPath, files);
-		const alwaysFilePaths = [
-			path.join(appletPath, 'package.json'),
-		];
+		const alwaysFilePaths = [path.join(appletPath, 'package.json')];
 		const resolvedFilePathsSet = new Set<string>(alwaysFilePaths);
 
 		for (const fileSystem of fileSystems) {
-			const resolvedFilePaths: string[] = await globby(
-				files,
-				{
-					cwd: appletPath,
-					absolute: true,
-					dot: true,
-					fs: fileSystem,
-				},
-			);
+			const resolvedFilePaths: string[] = await globby(files, {
+				cwd: appletPath,
+				absolute: true,
+				dot: true,
+				fs: fileSystem,
+			});
 			for (const resolvedFilePath of resolvedFilePaths) {
 				resolvedFilePathsSet.add(resolvedFilePath);
 			}
@@ -127,10 +117,11 @@ export class AppletFilesManagement {
 
 	private async parseIgnoreFile(ignoreFilePath: string) {
 		const ignoreFileBuffer = await fs.readFile(ignoreFilePath);
-		const ignorePatterns = ignoreFileBuffer.toString()
-		.split(/[\n\r]+/)
-		.filter((line) => line)
-		.filter((line) => !line.startsWith('#'));
+		const ignorePatterns = ignoreFileBuffer
+			.toString()
+			.split(/[\n\r]+/)
+			.filter((line) => line)
+			.filter((line) => !line.startsWith('#'));
 		return ignorePatterns;
 	}
 }

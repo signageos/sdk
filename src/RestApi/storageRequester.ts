@@ -36,8 +36,8 @@ export async function postStorage(url: string | Request, fields: any, data: Node
 export async function parseStorageResponse(
 	response: Response,
 	options: {
-		storage: StorageType,
-		parse: ParseObject,
+		storage: StorageType;
+		parse: ParseObject;
 	},
 ) {
 	return await createStorageResponseParser(options.storage, options.parse)(response);
@@ -56,18 +56,13 @@ function createStorageResponseParser(storage: StorageType, parse: ParseObject) {
 function createS3ResponseParser(parse: ParseObject) {
 	switch (parse) {
 		case IAppletVersionFile:
-			return (response: Response) => ({
-				content: response.body,
-				type: response.headers.get('Content-Type')
-					? response.headers.get('Content-Type')
-					: 'application/octet-stream',
-				hash: response.headers.get('x-amz-meta-content_md5')
-					? response.headers.get('x-amz-meta-content_md5')
-					: undefined,
-				size: response.headers.get('Content-Length')
-					? parseInt(response.headers.get('Content-Length') as string)
-					: undefined,
-			}) as StorageResponse.S3.AppletVersionFile;
+			return (response: Response) =>
+				({
+					content: response.body,
+					type: response.headers.get('Content-Type') ? response.headers.get('Content-Type') : 'application/octet-stream',
+					hash: response.headers.get('x-amz-meta-content_md5') ? response.headers.get('x-amz-meta-content_md5') : undefined,
+					size: response.headers.get('Content-Length') ? parseInt(response.headers.get('Content-Length') as string) : undefined,
+				}) as StorageResponse.S3.AppletVersionFile;
 
 		default:
 			return createDefaultParser();

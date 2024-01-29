@@ -8,20 +8,20 @@ import { errorResp, errorRespMessage, getNockOpts } from '../../helper';
 const nockOpts = getNockOpts({});
 
 describe('DevicePinCodeManagement', () => {
-
 	const validResp: IDevicePin = {
 		deviceUid: 'someUid',
 		pinCode: '1234',
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/device/someUid/pin-code').reply(200, validResp)
-		.get('/v1/device/shouldFail/pin-code').reply(500, errorResp);
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/device/someUid/pin-code')
+		.reply(200, validResp)
+		.get('/v1/device/shouldFail/pin-code')
+		.reply(500, errorResp);
 
 	const dpm = new DevicePinCodeManagement(nockOpts);
 

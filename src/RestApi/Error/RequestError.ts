@@ -1,6 +1,4 @@
-
 export default class RequestError extends Error {
-
 	public readonly errorCode: number | undefined;
 	public readonly errorName: string | undefined;
 

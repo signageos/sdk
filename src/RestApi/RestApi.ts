@@ -41,5 +41,8 @@ export default class RestApi {
 	public readonly location: LocationManagement = new LocationManagement(this.organizationOptions);
 	public readonly locationOrganizationTag: LocationOrganizationTag = new LocationOrganizationTag(this.organizationOptions);
 
-	constructor(public readonly accountOptions: IOptions, public readonly organizationOptions: IOptions) {}
+	constructor(
+		public readonly accountOptions: IOptions,
+		public readonly organizationOptions: IOptions,
+	) {}
 }

@@ -2,15 +2,12 @@ import * as should from 'should';
 import * as nock from 'nock';
 
 import { getNockOpts, successRes } from '../../helper';
-import IDeviceRemoteControl, {
-	IDeviceRemoteControlUpdatable,
-} from '../../../../../src/RestApi/Device/RemoteControl/IDeviceRemoteControl';
+import IDeviceRemoteControl, { IDeviceRemoteControlUpdatable } from '../../../../../src/RestApi/Device/RemoteControl/IDeviceRemoteControl';
 import DeviceRemoteControlManagement from '../../../../../src/RestApi/Device/RemoteControl/DeviceRemoteControlManagement';
 
 const nockOpts = getNockOpts({});
 
 describe('DeviceRemoteControlManagement', () => {
-
 	const dcr: IDeviceRemoteControl = {
 		uid: 'someUid',
 		deviceUid: '3caXXX589b',
@@ -24,14 +21,15 @@ describe('DeviceRemoteControlManagement', () => {
 		enabled: false,
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/device/someUid/remote-control').reply(200, validGetResp)
-		.put('/v1/device/someUid/remote-control', validSetReq).reply(200, successRes);
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/device/someUid/remote-control')
+		.reply(200, validGetResp)
+		.put('/v1/device/someUid/remote-control', validSetReq)
+		.reply(200, successRes);
 
 	const drcm = new DeviceRemoteControlManagement(nockOpts);
 

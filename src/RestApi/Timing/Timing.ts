@@ -1,14 +1,13 @@
-
 import { JSDOM } from 'jsdom';
 import * as _ from 'lodash';
-import ITiming from "./ITiming";
-import TimingCommandManagement from "./Command/TimingCommandManagement";
-import { TimingLoaded } from "@signageos/front-applet/es6/Monitoring/Timing/timingCommands";
-import { EnableMonitoring, DisableMonitoring } from "@signageos/front-applet/es6/Monitoring/monitoringCommands";
-import waitUntil from "../../Timer/waitUntil";
-import TimingManagement from "./TimingManagement";
-import { HtmlSnapshotTaken, TakeHtmlSnapshot } from "@signageos/front-applet/es6/Monitoring/Html/htmlCommands";
-import wait from "../../Timer/wait";
+import ITiming from './ITiming';
+import TimingCommandManagement from './Command/TimingCommandManagement';
+import { TimingLoaded } from '@signageos/front-applet/es6/Monitoring/Timing/timingCommands';
+import { EnableMonitoring, DisableMonitoring } from '@signageos/front-applet/es6/Monitoring/monitoringCommands';
+import waitUntil from '../../Timer/waitUntil';
+import TimingManagement from './TimingManagement';
+import { HtmlSnapshotTaken, TakeHtmlSnapshot } from '@signageos/front-applet/es6/Monitoring/Html/htmlCommands';
+import wait from '../../Timer/wait';
 import { ConsoleLogged } from '@signageos/front-applet/es6/Monitoring/Console/consoleCommands';
 import TimingCommand from './Command/TimingCommand';
 import {
@@ -33,7 +32,7 @@ import {
 	IHeaders,
 	IMoveFileOptions,
 	IStorageUnit,
-} from "@signageos/front-applet/es6/FrontApplet/FileSystem/types";
+} from '@signageos/front-applet/es6/FrontApplet/FileSystem/types';
 import {
 	FileSystemAppendFileRequest,
 	FileSystemAppendFileResult,
@@ -65,8 +64,8 @@ import {
 	FileSystemReadFileResult,
 	FileSystemWriteFileRequest,
 	FileSystemWriteFileResult,
-} from "@signageos/front-applet/es6/Monitoring/FileSystem/fileSystemCommands";
-import IFile from "@signageos/front-applet/es6/FrontApplet/Offline/Cache/IFile";
+} from '@signageos/front-applet/es6/Monitoring/FileSystem/fileSystemCommands';
+import IFile from '@signageos/front-applet/es6/FrontApplet/Offline/Cache/IFile';
 
 export interface IHtml {
 	/** @returns Promise<[HTMLDocument](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument)> */
@@ -83,7 +82,7 @@ export interface IOffline {
 		loadFile(uid: string): Promise<IFile>;
 		getChecksumFile(uid: string, hashType: string): Promise<string>;
 		validateChecksumFile(uid: string, hash: string, hashType: string): Promise<boolean>;
-		loadOrSaveFile(uid: string, uri: string, headers?: { [key: string]: string }): Promise<IFile>
+		loadOrSaveFile(uid: string, uri: string, headers?: { [key: string]: string }): Promise<IFile>;
 	};
 }
 
@@ -137,7 +136,6 @@ export interface IVideo {
 const videoStates: VideoStateChanged['state'][] = ['play', 'stop', 'pause', 'ended', 'error'];
 
 export default class Timing implements ITiming {
-
 	// public readonly [P in keyof ITiming]: ITiming[P]; // Generalized TS doesn't support
 	public readonly uid: ITiming['uid'];
 	public readonly createdAt: ITiming['createdAt'];
@@ -186,8 +184,7 @@ export default class Timing implements ITiming {
 						type: ConsoleLogged,
 					});
 					return _.flatMap(
-						timingCommands
-							.filter((timingCommand: TimingCommand<ConsoleLogged>) => timingCommand.commandPayload.level === level),
+						timingCommands.filter((timingCommand: TimingCommand<ConsoleLogged>) => timingCommand.commandPayload.level === level),
 						(timingCommand: TimingCommand<ConsoleLogged>) => timingCommand.commandPayload.messages,
 					);
 				},
@@ -329,15 +326,8 @@ export default class Timing implements ITiming {
 						videoStateChangedCommands,
 						(videoStateChangedCommand: TimingCommand<VideoStateChanged>) => videoStateChangedCommand.commandPayload.state,
 					);
-					const videosOfCurrentState = videosByStateMap[state].map(
-						(videoStateChangedCommand: TimingCommand<VideoStateChanged>) => _.pick(
-							videoStateChangedCommand.commandPayload,
-							'uri',
-							'x',
-							'y',
-							'width',
-							'height',
-						),
+					const videosOfCurrentState = videosByStateMap[state].map((videoStateChangedCommand: TimingCommand<VideoStateChanged>) =>
+						_.pick(videoStateChangedCommand.commandPayload, 'uri', 'x', 'y', 'width', 'height'),
 					);
 					return videosOfCurrentState;
 				},
@@ -643,7 +633,7 @@ export default class Timing implements ITiming {
 				await wait(500);
 			}
 		},
-		readFile: async (filePath: IFilePath): Promise<string> =>  {
+		readFile: async (filePath: IFilePath): Promise<string> => {
 			const readFileCommand = await this.timingCommandManagement.create<FileSystemReadFileRequest>({
 				deviceUid: this.deviceUid,
 				appletUid: this.appletUid,

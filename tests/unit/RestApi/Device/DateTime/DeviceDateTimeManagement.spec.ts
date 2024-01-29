@@ -8,7 +8,6 @@ import DeviceDateTimeManagement from '../../../../../src/RestApi/Device/DateTime
 const nockOpts = getNockOpts({});
 
 describe('DeviceDateTimeManagement', () => {
-
 	const datetime: IDeviceDateTime = {
 		uid: 'someUid',
 		deviceUid: '3caXXX589b',
@@ -24,14 +23,15 @@ describe('DeviceDateTimeManagement', () => {
 		ntpServer: 'pool.ntp.org',
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/device/someUid/time').reply(200, validGetResp)
-		.put('/v1/device/someUid/time', validSetReq).reply(200, successRes);
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/device/someUid/time')
+		.reply(200, validGetResp)
+		.put('/v1/device/someUid/time', validSetReq)
+		.reply(200, successRes);
 
 	const dtm = new DeviceDateTimeManagement(nockOpts);
 

@@ -1,4 +1,3 @@
-
 export interface ITimingCommandPayload {
 	type: string;
 	[name: string]: any;
@@ -15,9 +14,8 @@ export interface ITimingCommandReadOnly {
 	timingChecksum: string;
 }
 
-interface ITimingCommand<TCommandPayload extends ITimingCommandPayload> extends ITimingCommandReadOnly,
-	ITimingCommandCreateOnly<TCommandPayload> {
-
-}
+interface ITimingCommand<TCommandPayload extends ITimingCommandPayload>
+	extends ITimingCommandReadOnly,
+		ITimingCommandCreateOnly<TCommandPayload> {}
 
 export default ITimingCommand;

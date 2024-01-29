@@ -1,8 +1,7 @@
-import { fillDataToEntity } from "../../mapper";
-import IDeviceResolution from "./IDeviceResolution";
+import { fillDataToEntity } from '../../mapper';
+import IDeviceResolution from './IDeviceResolution';
 
 export default class DeviceResolution implements IDeviceResolution {
-
 	// public readonly [P in keyof IDeviceResolution]: IDeviceResolution[P]; // Generalized TS doesn't support
 	public readonly uid: IDeviceResolution['uid'];
 	public readonly deviceUid: IDeviceResolution['deviceUid'];

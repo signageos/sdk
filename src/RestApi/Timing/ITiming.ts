@@ -1,4 +1,3 @@
-
 export interface ITimingCreateOnly {
 	deviceUid: string;
 	appletUid: string;
@@ -25,8 +24,6 @@ export interface ITimingReadOnly {
 	updatedAt: Date;
 }
 
-interface ITiming extends ITimingCreateOnly, ITimingUpdatable, ITimingReadOnly {
-
-}
+interface ITiming extends ITimingCreateOnly, ITimingUpdatable, ITimingReadOnly {}
 
 export default ITiming;

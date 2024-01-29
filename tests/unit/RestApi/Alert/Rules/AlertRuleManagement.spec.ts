@@ -1,17 +1,13 @@
 import * as nock from 'nock';
 import * as should from 'should';
 
-import IAlertRule, {
-	IAlertRuleCreatable,
-	IAlertRuleUpdateable,
-} from '../../../../../src/RestApi/Alerts/Rules/IAlertRule';
+import IAlertRule, { IAlertRuleCreatable, IAlertRuleUpdateable } from '../../../../../src/RestApi/Alerts/Rules/IAlertRule';
 import AlertRulesManagement from '../../../../../src/RestApi/Alerts/Rules/AlertRulesManagement';
 import { getNockOpts, successRes } from '../../helper';
 
 const nockOpts = getNockOpts({});
 
 describe('AlertRuleManagement', () => {
-
 	const getLocationHeader = (alertRuleUid: string): nock.HttpHeaders => ({
 		Location: `${nockOpts.url}/${nockOpts.version}/alert-rule/${alertRuleUid}`,
 	});
@@ -43,12 +39,11 @@ describe('AlertRuleManagement', () => {
 		alertType: 'DEVICE',
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
 		.get('/v1/alert-rule')
 		.reply(200, [validAlertRuleObject])
 		.get('/v1/alert-rule?archived=true')

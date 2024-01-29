@@ -1,12 +1,11 @@
-import { AppletServer } from "./Serve/AppletServer";
-import { AppletWatcher } from "./Watch/AppletWatcher";
+import { AppletServer } from './Serve/AppletServer';
+import { AppletWatcher } from './Watch/AppletWatcher';
 
 /**
  * Represents a hot reload development instance.
  * After ending the development, it should be stopped.
  */
 export class AppletHotReload {
-
 	constructor(
 		private watcher: AppletWatcher,
 		private server: AppletServer,

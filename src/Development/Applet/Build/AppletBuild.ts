@@ -6,7 +6,6 @@ import * as fs from 'fs-extra';
  * and provides methods for cleaning the build when is not more needed.
  */
 export class AppletBuild {
-
 	constructor(
 		public readonly appletUid: string,
 		public readonly appletVersion: string,

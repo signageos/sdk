@@ -1,4 +1,3 @@
-
 interface ITimingCommandFilter {
 	deviceUid: string;
 	appletUid?: string;

@@ -1,14 +1,13 @@
-import RestApi from "../RestApi/RestApi";
-import RestApiV2 from "../RestApi/RestApiV2";
-import { AppletManagement } from "./Applet/AppletManagement";
-import { DeviceConnectManagement } from "./Device/DeviceConnectManagement";
+import RestApi from '../RestApi/RestApi';
+import RestApiV2 from '../RestApi/RestApiV2';
+import { AppletManagement } from './Applet/AppletManagement';
+import { DeviceConnectManagement } from './Device/DeviceConnectManagement';
 
 /**
  * Development management contains all development related functionality.
  * It is used to manage applets and devices in signageOS environment.
  */
 export class Development {
-
 	public readonly deviceConnect: DeviceConnectManagement;
 	public readonly applet: AppletManagement;
 

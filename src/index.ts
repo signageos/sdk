@@ -3,18 +3,12 @@ loadTextEncoderDecoderIfNotExist();
 import RestApi from './RestApi/RestApi';
 import RestApiV2 from './RestApi/RestApiV2';
 import { ApiVersions } from './RestApi/apiVersions';
-import {
-	createApiOrgAndAccountOptions,
-	createDefaultOptions,
-	IOptions,
-} from './apiTools';
+import { createApiOrgAndAccountOptions, createDefaultOptions, IOptions } from './apiTools';
 import { Development } from './Development/Development';
 
 /** @deprecated, use createApiV1, or createApiV2 functions instead */
 export class Api extends RestApi {
-	constructor(
-		options: IOptions,
-	) {
+	constructor(options: IOptions) {
 		const { accountOptions, organizationOptions } = createApiOrgAndAccountOptions(options);
 		super(accountOptions, organizationOptions);
 	}

@@ -1,4 +1,3 @@
-
 export interface IDeviceDateTimeUpdatable {
 	time: string;
 	timezone: string;

@@ -1,4 +1,3 @@
-
 const cacheMap = new WeakMap<Function, unknown>();
 
 /**

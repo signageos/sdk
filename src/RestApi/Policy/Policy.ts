@@ -1,4 +1,4 @@
-import { fillDataToEntity } from "../mapper";
+import { fillDataToEntity } from '../mapper';
 import IPolicy from './IPolicy';
 
 export default class Policy implements IPolicy {

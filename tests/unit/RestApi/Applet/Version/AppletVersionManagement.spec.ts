@@ -2,51 +2,49 @@ import * as should from 'should';
 import * as nock from 'nock';
 
 import { getNockOpts, successRes } from '../../helper';
-import IAppletVersion, {
-	IAppletVersionCreatable,
-	IAppletVersionUpdatable,
-} from '../../../../../src/RestApi/Applet/Version/IAppletVersion';
+import IAppletVersion, { IAppletVersionCreatable, IAppletVersionUpdatable } from '../../../../../src/RestApi/Applet/Version/IAppletVersion';
 import AppletVersionManagement from '../../../../../src/RestApi/Applet/Version/AppletVersionManagement';
 
 const nockOpts = getNockOpts({});
 
 describe('AppletVersionManagement', () => {
-
 	const validGetResp: IAppletVersion = {
-		appletUid: "appletUid",
-		version: "1.1.0",
-		createdAt: new Date("2018-05-10T09:07:53.375Z"),
-		updatedAt: new Date("2018-05-10T09:09:47.466Z"),
-		binary: "some binary data",
-		frontAppletVersion: "1.1.1",
+		appletUid: 'appletUid',
+		version: '1.1.0',
+		createdAt: new Date('2018-05-10T09:07:53.375Z'),
+		updatedAt: new Date('2018-05-10T09:09:47.466Z'),
+		binary: 'some binary data',
+		frontAppletVersion: '1.1.1',
 		publishedSince: null,
 		deprecatedSince: null,
-		builtSince: new Date("2018-05-10T09:09:51.651Z"),
-
+		builtSince: new Date('2018-05-10T09:09:51.651Z'),
 	};
 	const validListResp: IAppletVersion[] = [validGetResp];
 	const validCreateClientReq: IAppletVersionCreatable = {
-		version: "1.1.0",
-		frontAppletVersion: "1.1.1",
-		binary: "some binary data",
+		version: '1.1.0',
+		frontAppletVersion: '1.1.1',
+		binary: 'some binary data',
 	};
-	const validCreateReqBody = "some binary data";
+	const validCreateReqBody = 'some binary data';
 	const validUpdateReq: IAppletVersionUpdatable = {
-		frontAppletVersion: "1.1.1",
-		binary: "some updated binary data",
+		frontAppletVersion: '1.1.1',
+		binary: 'some updated binary data',
 	};
-	const validUpdateReqBody = "some updated binary data";
+	const validUpdateReqBody = 'some updated binary data';
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/applet/appletUid/version/').reply(200, validListResp)
-		.post('/v1/applet/appletUid/version/?frontAppletVersion=1.1.1&version=1.1.0', validCreateReqBody).reply(200, successRes)
-		.get('/v1/applet/appletUid/version/1.1.0/').reply(200, validGetResp)
-		.put('/v1/applet/appletUid/version/1.1.0/?frontAppletVersion=1.1.1', validUpdateReqBody).reply(200, successRes);
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/applet/appletUid/version/')
+		.reply(200, validListResp)
+		.post('/v1/applet/appletUid/version/?frontAppletVersion=1.1.1&version=1.1.0', validCreateReqBody)
+		.reply(200, successRes)
+		.get('/v1/applet/appletUid/version/1.1.0/')
+		.reply(200, validGetResp)
+		.put('/v1/applet/appletUid/version/1.1.0/?frontAppletVersion=1.1.1', validUpdateReqBody)
+		.reply(200, successRes);
 
 	const avm = new AppletVersionManagement(nockOpts);
 
@@ -74,5 +72,4 @@ describe('AppletVersionManagement', () => {
 		await avm.update('appletUid', '1.1.0', validUpdateReq);
 		should(true).true();
 	});
-
 });

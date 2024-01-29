@@ -7,10 +7,7 @@ import { ORGANIZATION_TAG_1 } from '../../unit/RestApi/Organization/Tag/Organiza
 export type LocationCreateWithoutOrg = Omit<ILocationCreate, 'organizationUid'>;
 export type LocationWithoutOrg = Omit<ILocation, 'organizationUid'>;
 
-export const handleCreateLocation = async (
-	api: Api,
-	params: { location: LocationCreateWithoutOrg; organizationUid: string },
-) => {
+export const handleCreateLocation = async (api: Api, params: { location: LocationCreateWithoutOrg; organizationUid: string }) => {
 	const locationPayload = {
 		...params.location,
 		organizationUid: params.organizationUid,

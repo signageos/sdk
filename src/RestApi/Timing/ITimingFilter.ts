@@ -1,4 +1,3 @@
-
 interface ITimingFilter {
 	timingUid?: string;
 	deviceUid?: string;

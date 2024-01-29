@@ -1,5 +1,5 @@
-import RestApi from "../../RestApi/RestApi";
-import { IDevice } from "../../RestApi/V2/Device/Device";
+import RestApi from '../../RestApi/RestApi';
+import { IDevice } from '../../RestApi/V2/Device/Device';
 
 /**
  * Represents the development connection to a device.
@@ -7,7 +7,6 @@ import { IDevice } from "../../RestApi/V2/Device/Device";
  * The disconnection can happen automatically when the device is restarted.
  */
 export class DeviceConnection {
-
 	constructor(
 		private restApiV1: RestApi,
 		private device: IDevice,

@@ -31,11 +31,7 @@ export default class PolicyManagement {
 	}
 
 	public async clone(policyUid: string, settings: IPolicyClonable): Promise<Policy> {
-		const { headers } = await putResource(
-			this.options,
-			`${PolicyManagement.RESOURCE}/${policyUid}/clone`,
-			JSON.stringify(settings),
-		);
+		const { headers } = await putResource(this.options, `${PolicyManagement.RESOURCE}/${policyUid}/clone`, JSON.stringify(settings));
 		return await this.extractLocationFromHeader(headers, "Api didn't return location header to cloned policy.");
 	}
 

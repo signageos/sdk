@@ -1,4 +1,3 @@
-
 export interface IAppletVersionFileUpdatable {
 	hash: string;
 	size: number;

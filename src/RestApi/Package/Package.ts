@@ -1,5 +1,5 @@
-import { fillDataToEntity } from "../mapper";
-import { IPackage } from "./IPackage";
+import { fillDataToEntity } from '../mapper';
+import { IPackage } from './IPackage';
 
 export default class Package {
 	public readonly uid: IPackage['uid'];

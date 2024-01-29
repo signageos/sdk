@@ -1,4 +1,3 @@
-
 interface IAppletCommandFilter {
 	appletUid?: string;
 	type?: string;

@@ -4,6 +4,7 @@ src/**/*.js
 tests/**/*.js
 docs/*
 .idea
+.vscode
 .env
 
 # Test

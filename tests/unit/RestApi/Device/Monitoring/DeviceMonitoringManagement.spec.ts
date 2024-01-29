@@ -17,7 +17,6 @@ import IScreenshot from '../../../../../src/RestApi/Device/Monitoring/Screenshot
 const nockOpts = getNockOpts({});
 
 describe('DeviceMonitoringManagement', () => {
-
 	describe('screenshot', () => {
 		const scr: IScreenshot = {
 			deviceUid: '3ca8a8XXXXbe589b',
@@ -30,15 +29,17 @@ describe('DeviceMonitoringManagement', () => {
 			takenUntil: new Date('2018-08-20'),
 		};
 		const filterUri = 'takenSince=2018-08-16T00%3A00%3A00.000Z&takenUntil=2018-08-20T00%3A00%3A00.000Z';
-		nock(
-			nockOpts.url, {
-				reqheaders: {
-					'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-				},
-			})
-			.get('/v1/device/someUid/screenshot').reply(200, scrResp)
-			.get('/v1/device/someUid/screenshot?' + filterUri).reply(200, scrResp)
-			.post('/v1/device/someUid/screenshot', {}).reply(200, successRes);
+		nock(nockOpts.url, {
+			reqheaders: {
+				'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+			},
+		})
+			.get('/v1/device/someUid/screenshot')
+			.reply(200, scrResp)
+			.get('/v1/device/someUid/screenshot?' + filterUri)
+			.reply(200, scrResp)
+			.post('/v1/device/someUid/screenshot', {})
+			.reply(200, successRes);
 
 		const dmm = new DeviceMonitoringManagement(nockOpts);
 
@@ -81,14 +82,15 @@ describe('DeviceMonitoringManagement', () => {
 			to: new Date('2018-08-20'),
 		};
 		const filterUri = 'from=2018-08-16T00%3A00%3A00.000Z&to=2018-08-20T00%3A00%3A00.000Z';
-		nock(
-			nockOpts.url, {
-				reqheaders: {
-					'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-				},
-			})
-			.get('/v1/device/someUid/hourly-connected-status').reply(200, hsResp)
-			.get('/v1/device/someUid/hourly-connected-status?' + filterUri).reply(200, hsResp);
+		nock(nockOpts.url, {
+			reqheaders: {
+				'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+			},
+		})
+			.get('/v1/device/someUid/hourly-connected-status')
+			.reply(200, hsResp)
+			.get('/v1/device/someUid/hourly-connected-status?' + filterUri)
+			.reply(200, hsResp);
 
 		const dmm = new DeviceMonitoringManagement(nockOpts);
 
@@ -127,14 +129,15 @@ describe('DeviceMonitoringManagement', () => {
 			createdUntil: new Date('2018-08-20'),
 		};
 		const reportFilterUri = 'createdSince=2018-08-16T00%3A00%3A00.000Z&createdUntil=2018-08-20T00%3A00%3A00.000Z';
-		nock(
-			nockOpts.url, {
-				reqheaders: {
-					'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-				},
-			})
-			.get('/v1/device/someUid/temperature').reply(200, tempResp)
-			.get('/v1/device/someUid/temperature?' + reportFilterUri).reply(200, tempResp);
+		nock(nockOpts.url, {
+			reqheaders: {
+				'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+			},
+		})
+			.get('/v1/device/someUid/temperature')
+			.reply(200, tempResp)
+			.get('/v1/device/someUid/temperature?' + reportFilterUri)
+			.reply(200, tempResp);
 
 		const dmm = new DeviceMonitoringManagement(nockOpts);
 
@@ -160,24 +163,24 @@ describe('DeviceMonitoringManagement', () => {
 
 	describe('storage status', () => {
 		const storageResp: IStorageStatus = {
-			'internal': {
-				'capacity': 4780195840,
-				'freeSpace': 2758709248,
+			internal: {
+				capacity: 4780195840,
+				freeSpace: 2758709248,
 			},
-			'removable': {
-				'capacity': 0,
-				'freeSpace': 0,
+			removable: {
+				capacity: 0,
+				freeSpace: 0,
 			},
-			'updatedAt': new Date('2018-09-07T11:41:28.573Z'),
+			updatedAt: new Date('2018-09-07T11:41:28.573Z'),
 		};
 
-		nock(
-			nockOpts.url, {
-				reqheaders: {
-					'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-				},
-			})
-			.get('/v1/device/someUid/storage').reply(200, storageResp);
+		nock(nockOpts.url, {
+			reqheaders: {
+				'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+			},
+		})
+			.get('/v1/device/someUid/storage')
+			.reply(200, storageResp);
 
 		const dmm = new DeviceMonitoringManagement(nockOpts);
 
@@ -203,14 +206,15 @@ describe('DeviceMonitoringManagement', () => {
 			createdUntil: new Date('2018-08-20'),
 		};
 		const filterUri = 'createdSince=2018-08-16T00%3A00%3A00.000Z&createdUntil=2018-08-20T00%3A00%3A00.000Z';
-		nock(
-			nockOpts.url, {
-				reqheaders: {
-					'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-				},
-			})
-			.get('/v1/device/someUid/report').reply(200, reportResp)
-			.get('/v1/device/someUid/report?' + filterUri).reply(200, reportResp);
+		nock(nockOpts.url, {
+			reqheaders: {
+				'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+			},
+		})
+			.get('/v1/device/someUid/report')
+			.reply(200, reportResp)
+			.get('/v1/device/someUid/report?' + filterUri)
+			.reply(200, reportResp);
 
 		const dmm = new DeviceMonitoringManagement(nockOpts);
 
@@ -234,5 +238,4 @@ describe('DeviceMonitoringManagement', () => {
 			assertReport(rep[0]);
 		});
 	});
-
 });

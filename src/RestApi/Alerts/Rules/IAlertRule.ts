@@ -1,5 +1,5 @@
-import { AlertType } from "../IAlert";
-import { ResolutionItem } from "../../Device/IDevice";
+import { AlertType } from '../IAlert';
+import { ResolutionItem } from '../../Device/IDevice';
 
 export default interface IAlertRule {
 	alertRuleUid: string;
@@ -24,9 +24,17 @@ export interface IAlertRuleCreatable {
 
 // From common-devices
 export declare const ApplicationTypes: readonly [
-	"sssp", "tizen", "webos", "android", "chrome", "brightsign", "linux", "windows", "default"
+	'sssp',
+	'tizen',
+	'webos',
+	'android',
+	'chrome',
+	'brightsign',
+	'linux',
+	'windows',
+	'default',
 ];
-declare type ApplicationType = typeof ApplicationTypes[number];
+declare type ApplicationType = (typeof ApplicationTypes)[number];
 
 export declare type NumericOperator = '>' | '<' | '<=' | '>=' | '=' | '!=';
 export declare type SemverOperator = NumericOperator;

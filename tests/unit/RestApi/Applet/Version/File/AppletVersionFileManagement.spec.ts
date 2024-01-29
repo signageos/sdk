@@ -13,15 +13,16 @@ import { createReadableStream } from './helper';
 const nockOpts = getNockOpts({});
 
 describe('AppletVersionFileManagement', function () {
-
 	const validGetRespBody = createReadableStream('this is get req test file content');
 	const validGetRespHeaders: nock.HttpHeaders = {
 		'Content-Type': 'valid/content',
 	};
-	const validListResp: IAppletVersionFile[] = [{
-		name: 'testFileName',
-		path: 'test/file/path/testFileName',
-	}];
+	const validListResp: IAppletVersionFile[] = [
+		{
+			name: 'testFileName',
+			path: 'test/file/path/testFileName',
+		},
+	];
 	const validCreateReqBody: Pick<IAppletVersionFileCreatable, 'name' | 'path' | 'type'> & { hash: string } = {
 		name: 'testFileName',
 		path: 'test/file/path/testFileName',
@@ -33,7 +34,7 @@ describe('AppletVersionFileManagement', function () {
 			request: {
 				url: 'http://storage/create',
 				fields: {
-					'Key': 'test/file/path/testFileName',
+					Key: 'test/file/path/testFileName',
 					'Content-Type': 'valid/type',
 					'Content-MD5': 'testMD5',
 				},
@@ -52,7 +53,7 @@ describe('AppletVersionFileManagement', function () {
 			request: {
 				url: 'http://storage/update',
 				fields: {
-					'Key': 'test/file/path/testFileName',
+					Key: 'test/file/path/testFileName',
 					'Content-Type': 'valid/type',
 					'Content-MD5': 'testMD5',
 				},
@@ -63,21 +64,23 @@ describe('AppletVersionFileManagement', function () {
 		},
 	};
 
-	nock(
-		nockOpts.url, {
+	nock(nockOpts.url, {
 		reqheaders: {
-			"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
 		},
 	})
-		.get('/v1/applet/appletUid/version/1.1.0/file/path/testFile').reply(200, validGetRespBody, validGetRespHeaders)
-		.get('/v1/applet/appletUid/version/1.1.0/file').reply(200, validListResp)
-		.post('/v1/applet/appletUid/version/1.1.0/file', validCreateReqBody).reply(200, successCreateRes)
-		.put('/v1/applet/appletUid/version/1.1.0/file/path/testFile', validUpdateReqBody).reply(200, successUpdateRes)
-		.delete('/v1/applet/appletUid/version/1.1.0/file/path/testFile').reply(200);
+		.get('/v1/applet/appletUid/version/1.1.0/file/path/testFile')
+		.reply(200, validGetRespBody, validGetRespHeaders)
+		.get('/v1/applet/appletUid/version/1.1.0/file')
+		.reply(200, validListResp)
+		.post('/v1/applet/appletUid/version/1.1.0/file', validCreateReqBody)
+		.reply(200, successCreateRes)
+		.put('/v1/applet/appletUid/version/1.1.0/file/path/testFile', validUpdateReqBody)
+		.reply(200, successUpdateRes)
+		.delete('/v1/applet/appletUid/version/1.1.0/file/path/testFile')
+		.reply(200);
 
-	nock('http://storage')
-		.post('/create').reply(204)
-		.post('/update').reply(204);
+	nock('http://storage').post('/create').reply(204).post('/update').reply(204);
 
 	const avfm = new AppletVersionFileManagement(nockOpts);
 

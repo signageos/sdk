@@ -3,7 +3,6 @@
  * It provides methods for stopping the server and cleaning the resources.
  */
 export class AppletServer {
-
 	constructor(
 		public readonly processUid: string,
 		public readonly port: number,

@@ -1,9 +1,9 @@
+import chalk from 'chalk';
+import * as cors from 'cors';
 import * as express from 'express';
 import * as http from 'http';
-import * as cors from 'cors';
-import chalk from "chalk";
-import { getAppletPackageArchivePath, getPackagePublicPath } from "../../runtimeFileSystem";
 import { log } from '../../../Console/log';
+import { getAppletPackageArchivePath, getPackagePublicPath } from '../../runtimeFileSystem';
 
 interface IServerOptions {
 	appletUid: string;

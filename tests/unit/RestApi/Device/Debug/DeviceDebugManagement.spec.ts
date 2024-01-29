@@ -8,7 +8,6 @@ import DeviceDebugManagement from '../../../../../src/RestApi/Device/Debug/Devic
 const nockOpts = getNockOpts({});
 
 describe('DeviceDebugManagement', () => {
-
 	const dbg: IDeviceDebug = {
 		uid: 'someUid',
 		deviceUid: '3caXXX589b',
@@ -26,14 +25,15 @@ describe('DeviceDebugManagement', () => {
 
 	const ddm = new DeviceDebugManagement(nockOpts);
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/device/someUid/debug').reply(200, validGetResp)
-		.put('/v1/device/someUid/debug', validSetReq).reply(200, successRes);
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/device/someUid/debug')
+		.reply(200, validGetResp)
+		.put('/v1/device/someUid/debug', validSetReq)
+		.reply(200, successRes);
 
 	describe('get debug settings', () => {
 		it('should parse the response', async () => {

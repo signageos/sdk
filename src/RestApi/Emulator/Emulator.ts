@@ -2,7 +2,6 @@ import { fillDataToEntity } from '../mapper';
 import IEmulator from './IEmulator';
 
 export default class Emulator implements IEmulator {
-
 	// public readonly [P in keyof IEmulator]: IEmulator[P]; // Generalized TS doesn't support
 	public readonly uid: IEmulator['uid'];
 	public readonly duid: IEmulator['duid'];

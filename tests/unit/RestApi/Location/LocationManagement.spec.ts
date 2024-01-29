@@ -7,12 +7,7 @@ import { ILocationCreate, ILocation, ILocationUpdate } from '../../../../src/Res
 import LocationManagement, { LocationResources } from '../../../../src/RestApi/Location/LocationManagement';
 import { Resources } from '../../../../src/RestApi/resources';
 import { parameters } from '../../../../src/parameters';
-import {
-	LOCATION_1,
-	LOCATION_2,
-	LOCATION_CREATE_1,
-	LOCATION_UPDATE_1,
-} from '../../../fixtures/Location/location.fixtures';
+import { LOCATION_1, LOCATION_2, LOCATION_CREATE_1, LOCATION_UPDATE_1 } from '../../../fixtures/Location/location.fixtures';
 import { getNockOpts, nockAuthHeader1 } from '../helper';
 
 const nockOpts = getNockOpts({});
@@ -55,9 +50,7 @@ describe('Unit.RestApi.Location', () => {
 	});
 
 	it('should get one location', async () => {
-		nock(nockOpts.url, nockAuthHeader1)
-			.get(`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}`)
-			.reply(200, validGetResp);
+		nock(nockOpts.url, nockAuthHeader1).get(`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}`).reply(200, validGetResp);
 
 		const location = await locationManagement.get(LOCATION_1.uid);
 
@@ -84,10 +77,7 @@ describe('Unit.RestApi.Location', () => {
 		const attachment = await readFile(`${parameters.paths.rootPath}/tests/assets/image_1.png`);
 
 		nock(nockOpts.url, nockAuthHeader1)
-			.put(
-				`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}/${LocationResources.AddAttachment}`,
-				attachment,
-			)
+			.put(`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}/${LocationResources.AddAttachment}`, attachment)
 			.reply(200);
 
 		await should(locationManagement.addAttachment(LOCATION_1.uid, attachment)).be.fulfilled();
@@ -105,9 +95,7 @@ describe('Unit.RestApi.Location', () => {
 	});
 
 	it('should delete location', async () => {
-		nock(nockOpts.url, nockAuthHeader1)
-			.delete(`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}`)
-			.reply(200);
+		nock(nockOpts.url, nockAuthHeader1).delete(`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}`).reply(200);
 
 		await should(locationManagement.delete(LOCATION_1.uid)).be.fulfilled();
 	});

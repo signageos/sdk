@@ -8,7 +8,6 @@ import IAppletCommand, { IAppletCommandSendable } from '../../../../../src/RestA
 const nockOpts = getNockOpts({});
 
 describe('AppletCommandManagement', () => {
-
 	const cmd: IAppletCommand = {
 		commandPayload: {
 			type: 'Applet.Command',
@@ -34,15 +33,17 @@ describe('AppletCommandManagement', () => {
 		},
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/device/someUid/applet/appletUid/command').reply(200, cmdResp)
-		.get('/v1/device/someUid/applet/appletUid/command/cmdUid').reply(200, cmd)
-		.post('/v1/device/someUid/applet/appletUid/command', sendCmd).reply(200, 'Accepted');
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/device/someUid/applet/appletUid/command')
+		.reply(200, cmdResp)
+		.get('/v1/device/someUid/applet/appletUid/command/cmdUid')
+		.reply(200, cmd)
+		.post('/v1/device/someUid/applet/appletUid/command', sendCmd)
+		.reply(200, 'Accepted');
 
 	const acm = new AppletCommandManagement(nockOpts);
 
@@ -70,5 +71,4 @@ describe('AppletCommandManagement', () => {
 		await acm.send('someUid', 'appletUid', sendCmd);
 		should(true).true();
 	});
-
 });

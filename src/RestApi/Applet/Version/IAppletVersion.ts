@@ -1,4 +1,3 @@
-
 export interface IAppletVersionUpdatable {
 	/** @deprecated used only for old single file applets. No more supported. */
 	binary?: string | NodeJS.ReadableStream;

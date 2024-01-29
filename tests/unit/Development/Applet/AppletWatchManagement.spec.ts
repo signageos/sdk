@@ -7,7 +7,6 @@ import { AppletFilesManagement } from '../../../../src/Development/Applet/Files/
 import { AppletWatcher } from '../../../../src/Development/Applet/Watch/AppletWatcher';
 
 describe('Development.Applet.AppletWatchManagement', function () {
-
 	let watcher: AppletWatcher | null = null;
 
 	const appletFilesManagement = new AppletFilesManagement();
@@ -42,20 +41,11 @@ describe('Development.Applet.AppletWatchManagement', function () {
 
 			// initial
 			await waitUntil(async () => editedFilePaths.length === 3);
-			should(editedFilePaths).eql([
-				'file-1',
-				'dir-1/file-2',
-				'dir-1/dir-2/file-3',
-			]);
+			should(editedFilePaths).eql(['file-1', 'dir-1/file-2', 'dir-1/dir-2/file-3']);
 
 			await fs.writeFile(path.join(applet1Dirname, 'dir-1', 'file-X'), 'test-1');
 			await waitUntil(async () => editedFilePaths.length === 4);
-			should(editedFilePaths).eql([
-				'file-1',
-				'dir-1/file-2',
-				'dir-1/dir-2/file-3',
-				'dir-1/file-X',
-			]);
+			should(editedFilePaths).eql(['file-1', 'dir-1/file-2', 'dir-1/dir-2/file-3', 'dir-1/file-X']);
 		});
 	});
 });

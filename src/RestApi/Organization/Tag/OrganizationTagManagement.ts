@@ -13,11 +13,7 @@ export default class OrganizationTagManagement {
 	}
 
 	public async create(organizationTag: IOrganizationTagCreate) {
-		const { headers } = await postResource(
-			this.options,
-			Resources.OrganizationTag,
-			JSON.stringify(organizationTag),
-		);
+		const { headers } = await postResource(this.options, Resources.OrganizationTag, JSON.stringify(organizationTag));
 		const headerLocation = headers.get('location');
 
 		if (!headerLocation) {

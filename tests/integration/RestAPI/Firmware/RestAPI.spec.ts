@@ -1,7 +1,7 @@
 import * as should from 'should';
 
-import { Api } from "../../../../src";
-import { opts } from "../helper";
+import { Api } from '../../../../src';
+import { opts } from '../helper';
 import IFirmwareVersion from '../../../../src/RestApi/Firmware/Version/IFirmwareVersion';
 import FirmwareVersion from '../../../../src/RestApi/Firmware/Version/FirmwareVersion';
 import { createReadableStream } from '../../../unit/RestApi/Applet/Version/File/helper';
@@ -9,7 +9,6 @@ import { createReadableStream } from '../../../unit/RestApi/Applet/Version/File/
 const api = new Api(opts);
 
 describe('RestAPI - FirmwareVersion', () => {
-
 	const randomString = Math.random().toString(36).substring(7);
 	const firmwareVersion = `04.01.74-${randomString}`;
 
@@ -22,13 +21,11 @@ describe('RestAPI - FirmwareVersion', () => {
 	};
 
 	it('should get the list of existing firmwareVersions', async () => {
-
 		const fwvs = await api.firmwareVersion.list();
 		should(Array.isArray(fwvs)).true();
 		fwvs.forEach((fwv: IFirmwareVersion) => {
 			assertFwv(fwv);
 		});
-
 	});
 
 	it('should create the new firmwareVersion', async () => {
@@ -44,7 +41,5 @@ describe('RestAPI - FirmwareVersion', () => {
 			],
 		});
 		should(true).true();
-
 	});
-
 });

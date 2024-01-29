@@ -1,8 +1,7 @@
-import { fillDataToEntity } from "../../mapper";
-import IDeviceAppVersion from "./IDeviceAppVersion";
+import { fillDataToEntity } from '../../mapper';
+import IDeviceAppVersion from './IDeviceAppVersion';
 
 export default class DeviceAppVersion implements IDeviceAppVersion {
-
 	// public readonly [P in keyof IDeviceAppVersion]: IDeviceAppVersion[P]; // Generalized TS doesn't support
 	public readonly uid: IDeviceAppVersion['uid'];
 	public readonly deviceUid: IDeviceAppVersion['deviceUid'];

@@ -1,6 +1,6 @@
 import IOptions from '../../IOptions';
 import { getResource, parseJSONResponse } from '../../requester';
-import { Resources } from "../../resources";
+import { Resources } from '../../resources';
 import IDevicePolicyStatusFilter from './IDevicePolicyStatusFilter';
 import IDevicePolicyStatus from './IDevicePolicyStatus';
 import DevicePolicyStatus from './DevicePolicyStatus';

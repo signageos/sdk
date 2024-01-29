@@ -3,16 +3,15 @@ import * as path from 'path';
 import * as os from 'os';
 import * as extract from 'extract-zip';
 import * as fs from 'fs-extra';
-import AppletManagementRestApi from "../../../../src/RestApi/Applet/AppletManagement";
-import { AppletManagement } from "../../../../src/Development/Applet/AppletManagement";
-import { DeviceConnectManagement } from "../../../../src/Development/Device/DeviceConnectManagement";
-import RestApi from "../../../../src/RestApi/RestApi";
-import IApplet from "../../../../src/RestApi/Applet/IApplet";
+import AppletManagementRestApi from '../../../../src/RestApi/Applet/AppletManagement';
+import { AppletManagement } from '../../../../src/Development/Applet/AppletManagement';
+import { DeviceConnectManagement } from '../../../../src/Development/Device/DeviceConnectManagement';
+import RestApi from '../../../../src/RestApi/RestApi';
+import IApplet from '../../../../src/RestApi/Applet/IApplet';
 import { AppletHotReload } from '../../../../src/Development/Applet/AppletHotReload';
 import waitUntil from '../../../../src/Timer/waitUntil';
 
 describe('Development.Applet.AppletManagement', function () {
-
 	let deviceUids: string[] = [];
 	let applets: IApplet[] = [];
 	let reloadsCount: number = 0;
@@ -88,19 +87,9 @@ describe('Development.Applet.AppletManagement', function () {
 			await extract(packageArchivePath, { dir: targetDir });
 
 			should(reloadsCount).equal(2);
-			should(await fs.readdir(targetDir)).eql([
-				'dir-1',
-				'file-1',
-				'package.json',
-			]);
-			should(await fs.readdir(path.join(targetDir, 'dir-1'))).eql([
-				'dir-2',
-				'file-2',
-				'file-X',
-			]);
-			should(await fs.readdir(path.join(targetDir, 'dir-1', 'dir-2'))).eql([
-				'file-3',
-			]);
+			should(await fs.readdir(targetDir)).eql(['dir-1', 'file-1', 'package.json']);
+			should(await fs.readdir(path.join(targetDir, 'dir-1'))).eql(['dir-2', 'file-2', 'file-X']);
+			should(await fs.readdir(path.join(targetDir, 'dir-1', 'dir-2'))).eql(['file-3']);
 
 			// second build with file-X update
 			await fs.writeFile(path.join(applet1Dirname, 'dir-1', 'file-X'), 'test-2');
@@ -109,19 +98,9 @@ describe('Development.Applet.AppletManagement', function () {
 			await extract(packageArchivePath, { dir: targetDir });
 
 			should(reloadsCount).equal(3);
-			should(await fs.readdir(targetDir)).eql([
-				'dir-1',
-				'file-1',
-				'package.json',
-			]);
-			should(await fs.readdir(path.join(targetDir, 'dir-1'))).eql([
-				'dir-2',
-				'file-2',
-				'file-X',
-			]);
-			should(await fs.readdir(path.join(targetDir, 'dir-1', 'dir-2'))).eql([
-				'file-3',
-			]);
+			should(await fs.readdir(targetDir)).eql(['dir-1', 'file-1', 'package.json']);
+			should(await fs.readdir(path.join(targetDir, 'dir-1'))).eql(['dir-2', 'file-2', 'file-X']);
+			should(await fs.readdir(path.join(targetDir, 'dir-1', 'dir-2'))).eql(['file-3']);
 
 			// third build with file-X remove
 			await fs.remove(path.join(applet1Dirname, 'dir-1', 'file-X'));
@@ -130,18 +109,9 @@ describe('Development.Applet.AppletManagement', function () {
 			await extract(packageArchivePath, { dir: targetDir });
 
 			should(reloadsCount).equal(4);
-			should(await fs.readdir(targetDir)).eql([
-				'dir-1',
-				'file-1',
-				'package.json',
-			]);
-			should(await fs.readdir(path.join(targetDir, 'dir-1'))).eql([
-				'dir-2',
-				'file-2',
-			]);
-			should(await fs.readdir(path.join(targetDir, 'dir-1', 'dir-2'))).eql([
-				'file-3',
-			]);
+			should(await fs.readdir(targetDir)).eql(['dir-1', 'file-1', 'package.json']);
+			should(await fs.readdir(path.join(targetDir, 'dir-1'))).eql(['dir-2', 'file-2']);
+			should(await fs.readdir(path.join(targetDir, 'dir-1', 'dir-2'))).eql(['file-3']);
 		});
 	});
 });

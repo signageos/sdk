@@ -1,4 +1,3 @@
-
 export interface IDeviceAppletTest {
 	appletUid: string;
 	appletVersion: string;
