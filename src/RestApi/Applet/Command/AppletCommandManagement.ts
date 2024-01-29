@@ -1,19 +1,17 @@
-import { getResource, parseJSONResponse, postResource } from "../../requester";
-import { Resources } from "../../resources";
-import IOptions from "../../IOptions";
-import { RESOURCE as APPLET } from "../AppletManagement";
-import IAppletCommandFilter from "./IAppletCommandFilter";
-import IAppletCommand, { IAppletCommandSendable } from "./IAppletCommand";
-import AppletCommand from "./AppletCommand";
+import { getResource, parseJSONResponse, postResource } from '../../requester';
+import { Resources } from '../../resources';
+import IOptions from '../../IOptions';
+import { RESOURCE as APPLET } from '../AppletManagement';
+import IAppletCommandFilter from './IAppletCommandFilter';
+import IAppletCommand, { IAppletCommandSendable } from './IAppletCommand';
+import AppletCommand from './AppletCommand';
 
 export default class AppletCommandManagement {
-
 	private static getResource(deviceUid: string, appletUid: string): string {
 		return `${Resources.Device}/${deviceUid}/${APPLET}/${appletUid}/command`;
 	}
 
-	constructor(private options: IOptions) {
-	}
+	constructor(private options: IOptions) {}
 
 	public async list(deviceUid: string, appletUid: string, filter: IAppletCommandFilter = {}): Promise<IAppletCommand[]> {
 		const response = await getResource(this.options, AppletCommandManagement.getResource(deviceUid, appletUid), filter);
@@ -32,5 +30,4 @@ export default class AppletCommandManagement {
 	public async send(deviceUid: string, appletUid: string, settings: IAppletCommandSendable): Promise<void> {
 		await postResource(this.options, AppletCommandManagement.getResource(deviceUid, appletUid), JSON.stringify(settings));
 	}
-
 }

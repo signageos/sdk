@@ -1,17 +1,15 @@
 import * as path from 'path';
-import { deleteResource, getResource, parseJSONResponse } from "../requester";
-import IOptions from "../IOptions";
-import IApplet, { IAppletCreatable } from "./IApplet";
-import { postResource } from "../requester";
-import Applet from "./Applet";
-import AppletVersionManagement from "./Version/AppletVersionManagement";
-import AppletCommandManagement from "./Command/AppletCommandManagement";
-import AppletTestSuiteManagement from "./Version/AppletTestSuiteManagement";
+import IOptions from '../IOptions';
+import { deleteResource, getResource, parseJSONResponse, postResource } from '../requester';
+import Applet from './Applet';
+import AppletCommandManagement from './Command/AppletCommandManagement';
+import IApplet, { IAppletCreatable } from './IApplet';
+import AppletTestSuiteManagement from './Version/AppletTestSuiteManagement';
+import AppletVersionManagement from './Version/AppletVersionManagement';
 
 export const RESOURCE: string = 'applet';
 
 export default class AppletManagement {
-
 	public command: AppletCommandManagement;
 	public version: AppletVersionManagement;
 	public tests: AppletTestSuiteManagement;

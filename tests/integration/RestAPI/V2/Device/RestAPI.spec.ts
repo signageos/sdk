@@ -7,7 +7,6 @@ import { opts } from '../../helper';
 const api = createApiV2(opts);
 
 describe('RestAPI - Device', function () {
-
 	it('should get the list of existing devices', async () => {
 		const devices = await api.device.list();
 		should(Array.isArray(devices)).true();

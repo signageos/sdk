@@ -1,4 +1,3 @@
-
 export interface IDeviceRemoteControlUpdatable {
 	enabled: boolean;
 }

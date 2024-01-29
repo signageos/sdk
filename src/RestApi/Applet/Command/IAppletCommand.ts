@@ -1,4 +1,3 @@
-
 export interface ICommandPayload {
 	type: string;
 	[key: string]: any;

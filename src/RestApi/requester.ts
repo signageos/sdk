@@ -1,16 +1,16 @@
-import fetch, { Request, Response, RequestInit, BodyInit } from 'node-fetch';
-import { stringify } from 'querystring';
 import * as Debug from 'debug';
-import IOptions from './IOptions';
-import RequestError from './Error/RequestError';
-import NotFoundError from './Error/NotFoundError';
-import TooMAnyRequestsError from './Error/TooMAnyRequestsError';
-import AuthenticationError from './Error/AuthenticationError';
-import InternalApiError from './Error/InternalApiError';
-import GatewayError from './Error/GatewayError';
-import ResponseBodyFormatError from './Error/ResponseBodyFormatError';
-import { parameters } from '../parameters';
+import fetch, { BodyInit, Request, RequestInit, Response } from 'node-fetch';
+import { stringify } from 'querystring';
 import { deserializeJSON } from '../Utils/json';
+import { parameters } from '../parameters';
+import AuthenticationError from './Error/AuthenticationError';
+import GatewayError from './Error/GatewayError';
+import InternalApiError from './Error/InternalApiError';
+import NotFoundError from './Error/NotFoundError';
+import RequestError from './Error/RequestError';
+import ResponseBodyFormatError from './Error/ResponseBodyFormatError';
+import TooMAnyRequestsError from './Error/TooMAnyRequestsError';
+import IOptions from './IOptions';
 const debug = Debug('@signageos/sdk:RestApi:requester');
 
 async function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options: IOptions, data?: BodyInit | Buffer): Promise<RequestInit> {

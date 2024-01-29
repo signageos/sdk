@@ -1,7 +1,7 @@
 import { pick } from 'lodash';
 
 import { getResource, postResource, deleteResource, parseJSONResponse } from '../../requester';
-import { Resources } from "../../resources";
+import { Resources } from '../../resources';
 import IOptions from '../../IOptions';
 import { IDevicePolicyRaw, IDevicePolicyAssignable } from './IDevicePolicy';
 import DevicePolicy from './DevicePolicy';

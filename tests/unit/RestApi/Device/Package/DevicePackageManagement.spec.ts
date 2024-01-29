@@ -8,7 +8,6 @@ import DevicePackageManagement from '../../../../../src/RestApi/Device/Package/D
 const nockOpts = getNockOpts({});
 
 describe('DevicePackageManagement', () => {
-
 	const dPkg: IDevicePackage = {
 		uid: 'someUid',
 		deviceUid: '3caXXX589b',
@@ -27,16 +26,19 @@ describe('DevicePackageManagement', () => {
 		build: '320206650',
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/device/someUid/package-install').reply(200, validGetResp)
-		.get('/v1/device/shouldFail/package-install').reply(500, errorResp)
-		.put('/v1/device/someUid/package-install', validSetReq).reply(200, successRes)
-		.put('/v1/device/shouldFail/package-install', validSetReq).reply(500, errorResp);
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/device/someUid/package-install')
+		.reply(200, validGetResp)
+		.get('/v1/device/shouldFail/package-install')
+		.reply(500, errorResp)
+		.put('/v1/device/someUid/package-install', validSetReq)
+		.reply(200, successRes)
+		.put('/v1/device/shouldFail/package-install', validSetReq)
+		.reply(500, errorResp);
 
 	const dpm = new DevicePackageManagement(nockOpts);
 

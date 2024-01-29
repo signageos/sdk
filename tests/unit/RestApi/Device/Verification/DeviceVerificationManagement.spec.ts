@@ -2,17 +2,14 @@ import * as should from 'should';
 import * as nock from 'nock';
 
 import { getNockOpts, successRes } from '../../helper';
-import IDeviceVerification, {
-	IDeviceVerificationUpdatable,
-} from '../../../../../src/RestApi/Device/Verification/IDeviceVerification';
+import IDeviceVerification, { IDeviceVerificationUpdatable } from '../../../../../src/RestApi/Device/Verification/IDeviceVerification';
 import DeviceVerificationManagement from '../../../../../src/RestApi/Device/Verification/DeviceVerificationManagement';
 
 const nockOpts = getNockOpts({});
 
 describe('DeviceVerificationManagement', () => {
-
 	const validPostRespHeaders: nock.HttpHeaders = {
-		'Location': 'https://example.com/v1/device/verification/someUid',
+		Location: 'https://example.com/v1/device/verification/someUid',
 	};
 	const validGetResp: IDeviceVerification = {
 		uid: 'someUid',
@@ -30,19 +27,19 @@ describe('DeviceVerificationManagement', () => {
 
 	const dvm = new DeviceVerificationManagement(nockOpts);
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/device/verification/someUid').reply(200, validGetResp)
-		.post('/v1/device/verification', validSetReq).reply(200, successRes, validPostRespHeaders)
-		.get('/v1/device/verification/someUid').reply(200, validGetResp)
-		.post('/v1/device/verification', invalidSetReq).reply(
-			404,
-			{ message: "Device verification was not found by hash cc5d2c: undefined", "data": {}},
-		);
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/device/verification/someUid')
+		.reply(200, validGetResp)
+		.post('/v1/device/verification', validSetReq)
+		.reply(200, successRes, validPostRespHeaders)
+		.get('/v1/device/verification/someUid')
+		.reply(200, validGetResp)
+		.post('/v1/device/verification', invalidSetReq)
+		.reply(404, { message: 'Device verification was not found by hash cc5d2c: undefined', data: {} });
 
 	describe('get device verification', () => {
 		it('should parse the response', async () => {

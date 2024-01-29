@@ -1,17 +1,15 @@
-import { getResource, parseJSONResponse, putResource } from "../../requester";
-import { Resources } from "../../resources";
-import IDeviceAudio, { IDeviceAudioUpdatable } from "./IDeviceAudio";
-import DeviceVolume from "./DeviceAudio";
-import IOptions from "../../IOptions";
+import { getResource, parseJSONResponse, putResource } from '../../requester';
+import { Resources } from '../../resources';
+import IDeviceAudio, { IDeviceAudioUpdatable } from './IDeviceAudio';
+import DeviceVolume from './DeviceAudio';
+import IOptions from '../../IOptions';
 
 export default class DeviceAudioManagement {
-
 	private static getUrl(deviceUid: string): string {
 		return `${Resources.Device}/${deviceUid}/volume`;
 	}
 
-	constructor(private options: IOptions) {
-	}
+	constructor(private options: IOptions) {}
 
 	public async list(deviceUid: string): Promise<IDeviceAudio[]> {
 		const response = await getResource(this.options, DeviceAudioManagement.getUrl(deviceUid));
@@ -23,5 +21,4 @@ export default class DeviceAudioManagement {
 	public async set(deviceUid: string, settings: IDeviceAudioUpdatable): Promise<void> {
 		await putResource(this.options, DeviceAudioManagement.getUrl(deviceUid), JSON.stringify(settings));
 	}
-
 }

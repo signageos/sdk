@@ -19,9 +19,7 @@ const organizationTagCreate = {
 describe('Unit.RestApi.Location.Tag.LocationOrganizationTag', () => {
 	it('should assign organization tag to location', async () => {
 		nock(nockOpts.url, nockAuthHeader1)
-			.put(
-				`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}/${Resources.OrganizationTag}/${organizationTagCreate.uid}`,
-			)
+			.put(`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}/${Resources.OrganizationTag}/${organizationTagCreate.uid}`)
 			.reply(200, { ...LOCATION_1, tagUids: [organizationTagCreate.uid] });
 
 		await should(locationOrganizationTag.assign(LOCATION_1.uid, organizationTagCreate.uid)).be.fulfilled();
@@ -29,9 +27,7 @@ describe('Unit.RestApi.Location.Tag.LocationOrganizationTag', () => {
 
 	it('should unassign organization tag from location', async () => {
 		nock(nockOpts.url, nockAuthHeader1)
-			.delete(
-				`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_3.uid}/${Resources.OrganizationTag}/${organizationTagCreate.uid}`,
-			)
+			.delete(`/${ApiVersions.V1}/${Resources.Location}/${LOCATION_3.uid}/${Resources.OrganizationTag}/${organizationTagCreate.uid}`)
 			.reply(200);
 
 		await should(locationOrganizationTag.unassign(LOCATION_3.uid, organizationTagCreate.uid)).be.fulfilled();

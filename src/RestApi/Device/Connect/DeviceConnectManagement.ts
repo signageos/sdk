@@ -14,7 +14,6 @@ enum OperationType {
  * So it can be easily developed and tested according to locally built applet.
  */
 export default class DeviceConnectManagement {
-
 	private static getUrl(deviceUid: string, operationType: OperationType): string {
 		return `${Resources.Device}/${deviceUid}/${operationType}`;
 	}
@@ -25,15 +24,8 @@ export default class DeviceConnectManagement {
 	 * Connects device with a local developed applet.
 	 * The device will be in the development state until it is disconnected.
 	 */
-	public async connect(
-		deviceUid: string,
-		options: IDeviceConnectCreatable,
-	) {
-		await postResource(
-			this.options,
-			DeviceConnectManagement.getUrl(deviceUid, OperationType.Connect),
-			JSON.stringify(options),
-		);
+	public async connect(deviceUid: string, options: IDeviceConnectCreatable) {
+		await postResource(this.options, DeviceConnectManagement.getUrl(deviceUid, OperationType.Connect), JSON.stringify(options));
 	}
 
 	/**
@@ -41,10 +33,6 @@ export default class DeviceConnectManagement {
 	 * It returns the device to the production state it was before the connection.
 	 */
 	public async disconnect(deviceUid: string) {
-		await postResource(
-			this.options,
-			DeviceConnectManagement.getUrl(deviceUid, OperationType.Disconnect),
-			JSON.stringify({}),
-		);
+		await postResource(this.options, DeviceConnectManagement.getUrl(deviceUid, OperationType.Disconnect), JSON.stringify({}));
 	}
 }

@@ -1,8 +1,8 @@
 import * as should from 'should';
 
-import { Api } from "../../../../src";
+import { Api } from '../../../../src';
 import Emulator from '../../../../src/RestApi/Emulator/Emulator';
-import { opts } from "../helper";
+import { opts } from '../helper';
 
 const api = new Api(opts);
 

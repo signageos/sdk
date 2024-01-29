@@ -1,14 +1,13 @@
-import IOptions from "../IOptions";
-import AlertRulesManagement from "./Rules/AlertRulesManagement";
-import IAlert, { AlertSnooze, IAlertCreatable } from "./IAlert";
-import { getResource, parseJSONResponse, postResource, putResource } from "../requester";
-import Alert from "./Alert";
-import IAlertFilter from "./IAlertFilter";
+import IOptions from '../IOptions';
+import AlertRulesManagement from './Rules/AlertRulesManagement';
+import IAlert, { AlertSnooze, IAlertCreatable } from './IAlert';
+import { getResource, parseJSONResponse, postResource, putResource } from '../requester';
+import Alert from './Alert';
+import IAlertFilter from './IAlertFilter';
 
 export const RESOURCE: string = 'alert';
 
 export default class AlertManagement {
-
 	public rules: AlertRulesManagement;
 
 	constructor(private options: IOptions) {

@@ -1,13 +1,11 @@
-import { getResource, parseJSONResponse, putResource } from "../../requester";
-import IOptions from "../../IOptions";
-import { Resources } from "../../resources";
-import DeviceAppVersion from "./DeviceAppVersion";
-import IDeviceAppVersion, { IDeviceAppVersionUpdatable } from "./IDeviceAppVersion";
+import { getResource, parseJSONResponse, putResource } from '../../requester';
+import IOptions from '../../IOptions';
+import { Resources } from '../../resources';
+import DeviceAppVersion from './DeviceAppVersion';
+import IDeviceAppVersion, { IDeviceAppVersionUpdatable } from './IDeviceAppVersion';
 
 export default class DeviceAppVersionManagement {
-
-	constructor(private options: IOptions) {
-	}
+	constructor(private options: IOptions) {}
 
 	public async get(deviceUid: string): Promise<IDeviceAppVersion> {
 		const urlParts = [Resources.Device, deviceUid, 'application', 'version'];
@@ -19,5 +17,4 @@ export default class DeviceAppVersionManagement {
 		const urlParts = [Resources.Device, deviceUid, 'application', settings.applicationType, 'version'];
 		await putResource(this.options, urlParts.join('/'), JSON.stringify(settings));
 	}
-
 }

@@ -1,8 +1,7 @@
-import { fillDataToEntity } from "../../../mapper";
-import ITemperature from "./ITemperature";
+import { fillDataToEntity } from '../../../mapper';
+import ITemperature from './ITemperature';
 
 export default class Temperature implements ITemperature {
-
 	// public readonly [P in keyof ITemperature]: ITemperature[P]; // Generalized TS doesn't support
 	public readonly uid: ITemperature['uid'];
 	public readonly deviceUid: ITemperature['deviceUid'];

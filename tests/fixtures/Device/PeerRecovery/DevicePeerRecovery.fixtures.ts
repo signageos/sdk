@@ -1,6 +1,9 @@
 import { random } from 'faker';
 
-import { IDevicePeerRecoveryEnabledUpdatable, IDevicePeerRecoveryDisabledUpdatable } from '../../../../src/RestApi/Device/PeerRecovery/DevicePeerRecovery';
+import {
+	IDevicePeerRecoveryEnabledUpdatable,
+	IDevicePeerRecoveryDisabledUpdatable,
+} from '../../../../src/RestApi/Device/PeerRecovery/DevicePeerRecovery';
 import { DEVICE_1 } from '../Device.fixtures';
 
 export const PEER_RECOVERY_1: IDevicePeerRecoveryEnabledUpdatable = {

@@ -9,7 +9,10 @@ import IDevice from '../Device/IDevice';
 export default class EmulatorManagement {
 	public static readonly RESOURCE: string = 'emulator';
 
-	constructor(private options: IOptions, private deviceManagement: DeviceManagement) {}
+	constructor(
+		private options: IOptions,
+		private deviceManagement: DeviceManagement,
+	) {}
 
 	public async list(filter?: IEmulatorFilter) {
 		const response = await getResource(this.options, EmulatorManagement.RESOURCE, filter);
@@ -28,7 +31,7 @@ export default class EmulatorManagement {
 		return await this.deviceManagement.get(deviceUid);
 	}
 
-	public async createWithoutProvision(settings: IEmulatorCreatable): Promise<{ device: IDevice, verificationHash: string }> {
+	public async createWithoutProvision(settings: IEmulatorCreatable): Promise<{ device: IDevice; verificationHash: string }> {
 		const response = await postResource(this.options, EmulatorManagement.RESOURCE, JSON.stringify(settings));
 		const headerLocation = response.headers.get('location');
 		const body = await response.json();

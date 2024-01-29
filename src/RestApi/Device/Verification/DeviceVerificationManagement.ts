@@ -1,14 +1,12 @@
-import { getResource, parseJSONResponse, postResource } from "../../requester";
-import IOptions from "../../IOptions";
-import DeviceVerification from "./DeviceVerification";
-import IDeviceVerification, { IDeviceVerificationUpdatable } from "./IDeviceVerification";
+import { getResource, parseJSONResponse, postResource } from '../../requester';
+import IOptions from '../../IOptions';
+import DeviceVerification from './DeviceVerification';
+import IDeviceVerification, { IDeviceVerificationUpdatable } from './IDeviceVerification';
 
 const RESOURCE: string = `device/verification`;
 
 export default class DeviceVerificationManagement {
-
-	constructor(private options: IOptions) {
-	}
+	constructor(private options: IOptions) {}
 
 	public async get(deviceVerificationUid: string): Promise<IDeviceVerification> {
 		const response = await getResource(this.options, `${RESOURCE}/${deviceVerificationUid}`);
@@ -28,5 +26,4 @@ export default class DeviceVerificationManagement {
 		const organizationUid = locationParts[locationParts.length - 1];
 		return await this.get(organizationUid);
 	}
-
 }

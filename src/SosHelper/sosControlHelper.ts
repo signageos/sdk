@@ -58,10 +58,7 @@ export async function loadConfig(options?: IConfigOptions): Promise<ISafeConfig>
 
 	// Temporary suggestion to login getting faster token
 	if (config.identification && !config.identification.match(/[0-9a-f]{20,20}/)) {
-		log(
-			'warning',
-			`Your authentication token is outdated. Please do the ${chalk.green('sos login')} again.`,
-		);
+		log('warning', `Your authentication token is outdated. Please do the ${chalk.green('sos login')} again.`);
 		log('info', 'After the log in, commands are becoming almost 10x faster.');
 	}
 

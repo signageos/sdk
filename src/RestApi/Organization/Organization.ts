@@ -1,10 +1,9 @@
-import { fillDataToEntity } from "../mapper";
-import IOrganization from "./IOrganization";
-import RestApi from "../RestApi";
+import { fillDataToEntity } from '../mapper';
+import IOrganization from './IOrganization';
+import RestApi from '../RestApi';
 import IOptions from '../IOptions';
 
 export default class Organization implements IOrganization {
-
 	// public readonly [P in keyof IOrganization]: IOrganization[P]; // Generalized TS doesn't support
 	public readonly uid: IOrganization['uid'];
 	public readonly name: IOrganization['name'];
@@ -13,7 +12,10 @@ export default class Organization implements IOrganization {
 	public readonly oauthClientSecret: IOrganization['oauthClientSecret'];
 	public readonly createdAt: IOrganization['createdAt'];
 
-	constructor(data: IOrganization, private options: IOptions) {
+	constructor(
+		data: IOrganization,
+		private options: IOptions,
+	) {
 		fillDataToEntity(this, data);
 	}
 

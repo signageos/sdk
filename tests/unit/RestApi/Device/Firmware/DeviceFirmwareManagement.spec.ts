@@ -9,7 +9,6 @@ import IDeviceFirmware, { IDeviceFirmwareUpdatable } from '../../../../../src/Re
 const nockOpts = getNockOpts({});
 
 describe('DeviceFirmwareManagement', () => {
-
 	const validGetResp: IDeviceFirmware = {
 		uid: 'someUid',
 		deviceUid: '3caXXX589b',
@@ -24,19 +23,20 @@ describe('DeviceFirmwareManagement', () => {
 		requestUid: '5b911d55d5b0cc001820f001',
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/device/someUid/firmware').reply(200, validGetResp)
-		.put('/v1/device/someUid/firmware', validSetReq).reply(200, validSetResp);
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/device/someUid/firmware')
+		.reply(200, validGetResp)
+		.put('/v1/device/someUid/firmware', validSetReq)
+		.reply(200, validSetResp);
 
 	const dfm = new DeviceFirmwareManagement(nockOpts);
 
 	it('get the device firmware', async () => {
-		const fw = await dfm.get('someUid', );
+		const fw = await dfm.get('someUid');
 		should.equal(validGetResp.uid, fw.uid);
 		should.equal(validGetResp.version, fw.version);
 		should.equal(validGetResp.deviceUid, fw.deviceUid);

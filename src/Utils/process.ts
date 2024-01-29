@@ -2,7 +2,7 @@ import * as Debug from 'debug';
 const debug = Debug('@signageos/sdk:Utils:process');
 
 export function killGracefullyWithTimeoutSigKill(
-	killable: { kill: (signal: NodeJS.Signals) => boolean; once: (event: 'close', listener: () => void) => void},
+	killable: { kill: (signal: NodeJS.Signals) => boolean; once: (event: 'close', listener: () => void) => void },
 	timeoutMs: number,
 ): Promise<boolean> {
 	return new Promise<boolean>((resolve: (wasClosed: boolean) => void) => {
@@ -14,14 +14,11 @@ export function killGracefullyWithTimeoutSigKill(
 			return;
 		}
 
-		const killTimeout = setTimeout(
-			() => {
-				debug('Killing process with SIGKILL');
-				const killed = killable.kill('SIGKILL');
-				debug('Killed', killed);
-			},
-			timeoutMs,
-		);
+		const killTimeout = setTimeout(() => {
+			debug('Killing process with SIGKILL');
+			const killed = killable.kill('SIGKILL');
+			debug('Killed', killed);
+		}, timeoutMs);
 		killable.once('close', () => {
 			debug('Process closed');
 			clearTimeout(killTimeout);

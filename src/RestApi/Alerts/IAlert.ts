@@ -1,4 +1,3 @@
-
 export default interface IAlert {
 	alertUid: string;
 	organizationUid: string;

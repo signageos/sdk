@@ -32,7 +32,6 @@ import DeviceConfigurationManagement from './Configuration/DeviceConfigurationMa
 import DeviceConnectManagement from './Connect/DeviceConnectManagement';
 
 export default class DeviceManagement {
-
 	public appVersion: DeviceAppVersionManagement;
 	public audio: DeviceAudioManagement;
 	public authentication: DeviceAuthenticationManagement;
@@ -60,7 +59,10 @@ export default class DeviceManagement {
 	public configuration: DeviceConfigurationManagement;
 	public connect: DeviceConnectManagement;
 
-	constructor(private accountOptions: IOptions, private organizationOptions: IOptions) {
+	constructor(
+		private accountOptions: IOptions,
+		private organizationOptions: IOptions,
+	) {
 		this.appVersion = new DeviceAppVersionManagement(organizationOptions);
 		this.audio = new DeviceAudioManagement(organizationOptions);
 		this.authentication = new DeviceAuthenticationManagement(organizationOptions);
@@ -124,5 +126,4 @@ export default class DeviceManagement {
 			await putResource(this.accountOptions, `${Resources.Device}/${deviceUid}/organization`, JSON.stringify(settings));
 		}
 	}
-
 }

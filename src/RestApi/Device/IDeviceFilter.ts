@@ -1,4 +1,3 @@
-
 interface IDeviceFilter {
 	applicationType?: string;
 	search?: string;

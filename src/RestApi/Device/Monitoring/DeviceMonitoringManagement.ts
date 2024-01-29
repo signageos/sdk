@@ -1,26 +1,24 @@
-import { getResource, parseJSONResponse, postResource } from "../../requester";
-import { Resources } from "../../resources";
-import IOptions from "../../IOptions";
-import IReportFile from "./ReportFile/IReportFile";
-import ReportFile from "./ReportFile/ReportFile";
-import IStorageStatus from "./Storage/IStorageStatus";
-import StorageStatus from "./Storage/StorageStatus";
-import ITemperature from "./Temperature/ITemperature";
-import Temperature from "./Temperature/Temperature";
-import IHourlyStatus from "./HourlyStatus/IHourlyStatus";
-import HourlyStatus from "./HourlyStatus/HourlyStatus";
-import { ICreatedDateRangeFilter, IDateRangeFilter, ITakenDateRangeFilter } from "./ICreatedDateRangeFilter";
-import IScreenshot from "./Screenshot/IScreenshot";
-import Screenshot from "./Screenshot/Screenshot";
+import { getResource, parseJSONResponse, postResource } from '../../requester';
+import { Resources } from '../../resources';
+import IOptions from '../../IOptions';
+import IReportFile from './ReportFile/IReportFile';
+import ReportFile from './ReportFile/ReportFile';
+import IStorageStatus from './Storage/IStorageStatus';
+import StorageStatus from './Storage/StorageStatus';
+import ITemperature from './Temperature/ITemperature';
+import Temperature from './Temperature/Temperature';
+import IHourlyStatus from './HourlyStatus/IHourlyStatus';
+import HourlyStatus from './HourlyStatus/HourlyStatus';
+import { ICreatedDateRangeFilter, IDateRangeFilter, ITakenDateRangeFilter } from './ICreatedDateRangeFilter';
+import IScreenshot from './Screenshot/IScreenshot';
+import Screenshot from './Screenshot/Screenshot';
 
 export default class DeviceMonitoringManagement {
-
 	private static getUrl(deviceUid: string, resource: string): string {
 		return `${Resources.Device}/${deviceUid}/${resource}`;
 	}
 
-	constructor(private options: IOptions) {
-	}
+	constructor(private options: IOptions) {}
 
 	public async takeScreenshot(deviceUid: string): Promise<void> {
 		await postResource(this.options, DeviceMonitoringManagement.getUrl(deviceUid, 'screenshot'), JSON.stringify({}));
@@ -59,5 +57,4 @@ export default class DeviceMonitoringManagement {
 
 		return data.map((item: IReportFile) => new ReportFile(item));
 	}
-
 }

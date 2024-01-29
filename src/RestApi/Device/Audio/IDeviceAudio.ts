@@ -1,4 +1,3 @@
-
 export interface IDeviceAudioUpdatable {
 	volume: number;
 }

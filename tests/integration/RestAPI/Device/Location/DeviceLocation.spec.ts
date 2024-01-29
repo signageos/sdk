@@ -9,7 +9,6 @@ import { opts } from '../../helper';
 const api = new Api(opts);
 
 describe('Integration.RestAPI.Device.Location.DeviceLocation', async () => {
-
 	it('should assign and unassign location to and from device', async function () {
 		const createdLocation = await handleCreateLocation(api, {
 			location: LOCATION_CREATE_1,

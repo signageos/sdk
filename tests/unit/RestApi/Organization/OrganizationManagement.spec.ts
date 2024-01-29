@@ -8,17 +8,16 @@ import OrganizationManagement from '../../../../src/RestApi/Organization/Organiz
 const nockOpts = getNockOpts({});
 
 describe('OrganizationManagement', () => {
-
 	const validPostRespHeaders: nock.HttpHeaders = {
-		'Location': 'https://example.com/v1/organization/someUid',
+		Location: 'https://example.com/v1/organization/someUid',
 	};
 	const organization: IOrganization = {
-		'uid': 'someUid',
-		'name': 'signageos',
-		'title': 'signageOS.io',
-		'oauthClientId': '12a15XXX612d',
-		'oauthClientSecret': '2e2201XXX77745',
-		'createdAt': new Date('2017-05-24T08:56:52.550Z'),
+		uid: 'someUid',
+		name: 'signageos',
+		title: 'signageOS.io',
+		oauthClientId: '12a15XXX612d',
+		oauthClientSecret: '2e2201XXX77745',
+		createdAt: new Date('2017-05-24T08:56:52.550Z'),
 	};
 
 	const validGetResp: IOrganization = organization;
@@ -33,14 +32,22 @@ describe('OrganizationManagement', () => {
 	};
 
 	nock(nockOpts.url, nockAuthHeader1)
-		.get('/v1/organization').reply(200, validListResp)
-		.get('/v1/organization/someUid').reply(200, validGetResp)
-		.get('/v1/organization/someUid?name=signageos').reply(200, validGetResp)
-		.post('/v1/organization', validCreateReq).reply(200, 'Created', validPostRespHeaders)
-		.get('/v1/organization/someUid').reply(200, validGetResp)
-		.put('/v1/organization/someUid/subscriptionType/medium').reply(200, '')
-		.delete('/v1/organization/someUid').reply(200, '')
-		.put('/v1/organization/someUid', validUpdateReqBody).reply(200, '');
+		.get('/v1/organization')
+		.reply(200, validListResp)
+		.get('/v1/organization/someUid')
+		.reply(200, validGetResp)
+		.get('/v1/organization/someUid?name=signageos')
+		.reply(200, validGetResp)
+		.post('/v1/organization', validCreateReq)
+		.reply(200, 'Created', validPostRespHeaders)
+		.get('/v1/organization/someUid')
+		.reply(200, validGetResp)
+		.put('/v1/organization/someUid/subscriptionType/medium')
+		.reply(200, '')
+		.delete('/v1/organization/someUid')
+		.reply(200, '')
+		.put('/v1/organization/someUid', validUpdateReqBody)
+		.reply(200, '');
 
 	const om = new OrganizationManagement(nockOpts);
 	const assertOrg = (org: IOrganization) => {
@@ -64,7 +71,7 @@ describe('OrganizationManagement', () => {
 	});
 
 	it('should get the organization with filter', async () => {
-		const org = await om.get('someUid', {name : 'signageos'});
+		const org = await om.get('someUid', { name: 'signageos' });
 		assertOrg(org);
 	});
 

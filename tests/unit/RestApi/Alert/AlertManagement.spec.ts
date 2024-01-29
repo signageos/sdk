@@ -7,8 +7,7 @@ import AlertManagement from '../../../../src/RestApi/Alerts/AlertManagement';
 
 const nockOpts = getNockOpts({});
 
-describe("AlertManagement", () => {
-
+describe('AlertManagement', () => {
 	const getLocationHeader = (alertUid: string): nock.HttpHeaders => ({
 		Location: `${nockOpts.url}/${nockOpts.version}/alert/${alertUid}`,
 	});
@@ -52,12 +51,11 @@ describe("AlertManagement", () => {
 		},
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
 		.get('/v1/alert')
 		.reply(200, [validAlertObject])
 		.get('/v1/alert?archived=true')
@@ -109,7 +107,7 @@ describe("AlertManagement", () => {
 		assertAlert(alertObject, validAlertObject);
 	});
 
-	it ('should update description of the alert', async () => {
+	it('should update description of the alert', async () => {
 		await should(alertManagement.updateDescription('someAlertUid', 'someNewDescription')).be.fulfilled();
 	});
 
@@ -128,5 +126,4 @@ describe("AlertManagement", () => {
 	it('should unsnooze alert', async () => {
 		await should(alertManagement.unsnooze('someAlertUid')).be.fulfilled();
 	});
-
 });

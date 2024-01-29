@@ -2,10 +2,7 @@ import * as should from 'should';
 import * as nock from 'nock';
 
 import { getNockOpts, nockAuthHeader1, successRes } from '../../helper';
-import IDevicePolicy, {
-	IDevicePolicyRaw,
-	IDevicePolicyAssignable,
-} from '../../../../../src/RestApi/Device/Policy/IDevicePolicy';
+import IDevicePolicy, { IDevicePolicyRaw, IDevicePolicyAssignable } from '../../../../../src/RestApi/Device/Policy/IDevicePolicy';
 import DevicePolicyManagement from '../../../../../src/RestApi/Device/Policy/DevicePolicyManagement';
 
 const nockOpts = getNockOpts({});

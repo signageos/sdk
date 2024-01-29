@@ -1,19 +1,17 @@
-import { getResource, parseJSONResponse, putResource } from "../../requester";
-import { Resources } from "../../resources";
-import IDeviceFirmware, { IDeviceFirmwareUpdatable } from "./IDeviceFirmware";
-import DeviceFirmware from "./DeviceFirmware";
-import IOptions from "../../IOptions";
-import DeviceChangeResponse from "../DeviceChangeResponse";
-import IDeviceChangeResponse from "../IDeviceChangeResponse";
+import { getResource, parseJSONResponse, putResource } from '../../requester';
+import { Resources } from '../../resources';
+import IDeviceFirmware, { IDeviceFirmwareUpdatable } from './IDeviceFirmware';
+import DeviceFirmware from './DeviceFirmware';
+import IOptions from '../../IOptions';
+import DeviceChangeResponse from '../DeviceChangeResponse';
+import IDeviceChangeResponse from '../IDeviceChangeResponse';
 
 export default class DeviceFirmwareManagement {
-
 	private static getUrl(deviceUid: string): string {
 		return `${Resources.Device}/${deviceUid}/firmware`;
 	}
 
-	constructor(private options: IOptions) {
-	}
+	constructor(private options: IOptions) {}
 
 	public async get(deviceUid: string): Promise<IDeviceFirmware> {
 		const response = await getResource(this.options, DeviceFirmwareManagement.getUrl(deviceUid));
@@ -26,5 +24,4 @@ export default class DeviceFirmwareManagement {
 
 		return new DeviceChangeResponse(await parseJSONResponse(response));
 	}
-
 }

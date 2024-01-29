@@ -5,10 +5,7 @@ import { ApiVersions } from '../../../../../src/RestApi/apiVersions';
 import OrganizationTagManagement from '../../../../../src/RestApi/Organization/Tag/OrganizationTagManagement';
 import IOrganizationTag from '../../../../../src/RestApi/Organization/Tag/OrganizationTag';
 import { Resources } from '../../../../../src/RestApi/resources';
-import {
-	ORGANIZATION_TAG_1,
-	ORGANIZATION_TAG_UPDATE_1,
-} from './OrganizationTag.fixtures';
+import { ORGANIZATION_TAG_1, ORGANIZATION_TAG_UPDATE_1 } from './OrganizationTag.fixtures';
 import { getNockOpts, nockAuthHeader1 } from '../../helper';
 
 const nockOpts = getNockOpts({});
@@ -54,15 +51,11 @@ describe('Unit.RestApi.Organization.Tag.OrganizationTag', () => {
 			.put(`/${ApiVersions.V1}/${Resources.OrganizationTag}/${ORGANIZATION_TAG_1.uid}`)
 			.reply(200, ORGANIZATION_TAG_1);
 
-		await should(
-			organizationTagManagement.update(ORGANIZATION_TAG_1.uid, ORGANIZATION_TAG_UPDATE_1),
-		).be.fulfilled();
+		await should(organizationTagManagement.update(ORGANIZATION_TAG_1.uid, ORGANIZATION_TAG_UPDATE_1)).be.fulfilled();
 	});
 
 	it('should delete organization tag', async () => {
-		nock(nockOpts.url, nockAuthHeader1)
-			.delete(`/${ApiVersions.V1}/${Resources.OrganizationTag}/${ORGANIZATION_TAG_1.uid}`)
-			.reply(200);
+		nock(nockOpts.url, nockAuthHeader1).delete(`/${ApiVersions.V1}/${Resources.OrganizationTag}/${ORGANIZATION_TAG_1.uid}`).reply(200);
 
 		await should(organizationTagManagement.delete(ORGANIZATION_TAG_1.uid)).be.fulfilled();
 	});

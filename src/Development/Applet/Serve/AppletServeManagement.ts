@@ -1,14 +1,14 @@
-import * as http from 'http';
-import * as path from 'path';
-import * as os from "os";
-import * as fs from 'fs-extra';
 import * as child_process from 'child_process';
-import { getPackagePublicPath, RUNTIME_DIRNAME } from "../../runtimeFileSystem";
-import { AppletServer } from './AppletServer';
+import * as Debug from 'debug';
+import * as fs from 'fs-extra';
+import * as http from 'http';
+import * as os from 'os';
+import * as path from 'path';
+import wait from '../../../Timer/wait';
 import { getMachineRemoteAddr } from '../../../Utils/network';
 import { killGracefullyWithTimeoutSigKill } from '../../../Utils/process';
-import * as Debug from 'debug';
-import wait from '../../../Timer/wait';
+import { getPackagePublicPath, RUNTIME_DIRNAME } from '../../runtimeFileSystem';
+import { AppletServer } from './AppletServer';
 
 const debug = Debug('@signageos/sdk:Development:Applet:Serve:AppletServeManagement');
 
@@ -47,7 +47,6 @@ export interface IServeOptions {
  * It is used to serve applet package archive (.package.zip built be AppletBuildManagement).
  */
 export class AppletServeManagement {
-
 	/**
 	 * Creates the applet server and serves the applet package archive on a specific location that is accepted by devices as applet.
 	 * So the device can be swhitched to the development mode and the applet can be loaded from this server instead of production server.
@@ -76,13 +75,7 @@ export class AppletServeManagement {
 
 		if (running) {
 			serverProcess = await this.getRunningProcess(running.pid);
-			return new AppletServer(
-				processUid,
-				running.port,
-				publicUrl,
-				remoteAddr,
-				cleanUp,
-			);
+			return new AppletServer(processUid, running.port, publicUrl, remoteAddr, cleanUp);
 		}
 
 		await this.createPortFile(options.appletUid, options.appletVersion, port);
@@ -91,13 +84,7 @@ export class AppletServeManagement {
 		await this.createPidFile(options.appletUid, options.appletVersion, serverProcess.pid);
 		debug('Server process started', serverProcess.pid);
 
-		return new AppletServer(
-			processUid,
-			port,
-			publicUrl,
-			remoteAddr,
-			cleanUp,
-		);
+		return new AppletServer(processUid, port, publicUrl, remoteAddr, cleanUp);
 	}
 
 	/**
@@ -208,23 +195,17 @@ export class AppletServeManagement {
 
 		if (!runningPid && !runningPort) {
 			if (await this.isPortInUse(appletUid, appletVersion, port)) {
-				throw new Error(
-					`Requested port ${port} is already in use by another process`,
-				);
+				throw new Error(`Requested port ${port} is already in use by another process`);
 			}
 			return null;
 		}
 
 		if (runningPort && !runningPid) {
-			throw new Error(
-				`Requested port ${port} is already in use by unknown process`,
-			);
+			throw new Error(`Requested port ${port} is already in use by unknown process`);
 		}
 
 		if (runningPid && !runningPort) {
-			throw new Error(
-				`Applet server ${appletUid}@${appletVersion} is already running but on unknown port`,
-			);
+			throw new Error(`Applet server ${appletUid}@${appletVersion} is already running but on unknown port`);
 		}
 
 		if (runningPid && runningPort !== port) {
@@ -234,9 +215,7 @@ export class AppletServeManagement {
 		}
 
 		if (!runningPort || !runningPid) {
-			throw new Error(
-				`Unknown error while validating running server ${appletUid}@${appletVersion} on port ${port}`,
-			);
+			throw new Error(`Unknown error while validating running server ${appletUid}@${appletVersion} on port ${port}`);
 		}
 
 		return {
@@ -318,7 +297,7 @@ export class AppletServeManagement {
 		if (serverProcess.pid === null) {
 			throw new Error('Server process was not started properly');
 		}
-		while (!await this.isPortInUse(appletUid, appletVersion, port)) {
+		while (!(await this.isPortInUse(appletUid, appletVersion, port))) {
 			await wait(100);
 		}
 		return serverProcess as DetachedProcess;
@@ -351,7 +330,7 @@ export class AppletServeManagement {
 	}
 
 	private async readParentsFile(parentsFilePath: string) {
-		const parentsRaw = await fs.pathExists(parentsFilePath) ? await fs.readFile(parentsFilePath, 'utf8') : '';
+		const parentsRaw = (await fs.pathExists(parentsFilePath)) ? await fs.readFile(parentsFilePath, 'utf8') : '';
 		debug('readParentsFile', parentsRaw);
 		const currentParents = parentsRaw.split(',').filter((parents) => parents);
 		return currentParents;

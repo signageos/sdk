@@ -2,15 +2,12 @@ import * as should from 'should';
 import * as nock from 'nock';
 
 import DeviceBrightnessManagement from '../../../../../src/RestApi/Device/Brightness/DeviceBrightnessManagement';
-import IDeviceBrightness, {
-	IDeviceBrightnessUpdatable,
-} from '../../../../../src/RestApi/Device/Brightness/IDeviceBrightness';
+import IDeviceBrightness, { IDeviceBrightnessUpdatable } from '../../../../../src/RestApi/Device/Brightness/IDeviceBrightness';
 import { errorResp, errorRespMessage, getNockOpts, successRes } from '../../helper';
 
 const nockOpts = getNockOpts({});
 
 describe('DeviceBrightnessManagement', () => {
-
 	const brightness: IDeviceBrightness = {
 		uid: 'someUid',
 		deviceUid: '3caXXX589b',
@@ -30,16 +27,19 @@ describe('DeviceBrightnessManagement', () => {
 		timeFrom2: '23:00:00',
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/device/someUid/brightness').reply(200, validGetResp)
-		.get('/v1/device/shouldFail/brightness').reply(500, errorResp)
-		.put('/v1/device/someUid/brightness', validSetReq).reply(200, successRes)
-		.put('/v1/device/shouldFail/brightness', validSetReq).reply(500, errorResp);
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/device/someUid/brightness')
+		.reply(200, validGetResp)
+		.get('/v1/device/shouldFail/brightness')
+		.reply(500, errorResp)
+		.put('/v1/device/someUid/brightness', validSetReq)
+		.reply(200, successRes)
+		.put('/v1/device/shouldFail/brightness', validSetReq)
+		.reply(500, errorResp);
 
 	const dbm = new DeviceBrightnessManagement(nockOpts);
 

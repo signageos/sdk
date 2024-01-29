@@ -9,7 +9,6 @@ import { opts } from '../../helper';
 const api = new Api(opts);
 
 describe('Integration.RestAPI.Device.Location.Tag.LocationOrganizationTag', async () => {
-
 	it('should assign and unassign organization tag to and from location', async function () {
 		const createdLocation1 = await handleCreateLocation(api, {
 			location: LOCATION_CREATE_1,

@@ -1,8 +1,7 @@
-import { fillDataToEntity } from "../../mapper";
-import IDeviceDateTime from "./IDeviceDateTime";
+import { fillDataToEntity } from '../../mapper';
+import IDeviceDateTime from './IDeviceDateTime';
 
 export default class DeviceDateTime implements IDeviceDateTime {
-
 	// public readonly [P in keyof IDeviceDateTime]: IDeviceDateTime[P]; // Generalized TS doesn't support
 	public readonly uid: IDeviceDateTime['uid'];
 	public readonly deviceUid: IDeviceDateTime['deviceUid'];

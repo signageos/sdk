@@ -1,6 +1,6 @@
 import * as fs from 'fs-extra';
-import * as path from 'path';
 import * as _ from 'lodash';
+import * as path from 'path';
 import { deserializeJSON } from '../Utils/json';
 
 /**
@@ -46,7 +46,7 @@ export interface IPackageConfig {
  * It's merged with previous content of package.json file.
  */
 export async function saveToPackage(currentDirectory: string, data: Partial<IPackageConfig>) {
-	const previousContent = await loadPackage(currentDirectory) ?? {};
+	const previousContent = (await loadPackage(currentDirectory)) ?? {};
 	const packageJSONPath = path.join(currentDirectory, 'package.json');
 	const newContent = _.merge({}, previousContent, data);
 	await fs.writeFile(packageJSONPath, JSON.stringify(newContent, undefined, 2) + '\n');

@@ -1,8 +1,7 @@
-import { fillDataToEntity } from "../../mapper";
-import IPowerAction from "./IPowerAction";
+import { fillDataToEntity } from '../../mapper';
+import IPowerAction from './IPowerAction';
 
 export default class PowerAction implements IPowerAction {
-
 	// public readonly [P in keyof IPowerAction]: IPowerAction[P]; // Generalized TS doesn't support
 	public readonly uid: IPowerAction['uid'];
 	public readonly deviceUid: IPowerAction['deviceUid'];

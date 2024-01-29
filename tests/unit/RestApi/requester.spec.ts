@@ -8,7 +8,6 @@ import NotFoundError from '../../../src/RestApi/Error/NotFoundError';
 const wait = (_: number) => Promise.resolve();
 
 describe('requester', function () {
-
 	it('should fail on bad gateway', async function () {
 		const doFetch = async (_: string) => {
 			throw new GatewayError(502, 'Bad Gateway');

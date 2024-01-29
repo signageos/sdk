@@ -11,9 +11,7 @@ const deviceAliveManagement = new DeviceAliveManagement(nockOpts1);
 
 describe('Unit.RestApi.Device.Alive', () => {
 	it('should get many', async () => {
-		nock(nockOpts1.url, nockAuthHeader1)
-			.get(`/${ApiVersions.V1}/${Resources.Device}/alive`)
-			.reply(200, [DEVICE_ALIVE_1, DEVICE_ALIVE_2]);
+		nock(nockOpts1.url, nockAuthHeader1).get(`/${ApiVersions.V1}/${Resources.Device}/alive`).reply(200, [DEVICE_ALIVE_1, DEVICE_ALIVE_2]);
 
 		const devicesAlive = await deviceAliveManagement.list({});
 

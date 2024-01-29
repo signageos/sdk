@@ -1,8 +1,7 @@
-import { fillDataToEntity } from "../../mapper";
-import IDeviceBrightness from "./IDeviceBrightness";
+import { fillDataToEntity } from '../../mapper';
+import IDeviceBrightness from './IDeviceBrightness';
 
 export default class DeviceBrightness implements IDeviceBrightness {
-
 	// public readonly [P in keyof IDeviceBrightness]: IDeviceBrightness[P]; // Generalized TS doesn't support
 	public readonly uid: IDeviceBrightness['uid'];
 	public readonly deviceUid: IDeviceBrightness['deviceUid'];

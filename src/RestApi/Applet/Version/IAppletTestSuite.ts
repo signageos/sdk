@@ -1,4 +1,3 @@
-
 export interface IAppletTestSuiteUpdatable {
 	binary: string;
 }

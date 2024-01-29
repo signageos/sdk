@@ -1,15 +1,12 @@
-import RestApi from "../../../RestApi/RestApi";
-import { loadPackage } from "../../../FileSystem/packageConfig";
-import { AppletNotFoundError, MultipleAppletFoundError } from "../../../SosHelper/errors";
+import { loadPackage } from '../../../FileSystem/packageConfig';
+import RestApi from '../../../RestApi/RestApi';
+import { AppletNotFoundError, MultipleAppletFoundError } from '../../../SosHelper/errors';
 
 /**
  * Manages applet identification by appletPath, package.json and other sources.
  */
 export class AppletIdentificationManagement {
-
-	constructor(
-		private restApiV1: RestApi,
-	) {}
+	constructor(private restApiV1: RestApi) {}
 
 	/**
 	 * It resolves the appletUid and appletVersion based on the appletPath.
@@ -42,7 +39,10 @@ export class AppletIdentificationManagement {
 		const applets = await this.restApiV1.applet.list();
 		const relevantApplets = applets.filter((applet) => applet.name === appletName);
 		if (relevantApplets.length > 1) {
-			throw new MultipleAppletFoundError(appletName, relevantApplets.map((applet) => applet.uid));
+			throw new MultipleAppletFoundError(
+				appletName,
+				relevantApplets.map((applet) => applet.uid),
+			);
 		}
 		if (relevantApplets.length === 0) {
 			throw new AppletNotFoundError(appletName);

@@ -1,16 +1,15 @@
-import { getResource, parseJSONResponse, postResource, putResource } from "../../requester";
-import IOptions from "../../IOptions";
-import { RESOURCE as APPLET } from "../AppletManagement";
-import IAppletVersion, { IAppletVersionCreatable, IAppletVersionUpdatable } from "./IAppletVersion";
-import AppletVersion from "./AppletVersion";
-import IAppletVersionFilter, { IAppletVersionListFilter } from "./IAppletVersionFilter";
-import AppletVersionFileManagement from "./File/AppletVersionFileManagement";
+import { getResource, parseJSONResponse, postResource, putResource } from '../../requester';
+import IOptions from '../../IOptions';
+import { RESOURCE as APPLET } from '../AppletManagement';
+import IAppletVersion, { IAppletVersionCreatable, IAppletVersionUpdatable } from './IAppletVersion';
+import AppletVersion from './AppletVersion';
+import IAppletVersionFilter, { IAppletVersionListFilter } from './IAppletVersionFilter';
+import AppletVersionFileManagement from './File/AppletVersionFileManagement';
 import { checkAppletVersionUpdatable, checkAppletVersionCreatable } from './AppletVersionValidator';
 
 export const RESOURCE: string = 'version';
 
 export default class AppletVersionManagement {
-
 	public file: AppletVersionFileManagement;
 
 	private static getResource(appletUid: string): string {
@@ -78,5 +77,4 @@ export default class AppletVersionManagement {
 
 		await putResource(options, path, data);
 	}
-
 }

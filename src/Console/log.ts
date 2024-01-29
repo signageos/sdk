@@ -1,4 +1,4 @@
-import chalk from "chalk";
+import chalk from 'chalk';
 
 export type Level = 'info' | 'warning' | 'error';
 
@@ -11,9 +11,13 @@ export function log(level: Level, ...args: string[]) {
 
 function getChalkColor(level: Level) {
 	switch (level) {
-		case 'info': return chalk.blue;
-		case 'warning': return chalk.yellow;
-		case 'error': return chalk.red;
-		default: return chalk.white;
+		case 'info':
+			return chalk.blue;
+		case 'warning':
+			return chalk.yellow;
+		case 'error':
+			return chalk.red;
+		default:
+			return chalk.white;
 	}
 }

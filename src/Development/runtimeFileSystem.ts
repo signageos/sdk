@@ -1,6 +1,6 @@
 import * as nativefs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
-import * as os from "os";
 
 export const PACKAGE_ARCHIVE_FILENAME = '.package.zip';
 

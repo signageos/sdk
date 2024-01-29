@@ -21,17 +21,21 @@ describe('EmulatorManagement', () => {
 		Location: 'https://example.com/v1/device/someIdentityHash',
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
 		},
-	).get('/v1/emulator').reply(200, validListResp)
-	.get('/v1/emulator?organizationUid=default-org').reply(200, validListResp)
-	.post('/v1/emulator').reply(201, 'Created', validPostRespHeaders)
-	.get('/v1/device/someIdentityHash').reply(200, { uid: 'someIdentityHash' })
-	.delete(/v1\/emulator\/[a-zA-Z0-9]+$/).reply(204, 'Deleted');
+	})
+		.get('/v1/emulator')
+		.reply(200, validListResp)
+		.get('/v1/emulator?organizationUid=default-org')
+		.reply(200, validListResp)
+		.post('/v1/emulator')
+		.reply(201, 'Created', validPostRespHeaders)
+		.get('/v1/device/someIdentityHash')
+		.reply(200, { uid: 'someIdentityHash' })
+		.delete(/v1\/emulator\/[a-zA-Z0-9]+$/)
+		.reply(204, 'Deleted');
 
 	const em = new EmulatorManagement(nockOpts, new DeviceManagement(nockOpts, nockOpts));
 	const assertEmulator = (emul: IEmulator) => {

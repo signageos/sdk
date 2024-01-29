@@ -7,7 +7,6 @@ import { opts } from '../helper';
 const api = new Api(opts);
 
 describe('RestAPI - Policy', () => {
-
 	const testEmptyPolicyName = `testEmptyPolicy${Date.now()}`;
 	const testFilledPolicyName = `testFilledPolicy${Date.now()}`;
 	const testClonedPolicyName = `testClonedPolicy${Date.now()}`;

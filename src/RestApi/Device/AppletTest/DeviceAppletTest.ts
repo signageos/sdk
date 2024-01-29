@@ -1,8 +1,7 @@
-import { fillDataToEntity } from "../../mapper";
-import IDeviceAppletTest from "./IDeviceAppletTest";
+import { fillDataToEntity } from '../../mapper';
+import IDeviceAppletTest from './IDeviceAppletTest';
 
 export default class DeviceAppletTest implements IDeviceAppletTest {
-
 	// public readonly [P in keyof IDeviceAppletTest]: IDeviceAppletTest[P]; // Generalized TS doesn't support
 	public readonly appletUid: IDeviceAppletTest['appletUid'];
 	public readonly appletVersion: IDeviceAppletTest['appletVersion'];

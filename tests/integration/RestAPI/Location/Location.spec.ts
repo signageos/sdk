@@ -16,7 +16,6 @@ import { opts } from '../helper';
 const api = new Api(opts);
 
 describe('Integration.RestAPI.Location', async () => {
-
 	it('should create location', async () => {
 		const createdLocation = await handleCreateLocation(api, {
 			location: LOCATION_CREATE_1,

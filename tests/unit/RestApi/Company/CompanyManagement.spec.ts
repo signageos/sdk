@@ -8,28 +8,29 @@ import CompanyManagement, { ICompany } from '../../../../src/RestApi/Company/Com
 const nockOpts = getNockOpts({});
 
 describe('CompanyManagement', () => {
-
 	const company: ICompany = {
-		'uid': 'someUid',
-		'name': 'signageos',
-		'title': 'signageOS.io',
-		'oauthClientId': '12a15XXX612d',
-		'oauthClientSecret': '2e2201XXX77745',
-		'createdAt': new Date('2017-05-24T08:56:52.550Z'),
+		uid: 'someUid',
+		name: 'signageos',
+		title: 'signageOS.io',
+		oauthClientId: '12a15XXX612d',
+		oauthClientSecret: '2e2201XXX77745',
+		createdAt: new Date('2017-05-24T08:56:52.550Z'),
 	};
 
 	const validGetResp: IOrganization = company;
 	const validListResp: IOrganization[] = [company];
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/company').reply(200, validListResp)
-		.get('/v1/company/someUid').reply(200, validGetResp)
-		.put('/v1/company/someUid/billingPlan/enterprise').reply(200, '');
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/company')
+		.reply(200, validListResp)
+		.get('/v1/company/someUid')
+		.reply(200, validGetResp)
+		.put('/v1/company/someUid/billingPlan/enterprise')
+		.reply(200, '');
 
 	const cm = new CompanyManagement(nockOpts);
 	const assertCompany = (org: IOrganization) => {

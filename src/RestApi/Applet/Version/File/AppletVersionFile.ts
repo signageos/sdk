@@ -1,8 +1,7 @@
-import { fillDataToEntity } from "../../../mapper";
-import IAppletVersionFile from "./IAppletVersionFile";
+import { fillDataToEntity } from '../../../mapper';
+import IAppletVersionFile from './IAppletVersionFile';
 
 export default class AppletVersionFile implements IAppletVersionFile {
-
 	// public readonly [P in keyof IAppletVersionFile]: IAppletVersionFile[P]; // Generalized TS doesn't support
 	public readonly content: IAppletVersionFile['content'];
 	public readonly name: IAppletVersionFile['name'];

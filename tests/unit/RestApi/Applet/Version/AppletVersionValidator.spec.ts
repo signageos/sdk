@@ -2,9 +2,7 @@ import * as should from 'should';
 import { checkAppletVersionUpdatable, checkAppletVersionCreatable } from '../../../../../src/RestApi/Applet/Version/AppletVersionValidator';
 
 describe('AppletVersionValidator', () => {
-
 	describe('checkAppletVersionUpdatable', () => {
-
 		it('should pass with only binary', () => {
 			checkAppletVersionUpdatable({
 				binary: '<h1>Test applet</h1>',
@@ -35,7 +33,6 @@ describe('AppletVersionValidator', () => {
 	});
 
 	describe('checkAppletVersionCreatable', () => {
-
 		it('should pass with only binary', () => {
 			checkAppletVersionCreatable({
 				binary: '<h1>Test applet</h1>',

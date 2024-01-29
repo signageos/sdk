@@ -49,7 +49,8 @@ describe('RestAPI - Device Configuration', () => {
 				should(error.message).be.equal(
 					`Request failed with status code 400. Body: ${JSON.stringify({
 						status: 400,
-						message: 'Invalid request body - battery - Value should be a positive number and less than or equal to 31556926000 (1 year in milliseconds)',
+						message:
+							'Invalid request body - battery - Value should be a positive number and less than or equal to 31556926000 (1 year in milliseconds)',
 						errorCode: 400301,
 						errorName: 'INVALID_BODY_PROPERTIES',
 						errorDetail: 'Received invalid body properties battery.',

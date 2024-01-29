@@ -3,7 +3,11 @@ import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs-extra';
 import { AppletServeManagement } from '../../../../src/Development/Applet/Serve/AppletServeManagement';
-import { getAppletBuildRuntimeDir, getAppletPackageArchivePath, getAppletVersionBuildRuntimeDir } from '../../../../src/Development/runtimeFileSystem';
+import {
+	getAppletBuildRuntimeDir,
+	getAppletPackageArchivePath,
+	getAppletVersionBuildRuntimeDir,
+} from '../../../../src/Development/runtimeFileSystem';
 import { getRequest } from '../../Utils/requestHelper';
 import { AppletServer } from '../../../../src/Development/Applet/Serve/AppletServer';
 
@@ -36,7 +40,6 @@ describe('Development.Applet.AppletServeManagement', function () {
 	});
 
 	describe('serve', function () {
-
 		it('should start serving applet files', async function () {
 			appletServer1 = await appletServeManagement.serve({
 				appletUid: 'applet-1',
@@ -101,11 +104,13 @@ describe('Development.Applet.AppletServeManagement', function () {
 				appletUid: 'applet-1',
 				appletVersion: '1.0.0',
 			});
-			await should(appletServeManagement.serve({
-				appletUid: 'applet-1',
-				appletVersion: '1.0.0',
-				port: appletServer1.port + 1,
-			})).rejectedWith(`Applet server applet-1@1.0.0 is already running on port 8091 so it cannot be started on port 8092`);
+			await should(
+				appletServeManagement.serve({
+					appletUid: 'applet-1',
+					appletVersion: '1.0.0',
+					port: appletServer1.port + 1,
+				}),
+			).rejectedWith(`Applet server applet-1@1.0.0 is already running on port 8091 so it cannot be started on port 8092`);
 
 			await appletServer1.stop();
 		});
@@ -143,17 +148,18 @@ describe('Development.Applet.AppletServeManagement', function () {
 				appletUid: 'applet-1',
 				appletVersion: '1.0.0',
 			});
-			await should(appletServeManagement.serve({
-				appletUid: 'applet-1',
-				appletVersion: '1.0.1',
-			})).rejectedWith(`Requested port 8091 is already in use by another process`);
+			await should(
+				appletServeManagement.serve({
+					appletUid: 'applet-1',
+					appletVersion: '1.0.1',
+				}),
+			).rejectedWith(`Requested port 8091 is already in use by another process`);
 
 			await appletServer1.stop();
 		});
 	});
 
 	describe('killRunningServer', function () {
-
 		it('should kill running server', async function () {
 			appletServer1 = await appletServeManagement.serve({
 				appletUid: 'applet-1',

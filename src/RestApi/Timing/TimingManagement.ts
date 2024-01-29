@@ -1,8 +1,7 @@
-
 import wait from '../../Timer/wait';
 import { postResource, putResource, deleteResource, getResource, parseJSONResponse } from '../requester';
-import IOptions from "../IOptions";
-import ITiming, { ITimingUpdatable, ITimingCreateOnly } from "./ITiming";
+import IOptions from '../IOptions';
+import ITiming, { ITimingUpdatable, ITimingCreateOnly } from './ITiming';
 import UnsupportedError from '../Error/UnsupportedError';
 import ITimingFilter from './ITimingFilter';
 import Timing from './Timing';
@@ -10,7 +9,6 @@ import TimingCommandManagement from './Command/TimingCommandManagement';
 import { isEqual } from 'lodash';
 
 export default class TimingManagement {
-
 	private static readonly RESOURCE: string = 'timing';
 
 	public readonly DURATION: string = 'DURATION';

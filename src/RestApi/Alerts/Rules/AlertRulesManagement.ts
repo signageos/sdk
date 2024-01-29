@@ -1,14 +1,13 @@
-import IOptions from "../../IOptions";
-import { getResource, parseJSONResponse, postResource, putResource } from "../../requester";
-import IAlertRule, { IAlertRuleCreatable, IAlertRuleUpdateable } from "./IAlertRule";
-import AlertRule from "./AlertRule";
-import IAlertRuleFilter from "./IAlertRuleFilter";
+import IOptions from '../../IOptions';
+import { getResource, parseJSONResponse, postResource, putResource } from '../../requester';
+import IAlertRule, { IAlertRuleCreatable, IAlertRuleUpdateable } from './IAlertRule';
+import AlertRule from './AlertRule';
+import IAlertRuleFilter from './IAlertRuleFilter';
 
 export const RESOURCE: string = 'alert-rule';
 
 export default class AlertRulesManagement {
-
-	constructor (protected options: IOptions) {}
+	constructor(protected options: IOptions) {}
 
 	public async list(filter: IAlertRuleFilter = {}): Promise<IAlertRule[]> {
 		const response = await getResource(this.options, RESOURCE, filter);

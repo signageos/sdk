@@ -1,13 +1,12 @@
-import { opts } from "../helper";
-import { Api } from "../../../../src";
-import IAlert from "../../../../src/RestApi/Alerts/IAlert";
-import * as should from "should";
-import IAlertRule from "../../../../src/RestApi/Alerts/Rules/IAlertRule";
+import { opts } from '../helper';
+import { Api } from '../../../../src';
+import IAlert from '../../../../src/RestApi/Alerts/IAlert';
+import * as should from 'should';
+import IAlertRule from '../../../../src/RestApi/Alerts/Rules/IAlertRule';
 
 const api = new Api(opts);
 
-describe("RestAPI - Alerts", () => {
-
+describe('RestAPI - Alerts', () => {
 	let createdAlert: IAlert;
 
 	before('create alertRule and alert', async function () {
@@ -64,13 +63,15 @@ describe("RestAPI - Alerts", () => {
 	});
 
 	it('should pause alert', async () => {
-		await should(api.alert.snooze(createdAlert!.alertUid, {
-			alertUid: createdAlert!.alertUid,
-			snoozeRule: {
-				type: 'datetime',
-				snoozedUntil: new Date(),
-			},
-		})).be.fulfilled();
+		await should(
+			api.alert.snooze(createdAlert!.alertUid, {
+				alertUid: createdAlert!.alertUid,
+				snoozeRule: {
+					type: 'datetime',
+					snoozedUntil: new Date(),
+				},
+			}),
+		).be.fulfilled();
 	});
 
 	it('should unpause alert', async () => {

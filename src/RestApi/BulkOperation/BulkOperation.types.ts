@@ -172,21 +172,21 @@ export type LogData = {
 				enabled: true;
 				/** It defines in miliseconds period whose elapsing leads to mark browser process as unresponding. */
 				healthcheckIntervalMs: number;
-	}
+		  }
 		| {
 				enabled: false;
 				/** When specified it defines period until automatic enabling auto recovery process in miliseconds. */
 				autoEnableTimeoutMs?: number;
-	};
+		  };
 	[DeviceActionType.SET_PEER_RECOVERY]:
 		| {
 				enabled: true;
-	}
+		  }
 		| {
 				enabled: false;
 				/** When specified it defines period until automatic enabling peer recovery process in miliseconds. */
 				autoEnableTimeoutMs?: number;
-	};
+		  };
 	[DeviceActionType.ENABLE_EXTENDED_TELEMETRY]: {
 		deviceIdentityHash: string;
 		duration: number;

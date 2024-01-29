@@ -1,4 +1,3 @@
-
 export interface IDeviceDebugUpdatable {
 	appletEnabled: boolean;
 	nativeEnabled: boolean;

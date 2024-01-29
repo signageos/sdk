@@ -1,8 +1,7 @@
-import { fillDataToEntity } from "../../mapper";
-import IDeviceAudio from "./IDeviceAudio";
+import { fillDataToEntity } from '../../mapper';
+import IDeviceAudio from './IDeviceAudio';
 
 export default class DeviceVolume implements IDeviceAudio {
-
 	// public readonly [P in keyof IDeviceAudio]: IDeviceAudio[P]; // Generalized TS doesn't support
 	public readonly uid: IDeviceAudio['uid'];
 	public readonly deviceUid: IDeviceAudio['deviceUid'];

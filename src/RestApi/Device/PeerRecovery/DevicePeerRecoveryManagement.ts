@@ -16,15 +16,13 @@ interface ISetSettings {
 }
 
 export default class DevicePeerRecoveryManagement {
-
 	constructor(private options: IOptions) {}
 
 	public async list(deviceUid: IDeviceActionLog['deviceUid']) {
 		const peerRecoveries = await getResource(this.options, `${Resources.Device}/${deviceUid}/peer-recovery`);
 
-		const peerRecoveriesParsed: Array<
-			IDevicePeerRecoveryEnabledUpdatable |
-			IDevicePeerRecoveryDisabledUpdatable> = await parseJSONResponse(peerRecoveries);
+		const peerRecoveriesParsed: Array<IDevicePeerRecoveryEnabledUpdatable | IDevicePeerRecoveryDisabledUpdatable> =
+			await parseJSONResponse(peerRecoveries);
 
 		return peerRecoveriesParsed.map((peerRecovery) => {
 			if (peerRecovery.enabled) {

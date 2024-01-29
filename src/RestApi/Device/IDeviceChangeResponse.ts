@@ -1,4 +1,3 @@
-
 interface IDeviceChangeResponse {
 	message: string;
 	requestUid: string;

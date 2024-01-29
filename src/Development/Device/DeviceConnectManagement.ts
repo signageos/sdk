@@ -1,13 +1,13 @@
-import { IDeviceConnectCreatable } from "../../RestApi/Device/Connect/IDeviceConnect";
-import RestApi from "../../RestApi/RestApi";
-import RestApiV2 from "../../RestApi/RestApiV2";
-import { IDevice } from "../../RestApi/V2/Device/Device";
-import { DeviceConnection } from "./DeviceConnection";
+import { IDeviceConnectCreatable } from '../../RestApi/Device/Connect/IDeviceConnect';
+import RestApi from '../../RestApi/RestApi';
+import RestApiV2 from '../../RestApi/RestApiV2';
+import { IDevice } from '../../RestApi/V2/Device/Device';
+import { DeviceConnection } from './DeviceConnection';
 import * as path from 'path';
-import * as os from "os";
+import * as os from 'os';
 import * as fs from 'fs-extra';
-import { RUNTIME_DIRNAME } from "../runtimeFileSystem";
-import { DevicePowerAction } from "../../RestApi/Device/PowerAction/IPowerAction";
+import { RUNTIME_DIRNAME } from '../runtimeFileSystem';
+import { DevicePowerAction } from '../../RestApi/Device/PowerAction/IPowerAction';
 
 const CONNECTIONS_DIRENAME = 'device_connections';
 const CONNECTION_FILENAME = 'connection.json';
@@ -23,7 +23,6 @@ interface IConnectionMetadata {
  * It goes back to the production mode when the device is disconnected or restarted.
  */
 export class DeviceConnectManagement {
-
 	constructor(
 		private restApiV1: RestApi,
 		private restApiV2: RestApiV2,
@@ -36,11 +35,7 @@ export class DeviceConnectManagement {
 		const device = await this.restApiV2.device.get(deviceUid);
 		await this.createConnectionFile(device);
 		await this.restApiV1.device.connect.connect(deviceUid, options);
-		return new DeviceConnection(
-			this.restApiV1,
-			device,
-			() => this.deleteConnectionFile(device),
-		);
+		return new DeviceConnection(this.restApiV1, device, () => this.deleteConnectionFile(device));
 	}
 
 	/**

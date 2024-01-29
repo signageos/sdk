@@ -1,4 +1,3 @@
-
 interface IDeviceAuthentication {
 	deviceUid: string;
 	authHash: string;

@@ -1,13 +1,13 @@
 import { random } from 'faker';
 
-import {
-	IOrganizationTagCreate, IOrganizationTagUpdate,
-} from '../../../../src/RestApi/Organization/Tag/OrganizationTag';
+import { IOrganizationTagCreate, IOrganizationTagUpdate } from '../../../../src/RestApi/Organization/Tag/OrganizationTag';
 import { getOrganizationUid } from '../organization.fixtures';
 
 export const generateOrganizationTagCreate: () => IOrganizationTagCreate = () => ({
 	name: `Organization tag created ${random.uuid()}`,
-	get organizationUid() { return getOrganizationUid(); },
+	get organizationUid() {
+		return getOrganizationUid();
+	},
 	color: '#303124',
 });
 

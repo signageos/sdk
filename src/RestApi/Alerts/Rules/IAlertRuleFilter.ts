@@ -1,4 +1,4 @@
-import { AlertType } from "../IAlert";
+import { AlertType } from '../IAlert';
 
 export default interface IAlertRuleFilter {
 	pagination?: string;

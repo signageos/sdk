@@ -1,16 +1,15 @@
-import { opts } from "../../helper";
-import IAlertRule from "../../../../../src/RestApi/Alerts/Rules/IAlertRule";
-import { Api } from "../../../../../src";
-import * as should from "should";
+import { opts } from '../../helper';
+import IAlertRule from '../../../../../src/RestApi/Alerts/Rules/IAlertRule';
+import { Api } from '../../../../../src';
+import * as should from 'should';
 
 const api = new Api(opts);
 
 describe('RestAPI - Alert Rules', () => {
-
 	let createdAlertRule: IAlertRule | undefined;
 
 	before('create new alert rule', async () => {
-		createdAlertRule = await api.alert.rules.create({name: 'Test alert rule'});
+		createdAlertRule = await api.alert.rules.create({ name: 'Test alert rule' });
 		should(createdAlertRule.alertRuleUid.length > 0).be.true();
 		should(createdAlertRule.name.length > 0).be.true();
 		should(createdAlertRule.companyUid.length > 0).be.true();

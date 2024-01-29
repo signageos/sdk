@@ -2,16 +2,13 @@ import * as should from 'should';
 import * as nock from 'nock';
 
 import { getNockOpts, successRes } from '../../helper';
-import IDeviceAppVersion, {
-	IDeviceAppVersionUpdatable,
-} from '../../../../../src/RestApi/Device/AppVersion/IDeviceAppVersion';
+import IDeviceAppVersion, { IDeviceAppVersionUpdatable } from '../../../../../src/RestApi/Device/AppVersion/IDeviceAppVersion';
 import DeviceAppVersionManagement from '../../../../../src/RestApi/Device/AppVersion/DeviceAppVersionManagement';
 
 const nockOpts = getNockOpts({});
 
 describe('DeviceAppVersionManagement', () => {
-
-	const applicationType: string = "tizen";
+	const applicationType: string = 'tizen';
 
 	const validGetResp: IDeviceAppVersion = {
 		uid: 'someUid',
@@ -29,14 +26,15 @@ describe('DeviceAppVersionManagement', () => {
 
 	const davm = new DeviceAppVersionManagement(nockOpts);
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				"x-auth": `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/device/someUid/application/version').reply(200, validGetResp)
-		.put(`/v1/device/someUid/application/${applicationType}/version`, validSetReq).reply(200, successRes);
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/device/someUid/application/version')
+		.reply(200, validGetResp)
+		.put(`/v1/device/someUid/application/${applicationType}/version`, validSetReq)
+		.reply(200, successRes);
 
 	describe('get application version', () => {
 		it('should parse the response', async () => {

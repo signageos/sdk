@@ -11,20 +11,14 @@ interface OrganizationUpdatableValues {
 }
 
 export default class OrganizationManagement {
-
 	public static readonly RESOURCE: string = 'organization';
 
-	constructor(private options: IOptions) {
-	}
+	constructor(private options: IOptions) {}
 
 	public async list(filter: IOrganizationFilter = {}): Promise<IOrganization[]> {
 		const response = filter.companyUid
-			// filtering by company is currently supported only by the /company/:companyUid/organizations endpoint
-			? await getResource(
-				this.options,
-				CompanyManagement.RESOURCE + '/' + filter.companyUid + '/organizations',
-				omit(filter, 'companyUid'),
-			)
+			? // filtering by company is currently supported only by the /company/:companyUid/organizations endpoint
+				await getResource(this.options, CompanyManagement.RESOURCE + '/' + filter.companyUid + '/organizations', omit(filter, 'companyUid'))
 			: await getResource(this.options, OrganizationManagement.RESOURCE, filter);
 		const data: IOrganization[] = await parseJSONResponse(response);
 
@@ -59,18 +53,10 @@ export default class OrganizationManagement {
 	}
 
 	public async delete(organizationUid: string): Promise<void> {
-		await deleteResource(
-			this.options,
-			`${OrganizationManagement.RESOURCE}/${organizationUid}`,
-		);
+		await deleteResource(this.options, `${OrganizationManagement.RESOURCE}/${organizationUid}`);
 	}
 
 	public async update(organizationUid: string, values: OrganizationUpdatableValues): Promise<void> {
-		await putResource(
-			this.options,
-			`${OrganizationManagement.RESOURCE}/${organizationUid}`,
-			JSON.stringify(values),
-		);
+		await putResource(this.options, `${OrganizationManagement.RESOURCE}/${organizationUid}`, JSON.stringify(values));
 	}
-
 }

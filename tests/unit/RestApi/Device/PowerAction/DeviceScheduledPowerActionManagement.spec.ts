@@ -12,7 +12,6 @@ import IScheduledPowerAction, {
 const nockOpts = getNockOpts({});
 
 describe('DeviceScheduledPowerActionManagement', () => {
-
 	const getLocationHeader = (policyUid: string): nock.HttpHeaders => ({
 		Location: `${nockOpts.url}/${nockOpts.version}/policy/${policyUid}`,
 	});
@@ -34,16 +33,19 @@ describe('DeviceScheduledPowerActionManagement', () => {
 		time: '12:00:00',
 	};
 
-	nock(
-		nockOpts.url, {
-			reqheaders: {
-				'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-			},
-		})
-		.get('/v1/device/someUid/scheduled-power-action').reply(200, validGetResp)
-		.post('/v1/device/someUid/scheduled-power-action', validCreateReq).reply(200, successRes, getLocationHeader('someUid'))
-		.get('/v1/device/someUid/scheduled-power-action/scheduledActionId').reply(200, pa)
-		.delete('/v1/device/someUid/scheduled-power-action/scheduledActionId').reply(200, successRes);
+	nock(nockOpts.url, {
+		reqheaders: {
+			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+		},
+	})
+		.get('/v1/device/someUid/scheduled-power-action')
+		.reply(200, validGetResp)
+		.post('/v1/device/someUid/scheduled-power-action', validCreateReq)
+		.reply(200, successRes, getLocationHeader('someUid'))
+		.get('/v1/device/someUid/scheduled-power-action/scheduledActionId')
+		.reply(200, pa)
+		.delete('/v1/device/someUid/scheduled-power-action/scheduledActionId')
+		.reply(200, successRes);
 
 	const dspam = new DeviceScheduledPowerActionManagement(nockOpts);
 
@@ -71,5 +73,4 @@ describe('DeviceScheduledPowerActionManagement', () => {
 		await dspam.cancel('someUid', 'scheduledActionId');
 		should(true).true();
 	});
-
 });

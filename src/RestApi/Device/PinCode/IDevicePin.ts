@@ -1,4 +1,3 @@
-
 interface IDevicePin {
 	deviceUid: string;
 	pinCode: string;

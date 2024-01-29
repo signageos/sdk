@@ -1,11 +1,10 @@
-import { deleteResource, getResource, parseJSONResponse, postResource, putResource } from "../../requester";
-import IOptions from "../../IOptions";
-import { RESOURCE as APPLET } from "../AppletManagement";
-import IAppletTestSuite, { IAppletTestSuiteCreatable, IAppletTestSuiteUpdatable } from "./IAppletTestSuite";
-import AppletTestSuite from "./AppletTestSuite";
+import { deleteResource, getResource, parseJSONResponse, postResource, putResource } from '../../requester';
+import IOptions from '../../IOptions';
+import { RESOURCE as APPLET } from '../AppletManagement';
+import IAppletTestSuite, { IAppletTestSuiteCreatable, IAppletTestSuiteUpdatable } from './IAppletTestSuite';
+import AppletTestSuite from './AppletTestSuite';
 
 export default class AppletTestSuiteManagement {
-
 	private static getResource(appletUid: string, appletVersion: string): string {
 		return `${APPLET}/${appletUid}/version/${appletVersion}/test`;
 	}
@@ -14,8 +13,7 @@ export default class AppletTestSuiteManagement {
 		return `${APPLET}/${appletUid}/version/${appletVersion}/test/${identifier}`;
 	}
 
-	constructor(private options: IOptions) {
-	}
+	constructor(private options: IOptions) {}
 
 	public async list(appletUid: string, appletVersion: string): Promise<IAppletTestSuite[]> {
 		const url = AppletTestSuiteManagement.getResource(appletUid, appletVersion);
@@ -32,32 +30,18 @@ export default class AppletTestSuiteManagement {
 		return new AppletTestSuite(await parseJSONResponse(response));
 	}
 
-	public async create(
-		appletUid: string,
-		appletVersion: string,
-		settings: IAppletTestSuiteCreatable,
-	): Promise<void> {
+	public async create(appletUid: string, appletVersion: string, settings: IAppletTestSuiteCreatable): Promise<void> {
 		const url = AppletTestSuiteManagement.getResource(appletUid, appletVersion);
 		await postResource(this.options, url, JSON.stringify(settings));
 	}
 
-	public async update(
-		appletUid: string,
-		appletVersion: string,
-		identifier: string,
-		settings: IAppletTestSuiteUpdatable,
-	): Promise<void> {
+	public async update(appletUid: string, appletVersion: string, identifier: string, settings: IAppletTestSuiteUpdatable): Promise<void> {
 		const url = AppletTestSuiteManagement.getDetailResource(appletUid, appletVersion, identifier);
 		await putResource(this.options, url, JSON.stringify(settings));
 	}
 
-	public async delete(
-		appletUid: string,
-		appletVersion: string,
-		identifier: string,
-	): Promise<void> {
+	public async delete(appletUid: string, appletVersion: string, identifier: string): Promise<void> {
 		const url = AppletTestSuiteManagement.getDetailResource(appletUid, appletVersion, identifier);
 		await deleteResource(this.options, url);
 	}
-
 }

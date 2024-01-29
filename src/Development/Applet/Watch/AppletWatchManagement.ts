@@ -1,6 +1,6 @@
 import * as chokidar from 'chokidar';
 import { log } from '../../../Console/log';
-import { AppletFilesManagement } from "../Files/AppletFilesManagement";
+import { AppletFilesManagement } from '../Files/AppletFilesManagement';
 import { AppletWatcher } from './AppletWatcher';
 
 const DEFAULT_DEBOUNCE_TIME_MS = 1e3;
@@ -21,10 +21,7 @@ export interface IWatchOptions {
  * It uses the chokidar library under the hood. It can be configured with the chokidarOptions parameter.
  */
 export class AppletWatchManagement {
-
-	constructor(
-		private appletFilesManagement: AppletFilesManagement,
-	) {}
+	constructor(private appletFilesManagement: AppletFilesManagement) {}
 
 	/**
 	 * Watches applet files and notifies about changes.
@@ -37,10 +34,6 @@ export class AppletWatchManagement {
 		});
 		log('info', `Watching applet files in ${options.appletPath}: ${filePatterns.join(', ')}`);
 
-		return new AppletWatcher(
-			watcher,
-			filePatterns,
-			options.debounceTimeMs ?? DEFAULT_DEBOUNCE_TIME_MS,
-		);
+		return new AppletWatcher(watcher, filePatterns, options.debounceTimeMs ?? DEFAULT_DEBOUNCE_TIME_MS);
 	}
 }

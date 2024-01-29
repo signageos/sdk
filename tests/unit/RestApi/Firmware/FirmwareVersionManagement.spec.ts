@@ -13,23 +13,23 @@ const nockOpts = getNockOpts({});
 
 describe('FirmwareVersionManagement', () => {
 	const firmwareVersion: IFirmwareVersion = {
-		'uid': 'someUid',
-		'applicationType': 'webos',
-		'version': '04.01.74',
-		'createdAt': new Date('2017-05-24T08:56:52.550Z'),
-		'uploaded': false,
-		'files': [],
+		uid: 'someUid',
+		applicationType: 'webos',
+		version: '04.01.74',
+		createdAt: new Date('2017-05-24T08:56:52.550Z'),
+		uploaded: false,
+		files: [],
 	};
 
 	const validGetResp: IFirmwareVersion = firmwareVersion;
 	const validListResp: IFirmwareVersion[] = [firmwareVersion];
 	const validCreateReq = {
-		"applicationType": "webos",
-		"version": "04.01.74",
-		'hashes': ['8e9c3ded774d7b021be452570e0aba10', '8e9c3ded774d7b021be452570e0aba11'],
+		applicationType: 'webos',
+		version: '04.01.74',
+		hashes: ['8e9c3ded774d7b021be452570e0aba10', '8e9c3ded774d7b021be452570e0aba11'],
 	};
 	const validUpdateReqBody: IFirmwareVersionUpdatable = {
-		"uploaded": true,
+		uploaded: true,
 	};
 
 	const successCreateRes = [
@@ -38,7 +38,7 @@ describe('FirmwareVersionManagement', () => {
 				request: {
 					url: 'http://myNiceStorage/create',
 					fields: {
-						'Key': 'test/file/path/testFileName',
+						Key: 'test/file/path/testFileName',
 						'Content-Type': 'valid/type',
 						'Content-MD5': '8e9c3ded774d7b021be452570e0aba10',
 					},
@@ -53,7 +53,7 @@ describe('FirmwareVersionManagement', () => {
 				request: {
 					url: 'http://myNiceStorage/create',
 					fields: {
-						'Key': 'test/file/path/testFileName',
+						Key: 'test/file/path/testFileName',
 						'Content-Type': 'valid/type',
 						'Content-MD5': '8e9c3ded774d7b021be452570e0aba11',
 					},
@@ -63,24 +63,26 @@ describe('FirmwareVersionManagement', () => {
 				url: 'final uploaded test file url N2',
 			},
 		},
-];
+	];
 
-	beforeEach(function() {
-		nock(
-			nockOpts.url, {
-				reqheaders: {
-					'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-				},
-			})
-			.get('/v1/firmware/version').reply(200, validListResp)
-			.put('/v1/firmware/version/webos/04.01.74', validUpdateReqBody).reply( 200, successRes )
-			.post('/v1/firmware/version', validCreateReq).reply(200, successCreateRes)
-			.put('/v1/firmware/version/linux/1.3.0/rpi4', validUpdateReqBody).reply( 200, successRes )
-			.put('/v1/firmware/version/linux/1.3.0/rpi5?force=true', validUpdateReqBody).reply( 200, successRes );
+	beforeEach(function () {
+		nock(nockOpts.url, {
+			reqheaders: {
+				'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
+			},
+		})
+			.get('/v1/firmware/version')
+			.reply(200, validListResp)
+			.put('/v1/firmware/version/webos/04.01.74', validUpdateReqBody)
+			.reply(200, successRes)
+			.post('/v1/firmware/version', validCreateReq)
+			.reply(200, successCreateRes)
+			.put('/v1/firmware/version/linux/1.3.0/rpi4', validUpdateReqBody)
+			.reply(200, successRes)
+			.put('/v1/firmware/version/linux/1.3.0/rpi5?force=true', validUpdateReqBody)
+			.reply(200, successRes);
 
-		nock('http://myNiceStorage')
-		.post('/create').reply(204)
-		.post('/update').reply(204);
+		nock('http://myNiceStorage').post('/create').reply(204).post('/update').reply(204);
 	});
 
 	const fm = new FirmwareVersionManagement(nockOpts);
@@ -99,7 +101,6 @@ describe('FirmwareVersionManagement', () => {
 	});
 
 	it('should create new firmware for upload', async () => {
-
 		const validCreateClientReq: IFirmwareVersionCreatable = {
 			applicationType: 'webos',
 			version: '04.01.74',
@@ -114,9 +115,9 @@ describe('FirmwareVersionManagement', () => {
 					content: createReadableStream('this is create file req content asdf'),
 					size: 12345,
 				},
-		],
+			],
 		};
-		await fm.create( validCreateClientReq );
+		await fm.create(validCreateClientReq);
 		should(true).true();
 	});
 
@@ -143,5 +144,4 @@ describe('FirmwareVersionManagement', () => {
 		await fm.set('linux', '1.3.0', 'rpi5', validClientUpdateReq, true);
 		should(true).true();
 	});
-
 });

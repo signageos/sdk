@@ -9,7 +9,6 @@ import { opts } from '../../helper';
 const api = new Api(opts);
 
 describe('RestAPI - Policy', () => {
-
 	let device: IDevice;
 
 	before('create device', async function () {
