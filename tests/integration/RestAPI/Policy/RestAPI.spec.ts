@@ -3,6 +3,7 @@ import * as should from 'should';
 import { Api } from '../../../../src';
 import Policy from '../../../../src/RestApi/Policy/Policy';
 import { opts } from '../helper';
+import { IPolicyItem } from '../../../../src/RestApi/Policy/IPolicy';
 
 const api = new Api(opts);
 
@@ -24,15 +25,21 @@ describe('RestAPI - Policy', () => {
 		should(policy!.uid).be.String();
 		should(policy!.name).be.equal(testFilledPolicyName);
 		should(policy!.createdAt).be.Date();
-		should(policy!.items).be.deepEqual(testPolicyItems);
+		assertPolicyItems(policy!.items);
 	};
 	const assertClonedPolicy = (policy?: Policy) => {
 		should(policy).be.ok();
 		should(policy!.uid).be.ok();
 		should(policy!.name).be.equal(testClonedPolicyName);
 		should(policy!.createdAt).be.Date();
-		should(policy!.items).be.deepEqual(testPolicyItems);
+		assertPolicyItems(policy!.items);
 		should(policy!.note).be.equal(`Cloned from policy ${testFilledPolicyName}`);
+	};
+
+	const assertPolicyItems = (items: IPolicyItem[]) => {
+		for (const { updatedAt: _, ...i } of items) {
+			should(i).be.deepEqual(testPolicyItems[0]);
+		}
 	};
 
 	let fetchedPolicy: Policy | undefined;

@@ -18,6 +18,7 @@ export interface IPolicyItem {
 	type: string;
 	applicationType?: string;
 	value: any;
+	updatedAt?: Date;
 }
 
 export default interface IPolicy {

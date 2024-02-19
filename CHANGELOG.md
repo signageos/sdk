@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Add new telemetry types
 - Add new management capabilities
+- Add `api.device.extendedManagementUrl.list` method
+- Add `api.device.extendedManagementUrl.set` method
 
 ## [1.21.0] - 2023-08-29
 ### Added
