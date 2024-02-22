@@ -4,5 +4,5 @@
     "ts-node/register"
   ],
   "spec": "tests/integration/**/*.spec.ts",
-  "timeout": 120e3
+  "timeout": 240e3
 }

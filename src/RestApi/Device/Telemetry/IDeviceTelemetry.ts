@@ -99,6 +99,7 @@ export enum ManagementCapabilities {
 	AUTO_RECOVERY = 'AUTO_RECOVERY',
 	PEER_RECOVERY = 'PEER_RECOVERY',
 	FILE_SYSTEM_WIPEOUT = 'FILE_SYSTEM_WIPEOUT',
+	REMOTE_DESKTOP = 'REMOTE_DESKTOP',
 }
 
 export enum FrontCapabilities {
@@ -122,8 +123,6 @@ export interface IDeviceActionLog {
 }
 
 export enum DeviceTelemetryType {
-	DISPLAY_SETTING = 'DISPLAY_SETTING',
-	INPUT_SOURCE = 'INPUT_SOURCE',
 	VOLUME = 'VOLUME',
 	BRIGHTNESS = 'BRIGHTNESS',
 	TIMERS = 'TIMERS',
@@ -137,13 +136,20 @@ export enum DeviceTelemetryType {
 	DATETIME = 'DATETIME',
 	POWER_ACTIONS_SCHEDULE = 'POWER_ACTIONS_SCHEDULE',
 	TEMPERATURE = 'TEMPERATURE',
-	OFFLINE_RANGE = 'OFFLINE_RANGE',
-	ONLINE_STATUS = 'ONLINE_STATUS',
 	BUNDLED_APPLET = 'BUNDLED_APPLET',
 	AUTO_RECOVERY = 'AUTO_RECOVERY',
 	PEER_RECOVERY = 'PEER_RECOVERY',
-	MANAGEMENT_CAPABILITIES = 'MANAGEMENT_CAPABILITIES',
+	PROXY = 'PROXY',
+	WIFI_STRENGTH = 'WIFI_STRENGTH',
 	FRONT_CAPABILITIES = 'FRONT_CAPABILITIES',
+	MANAGEMENT_CAPABILITIES = 'MANAGEMENT_CAPABILITIES',
+	DISPLAY_SETTING = 'DISPLAY_SETTING',
+	INPUT_SOURCE = 'INPUT_SOURCE',
+	FRONT_DISPLAY_VERSION = 'FRONT_DISPLAY_VERSION',
+	OFFLINE_RANGE = 'OFFLINE_RANGE',
+	ONLINE_STATUS = 'ONLINE_STATUS',
+	CONNECTION_METHOD = 'CONNECTION_METHOD',
+	EXTENDED_MANAGEMENT = 'EXTENDED_MANAGEMENT',
 }
 
 export type LogData = {
@@ -180,6 +186,10 @@ export type LogData = {
 		/** @deprecated It's only available in mongodb database for filtering purposes */
 		versionNumber?: number;
 	};
+	[DeviceTelemetryType.FRONT_DISPLAY_VERSION]: {
+		version: string;
+		versionNumber: number;
+	};
 	[DeviceTelemetryType.FIRMWARE_VERSION]: {
 		version: string;
 	};
@@ -209,6 +219,13 @@ export type LogData = {
 			[key: string]: string;
 		};
 	};
+	[DeviceTelemetryType.PROXY]: {
+		enabled: boolean;
+		uri: string | null;
+	};
+	[DeviceTelemetryType.WIFI_STRENGTH]: {
+		strength: number;
+	};
 	[DeviceTelemetryType.AUTO_RECOVERY]: {
 		enabled: true;
 		healthcheckIntervalMs: number;
@@ -219,6 +236,10 @@ export type LogData = {
 	};
 	[DeviceTelemetryType.FRONT_CAPABILITIES]: {
 		capable: FrontCapabilities[];
+	};
+	[DeviceTelemetryType.CONNECTION_METHOD]: "ws" | "http" | "socket.io";
+	[DeviceTelemetryType.EXTENDED_MANAGEMENT]: {
+		url: string | null;
 	};
 };
 
