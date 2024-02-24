@@ -2,7 +2,7 @@ import * as nock from 'nock';
 import * as should from 'should';
 
 import { getNockOpts, successRes } from '../helper';
-import IAlert, { AlertSnooze, IAlertCreatable } from '../../../../src/RestApi/Alerts/IAlert';
+import IAlert, { AlertSnooze, DeviceAlertSnooze, IAlertCreatable } from '../../../../src/RestApi/Alerts/IAlert';
 import AlertManagement from '../../../../src/RestApi/Alerts/AlertManagement';
 
 const nockOpts = getNockOpts({});
@@ -51,6 +51,8 @@ describe('AlertManagement', () => {
 		},
 	};
 
+	const validDeviceAlertSnoozeObject: DeviceAlertSnooze = { snoozeRule: { type: 'datetime', snoozedUntil: '2040-02-28T12:11:30.000Z' } };
+
 	nock(nockOpts.url, {
 		reqheaders: {
 			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
@@ -75,7 +77,11 @@ describe('AlertManagement', () => {
 		.put('/v1/alert/someAlertUid/snooze', validSnoozableAlertObject)
 		.reply(200, successRes)
 		.put('/v1/alert/someAlertUid/unsnooze')
-		.reply(200, successRes);
+		.reply(200, successRes)
+		.post('/v1/alert/someAlertUid/deviceUid/device-snooze', validDeviceAlertSnoozeObject)
+		.reply(204)
+		.delete('/v1/alert/someAlertUid/deviceUid/device-snooze')
+		.reply(204);
 
 	const alertManagement = new AlertManagement(nockOpts);
 
@@ -125,5 +131,13 @@ describe('AlertManagement', () => {
 
 	it('should unsnooze alert', async () => {
 		await should(alertManagement.unsnooze('someAlertUid')).be.fulfilled();
+	});
+
+	it('should snooze device alert', async () => {
+		await should(alertManagement.snoozeDevice('someAlertUid', 'deviceUid', validDeviceAlertSnoozeObject)).be.fulfilled();
+	});
+
+	it('should unsnooze device alert', async () => {
+		await should(alertManagement.unsnoozeDevice('someAlertUid', 'deviceUid')).be.fulfilled();
 	});
 });
