@@ -9,7 +9,7 @@ const nockOpts = getNockOpts({});
 
 describe('AppletCommandManagement', () => {
 	const cmd: IAppletCommand = {
-		commandPayload: {
+		command: {
 			type: 'Applet.Command',
 			payload: {
 				level: 'OK',
@@ -24,7 +24,7 @@ describe('AppletCommandManagement', () => {
 	};
 	const cmdResp: IAppletCommand[] = [cmd];
 	const sendCmd: IAppletCommandSendable = {
-		commandPayload: {
+		command: {
 			type: 'Applet.Command',
 			payload: {
 				level: 'OK',
@@ -53,7 +53,7 @@ describe('AppletCommandManagement', () => {
 		should.equal(cmd.appletUid, c.appletUid);
 		should.deepEqual(cmd.receivedAt, c.receivedAt);
 		should.deepEqual(cmd.timingChecksum, c.timingChecksum);
-		should.deepEqual(cmd.commandPayload, c.commandPayload);
+		should.deepEqual(cmd.command, c.command);
 	};
 
 	it('should list all list', async () => {

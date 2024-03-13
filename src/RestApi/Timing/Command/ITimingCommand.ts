@@ -6,7 +6,7 @@ export interface ITimingCommandPayload {
 export interface ITimingCommandCreateOnly<TCommandPayload extends ITimingCommandPayload> {
 	deviceUid: string;
 	appletUid: string;
-	commandPayload: TCommandPayload;
+	command: TCommandPayload;
 }
 
 export interface ITimingCommandReadOnly {

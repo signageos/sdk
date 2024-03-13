@@ -4,7 +4,7 @@ export interface ICommandPayload {
 }
 
 export interface IAppletCommandSendable<P extends ICommandPayload = ICommandPayload> {
-	commandPayload: P;
+	command: P;
 }
 
 interface IAppletCommand<P extends ICommandPayload = ICommandPayload> extends IAppletCommandSendable<P> {

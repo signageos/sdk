@@ -1,6 +1,6 @@
-import { getResource, postResource, parseJSONResponse } from '../../requester';
+import { getResource, parseJSONResponse, postResource } from '../../requester';
 import IOptions from '../../IOptions';
-import ITimingCommand, { ITimingCommandPayload, ITimingCommandCreateOnly } from './ITimingCommand';
+import ITimingCommand, { ITimingCommandCreateOnly, ITimingCommandPayload } from './ITimingCommand';
 import RequestError from '../../Error/RequestError';
 import ITimingCommandFilter from './ITimingCommandFilter';
 import TimingCommand from './TimingCommand';
@@ -79,7 +79,8 @@ export default class TimingCommandManagement {
 					timingCommandData.appletUid +
 					'/' +
 					TimingCommandManagement.RESOURCE[2],
-				JSON.stringify(timingCommandData),
+				// New version does not require to contain deviceUid and appletUid in the body
+				JSON.stringify({ command: timingCommandData.command }),
 			);
 			const body = await response.text();
 			if (response.status === 202) {
@@ -89,12 +90,7 @@ export default class TimingCommandManagement {
 				while (true) {
 					await wait(500);
 					try {
-						const timingCommand = await this.get<TCommandPayload>(
-							timingCommandData.deviceUid,
-							timingCommandData.appletUid,
-							timingCommandUid,
-						);
-						return timingCommand;
+						return await this.get<TCommandPayload>(timingCommandData.deviceUid, timingCommandData.appletUid, timingCommandUid);
 					} catch (error) {
 						// when 404 command does not exists yet
 					}

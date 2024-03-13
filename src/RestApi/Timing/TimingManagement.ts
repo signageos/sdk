@@ -17,6 +17,7 @@ export default class TimingManagement {
 
 	private timingCommandManagement: TimingCommandManagement = new TimingCommandManagement(this.options);
 
+	// eslint-disable-next-line no-empty-function
 	constructor(private options: IOptions) {}
 
 	public async create(data: ITimingCreateOnly & ITimingUpdatable): Promise<Timing> {

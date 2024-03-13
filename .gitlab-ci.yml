@@ -16,7 +16,7 @@ cache:
 before_script:
   - export VERSION=`cat ./VERSION`
   - export TAG=`cat ./PRERELEASE`
-  - npx --userconfig ./.npmrc @signageos/lib@latest version-upgrade $VERSION
+  - npx --userconfig ./.npmrc @signageos/lib-ci@latest version-upgrade $VERSION
   - mkdir -p dist
   - npm install --ignore-scripts
 
