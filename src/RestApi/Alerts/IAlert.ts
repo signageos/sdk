@@ -27,6 +27,10 @@ export interface AlertSnooze {
 	snoozeRule: SnoozeRule;
 }
 
+export interface DeviceAlertSnooze {
+	snoozeRule: DateTimeSnoozeRule;
+}
+
 interface DateTimeSnoozeRule {
 	type: 'datetime';
 	snoozedUntil: Date | string;

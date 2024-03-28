@@ -1,7 +1,7 @@
 import IOptions from '../IOptions';
 import AlertRulesManagement from './Rules/AlertRulesManagement';
-import IAlert, { AlertSnooze, IAlertCreatable } from './IAlert';
-import { getResource, parseJSONResponse, postResource, putResource } from '../requester';
+import IAlert, { AlertSnooze, DeviceAlertSnooze, IAlertCreatable } from './IAlert';
+import { deleteResource, getResource, parseJSONResponse, postResource, putResource } from '../requester';
 import Alert from './Alert';
 import IAlertFilter from './IAlertFilter';
 
@@ -61,5 +61,13 @@ export default class AlertManagement {
 
 	public async unsnooze(alertUid: string): Promise<void> {
 		await putResource(this.options, `${RESOURCE}/${alertUid}/unsnooze`, JSON.stringify({ alertUid }));
+	}
+
+	public async snoozeDevice(alertUid: string, deviceUid: string, settings: DeviceAlertSnooze): Promise<void> {
+		await postResource(this.options, `${RESOURCE}/${alertUid}/${deviceUid}/device-snooze`, JSON.stringify(settings));
+	}
+
+	public async unsnoozeDevice(alertUid: string, deviceUid: string): Promise<void> {
+		await deleteResource(this.options, `${RESOURCE}/${alertUid}/${deviceUid}/device-snooze`);
 	}
 }
