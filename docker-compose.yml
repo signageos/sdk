@@ -1,0 +1,11 @@
+services:
+    app:
+        image: 172396373649.dkr.ecr.eu-central-1.amazonaws.com/signageos/docker-node:20-alpine-build
+        build: .
+        volumes:
+            - $PWD:/app
+        command: tail -f /dev/null
+        working_dir: /app
+        init: true
+        env_file:
+            - ~/.signageos/npm.env
