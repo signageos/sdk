@@ -1,5 +1,6 @@
 import { fillDataToEntity } from '../../mapper';
 import IDevice from '../IDevice';
+import { IPaginatedList } from '../../../Lib/Pagination/PaginatedList';
 
 export interface IDeviceAlive {
 	uid: IDevice['uid'];
@@ -16,3 +17,5 @@ export default class DeviceAlive implements IDeviceAlive {
 		fillDataToEntity(this, data);
 	}
 }
+
+export interface IDeviceAliveList extends IPaginatedList<IDeviceAlive> {}

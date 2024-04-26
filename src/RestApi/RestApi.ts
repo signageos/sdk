@@ -16,6 +16,7 @@ import DeviceLocationManagement from './Device/Location/DeviceLocationManagement
 import AlertManagement from './Alerts/AlertManagement';
 import IOptions from './IOptions';
 import PackageManagement from './Package/PackageManagement';
+import { Paginator } from '../Lib/Pagination/paginator';
 
 export default class RestApi {
 	// Note: We use different authentication here
@@ -32,7 +33,7 @@ export default class RestApi {
 	public readonly bulkOperation: BulkOperationManagement = new BulkOperationManagement(this.organizationOptions);
 	public readonly device: DeviceManagement = new DeviceManagement(this.accountOptions, this.organizationOptions);
 	public readonly emulator: EmulatorManagement = new EmulatorManagement(this.accountOptions, this.device);
-	public readonly deviceAlive: DeviceAliveManagement = new DeviceAliveManagement(this.organizationOptions);
+	public readonly deviceAlive: DeviceAliveManagement;
 	public readonly deviceLocation: DeviceLocationManagement = new DeviceLocationManagement(this.organizationOptions);
 
 	public readonly alert: AlertManagement = new AlertManagement(this.organizationOptions);
@@ -44,5 +45,8 @@ export default class RestApi {
 	constructor(
 		public readonly accountOptions: IOptions,
 		public readonly organizationOptions: IOptions,
-	) {}
+	) {
+		const paginator = new Paginator(this.organizationOptions);
+		this.deviceAlive = new DeviceAliveManagement(this.organizationOptions, paginator);
+	}
 }
