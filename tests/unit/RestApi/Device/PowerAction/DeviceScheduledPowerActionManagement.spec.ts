@@ -12,7 +12,7 @@ import IScheduledPowerAction, {
 const nockOpts = getNockOpts({});
 
 describe('DeviceScheduledPowerActionManagement', () => {
-	const getLocationHeader = (policyUid: string): nock.HttpHeaders => ({
+	const getLocationHeader = (policyUid: string): nock.ReplyHeaders => ({
 		Location: `${nockOpts.url}/${nockOpts.version}/policy/${policyUid}`,
 	});
 
@@ -40,7 +40,7 @@ describe('DeviceScheduledPowerActionManagement', () => {
 	})
 		.get('/v1/device/someUid/scheduled-power-action')
 		.reply(200, validGetResp)
-		.post('/v1/device/someUid/scheduled-power-action', validCreateReq)
+		.post('/v1/device/someUid/scheduled-power-action', validCreateReq as {})
 		.reply(200, successRes, getLocationHeader('someUid'))
 		.get('/v1/device/someUid/scheduled-power-action/scheduledActionId')
 		.reply(200, pa)

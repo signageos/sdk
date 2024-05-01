@@ -33,7 +33,7 @@ describe('AppletTestSuiteManagement', () => {
 	})
 		.get('/v1/applet/appletUid/version/1.0.1/test')
 		.reply(200, validListResp)
-		.post('/v1/applet/appletUid/version/1.0.1/test', validCreateReq)
+		.post('/v1/applet/appletUid/version/1.0.1/test', validCreateReq as {})
 		.reply(200, successRes)
 		.get('/v1/applet/appletUid/version/1.0.1/test/testName')
 		.reply(200, validGetResp)

@@ -36,9 +36,9 @@ describe('DeviceBrightnessManagement', () => {
 		.reply(200, validGetResp)
 		.get('/v1/device/shouldFail/brightness')
 		.reply(500, errorResp)
-		.put('/v1/device/someUid/brightness', validSetReq)
+		.put('/v1/device/someUid/brightness', validSetReq as {})
 		.reply(200, successRes)
-		.put('/v1/device/shouldFail/brightness', validSetReq)
+		.put('/v1/device/shouldFail/brightness', validSetReq as {})
 		.reply(500, errorResp);
 
 	const dbm = new DeviceBrightnessManagement(nockOpts);

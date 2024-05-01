@@ -14,7 +14,7 @@ const nockOpts = getNockOpts({});
 
 describe('AppletVersionFileManagement', function () {
 	const validGetRespBody = createReadableStream('this is get req test file content');
-	const validGetRespHeaders: nock.HttpHeaders = {
+	const validGetRespHeaders: nock.ReplyHeaders = {
 		'Content-Type': 'valid/content',
 	};
 	const validListResp: IAppletVersionFile[] = [
@@ -75,7 +75,7 @@ describe('AppletVersionFileManagement', function () {
 		.reply(200, validListResp)
 		.post('/v1/applet/appletUid/version/1.1.0/file', validCreateReqBody)
 		.reply(200, successCreateRes)
-		.put('/v1/applet/appletUid/version/1.1.0/file/path/testFile', validUpdateReqBody)
+		.put('/v1/applet/appletUid/version/1.1.0/file/path/testFile', validUpdateReqBody as {})
 		.reply(200, successUpdateRes)
 		.delete('/v1/applet/appletUid/version/1.1.0/file/path/testFile')
 		.reply(200);

@@ -29,7 +29,7 @@ describe('AppletManagement', () => {
 		.persist()
 		.get('/v1/applet')
 		.reply(200, validListResp)
-		.post('/v1/applet', validCreateReq)
+		.post('/v1/applet', validCreateReq as {})
 		.reply(200, successRes, successResHeaders)
 		.get('/v1/applet/someUid/')
 		.reply(200, validGetResp)

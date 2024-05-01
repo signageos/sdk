@@ -35,7 +35,7 @@ describe('DeviceResolutionManagement', () => {
 	})
 		.get('/v1/device/someUid/resolution')
 		.reply(200, validGetResp)
-		.put('/v1/device/someUid/resolution', validSetReq)
+		.put('/v1/device/someUid/resolution', validSetReq as {})
 		.reply(200, successRes);
 
 	const drm = new DeviceResolutionManagement(nockOpts);

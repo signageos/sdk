@@ -43,7 +43,7 @@ describe('DeviceTimerManagement', () => {
 	})
 		.get('/v1/device/someUid/timer-settings')
 		.reply(200, validGetResp)
-		.put('/v1/device/someUid/timer-settings', validSetReq)
+		.put('/v1/device/someUid/timer-settings', validSetReq as {})
 		.reply(200, successRes);
 
 	const dtm = new DeviceTimerManagement(nockOpts);

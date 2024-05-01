@@ -30,7 +30,7 @@ describe('DeviceFirmwareManagement', () => {
 	})
 		.get('/v1/device/someUid/firmware')
 		.reply(200, validGetResp)
-		.put('/v1/device/someUid/firmware', validSetReq)
+		.put('/v1/device/someUid/firmware', validSetReq as {})
 		.reply(200, validSetResp);
 
 	const dfm = new DeviceFirmwareManagement(nockOpts);

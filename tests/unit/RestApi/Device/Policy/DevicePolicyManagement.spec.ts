@@ -26,7 +26,7 @@ describe('DevicePolicyManagement', () => {
 	nock(nockOpts.url, nockAuthHeader1)
 		.get('/v1/device/someDeviceUid/policy')
 		.reply(200, [originalDevicePolicyRaw])
-		.post('/v1/device/someDeviceUid/policy', validAssignPolicyToDeviceRequest)
+		.post('/v1/device/someDeviceUid/policy', validAssignPolicyToDeviceRequest as {})
 		.reply(201, successRes)
 		.delete('/v1/device/someDeviceUid/policy/somePolicyUid')
 		.reply(200, successRes);

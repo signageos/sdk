@@ -33,7 +33,7 @@ const assertLocation = (location: ILocation) => {
 };
 
 describe('Unit.RestApi.Location', () => {
-	const validPostRespHeaders: nock.HttpHeaders = {
+	const validPostRespHeaders: nock.ReplyHeaders = {
 		Location: `https://example.com/${ApiVersions.V1}/${Resources.Location}/${LOCATION_1.uid}`,
 	};
 

@@ -8,7 +8,7 @@ import OrganizationManagement from '../../../../src/RestApi/Organization/Organiz
 const nockOpts = getNockOpts({});
 
 describe('OrganizationManagement', () => {
-	const validPostRespHeaders: nock.HttpHeaders = {
+	const validPostRespHeaders: nock.ReplyHeaders = {
 		Location: 'https://example.com/v1/organization/someUid',
 	};
 	const organization: IOrganization = {
@@ -38,7 +38,7 @@ describe('OrganizationManagement', () => {
 		.reply(200, validGetResp)
 		.get('/v1/organization/someUid?name=signageos')
 		.reply(200, validGetResp)
-		.post('/v1/organization', validCreateReq)
+		.post('/v1/organization', validCreateReq as {})
 		.reply(200, 'Created', validPostRespHeaders)
 		.get('/v1/organization/someUid')
 		.reply(200, validGetResp)
@@ -46,7 +46,7 @@ describe('OrganizationManagement', () => {
 		.reply(200, '')
 		.delete('/v1/organization/someUid')
 		.reply(200, '')
-		.put('/v1/organization/someUid', validUpdateReqBody)
+		.put('/v1/organization/someUid', validUpdateReqBody as {})
 		.reply(200, '');
 
 	const om = new OrganizationManagement(nockOpts);

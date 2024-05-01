@@ -9,7 +9,7 @@ const nockOpts = getNockOpts({});
 const API_PREFIX = 'v1';
 
 describe('PackageManagement', () => {
-	const getLocationHeader = (packageUid: string): nock.HttpHeaders => ({
+	const getLocationHeader = (packageUid: string): nock.ReplyHeaders => ({
 		Location: `${nockOpts.url}/${nockOpts.version}/${PackageManagement.RESOURCE}/${packageUid}`,
 	});
 

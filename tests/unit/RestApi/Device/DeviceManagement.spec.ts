@@ -73,9 +73,9 @@ describe('DeviceManagement', () => {
 		.reply(200, validGetResp)
 		.get('/v1/device/shouldFail')
 		.reply(500, errorResp)
-		.put('/v1/device/someUid', validSetReq)
+		.put('/v1/device/someUid', validSetReq as {})
 		.reply(200, { volume: 90 })
-		.put('/v1/device/shouldFail', validSetReq)
+		.put('/v1/device/shouldFail', validSetReq as {})
 		.reply(500, errorResp)
 		.put('/v1/device/someUid/organization', { organizationUid: 'testOrgUid1' })
 		.reply(204);

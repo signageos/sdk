@@ -35,9 +35,9 @@ describe('DevicePackageManagement', () => {
 		.reply(200, validGetResp)
 		.get('/v1/device/shouldFail/package-install')
 		.reply(500, errorResp)
-		.put('/v1/device/someUid/package-install', validSetReq)
+		.put('/v1/device/someUid/package-install', validSetReq as {})
 		.reply(200, successRes)
-		.put('/v1/device/shouldFail/package-install', validSetReq)
+		.put('/v1/device/shouldFail/package-install', validSetReq as {})
 		.reply(500, errorResp);
 
 	const dpm = new DevicePackageManagement(nockOpts);

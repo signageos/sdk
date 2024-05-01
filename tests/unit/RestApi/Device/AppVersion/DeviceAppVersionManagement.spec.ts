@@ -33,7 +33,7 @@ describe('DeviceAppVersionManagement', () => {
 	})
 		.get('/v1/device/someUid/application/version')
 		.reply(200, validGetResp)
-		.put(`/v1/device/someUid/application/${applicationType}/version`, validSetReq)
+		.put(`/v1/device/someUid/application/${applicationType}/version`, validSetReq as {})
 		.reply(200, successRes);
 
 	describe('get application version', () => {

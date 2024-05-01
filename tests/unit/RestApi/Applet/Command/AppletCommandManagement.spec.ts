@@ -42,7 +42,7 @@ describe('AppletCommandManagement', () => {
 		.reply(200, cmdResp)
 		.get('/v1/device/someUid/applet/appletUid/command/cmdUid')
 		.reply(200, cmd)
-		.post('/v1/device/someUid/applet/appletUid/command', sendCmd)
+		.post('/v1/device/someUid/applet/appletUid/command', sendCmd as {})
 		.reply(200, 'Accepted');
 
 	const acm = new AppletCommandManagement(nockOpts);

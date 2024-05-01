@@ -31,9 +31,9 @@ describe('DeviceAudioManagement', () => {
 		.reply(200, validGetResp)
 		.get('/v1/device/shouldFail/volume')
 		.reply(500, errorResp)
-		.put('/v1/device/someUid/volume', validSetReq)
+		.put('/v1/device/someUid/volume', validSetReq as {})
 		.reply(200, successRes)
-		.put('/v1/device/shouldFail/volume', validSetReq)
+		.put('/v1/device/shouldFail/volume', validSetReq as {})
 		.reply(500, errorResp);
 
 	const dvm = new DeviceAudioManagement(nockOpts);

@@ -17,7 +17,7 @@ describe('EmulatorManagement', () => {
 	};
 	const validListResp: IEmulator[] = [emulator];
 	const validCreateReq: IEmulatorCreatable = { organizationUid: 'default-org' };
-	const validPostRespHeaders: nock.HttpHeaders = {
+	const validPostRespHeaders: nock.ReplyHeaders = {
 		Location: 'https://example.com/v1/device/someIdentityHash',
 	};
 

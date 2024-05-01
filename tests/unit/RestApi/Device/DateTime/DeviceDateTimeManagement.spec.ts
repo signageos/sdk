@@ -30,7 +30,7 @@ describe('DeviceDateTimeManagement', () => {
 	})
 		.get('/v1/device/someUid/time')
 		.reply(200, validGetResp)
-		.put('/v1/device/someUid/time', validSetReq)
+		.put('/v1/device/someUid/time', validSetReq as {})
 		.reply(200, successRes);
 
 	const dtm = new DeviceDateTimeManagement(nockOpts);

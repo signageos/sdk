@@ -8,7 +8,7 @@ import AlertManagement from '../../../../src/RestApi/Alerts/AlertManagement';
 const nockOpts = getNockOpts({});
 
 describe('AlertManagement', () => {
-	const getLocationHeader = (alertUid: string): nock.HttpHeaders => ({
+	const getLocationHeader = (alertUid: string): nock.ReplyHeaders => ({
 		Location: `${nockOpts.url}/${nockOpts.version}/alert/${alertUid}`,
 	});
 
@@ -64,7 +64,7 @@ describe('AlertManagement', () => {
 		.reply(200, [validAlertObjectNonArchived])
 		.get('/v1/alert/someAlertUid')
 		.reply(200, validAlertObject)
-		.post('/v1/alert', validAlertCreateObject)
+		.post('/v1/alert', validAlertCreateObject as {})
 		.reply(201, successRes, getLocationHeader('someAlertUid'))
 		.get('/v1/alert/someAlertUid')
 		.reply(200, validAlertObject)
@@ -74,11 +74,11 @@ describe('AlertManagement', () => {
 		.reply(200, successRes)
 		.put('/v1/alert/someAlertUid/unarchive')
 		.reply(200, successRes)
-		.put('/v1/alert/someAlertUid/snooze', validSnoozableAlertObject)
+		.put('/v1/alert/someAlertUid/snooze', validSnoozableAlertObject as {})
 		.reply(200, successRes)
 		.put('/v1/alert/someAlertUid/unsnooze')
 		.reply(200, successRes)
-		.post('/v1/alert/someAlertUid/deviceUid/device-snooze', validDeviceAlertSnoozeObject)
+		.post('/v1/alert/someAlertUid/deviceUid/device-snooze', validDeviceAlertSnoozeObject as {})
 		.reply(204)
 		.delete('/v1/alert/someAlertUid/deviceUid/device-snooze')
 		.reply(204);

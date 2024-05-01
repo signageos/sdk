@@ -11,7 +11,7 @@ const nockOpts = getNockOpts({});
 const bulkOperationResource = 'bulk-operation';
 
 describe('BulkOperationManagement', () => {
-	const getLocationHeader = (bulkOperationUid: string): nock.HttpHeaders => ({
+	const getLocationHeader = (bulkOperationUid: string): nock.ReplyHeaders => ({
 		Location: `${nockOpts.url}/${nockOpts.version}/${bulkOperationResource}/${bulkOperationUid}`,
 	});
 

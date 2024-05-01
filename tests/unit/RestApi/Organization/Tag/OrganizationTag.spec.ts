@@ -11,7 +11,7 @@ import { getNockOpts, nockAuthHeader1 } from '../../helper';
 const nockOpts = getNockOpts({});
 const organizationTagManagement = new OrganizationTagManagement(nockOpts);
 
-const postRespHeaders: nock.HttpHeaders = {
+const postRespHeaders: nock.ReplyHeaders = {
 	Location: `https://example.com/${ApiVersions.V1}/${Resources.OrganizationTag}/${ORGANIZATION_TAG_1.uid}`,
 };
 

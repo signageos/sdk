@@ -8,7 +8,7 @@ import PolicyManagement from '../../../../src/RestApi/Policy/PolicyManagement';
 const nockOpts = getNockOpts({});
 
 describe('PolicyManagement', () => {
-	const getLocationHeader = (policyUid: string): nock.HttpHeaders => ({
+	const getLocationHeader = (policyUid: string): nock.ReplyHeaders => ({
 		Location: `${nockOpts.url}/${nockOpts.version}/policy/${policyUid}`,
 	});
 	const validCreatePolicyRequest: IPolicyCreatable = { name: 'testPolicy', organizationUid: 'signageos' };
@@ -41,13 +41,13 @@ describe('PolicyManagement', () => {
 		.reply(200, [originalPolicy])
 		.get('/v1/policy/someUid')
 		.reply(200, originalPolicy)
-		.post('/v1/policy', validCreatePolicyRequest)
+		.post('/v1/policy', validCreatePolicyRequest as {})
 		.reply(201, successRes, getLocationHeader('someUid'))
 		.get('/v1/policy/someUid')
 		.reply(200, originalEmptyPolicy)
-		.put('/v1/policy/someUid', validUpdatePolicyRequest)
+		.put('/v1/policy/someUid', validUpdatePolicyRequest as {})
 		.reply(200, successRes)
-		.put('/v1/policy/someUid/clone', validClonePolicyRequest)
+		.put('/v1/policy/someUid/clone', validClonePolicyRequest as {})
 		.reply(201, successRes, getLocationHeader('someUid2'))
 		.get('/v1/policy/someUid2')
 		.reply(200, clonedPolicy)

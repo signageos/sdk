@@ -32,7 +32,7 @@ describe('DeviceDebugManagement', () => {
 	})
 		.get('/v1/device/someUid/debug')
 		.reply(200, validGetResp)
-		.put('/v1/device/someUid/debug', validSetReq)
+		.put('/v1/device/someUid/debug', validSetReq as {})
 		.reply(200, successRes);
 
 	describe('get debug settings', () => {

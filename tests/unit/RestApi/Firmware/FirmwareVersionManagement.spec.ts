@@ -73,13 +73,13 @@ describe('FirmwareVersionManagement', () => {
 		})
 			.get('/v1/firmware/version')
 			.reply(200, validListResp)
-			.put('/v1/firmware/version/webos/04.01.74', validUpdateReqBody)
+			.put('/v1/firmware/version/webos/04.01.74', validUpdateReqBody as {})
 			.reply(200, successRes)
-			.post('/v1/firmware/version', validCreateReq)
+			.post('/v1/firmware/version', validCreateReq as {})
 			.reply(200, successCreateRes)
-			.put('/v1/firmware/version/linux/1.3.0/rpi4', validUpdateReqBody)
+			.put('/v1/firmware/version/linux/1.3.0/rpi4', validUpdateReqBody as {})
 			.reply(200, successRes)
-			.put('/v1/firmware/version/linux/1.3.0/rpi5?force=true', validUpdateReqBody)
+			.put('/v1/firmware/version/linux/1.3.0/rpi5?force=true', validUpdateReqBody as {})
 			.reply(200, successRes);
 
 		nock('http://myNiceStorage').post('/create').reply(204).post('/update').reply(204);

@@ -28,7 +28,7 @@ describe('DeviceRemoteControlManagement', () => {
 	})
 		.get('/v1/device/someUid/remote-control')
 		.reply(200, validGetResp)
-		.put('/v1/device/someUid/remote-control', validSetReq)
+		.put('/v1/device/someUid/remote-control', validSetReq as {})
 		.reply(200, successRes);
 
 	const drcm = new DeviceRemoteControlManagement(nockOpts);

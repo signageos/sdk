@@ -8,7 +8,7 @@ import { getNockOpts, successRes } from '../../helper';
 const nockOpts = getNockOpts({});
 
 describe('AlertRuleManagement', () => {
-	const getLocationHeader = (alertRuleUid: string): nock.HttpHeaders => ({
+	const getLocationHeader = (alertRuleUid: string): nock.ReplyHeaders => ({
 		Location: `${nockOpts.url}/${nockOpts.version}/alert-rule/${alertRuleUid}`,
 	});
 
@@ -50,11 +50,11 @@ describe('AlertRuleManagement', () => {
 		.reply(200, [validAlertRuleObject])
 		.get('/v1/alert-rule/someAlertRuleUid')
 		.reply(200, validAlertRuleObject)
-		.post('/v1/alert-rule', createAlertRuleObject)
+		.post('/v1/alert-rule', createAlertRuleObject as {})
 		.reply(201, successRes, getLocationHeader('someAlertRuleUid'))
 		.get('/v1/alert-rule/someAlertRuleUid')
 		.reply(200, validAlertRuleObject)
-		.put('/v1/alert-rule/someAlertRuleUid', updateAlertRuleObject)
+		.put('/v1/alert-rule/someAlertRuleUid', updateAlertRuleObject as {})
 		.reply(200, successRes)
 		.put('/v1/alert-rule/someAlertRuleUid/archive')
 		.reply(200, successRes)
