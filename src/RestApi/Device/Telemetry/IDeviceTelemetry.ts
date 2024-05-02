@@ -237,7 +237,7 @@ export type LogData = {
 	[DeviceTelemetryType.FRONT_CAPABILITIES]: {
 		capable: FrontCapabilities[];
 	};
-	[DeviceTelemetryType.CONNECTION_METHOD]: "ws" | "http" | "socket.io";
+	[DeviceTelemetryType.CONNECTION_METHOD]: 'ws' | 'http' | 'socket.io';
 	[DeviceTelemetryType.EXTENDED_MANAGEMENT]: {
 		url: string | null;
 	};

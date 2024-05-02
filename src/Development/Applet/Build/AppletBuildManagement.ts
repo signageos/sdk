@@ -2,10 +2,10 @@ import * as archiver from 'archiver';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import {
-  getAppletBuildRuntimeDir,
-  getAppletPackageArchivePath,
-  getAppletVersionBuildRuntimeDir,
-  IFileSystem,
+	getAppletBuildRuntimeDir,
+	getAppletPackageArchivePath,
+	getAppletVersionBuildRuntimeDir,
+	IFileSystem,
 } from '../../runtimeFileSystem';
 import { AppletFilesManagement } from '../Files/AppletFilesManagement';
 import { AppletBuild } from './AppletBuild';

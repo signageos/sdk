@@ -1,8 +1,7 @@
-import { fillDataToEntity } from "../../mapper";
-import IDeviceExtendedManagementUrl from "./IExtendedManagementUrl";
+import { fillDataToEntity } from '../../mapper';
+import IDeviceExtendedManagementUrl from './IExtendedManagementUrl';
 
 export default class DeviceExtendedManagementUrl implements IDeviceExtendedManagementUrl {
-
 	// public readonly [P in keyof IDeviceBrightness]: IDeviceBrightness[P]; // Generalized TS doesn't support
 	public readonly uid: IDeviceExtendedManagementUrl['uid'];
 	public readonly deviceUid: IDeviceExtendedManagementUrl['deviceUid'];
