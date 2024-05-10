@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.23.0] - 2024-05-10
 ### Added
 - Snooze/unsnooze alerts per device
 - Pagination for `device.alive.list` method using `getNextPage` method on result Array
