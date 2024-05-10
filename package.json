@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "npx check-engine@latest && tsc",
-    "lint": "eslint --ext .ts,.tsx,.js ./src/ ./tests --fix",
+    "lint": "eslint --ext .ts,.tsx,.js ./src/ ./tests",
     "prebuild": "rm -rf dist/*",
     "prepare": "npm run prebuild && npm run build && git config blame.ignoreRevsFile .git-blame-ignore-revs",
     "test": "env NODE_ENV=test mocha --config .mocharc.unit.json",
@@ -31,7 +31,7 @@
   "license": "MIT",
   "engines": {
     "node": "20",
-    "npm": "10"
+    "npm": ">=10"
   },
   "engineStrict": false,
   "devDependencies": {

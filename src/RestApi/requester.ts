@@ -49,6 +49,10 @@ export async function deleteResource(options: IOptions, path: string, query?: an
 	return await doRequest(createUri(options, path, query), await createOptions('DELETE', options));
 }
 
+export async function getUrl(options: IOptions, url: string) {
+	return await doRequest(url, await createOptions('GET', options));
+}
+
 export async function parseJSONResponse(resp: Response): Promise<any> {
 	const responseText = await resp.text();
 	return parseJSON(responseText);

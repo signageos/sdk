@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - Snooze/unsnooze alerts per device
+- Pagination for `device.alive.list` method using `getNextPage` method on result Array
 
 ## [1.22.0] - 2024-02-22
 ### Added
