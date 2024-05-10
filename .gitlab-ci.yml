@@ -139,8 +139,7 @@ publish:docs:
     - prepare
     - build
   script:
-    - apk add python3 && rm -f /usr/bin/python && ln -s /usr/bin/python3 /usr/bin/python
-    - if [ -x "$(command -v aws)" ]; then echo "AWS CLI already present"; else make getaws; fi
+    - apk add --no-cache aws-cli
     - npm i && npm run docs
     - echo $AWS_ALPINE_REPO_S3_PATH
     - aws s3 cp ./docs "s3://signageos-documentation/sdk/$TAG" --recursive
