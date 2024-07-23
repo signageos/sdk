@@ -1,34 +1,24 @@
-import IOptions from '../../IOptions';
-import { parseJSONResponse, postResource, deleteResource } from '../../requester';
+import { fillDataToEntity } from '../../mapper';
 
-
-
-export interface IOrganizationTokenCreate {
+export interface IOrganizationTokenCreatable {
     name: string;
 }
 
-export interface IOrganizationTokenDelete {
+export interface IOrganizationTokenDeletable {
     securityTokenId: string;
 }
 
-export interface IOrganizationTokenResponse {
+export interface IOrganizationToken extends IOrganizationTokenCreatable {
     id: string;
     securityToken: string;
-    name: string;
 }
 
-export class OrganizationToken{
-	public static readonly RESOURCE: string = 'organization';
+export class OrganizationToken implements IOrganizationToken{
+    public readonly name: IOrganizationToken['name'];
+    public readonly id: IOrganizationToken['id'];
+    public readonly securityToken: IOrganizationToken['securityToken'];
 
-    constructor(private options: IOptions) {}
-
-    public async create(orgUid: string, params: IOrganizationTokenCreate){
-        const response = await postResource(this.options, `${OrganizationToken.RESOURCE}/${orgUid}`, JSON.stringify({name: params.name}));
-		const data : IOrganizationTokenResponse = await parseJSONResponse(response);
-		return data;
+    constructor(data: IOrganizationToken) {
+        fillDataToEntity(this, data);
     }
-
-    public async delete(orgUid: string, params: IOrganizationTokenDelete) {
-		await deleteResource(this.options, `${OrganizationToken.RESOURCE}/${orgUid}/security-token/${params.securityTokenId}`, JSON.stringify({}));
-	}
 }

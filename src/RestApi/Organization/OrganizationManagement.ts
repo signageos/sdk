@@ -5,7 +5,7 @@ import Organization from './Organization';
 import { IOrganizationFilter } from './IOrganizationFilter';
 import { omit } from 'lodash';
 import CompanyManagement from '../Company/CompanyManagement';
-import { OrganizationToken } from './Token/OrganizationToken';
+import { OrganizationTokenManagment } from './Token/OrganizationTokenManagment';
 
 interface OrganizationUpdatableValues {
 	title: string;
@@ -13,10 +13,10 @@ interface OrganizationUpdatableValues {
 
 export default class OrganizationManagement {
 	public static readonly RESOURCE: string = 'organization';
-	public token: OrganizationToken;
+	public token: OrganizationTokenManagment;
 
 	constructor(private options: IOptions) {
-		this.token = new OrganizationToken(this.options);
+		this.token = new OrganizationTokenManagment(this.options);
 	}
 
 	public async list(filter: IOrganizationFilter = {}): Promise<IOrganization[]> {
@@ -29,8 +29,8 @@ export default class OrganizationManagement {
 		return data.map((item: IOrganization) => new Organization(item, this.options));
 	}
 
-	public async get(orgUid: string, filter: IOrganizationFilter = {}): Promise<Organization> {
-		const response = await getResource(this.options, OrganizationManagement.RESOURCE + '/' + orgUid, filter);
+	public async get(organizationUid: string, filter: IOrganizationFilter = {}): Promise<Organization> {
+		const response = await getResource(this.options, OrganizationManagement.RESOURCE + '/' + organizationUid, filter);
 
 		return new Organization(await parseJSONResponse(response), this.options);
 	}
@@ -48,19 +48,19 @@ export default class OrganizationManagement {
 		return await this.get(organizationUid);
 	}
 
-	public async setSubscriptionType(orgUid: string, subscription: SubscriptionType): Promise<void> {
+	public async setSubscriptionType(organizationUid: string, subscription: SubscriptionType): Promise<void> {
 		await putResource(
 			this.options,
-			`${OrganizationManagement.RESOURCE}/${orgUid}/subscriptionType/${subscription}`,
+			`${OrganizationManagement.RESOURCE}/${organizationUid}/subscriptionType/${subscription}`,
 			JSON.stringify({}),
 		);
 	}
 
-	public async delete(orgUid: string): Promise<void> {
-		await deleteResource(this.options, `${OrganizationManagement.RESOURCE}/${orgUid}`);
+	public async delete(organizationUid: string): Promise<void> {
+		await deleteResource(this.options, `${OrganizationManagement.RESOURCE}/${organizationUid}`);
 	}
 
-	public async update(orgUid: string, values: OrganizationUpdatableValues): Promise<void> {
-		await putResource(this.options, `${OrganizationManagement.RESOURCE}/${orgUid}`, JSON.stringify(values));
+	public async update(organizationUid: string, values: OrganizationUpdatableValues): Promise<void> {
+		await putResource(this.options, `${OrganizationManagement.RESOURCE}/${organizationUid}`, JSON.stringify(values));
 	}
 }
