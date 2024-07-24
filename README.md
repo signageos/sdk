@@ -164,18 +164,14 @@ The most useful documentation pages:
 
 ### Running the tests
 
-Setup `env` variables:
+Create .env file by running
 
 ```
-SOS_ORGANIZATION_UID=[ORGANIZATION_UID] // Add `organizationUid` on which will be the tests running
+cp .env.automated.test
 ```
 
-This SDK library contains several unit and integration tests, You may locate inside the `sdk` root directory and run
-`npm run test` or `npm run test-integration` command.
+and fill in the missing values. You have to ask the maintainer of the repository for the values.
 
-If you properly configured all the mandatory environment variables either in `.env` file inside the sdk root or on your
-machine, and you set  
-the integration tests will be launched too. Otherwise only unit test would be run and integrations tests would be
-skipped.
-
-Tip: you may use existing `.env.dist` file for creating the `.env`.
+Then,
+- for unit tests run `npm run test`
+- for integration tests, run `npm run test-integration`
