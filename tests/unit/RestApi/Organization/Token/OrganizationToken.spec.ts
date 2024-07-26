@@ -1,71 +1,68 @@
-import * as should from 'should';
 import * as nock from 'nock';
+import * as should from 'should';
+
+import { ApiVersions } from '../../../../../src/RestApi/apiVersions';
+import {
+	ORGANIZATION_TOKEN_1,
+	ORGANIZATION_TOKEN_CREATE_1,
+	ORGANIZATION_TOKEN_DELETE_1,
+	ORGANIZATION_TOKEN_GET_1,
+	ORGANIZATION_UID,
+} from './OrganizationToken.fixtures';
+import { getNockOpts, nockAuthHeader1 } from '../../helper';
+import { IOrganizationToken, OrganizationTokenResource } from '../../../../../src/RestApi/Organization/Token/OrganizationToken';
+import { OrganizationTokenManagment } from '../../../../../src/RestApi/Organization/Token/OrganizationTokenManagment';
 
 const nockOpts = getNockOpts({});
-import { errorResp, errorRespMessage, getNockOpts, successRes } from '../../helper';
-import { IOrganizationTokenCreate, IOrganizationTokenDelete, IOrganizationTokenResponse, OrganizationToken } from '../../../../../src/RestApi/Organization/Token/OrganizationToken';
+const organizationTokenManagement = new OrganizationTokenManagment(nockOpts);
 
+const postRespHeaders: nock.ReplyHeaders = {
+	Location: `https://example.com/${ApiVersions.V1}/organization/${ORGANIZATION_UID}`,
+};
 
-describe('OrganizationTokenManagment', ()=> {
-    const token : IOrganizationTokenResponse = {
-        id: 'someId',
-        securityToken: 'someSecurityToken',
-        name: 'someName'
-    };
+const assertOrganizationToken = (organizationToken: IOrganizationToken) => {
+	const { id, name, securityToken } = organizationToken;
 
-    const validGetResp : IOrganizationTokenResponse = token;
-    const validateSetReq: IOrganizationTokenCreate = {
-        name: 'someName'
-    };
-    const validateDelReq: IOrganizationTokenDelete = {
-        securityTokenId: 'someSecurityToken'
-    }
+	should(id).be.equal(ORGANIZATION_TOKEN_1.id);
+	should(name).be.equal(ORGANIZATION_TOKEN_1.name);
+	should(securityToken).be.equal(ORGANIZATION_TOKEN_1.securityToken);
+};
 
-    nock(nockOpts.url, {
-		reqheaders: {
-			'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}`, // checks the x-auth header presence
-		},
-	})
-        .post('/v1/organization/someUid/security-token', validateSetReq as {})
-        .reply(200, validGetResp)
-        .post('/v1/organization/shouldFail/security-token', validateSetReq as {})
-        .reply(500, errorResp)
-        .delete('/v1/organization/someUid/security-token/someSecurityToken')
-        .reply(200, successRes)
-        .delete('/v1/organization/shouldFail/security-token/shouldFail')
-        .reply(500, errorResp);
+const assertOrganizationTokenList = (organizationTokenList: OrganizationTokenResource[]) => {
+	const { id, name, organizationUid } = organizationTokenList[0];
 
-    const organizationToken = new OrganizationToken(nockOpts);
+	should(id).be.equal(ORGANIZATION_TOKEN_GET_1[0].id);
+	should(name).be.equal(ORGANIZATION_TOKEN_GET_1[0].name);
+	should(organizationUid).be.equal(ORGANIZATION_TOKEN_GET_1[0].organizationUid);
+};
 
-    describe('create new organization token', ()=> {
-        it('should create token', async () => {
-            await organizationToken.create('someUid', validateSetReq);
-            should(true).true();
-        });
+describe('Unit.RestApi.Organization.Token.OrganizationToken', () => {
+	nock(nockOpts.url, nockAuthHeader1)
+		.get(`/${ApiVersions.V1}/organization/${ORGANIZATION_UID}/security-token`)
+		.reply(200, ORGANIZATION_TOKEN_GET_1, postRespHeaders)
+		.post(`/${ApiVersions.V1}/organization/${ORGANIZATION_UID}/security-token`, JSON.stringify(ORGANIZATION_TOKEN_CREATE_1))
+		.reply(201, ORGANIZATION_TOKEN_1, postRespHeaders)
+		.delete(`/${ApiVersions.V1}/organization/${ORGANIZATION_UID}/security-token/${ORGANIZATION_TOKEN_DELETE_1.securityTokenId}`)
+		.reply(
+			200,
+			JSON.stringify({
+				message: 'OK',
+			}),
+		);
 
-        it('should throw an error', async () => {
-            try {
-                await organizationToken.create('shouldFail', validateSetReq);
-            }
-            catch (e) {
-                should(e.message).equal(errorRespMessage(500));
-            }
-        })
-    });
+	it('should get organization tokens', async () => {
+		const organizationTokens = await organizationTokenManagement.get(ORGANIZATION_UID);
 
-    describe('delete organization token', ()=> {
-        it('should delete token', async () => {
-            await organizationToken.delete('someUid', validateDelReq);
-            should(true).true();
-        });
+		assertOrganizationTokenList(organizationTokens);
+	});
 
-        it('should throw an error', async () => {
-            try {
-                await organizationToken.delete('shouldFail', validateDelReq);
-            }
-            catch (e) {
-                should(e.message).equal(errorRespMessage(500));
-            }
-        })
-    });
+	it('should create organization token', async () => {
+		const organizationToken = await organizationTokenManagement.create(ORGANIZATION_UID, ORGANIZATION_TOKEN_CREATE_1);
+
+		assertOrganizationToken(organizationToken);
+	});
+
+	it('should delete organization token', async () => {
+		await should(organizationTokenManagement.delete(ORGANIZATION_UID, ORGANIZATION_TOKEN_DELETE_1)).be.fulfilled();
+	});
 });

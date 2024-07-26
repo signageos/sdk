@@ -1,19 +1,40 @@
 import IOptions from '../../IOptions';
-import { parseJSONResponse, postResource, deleteResource } from '../../requester';
-import { IOrganizationTokenCreatable, IOrganizationTokenDeletable, OrganizationToken } from './OrganizationToken';
+import { parseJSONResponse, postResource, deleteResource, getResource } from '../../requester';
+import {
+	IOrganizationTokenCreatable,
+	IOrganizationTokenDeletable,
+	OrganizationToken,
+	OrganizationTokenResource,
+} from './OrganizationToken';
 
-export class OrganizationTokenManagment{
+export class OrganizationTokenManagment {
 	public static readonly RESOURCE: string = 'organization';
 
-    constructor(private options: IOptions) {}
+	constructor(private options: IOptions) {}
 
-    public async create(orgUid: string, organizationToken: IOrganizationTokenCreatable) : Promise<OrganizationToken>{
-        const response = await postResource(this.options, `${OrganizationTokenManagment.RESOURCE}/${orgUid}`, JSON.stringify({name: organizationToken.name}));
-		const data : OrganizationToken = await parseJSONResponse(response);
+	public async get(organizationUid: string) {
+		const response = await getResource(
+			this.options, 
+			`${OrganizationTokenManagment.RESOURCE}/${organizationUid}/security-token`
+		);
+		const data: OrganizationTokenResource[] = await parseJSONResponse(response);
 		return data;
-    }
+	}
 
-    public async delete(orgUid: string, organizationToken: IOrganizationTokenDeletable) : Promise<void> {
-		await deleteResource(this.options, `${OrganizationTokenManagment.RESOURCE}/${orgUid}/security-token/${organizationToken.securityTokenId}`, JSON.stringify({}));
+	public async create(organizationUid: string, organizationToken: IOrganizationTokenCreatable): Promise<OrganizationToken> {
+		const response = await postResource(
+			this.options,
+			`${OrganizationTokenManagment.RESOURCE}/${organizationUid}/security-token`,
+			JSON.stringify({ name: organizationToken.name }),
+		);
+		const data: OrganizationToken = await parseJSONResponse(response);
+		return data;
+	}
+
+	public async delete(organizationUid: string, organizationToken: IOrganizationTokenDeletable): Promise<void> {
+		await deleteResource(
+			this.options,
+			`${OrganizationTokenManagment.RESOURCE}/${organizationUid}/security-token/${organizationToken.securityTokenId}`,
+		);
 	}
 }
