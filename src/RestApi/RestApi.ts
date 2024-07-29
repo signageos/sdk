@@ -26,6 +26,7 @@ export default class RestApi {
 	public readonly firmwareVersion: FirmwareVersionManagement = new FirmwareVersionManagement(this.accountOptions);
 
 	public readonly timing: TimingManagement = new TimingManagement(this.organizationOptions);
+	/** @deprecated replaced by api.applet.command and will be removed in the future */
 	public readonly timingCommand: TimingCommandManagement = new TimingCommandManagement(this.organizationOptions);
 
 	public readonly applet: AppletManagement = new AppletManagement(this.organizationOptions);

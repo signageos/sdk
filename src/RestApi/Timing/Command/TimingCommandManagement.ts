@@ -7,6 +7,7 @@ import TimingCommand from './TimingCommand';
 import wait from '../../../Timer/wait';
 import UnsupportedError from '../../Error/UnsupportedError';
 
+/** @deprecated duplicate implementation, use AppletCommandManagement */
 export default class TimingCommandManagement {
 	private static readonly RESOURCE: string[] = ['device', 'applet', 'command'];
 
@@ -16,6 +17,7 @@ export default class TimingCommandManagement {
 
 	constructor(private options: IOptions) {}
 
+	/** @deprecated duplicate implementation, use AppletCommandManagement.list() */
 	public async getList<TCommandPayload extends ITimingCommandPayload>(filter: ITimingCommandFilter) {
 		const response = await getResource(
 			this.options,
@@ -39,6 +41,7 @@ export default class TimingCommandManagement {
 		}
 	}
 
+	/** @deprecated duplicate implementation, use AppletCommandManagement.get() */
 	public async get<TCommandPayload extends ITimingCommandPayload>(deviceUid: string, appletUid: string, timingCommandUid: string) {
 		const response = await getResource(
 			this.options,
@@ -62,6 +65,7 @@ export default class TimingCommandManagement {
 		}
 	}
 
+	/** @deprecated duplicate implementation, use AppletCommandManagement.send() */
 	public async create<TCommandPayload extends ITimingCommandPayload>(timingCommandData: ITimingCommandCreateOnly<TCommandPayload>) {
 		if (this.options.version === 'v1') {
 			const response = await postResource(
