@@ -16,8 +16,8 @@ describe('Integration.RestApi.Organization.Token.OrganizationToken', () => {
 
 	before(async () => {
 		const organizationTokens = await api.organization.token.get(orgUid);
-		if(organizationTokens.length >= 29){
-			await api.organization.token.delete(orgUid, {securityTokenId: organizationTokens[28].id});
+		if(organizationTokens.length >= 28){
+			await api.organization.token.delete(orgUid, {securityTokenId: organizationTokens[organizationTokens.length - 1].id});
 		}
 	});
 
