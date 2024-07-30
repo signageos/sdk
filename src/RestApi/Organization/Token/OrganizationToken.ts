@@ -4,10 +4,6 @@ export interface IOrganizationTokenCreatable {
 	name: string;
 }
 
-export interface IOrganizationTokenDeletable {
-	securityTokenId: string;
-}
-
 export interface IOrganizationToken extends IOrganizationTokenCreatable {
 	id: string;
 	organizationUid: string;

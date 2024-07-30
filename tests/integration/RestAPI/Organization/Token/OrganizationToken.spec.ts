@@ -18,14 +18,14 @@ describe('Integration.RestApi.Organization.Token.OrganizationToken', () => {
 		const organizationTokens = await api.organization.token.get(orgUid);
 
 		if (organizationTokens.length === 30) {
-			await api.organization.token.delete(orgUid, { securityTokenId: organizationTokens[organizationTokens.length - 1].id });
-			await api.organization.token.delete(orgUid, { securityTokenId: organizationTokens[organizationTokens.length - 2].id });
+			await api.organization.token.delete(orgUid, organizationTokens[organizationTokens.length - 1].id);
+			await api.organization.token.delete(orgUid, organizationTokens[organizationTokens.length - 2].id);
 		}
 	});
 
 	after(async () => {
 		for (const orgToken of toDelete) {
-			await api.organization.token.delete(orgUid, { securityTokenId: orgToken.id });
+			await api.organization.token.delete(orgUid, orgToken.id);
 		}
 	});
 
@@ -45,7 +45,7 @@ describe('Integration.RestApi.Organization.Token.OrganizationToken', () => {
 
 		const beforeTokenList = await api.organization.token.get(orgUid);
 
-		await api.organization.token.delete(orgUid, { securityTokenId: token.id });
+		await api.organization.token.delete(orgUid, token.id);
 		const expectedTokenList = beforeTokenList.filter((t) => t.id !== token.id);
 
 		const afterTokenList = await api.organization.token.get(orgUid);
