@@ -8,28 +8,32 @@ export interface IOrganizationTokenDeletable {
 	securityTokenId: string;
 }
 
-export interface IOrganizationTokenResource extends IOrganizationTokenCreatable {
+export interface IOrganizationToken extends IOrganizationTokenCreatable {
 	id: string;
 	organizationUid: string;
 }
 
-export interface IOrganizationToken extends IOrganizationTokenCreatable {
+export interface IOrganizationFullToken extends IOrganizationTokenCreatable {
 	id: string;
 	securityToken: string;
-}
-
-export class OrganizationTokenResource implements IOrganizationTokenResource {
-	public readonly name: IOrganizationTokenResource['name'];
-	public readonly id: IOrganizationTokenResource['id'];
-	public readonly organizationUid: IOrganizationTokenResource['organizationUid'];
 }
 
 export class OrganizationToken implements IOrganizationToken {
 	public readonly name: IOrganizationToken['name'];
 	public readonly id: IOrganizationToken['id'];
-	public readonly securityToken: IOrganizationToken['securityToken'];
+	public readonly organizationUid: IOrganizationToken['organizationUid'];
 
 	constructor(data: IOrganizationToken) {
+		fillDataToEntity(this, data);
+	}
+}
+
+export class OrganizationFullToken implements IOrganizationFullToken {
+	public readonly name: IOrganizationFullToken['name'];
+	public readonly id: IOrganizationFullToken['id'];
+	public readonly securityToken: IOrganizationFullToken['securityToken'];
+
+	constructor(data: IOrganizationFullToken) {
 		fillDataToEntity(this, data);
 	}
 }

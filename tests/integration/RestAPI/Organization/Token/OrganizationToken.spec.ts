@@ -2,7 +2,7 @@ import * as should from 'should';
 import { Api } from '../../../../../src';
 
 import { opts } from '../../helper';
-import { IOrganizationTokenCreatable, OrganizationToken } from '../../../../../src/RestApi/Organization/Token/OrganizationToken';
+import { IOrganizationTokenCreatable, OrganizationFullToken } from '../../../../../src/RestApi/Organization/Token/OrganizationToken';
 import { getOrganizationUid } from '../../../../fixtures/Organization/organization.fixtures';
 
 const api = new Api(opts);
@@ -12,12 +12,14 @@ describe('Integration.RestApi.Organization.Token.OrganizationToken', () => {
 
 	const organizationTokenCreate: IOrganizationTokenCreatable = { name: 'Test Token' };
 
-	const toDelete: OrganizationToken[] = [];
+	const toDelete: OrganizationFullToken[] = [];
 
 	before(async () => {
 		const organizationTokens = await api.organization.token.get(orgUid);
-		if(organizationTokens.length >= 28){
-			await api.organization.token.delete(orgUid, {securityTokenId: organizationTokens[organizationTokens.length - 1].id});
+
+		if (organizationTokens.length === 30) {
+			await api.organization.token.delete(orgUid, { securityTokenId: organizationTokens[organizationTokens.length - 1].id });
+			await api.organization.token.delete(orgUid, { securityTokenId: organizationTokens[organizationTokens.length - 2].id });
 		}
 	});
 
@@ -29,8 +31,8 @@ describe('Integration.RestApi.Organization.Token.OrganizationToken', () => {
 
 	it('should create an organization token', async () => {
 		const organizationToken = await api.organization.token.create(orgUid, organizationTokenCreate);
-		toDelete.push(organizationToken);
 		should(organizationToken.id).not.be.eql(null);
+		toDelete.push(organizationToken);
 	});
 
 	it('should get an organization token', async () => {
@@ -44,9 +46,10 @@ describe('Integration.RestApi.Organization.Token.OrganizationToken', () => {
 		const beforeTokenList = await api.organization.token.get(orgUid);
 
 		await api.organization.token.delete(orgUid, { securityTokenId: token.id });
+		const expectedTokenList = beforeTokenList.filter((t) => t.id !== token.id);
 
 		const afterTokenList = await api.organization.token.get(orgUid);
 
-		should(beforeTokenList.length).be.greaterThan(afterTokenList.length);
+		should(afterTokenList).be.deepEqual(expectedTokenList);
 	});
 });

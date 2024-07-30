@@ -1,21 +1,21 @@
 import { random } from 'faker';
 
 import {
-	IOrganizationToken,
+	IOrganizationFullToken,
 	IOrganizationTokenCreatable,
 	IOrganizationTokenDeletable,
-	IOrganizationTokenResource,
+	IOrganizationToken,
 } from '../../../../../src/RestApi/Organization/Token/OrganizationToken';
 
 export const ORGANIZATION_UID = random.uuid();
 
-export const ORGANIZATION_TOKEN_1: IOrganizationToken = {
+export const ORGANIZATION_TOKEN_1: IOrganizationFullToken = {
 	id: random.uuid(),
 	securityToken: '202124XX23419',
 	name: 'Organization token 1',
 };
 
-export const ORGANIZATION_TOKEN_GET_1: IOrganizationTokenResource[] = [
+export const ORGANIZATION_TOKEN_GET_1: IOrganizationToken[] = [
 	{
 		id: random.uuid(),
 		name: random.word(),

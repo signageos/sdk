@@ -5,7 +5,7 @@ import Organization from './Organization';
 import { IOrganizationFilter } from './IOrganizationFilter';
 import { omit } from 'lodash';
 import CompanyManagement from '../Company/CompanyManagement';
-import { OrganizationTokenManagment } from './Token/OrganizationTokenManagment';
+import { OrganizationTokenManagement } from './Token/OrganizationTokenManagement';
 
 interface OrganizationUpdatableValues {
 	title: string;
@@ -13,10 +13,10 @@ interface OrganizationUpdatableValues {
 
 export default class OrganizationManagement {
 	public static readonly RESOURCE: string = 'organization';
-	public token: OrganizationTokenManagment;
+	public token: OrganizationTokenManagement;
 
 	constructor(private options: IOptions) {
-		this.token = new OrganizationTokenManagment(this.options);
+		this.token = new OrganizationTokenManagement(this.options);
 	}
 
 	public async list(filter: IOrganizationFilter = {}): Promise<IOrganization[]> {
