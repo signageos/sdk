@@ -3,7 +3,6 @@ import { random } from 'faker';
 import {
 	IOrganizationFullToken,
 	IOrganizationTokenCreatable,
-	IOrganizationTokenDeletable,
 	IOrganizationToken,
 } from '../../../../../src/RestApi/Organization/Token/OrganizationToken';
 
@@ -27,6 +26,4 @@ export const ORGANIZATION_TOKEN_CREATE_1: IOrganizationTokenCreatable = {
 	name: 'Organization token 1',
 };
 
-export const ORGANIZATION_TOKEN_DELETE_1: IOrganizationTokenDeletable = {
-	securityTokenId: '202124XX2341',
-};
+export const ORGANIZATION_TOKEN_DELETE_1 = '202124XX2341';
