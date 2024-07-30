@@ -7,6 +7,8 @@ import { getOrganizationUid } from '../../../../fixtures/Organization/organizati
 
 const api = new Api(opts);
 
+const MAX_API_SECURITY_TOKENS_QUANTITY = 30;
+
 describe('Integration.RestApi.Organization.Token.OrganizationToken', () => {
 	let orgUid = getOrganizationUid();
 
@@ -17,7 +19,7 @@ describe('Integration.RestApi.Organization.Token.OrganizationToken', () => {
 	before(async () => {
 		const organizationTokens = await api.organization.token.get(orgUid);
 
-		if (organizationTokens.length === 30) {
+		if (organizationTokens.length === MAX_API_SECURITY_TOKENS_QUANTITY) {
 			await api.organization.token.delete(orgUid, organizationTokens[organizationTokens.length - 1].id);
 			await api.organization.token.delete(orgUid, organizationTokens[organizationTokens.length - 2].id);
 		}
