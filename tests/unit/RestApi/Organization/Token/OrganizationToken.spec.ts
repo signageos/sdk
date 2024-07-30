@@ -59,7 +59,7 @@ describe('Unit.RestApi.Organization.Token.OrganizationToken', () => {
 
 	it('should delete organization token', async () => {
 		nock(nockOpts.url, nockAuthHeader1)
-			.delete(`/${ApiVersions.V1}/organization/${ORGANIZATION_UID}/security-token/${ORGANIZATION_TOKEN_DELETE_1.securityTokenId}`)
+			.delete(`/${ApiVersions.V1}/organization/${ORGANIZATION_UID}/security-token/${ORGANIZATION_TOKEN_DELETE_1}`)
 			.reply(200);
 
 		await should(organizationTokenManagement.delete(ORGANIZATION_UID, ORGANIZATION_TOKEN_DELETE_1)).be.fulfilled();
