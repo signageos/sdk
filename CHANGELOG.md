@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
-- Organization token management `get`, `create` and `delete` methods
+- Add `api.organization.token` for management of Organization Tokens (`get`, `create`, `delete`)
 
 ### Deprecated
 - `api.timingCommand` - `api.applet.command` should be used instead

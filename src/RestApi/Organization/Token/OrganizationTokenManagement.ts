@@ -17,8 +17,8 @@ export class OrganizationTokenManagement {
 		return new OrganizationFullToken(data);
 	}
 
-	public async delete(organizationUid: string, organizationToken: string): Promise<void> {
-		await deleteResource(this.options, this.getUrl(organizationUid, organizationToken));
+	public async delete(organizationUid: string, tokenId: string): Promise<void> {
+		await deleteResource(this.options, this.getUrl(organizationUid, tokenId));
 	}
 
 	private getUrl(organizationUid: string, tokenId?: string) {
