@@ -2,7 +2,7 @@ import { readFile } from 'fs-extra';
 import * as should from 'should';
 
 import { Api } from '../../../../src';
-import { ILocation } from '../../../../src/RestApi/Location/Location';
+import Location, { ILocation } from '../../../../src/RestApi/Location/Location';
 import { getOrganizationUid } from '../../../fixtures/Organization/organization.fixtures';
 import { parameters } from '../../../../src/parameters';
 import {
@@ -12,7 +12,6 @@ import {
 	handleCreateLocation,
 } from '../../../fixtures/Location/location.fixtures';
 import { opts } from '../helper';
-import Location from '../../../../src/RestApi/Location/Location';
 
 const api = new Api(opts);
 
