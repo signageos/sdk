@@ -16,7 +16,7 @@ import Location from '../../../../src/RestApi/Location/Location';
 
 const api = new Api(opts);
 
-describe.only('Integration.RestAPI.Location', async () => {
+describe('Integration.RestAPI.Location', async () => {
 	const toDelete: Location[] = [];
 
 	afterEach(async () => {
