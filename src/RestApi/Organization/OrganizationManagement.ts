@@ -5,6 +5,7 @@ import Organization from './Organization';
 import { IOrganizationFilter } from './IOrganizationFilter';
 import { omit } from 'lodash';
 import CompanyManagement from '../Company/CompanyManagement';
+import { OrganizationTokenManagement } from './Token/OrganizationTokenManagement';
 
 interface OrganizationUpdatableValues {
 	title: string;
@@ -12,8 +13,11 @@ interface OrganizationUpdatableValues {
 
 export default class OrganizationManagement {
 	public static readonly RESOURCE: string = 'organization';
+	public token: OrganizationTokenManagement;
 
-	constructor(private options: IOptions) {}
+	constructor(private options: IOptions) {
+		this.token = new OrganizationTokenManagement(this.options);
+	}
 
 	public async list(filter: IOrganizationFilter = {}): Promise<IOrganization[]> {
 		const response = filter.companyUid
@@ -25,8 +29,8 @@ export default class OrganizationManagement {
 		return data.map((item: IOrganization) => new Organization(item, this.options));
 	}
 
-	public async get(orgUid: string, filter: IOrganizationFilter = {}): Promise<Organization> {
-		const response = await getResource(this.options, OrganizationManagement.RESOURCE + '/' + orgUid, filter);
+	public async get(organizationUid: string, filter: IOrganizationFilter = {}): Promise<Organization> {
+		const response = await getResource(this.options, OrganizationManagement.RESOURCE + '/' + organizationUid, filter);
 
 		return new Organization(await parseJSONResponse(response), this.options);
 	}
