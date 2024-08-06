@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Deprecated
 - `api.timingCommand` - `api.applet.command` should be used instead
 
+### Fixed
+- Tests related to `Location`
+- `BulkOperation` test for `INSTALL_PACKAGE_FROM_URI` and `INSTALL_PACKAGE` operations
+
 ## [1.23.0] - 2024-05-10
 ### Added
 - Snooze/unsnooze alerts per device

@@ -2,7 +2,7 @@ import { readFile } from 'fs-extra';
 import * as should from 'should';
 
 import { Api } from '../../../../src';
-import { ILocation } from '../../../../src/RestApi/Location/Location';
+import Location, { ILocation } from '../../../../src/RestApi/Location/Location';
 import { getOrganizationUid } from '../../../fixtures/Organization/organization.fixtures';
 import { parameters } from '../../../../src/parameters';
 import {
@@ -16,11 +16,23 @@ import { opts } from '../helper';
 const api = new Api(opts);
 
 describe('Integration.RestAPI.Location', async () => {
+	const toDelete: Location[] = [];
+
+	afterEach(async () => {
+		for (const location of toDelete) {
+			await api.location.delete(location.uid);
+		}
+		while (toDelete.length > 0) {
+			toDelete.pop();
+		}
+	});
+
 	it('should create location', async () => {
 		const createdLocation = await handleCreateLocation(api, {
 			location: LOCATION_CREATE_1,
 			organizationUid: getOrganizationUid(),
 		});
+		toDelete.push(createdLocation);
 
 		should(createdLocation.uid).not.be.eql(null);
 	});
@@ -30,6 +42,7 @@ describe('Integration.RestAPI.Location', async () => {
 			location: LOCATION_CREATE_1,
 			organizationUid: getOrganizationUid(),
 		});
+		toDelete.push(createdLocation);
 		const location = await api.location.get(createdLocation.uid);
 
 		should(location.uid).not.be.eql(null);
@@ -39,7 +52,8 @@ describe('Integration.RestAPI.Location', async () => {
 		const expectedNames = [LOCATION_CREATE_1.name, LOCATION_CREATE_2.name];
 
 		[LOCATION_CREATE_1, LOCATION_CREATE_2].forEach(async (location) => {
-			await handleCreateLocation(api, { location, organizationUid: getOrganizationUid() });
+			const createdLocation = await handleCreateLocation(api, { location, organizationUid: getOrganizationUid() });
+			toDelete.push(createdLocation);
 		});
 
 		const locations = await api.location.list();
@@ -56,6 +70,7 @@ describe('Integration.RestAPI.Location', async () => {
 			location: LOCATION_CREATE_1,
 			organizationUid: getOrganizationUid(),
 		});
+		toDelete.push(createdLocation);
 		const locationUpdatePayload = LOCATION_UPDATE_1;
 
 		await api.location.update(createdLocation.uid, locationUpdatePayload);
@@ -70,6 +85,7 @@ describe('Integration.RestAPI.Location', async () => {
 			location: LOCATION_CREATE_1,
 			organizationUid: getOrganizationUid(),
 		});
+		toDelete.push(createdLocation);
 		const attachment = await readFile(`${parameters.paths.rootPath}/tests/assets/image_1.png`);
 
 		await api.location.addAttachment(createdLocation.uid, attachment);
@@ -83,6 +99,7 @@ describe('Integration.RestAPI.Location', async () => {
 			location: LOCATION_CREATE_1,
 			organizationUid: getOrganizationUid(),
 		});
+		toDelete.push(createdLocation);
 		const attachment1 = await readFile(`${parameters.paths.rootPath}/tests/assets/image_1.png`);
 		const attachment2 = await readFile(`${parameters.paths.rootPath}/tests/assets/image_2.jpeg`);
 

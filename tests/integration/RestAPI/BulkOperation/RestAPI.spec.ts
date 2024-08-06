@@ -295,6 +295,7 @@ describe('RestAPI - BulkOperation', function () {
 				buildHash: 'testingBuildHash',
 				version: 'testingVersion',
 				build: 'testingBuild',
+				specs: null,
 			};
 
 			await assertBulkOperation(bulkData, DeviceActionType.INSTALL_PACKAGE);
@@ -303,6 +304,8 @@ describe('RestAPI - BulkOperation', function () {
 		it('should create new bulk operation with payload install package from uri', async function () {
 			let bulkData = {
 				packageUri: 'testingUri',
+				applicationType: 'tizen',
+				specs: null,
 			};
 
 			await assertBulkOperation(bulkData, DeviceActionType.INSTALL_PACKAGE_FROM_URI);

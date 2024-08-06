@@ -5,15 +5,25 @@ import { getOrganizationUid } from '../../../../fixtures/Organization/organizati
 import { generateOrganizationTagCreate } from '../../../../fixtures/Organization/Tag/organizationTag.fixtures';
 import { LOCATION_CREATE_1, handleCreateLocation } from '../../../../fixtures/Location/location.fixtures';
 import { opts } from '../../helper';
+import Location from '../../../../../src/RestApi/Location/Location';
 
 const api = new Api(opts);
 
 describe('Integration.RestAPI.Device.Location.Tag.LocationOrganizationTag', async () => {
+	const toDelete: Location[] = [];
+
+	after('remove location', async function () {
+		for (const location of toDelete) {
+			await api.location.delete(location.uid);
+		}
+	});
+
 	it('should assign and unassign organization tag to and from location', async function () {
 		const createdLocation1 = await handleCreateLocation(api, {
 			location: LOCATION_CREATE_1,
 			organizationUid: getOrganizationUid(),
 		});
+		toDelete.push(createdLocation1);
 
 		const organizationTag1 = await api.organizationTag.create(generateOrganizationTagCreate());
 		const organizationTag2 = await api.organizationTag.create(generateOrganizationTagCreate());

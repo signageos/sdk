@@ -1,5 +1,6 @@
 import * as should from 'should';
 
+import Location from '../../../../../src/RestApi/Location/Location';
 import { Api } from '../../../../../src';
 import IDevice from '../../../../../src/RestApi/Device/IDevice';
 import { getOrganizationUid } from '../../../../fixtures/Organization/organization.fixtures';
@@ -9,11 +10,20 @@ import { opts } from '../../helper';
 const api = new Api(opts);
 
 describe('Integration.RestAPI.Device.Location.DeviceLocation', async () => {
+	const toDelete: Location[] = [];
+
+	after('remove location', async function () {
+		for (const location of toDelete) {
+			await api.location.delete(location.uid);
+		}
+	});
+
 	it('should assign and unassign location to and from device', async function () {
 		const createdLocation = await handleCreateLocation(api, {
 			location: LOCATION_CREATE_1,
 			organizationUid: getOrganizationUid(),
 		});
+		toDelete.push(createdLocation);
 
 		// TODO: This approach is taken from the Device, since there is no create method. This should be addressed
 		const devices = await api.device.list();

@@ -26,7 +26,7 @@ export const LOCATION_CREATE_1: LocationCreateWithoutOrg = {
 	name: `SDK Location (0)`,
 	coordinates: COORDINATES_1,
 	description: 'test note 1',
-	customId: 'custom-id-123',
+	customId: random.uuid(),
 };
 export const LOCATION_CREATE_2: LocationCreateWithoutOrg = {
 	name: `SDK Location (1)`,
@@ -39,7 +39,7 @@ export const LOCATION_UPDATE_1: Omit<ILocationUpdate, 'organizationUid'> = {
 	name: `SDK Location (update-1)`,
 	coordinates: COORDINATES_1,
 	description: 'test note 2',
-	customId: 'custom-id-456',
+	customId: random.uuid(),
 };
 
 export const LOCATION_1: LocationWithoutOrg = {
@@ -59,7 +59,7 @@ export const LOCATION_1: LocationWithoutOrg = {
 	},
 	attachments: ['www.attachment-1.com', 'www.attachment-2.com'],
 	description: 'test note 1',
-	customId: 'custom-id-123',
+	customId: random.uuid(),
 	createdAt: new Date(),
 	updatedAt: new Date(),
 };
