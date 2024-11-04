@@ -1,4 +1,3 @@
-import TimingCommandManagement from '../../Command/TimingCommandManagement';
 import wait from '../../../../Timer/wait';
 import IOrientation from '@signageos/front-applet/es6/FrontApplet/Management/IOrientation';
 import IBrightness from '@signageos/front-applet/es6/FrontApplet/Management/IBrightness';
@@ -20,6 +19,7 @@ import {
 	ManagementScreenTakeScreenshotRequest,
 	ManagementScreenTakeScreenshotResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/Screen/screenCommands';
+import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
 
 export interface IManagementScreen {
 	resize(baseUrl: string, orientation: string, resolution: string, currentVersion: string, videoOrientation?: string): Promise<void>;
@@ -36,7 +36,7 @@ export default class ManagementScreenCommands implements IManagementScreen {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,
-		private timingCommandManagement: TimingCommandManagement,
+		private appletCommandManagement: AppletCommandManagement,
 	) {}
 
 	public async resize(
@@ -46,9 +46,7 @@ export default class ManagementScreenCommands implements IManagementScreen {
 		currentVersion: string,
 		videoOrientation?: string | undefined,
 	): Promise<void> {
-		const command = await this.timingCommandManagement.create<ManagementScreenResizeRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementScreenResizeRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementScreenResizeRequest,
 				baseUrl,
@@ -59,10 +57,8 @@ export default class ManagementScreenCommands implements IManagementScreen {
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementScreenResizeResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementScreenResizeResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementScreenResizeResult,
 			});
 			if (results.length > 0) {
@@ -73,18 +69,14 @@ export default class ManagementScreenCommands implements IManagementScreen {
 	}
 
 	public async getOrientation(): Promise<IOrientation> {
-		const command = await this.timingCommandManagement.create<ManagementScreenGetOrientationRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementScreenGetOrientationRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementScreenGetOrientationRequest,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementScreenGetOrientationResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementScreenGetOrientationResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementScreenGetOrientationResult,
 			});
 			if (results.length > 0) {
@@ -95,9 +87,7 @@ export default class ManagementScreenCommands implements IManagementScreen {
 	}
 
 	public async setBrightness(timeFrom1: string, brightness1: number, timeFrom2: string, brightness2: number): Promise<void> {
-		const command = await this.timingCommandManagement.create<ManagementScreenSetBrightnessRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementScreenSetBrightnessRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementScreenSetBrightnessRequest,
 				timeFrom1,
@@ -107,10 +97,8 @@ export default class ManagementScreenCommands implements IManagementScreen {
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementScreenSetBrightnessResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementScreenSetBrightnessResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementScreenSetBrightnessResult,
 			});
 			if (results.length > 0) {
@@ -121,18 +109,14 @@ export default class ManagementScreenCommands implements IManagementScreen {
 	}
 
 	public async getBrightness(): Promise<IBrightness> {
-		const command = await this.timingCommandManagement.create<ManagementScreenGetBrightnessRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementScreenGetBrightnessRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementScreenGetBrightnessRequest,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementScreenGetBrightnessResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementScreenGetBrightnessResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementScreenGetBrightnessResult,
 			});
 			if (results.length > 0) {
@@ -143,19 +127,15 @@ export default class ManagementScreenCommands implements IManagementScreen {
 	}
 
 	public async takeAndUploadScreenshot(uploadBaseUrl: string): Promise<string> {
-		const command = await this.timingCommandManagement.create<ManagementScreenTakeScreenshotRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementScreenTakeScreenshotRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementScreenTakeScreenshotRequest,
 				uploadBaseUrl,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementScreenTakeScreenshotResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementScreenTakeScreenshotResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementScreenTakeScreenshotResult,
 			});
 			if (results.length > 0) {
@@ -166,18 +146,14 @@ export default class ManagementScreenCommands implements IManagementScreen {
 	}
 
 	public async powerOn(): Promise<void> {
-		const command = await this.timingCommandManagement.create<ManagementScreenPowerOnRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementScreenPowerOnRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementScreenPowerOnRequest,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementScreenPowerOnResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementScreenPowerOnResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementScreenPowerOnResult,
 			});
 			if (results.length > 0) {
@@ -188,18 +164,14 @@ export default class ManagementScreenCommands implements IManagementScreen {
 	}
 
 	public async powerOff(): Promise<void> {
-		const command = await this.timingCommandManagement.create<ManagementScreenPowerOffRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementScreenPowerOffRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementScreenPowerOffRequest,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementScreenPowerOffResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementScreenPowerOffResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementScreenPowerOffResult,
 			});
 			if (results.length > 0) {
@@ -210,18 +182,14 @@ export default class ManagementScreenCommands implements IManagementScreen {
 	}
 
 	public async isPoweredOn(): Promise<boolean> {
-		const command = await this.timingCommandManagement.create<ManagementScreenIsPoweredOnRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementScreenIsPoweredOnRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementScreenIsPoweredOnRequest,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementScreenIsPoweredOnResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementScreenIsPoweredOnResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementScreenIsPoweredOnResult,
 			});
 			if (results.length > 0) {

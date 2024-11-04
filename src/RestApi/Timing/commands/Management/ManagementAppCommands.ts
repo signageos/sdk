@@ -6,8 +6,8 @@ import {
 	ApplicationUpgradeRequest,
 	ApplicationUpgradeResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/App/applicationCommands';
-import TimingCommandManagement from '../../Command/TimingCommandManagement';
 import wait from '../../../../Timer/wait';
+import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
 
 export interface IManagementApplication {
 	getType(): Promise<string>;
@@ -19,22 +19,18 @@ export default class ManagementAppCommands implements IManagementApplication {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,
-		private timingCommandManagement: TimingCommandManagement,
+		private appletCommandManagement: AppletCommandManagement,
 	) {}
 
 	public async getType(): Promise<string> {
-		const command = await this.timingCommandManagement.create<ApplicationGetTypeRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ApplicationGetTypeRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ApplicationGetTypeRequest,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ApplicationGetTypeResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ApplicationGetTypeResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ApplicationGetTypeResult,
 			});
 			if (results.length > 0) {
@@ -45,18 +41,14 @@ export default class ManagementAppCommands implements IManagementApplication {
 	}
 
 	public async getVersion(): Promise<string> {
-		const command = await this.timingCommandManagement.create<ApplicationGetVersionRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ApplicationGetVersionRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ApplicationGetVersionRequest,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ApplicationGetVersionResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ApplicationGetVersionResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ApplicationGetVersionResult,
 			});
 			if (results.length > 0) {
@@ -67,9 +59,7 @@ export default class ManagementAppCommands implements IManagementApplication {
 	}
 
 	public async upgrade(version: string, baseUrl?: string | undefined): Promise<void> {
-		const command = await this.timingCommandManagement.create<ApplicationUpgradeRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ApplicationUpgradeRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ApplicationUpgradeRequest,
 				version,
@@ -77,10 +67,8 @@ export default class ManagementAppCommands implements IManagementApplication {
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ApplicationUpgradeResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ApplicationUpgradeResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ApplicationUpgradeResult,
 			});
 			if (results.length > 0) {

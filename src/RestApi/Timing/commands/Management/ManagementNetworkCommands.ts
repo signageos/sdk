@@ -1,5 +1,4 @@
 import { INetworkInterface, INetworkOptions } from '@signageos/front-applet/es6/FrontApplet/Management/INetworkInfo';
-import TimingCommandManagement from '../../Command/TimingCommandManagement';
 import {
 	ManagementNetworkListInterfacesRequest,
 	ManagementNetworkListInterfacesResult,
@@ -11,6 +10,7 @@ import {
 	ManagementNetworkDisableInterfaceResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/Network/managementNetworkCommands';
 import wait from '../../../../Timer/wait';
+import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
 
 export interface IManagementNetwork {
 	listInterfaces(): Promise<INetworkInterface[]>;
@@ -23,24 +23,24 @@ export default class ManagementNetworkCommands implements IManagementNetwork {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,
-		private timingCommandManagement: TimingCommandManagement,
+		private appletCommandManagement: AppletCommandManagement,
 	) {}
 
 	public async listInterfaces(): Promise<INetworkInterface[]> {
-		const timingCommand = await this.timingCommandManagement.create<ManagementNetworkListInterfacesRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const timingCommand = await this.appletCommandManagement.send<ManagementNetworkListInterfacesRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementNetworkListInterfacesRequest,
 			},
 		});
 		while (true) {
-			const commandResults = await this.timingCommandManagement.getList<ManagementNetworkListInterfacesResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: timingCommand.receivedAt.toISOString(),
-				type: ManagementNetworkListInterfacesResult,
-			});
+			const commandResults = await this.appletCommandManagement.list<ManagementNetworkListInterfacesResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: timingCommand.receivedAt,
+					type: ManagementNetworkListInterfacesResult,
+				},
+			);
 			if (commandResults.length > 0) {
 				return commandResults[0].command.result;
 			}
@@ -49,9 +49,7 @@ export default class ManagementNetworkCommands implements IManagementNetwork {
 	}
 
 	public async setManual(interfaceName: string, options: INetworkOptions): Promise<void> {
-		const timingCommand = await this.timingCommandManagement.create<ManagementNetworkSetManualRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const timingCommand = await this.appletCommandManagement.send<ManagementNetworkSetManualRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementNetworkSetManualRequest,
 				interfaceName,
@@ -59,10 +57,8 @@ export default class ManagementNetworkCommands implements IManagementNetwork {
 			},
 		});
 		while (true) {
-			const commandResults = await this.timingCommandManagement.getList<ManagementNetworkSetManualResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: timingCommand.receivedAt.toISOString(),
+			const commandResults = await this.appletCommandManagement.list<ManagementNetworkSetManualResult>(this.deviceUid, this.appletUid, {
+				receivedSince: timingCommand.receivedAt,
 				type: ManagementNetworkSetManualResult,
 			});
 			if (commandResults.length > 0) {
@@ -73,19 +69,15 @@ export default class ManagementNetworkCommands implements IManagementNetwork {
 	}
 
 	public async setDHCP(interfaceName: string): Promise<void> {
-		const timingCommand = await this.timingCommandManagement.create<ManagementNetworkSetDHCPServerRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const timingCommand = await this.appletCommandManagement.send<ManagementNetworkSetDHCPServerRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementNetworkSetDHCPServerRequest,
 				interfaceName,
 			},
 		});
 		while (true) {
-			const commandResults = await this.timingCommandManagement.getList<ManagementNetworkSetDHCPServerResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: timingCommand.receivedAt.toISOString(),
+			const commandResults = await this.appletCommandManagement.list<ManagementNetworkSetDHCPServerResult>(this.deviceUid, this.appletUid, {
+				receivedSince: timingCommand.receivedAt,
 				type: ManagementNetworkSetDHCPServerResult,
 			});
 			if (commandResults.length > 0) {
@@ -96,21 +88,25 @@ export default class ManagementNetworkCommands implements IManagementNetwork {
 	}
 
 	public async disableInterface(interfaceName: string): Promise<void> {
-		const timingCommand = await this.timingCommandManagement.create<ManagementNetworkDisableInterfaceRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
-			command: {
-				type: ManagementNetworkDisableInterfaceRequest,
-				interfaceName,
+		const timingCommand = await this.appletCommandManagement.send<ManagementNetworkDisableInterfaceRequest>(
+			this.deviceUid,
+			this.appletUid,
+			{
+				command: {
+					type: ManagementNetworkDisableInterfaceRequest,
+					interfaceName,
+				},
 			},
-		});
+		);
 		while (true) {
-			const commandResults = await this.timingCommandManagement.getList<ManagementNetworkDisableInterfaceResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: timingCommand.receivedAt.toISOString(),
-				type: ManagementNetworkDisableInterfaceResult,
-			});
+			const commandResults = await this.appletCommandManagement.list<ManagementNetworkDisableInterfaceResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: timingCommand.receivedAt,
+					type: ManagementNetworkDisableInterfaceResult,
+				},
+			);
 			if (commandResults.length > 0) {
 				return commandResults[0].command.result;
 			}

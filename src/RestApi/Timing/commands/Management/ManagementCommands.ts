@@ -12,7 +12,7 @@ import {
 	ManagementGetBatteryStatusRequest,
 	ManagementGetBatteryStatusResult,
 	ManagementResetSettingsRequest,
-	ManagementRessetSettingsResult,
+	ManagementRessetSettingsResult, //TODO: Ressset?
 	ManagementFactoryResetRequest,
 	ManagementFactoryResetResult,
 	ManagementGetExtendedManagementUrlRequest,
@@ -20,7 +20,6 @@ import {
 	ManagementSetExtendedManagementUrlRequest,
 	ManagementSetExtendedManagementUrlResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/managementCommands';
-import TimingCommandManagement from '../../Command/TimingCommandManagement';
 import wait from '../../../../Timer/wait';
 import ManagementPowerCommands, { IManagementPower } from './ManagementPowerCommands';
 import ManagementAppCommands, { IManagementApplication } from './ManagementAppCommands';
@@ -35,6 +34,7 @@ import ManagementTimeCommands, { IManagementTime } from './ManagementTimeCommand
 import ManagementNetworkCommands, { IManagementNetwork } from './ManagementNetworkCommands';
 import ManagementPeerRecoveryCommands, { IManagementPeerRecovery } from './ManagementPeerRecoveryCommands';
 import ManagementAutoRecoveryCommands, { IManagementAutoRecovery } from './ManagementAutoRecoveryCommands';
+import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
 
 export interface IManagement {
 	supports(capability: string): Promise<boolean>;
@@ -66,36 +66,32 @@ export default class ManagementCommands implements IManagement {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,
-		private timingCommandManagement: TimingCommandManagement,
+		private appletCommandManagement: AppletCommandManagement,
 	) {
-		this.power = new ManagementPowerCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
-		this.app = new ManagementAppCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
-		this.screen = new ManagementScreenCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
-		this.security = new ManagementSecurityCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
-		this.audio = new ManagementAudioCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
-		this.remoteControl = new ManagementRemoteControlCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
-		this.os = new ManagementOsCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
-		this.debug = new ManagementDebugCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
-		this.time = new ManagementTimeCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
-		this.network = new ManagementNetworkCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
-		this.peerRecovery = new ManagementPeerRecoveryCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
-		this.autoRecovery = new ManagementAutoRecoveryCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
+		this.power = new ManagementPowerCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
+		this.app = new ManagementAppCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
+		this.screen = new ManagementScreenCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
+		this.security = new ManagementSecurityCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
+		this.audio = new ManagementAudioCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
+		this.remoteControl = new ManagementRemoteControlCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
+		this.os = new ManagementOsCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
+		this.debug = new ManagementDebugCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
+		this.time = new ManagementTimeCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
+		this.network = new ManagementNetworkCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
+		this.peerRecovery = new ManagementPeerRecoveryCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
+		this.autoRecovery = new ManagementAutoRecoveryCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
 	}
 
 	public async supports(capability: string): Promise<boolean> {
-		const command = await this.timingCommandManagement.create<ManagementSupportsRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementSupportsRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementSupportsRequest,
 				capability,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementSupportsResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementSupportsResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementSupportsResult,
 			});
 			if (results.length > 0) {
@@ -106,18 +102,14 @@ export default class ManagementCommands implements IManagement {
 	}
 
 	public async getModel(): Promise<string> {
-		const command = await this.timingCommandManagement.create<ManagementGetModelRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementGetModelRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementGetModelRequest,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementGetModelResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementGetModelResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementGetModelResult,
 			});
 			if (results.length > 0) {
@@ -128,18 +120,14 @@ export default class ManagementCommands implements IManagement {
 	}
 
 	public async getSerialNumber(): Promise<string> {
-		const command = await this.timingCommandManagement.create<ManagementGetSerialNumberRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementGetSerialNumberRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementGetSerialNumberRequest,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementGetSerialNumberResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementGetSerialNumberResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementGetSerialNumberResult,
 			});
 			if (results.length > 0) {
@@ -150,18 +138,14 @@ export default class ManagementCommands implements IManagement {
 	}
 
 	public async getTemperature(): Promise<number> {
-		const command = await this.timingCommandManagement.create<ManagementGetTemperatureRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementGetTemperatureRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementGetTemperatureRequest,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementGetTemperatureResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementGetTemperatureResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementGetTemperatureResult,
 			});
 			if (results.length > 0) {
@@ -172,18 +156,14 @@ export default class ManagementCommands implements IManagement {
 	}
 
 	public async getBrand(): Promise<string> {
-		const command = await this.timingCommandManagement.create<ManagementGetBrandRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementGetBrandRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementGetBrandRequest,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementGetBrandResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementGetBrandResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementGetBrandResult,
 			});
 			if (results.length > 0) {
@@ -194,18 +174,14 @@ export default class ManagementCommands implements IManagement {
 	}
 
 	public async getBatteryStatus(): Promise<IBatteryStatus> {
-		const command = await this.timingCommandManagement.create<ManagementGetBatteryStatusRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementGetBatteryStatusRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementGetBatteryStatusRequest,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementGetBatteryStatusResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementGetBatteryStatusResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementGetBrandResult,
 			});
 			if (results.length > 0) {
@@ -216,18 +192,14 @@ export default class ManagementCommands implements IManagement {
 	}
 
 	public async resetSettings(): Promise<void> {
-		const command = await this.timingCommandManagement.create<ManagementResetSettingsRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementResetSettingsRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementResetSettingsRequest,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementRessetSettingsResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementRessetSettingsResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementGetBrandResult,
 			});
 			if (results.length > 0) {
@@ -238,18 +210,14 @@ export default class ManagementCommands implements IManagement {
 	}
 
 	public async factoryReset(): Promise<void> {
-		const command = await this.timingCommandManagement.create<ManagementFactoryResetRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementFactoryResetRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementFactoryResetRequest,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementFactoryResetResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementFactoryResetResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementGetBrandResult,
 			});
 			if (results.length > 0) {
@@ -260,18 +228,14 @@ export default class ManagementCommands implements IManagement {
 	}
 
 	public async getExtendedManagementUrl(): Promise<string | null> {
-		const command = await this.timingCommandManagement.create<ManagementGetExtendedManagementUrlRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementGetExtendedManagementUrlRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementGetExtendedManagementUrlRequest,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementGetExtendedManagementUrlResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementGetExtendedManagementUrlResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementGetExtendedManagementUrlResult,
 			});
 			if (results.length > 0) {
@@ -282,19 +246,15 @@ export default class ManagementCommands implements IManagement {
 	}
 
 	public async setExtendedManagementUrl(url: string): Promise<void> {
-		const command = await this.timingCommandManagement.create<ManagementSetExtendedManagementUrlRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementSetExtendedManagementUrlRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementSetExtendedManagementUrlRequest,
 				url,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<ManagementSetExtendedManagementUrlResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<ManagementSetExtendedManagementUrlResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementSetExtendedManagementUrlResult,
 			});
 			if (results.length > 0) {

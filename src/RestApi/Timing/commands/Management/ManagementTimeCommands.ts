@@ -1,4 +1,3 @@
-import TimingCommandManagement from '../../Command/TimingCommandManagement';
 import { DateTime, IGetTime } from '@signageos/front-applet/es6/FrontApplet/Management/Time';
 import {
 	ManagementTimeGetTimeRequest,
@@ -10,6 +9,7 @@ import {
 } from '@signageos/front-applet/es6/Monitoring/Management/Time/timeCommands';
 import wait from '../../../../Timer/wait';
 import waitUntil from '../../../../Timer/waitUntil';
+import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
 
 export interface IManagementTime {
 	get(): Promise<IGetTime>;
@@ -21,22 +21,18 @@ export default class ManagementTimeCommands implements IManagementTime {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,
-		private timingCommandManagement: TimingCommandManagement,
+		private appletCommandManagement: AppletCommandManagement,
 	) {}
 
 	public async get(): Promise<IGetTime> {
-		const command = await this.timingCommandManagement.create<ManagementTimeGetTimeRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementTimeGetTimeRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementTimeGetTimeRequest,
 			},
 		});
 		while (true) {
-			const responseCommands = await this.timingCommandManagement.getList<ManagementTimeGetTimeResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const responseCommands = await this.appletCommandManagement.list<ManagementTimeGetTimeResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementTimeGetTimeResult,
 			});
 			if (responseCommands.length > 0) {
@@ -47,9 +43,7 @@ export default class ManagementTimeCommands implements IManagementTime {
 	}
 
 	public async setManual(dateTime: DateTime, timezone: string): Promise<void> {
-		const command = await this.timingCommandManagement.create<ManagementTimeSetManualRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementTimeSetManualRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementTimeSetManualRequest,
 				dateTime,
@@ -57,10 +51,8 @@ export default class ManagementTimeCommands implements IManagementTime {
 			},
 		});
 		return waitUntil(async () => {
-			const responseCommands = await this.timingCommandManagement.getList<ManagementTimeSetManualResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const responseCommands = await this.appletCommandManagement.list<ManagementTimeSetManualResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementTimeSetManualResult,
 			});
 			return responseCommands.length > 0;
@@ -68,9 +60,7 @@ export default class ManagementTimeCommands implements IManagementTime {
 	}
 
 	public async setNTP(ntpServer: string, timezone: string): Promise<void> {
-		const command = await this.timingCommandManagement.create<ManagementTimeSetNTPRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementTimeSetNTPRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementTimeSetNTPRequest,
 				ntpServer,
@@ -78,10 +68,8 @@ export default class ManagementTimeCommands implements IManagementTime {
 			},
 		});
 		return waitUntil(async () => {
-			const responseCommands = await this.timingCommandManagement.getList<ManagementTimeSetNTPResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const responseCommands = await this.appletCommandManagement.list<ManagementTimeSetNTPResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementTimeSetNTPResult,
 			});
 			return responseCommands.length > 0;

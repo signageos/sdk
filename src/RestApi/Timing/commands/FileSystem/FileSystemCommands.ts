@@ -6,7 +6,6 @@ import {
 	IStorageUnit,
 	IFile as IFileSystemFile,
 } from '@signageos/front-applet/es6/FrontApplet/FileSystem/types';
-import TimingCommandManagement from '../../Command/TimingCommandManagement';
 import {
 	FileSystemAppendFileRequest,
 	FileSystemAppendFileResult,
@@ -40,6 +39,7 @@ import {
 	FileSystemWriteFileResult,
 } from '@signageos/front-applet/es6/Monitoring/FileSystem/fileSystemCommands';
 import wait from '../../../../Timer/wait';
+import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
 
 /**
  * @description See the documentation [File System](https://sdk.docs.signageos.io/api/js/content/5.5.0/js-file-system)
@@ -66,24 +66,28 @@ export default class FileSystemCommands implements IFileSystem {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,
-		private timingCommandManagement: TimingCommandManagement,
+		private appletCommandManagement: AppletCommandManagement,
 	) {}
 
 	public async listStorageUnits(): Promise<IStorageUnit[]> {
-		const listStorageUnitsCommand = await this.timingCommandManagement.create<FileSystemListOfStorageUnitsRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
-			command: {
-				type: FileSystemListOfStorageUnitsRequest,
+		const listStorageUnitsCommand = await this.appletCommandManagement.send<FileSystemListOfStorageUnitsRequest>(
+			this.deviceUid,
+			this.appletUid,
+			{
+				command: {
+					type: FileSystemListOfStorageUnitsRequest,
+				},
 			},
-		});
+		);
 		while (true) {
-			const listOfStorageUnitsCommands = await this.timingCommandManagement.getList<FileSystemListOfStorageUnitsResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: listStorageUnitsCommand.receivedAt.toISOString(),
-				type: FileSystemListOfStorageUnitsResult,
-			});
+			const listOfStorageUnitsCommands = await this.appletCommandManagement.list<FileSystemListOfStorageUnitsResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: listStorageUnitsCommand.receivedAt,
+					type: FileSystemListOfStorageUnitsResult,
+				},
+			);
 			if (listOfStorageUnitsCommands.length > 0) {
 				return listOfStorageUnitsCommands[0].command.storageUnits;
 			}
@@ -92,19 +96,15 @@ export default class FileSystemCommands implements IFileSystem {
 	}
 
 	public async listFiles(directoryPath: IFilePath): Promise<IFilePath[]> {
-		const listFilesCommand = await this.timingCommandManagement.create<FileSystemListFilesRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const listFilesCommand = await this.appletCommandManagement.send<FileSystemListFilesRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: FileSystemListFilesRequest,
 				filePath: directoryPath,
 			},
 		});
 		while (true) {
-			const listFilesCommands = await this.timingCommandManagement.getList<FileSystemListFilesResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: listFilesCommand.receivedAt.toISOString(),
+			const listFilesCommands = await this.appletCommandManagement.list<FileSystemListFilesResult>(this.deviceUid, this.appletUid, {
+				receivedSince: listFilesCommand.receivedAt,
 				type: FileSystemListFilesResult,
 			});
 			if (listFilesCommands.length > 0) {
@@ -115,19 +115,15 @@ export default class FileSystemCommands implements IFileSystem {
 	}
 
 	public async exists(filePath: IFilePath): Promise<boolean> {
-		const existsFileCommand = await this.timingCommandManagement.create<FileSystemExistsRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const existsFileCommand = await this.appletCommandManagement.send<FileSystemExistsRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: FileSystemExistsRequest,
 				filePath,
 			},
 		});
 		while (true) {
-			const listExistsFileCommands = await this.timingCommandManagement.getList<FileSystemExistsResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: existsFileCommand.receivedAt.toISOString(),
+			const listExistsFileCommands = await this.appletCommandManagement.list<FileSystemExistsResult>(this.deviceUid, this.appletUid, {
+				receivedSince: existsFileCommand.receivedAt,
 				type: FileSystemExistsResult,
 			});
 			if (listExistsFileCommands.length > 0) {
@@ -138,19 +134,15 @@ export default class FileSystemCommands implements IFileSystem {
 	}
 
 	public async getFile(filePath: IFilePath): Promise<IFileSystemFile | null> {
-		const getFileCommand = await this.timingCommandManagement.create<FileSystemGetFileRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const getFileCommand = await this.appletCommandManagement.send<FileSystemGetFileRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: FileSystemGetFileRequest,
 				filePath,
 			},
 		});
 		while (true) {
-			const listGetFileCommands = await this.timingCommandManagement.getList<FileSystemGetFileResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: getFileCommand.receivedAt.toISOString(),
+			const listGetFileCommands = await this.appletCommandManagement.list<FileSystemGetFileResult>(this.deviceUid, this.appletUid, {
+				receivedSince: getFileCommand.receivedAt,
 				type: FileSystemGetFileResult,
 			});
 			if (listGetFileCommands.length > 0) {
@@ -161,9 +153,7 @@ export default class FileSystemCommands implements IFileSystem {
 	}
 
 	public async writeFile(filePath: IFilePath, content: string): Promise<void> {
-		const writeFileCommand = await this.timingCommandManagement.create<FileSystemWriteFileRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const writeFileCommand = await this.appletCommandManagement.send<FileSystemWriteFileRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: FileSystemWriteFileRequest,
 				filePath,
@@ -171,10 +161,8 @@ export default class FileSystemCommands implements IFileSystem {
 			},
 		});
 		while (true) {
-			const listWriteFileCommands = await this.timingCommandManagement.getList<FileSystemWriteFileResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: writeFileCommand.receivedAt.toISOString(),
+			const listWriteFileCommands = await this.appletCommandManagement.list<FileSystemWriteFileResult>(this.deviceUid, this.appletUid, {
+				receivedSince: writeFileCommand.receivedAt,
 				type: FileSystemWriteFileResult,
 			});
 			if (listWriteFileCommands.length > 0) {
@@ -185,9 +173,7 @@ export default class FileSystemCommands implements IFileSystem {
 	}
 
 	public async appendFile(filePath: IFilePath, content: string): Promise<void> {
-		const appendFileCommand = await this.timingCommandManagement.create<FileSystemAppendFileRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const appendFileCommand = await this.appletCommandManagement.send<FileSystemAppendFileRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: FileSystemAppendFileRequest,
 				filePath,
@@ -195,10 +181,8 @@ export default class FileSystemCommands implements IFileSystem {
 			},
 		});
 		while (true) {
-			const appendFileCommands = await this.timingCommandManagement.getList<FileSystemAppendFileResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: appendFileCommand.receivedAt.toISOString(),
+			const appendFileCommands = await this.appletCommandManagement.list<FileSystemAppendFileResult>(this.deviceUid, this.appletUid, {
+				receivedSince: appendFileCommand.receivedAt,
 				type: FileSystemAppendFileResult,
 			});
 			if (appendFileCommands.length > 0) {
@@ -209,19 +193,15 @@ export default class FileSystemCommands implements IFileSystem {
 	}
 
 	public async readFile(filePath: IFilePath): Promise<string> {
-		const readFileCommand = await this.timingCommandManagement.create<FileSystemReadFileRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const readFileCommand = await this.appletCommandManagement.send<FileSystemReadFileRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: FileSystemReadFileRequest,
 				filePath,
 			},
 		});
 		while (true) {
-			const listReadFileCommands = await this.timingCommandManagement.getList<FileSystemReadFileResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: readFileCommand.receivedAt.toISOString(),
+			const listReadFileCommands = await this.appletCommandManagement.list<FileSystemReadFileResult>(this.deviceUid, this.appletUid, {
+				receivedSince: readFileCommand.receivedAt,
 				type: FileSystemReadFileResult,
 			});
 			if (listReadFileCommands.length > 0) {
@@ -232,9 +212,7 @@ export default class FileSystemCommands implements IFileSystem {
 	}
 
 	public async copyFile(sourceFilePath: IFilePath, destinationFilePath: IFilePath, options: {} | ICopyFileOptions): Promise<void> {
-		const copyFileCommand = await this.timingCommandManagement.create<FileSystemCopyFileRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const copyFileCommand = await this.appletCommandManagement.send<FileSystemCopyFileRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: FileSystemCopyFileRequest,
 				sourceFilePath,
@@ -243,10 +221,8 @@ export default class FileSystemCommands implements IFileSystem {
 			},
 		});
 		while (true) {
-			const listCopyFileCommands = await this.timingCommandManagement.getList<FileSystemCopyFileResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: copyFileCommand.receivedAt.toISOString(),
+			const listCopyFileCommands = await this.appletCommandManagement.list<FileSystemCopyFileResult>(this.deviceUid, this.appletUid, {
+				receivedSince: copyFileCommand.receivedAt,
 				type: FileSystemCopyFileResult,
 			});
 			if (listCopyFileCommands.length > 0) {
@@ -257,9 +233,7 @@ export default class FileSystemCommands implements IFileSystem {
 	}
 
 	public async moveFile(sourceFilePath: IFilePath, destinationFilePath: IFilePath, options: {} | IMoveFileOptions): Promise<void> {
-		const moveFileCommand = await this.timingCommandManagement.create<FileSystemMoveFileRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const moveFileCommand = await this.appletCommandManagement.send<FileSystemMoveFileRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: FileSystemMoveFileRequest,
 				sourceFilePath,
@@ -268,10 +242,8 @@ export default class FileSystemCommands implements IFileSystem {
 			},
 		});
 		while (true) {
-			const listMoveFileCommands = await this.timingCommandManagement.getList<FileSystemMoveFileResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: moveFileCommand.receivedAt.toISOString(),
+			const listMoveFileCommands = await this.appletCommandManagement.list<FileSystemMoveFileResult>(this.deviceUid, this.appletUid, {
+				receivedSince: moveFileCommand.receivedAt,
 				type: FileSystemMoveFileResult,
 			});
 			if (listMoveFileCommands.length > 0) {
@@ -282,9 +254,7 @@ export default class FileSystemCommands implements IFileSystem {
 	}
 
 	public async deleteFile(filePath: IFilePath, recursive: boolean): Promise<void> {
-		const deleteFileCommand = await this.timingCommandManagement.create<FileSystemDeleteFileRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const deleteFileCommand = await this.appletCommandManagement.send<FileSystemDeleteFileRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: FileSystemDeleteFileRequest,
 				filePath,
@@ -292,10 +262,8 @@ export default class FileSystemCommands implements IFileSystem {
 			},
 		});
 		while (true) {
-			const listDeleteFileCommands = await this.timingCommandManagement.getList<FileSystemDeleteFileResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: deleteFileCommand.receivedAt.toISOString(),
+			const listDeleteFileCommands = await this.appletCommandManagement.list<FileSystemDeleteFileResult>(this.deviceUid, this.appletUid, {
+				receivedSince: deleteFileCommand.receivedAt,
 				type: FileSystemDeleteFileResult,
 			});
 			if (listDeleteFileCommands.length > 0) {
@@ -306,9 +274,7 @@ export default class FileSystemCommands implements IFileSystem {
 	}
 
 	public async downloadFile(filePath: IFilePath, sourceUri: string, headers?: IHeaders | undefined): Promise<void> {
-		const downloadFileCommand = await this.timingCommandManagement.create<FileSystemDownloadFileRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const downloadFileCommand = await this.appletCommandManagement.send<FileSystemDownloadFileRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: FileSystemDownloadFileRequest,
 				filePath,
@@ -317,12 +283,14 @@ export default class FileSystemCommands implements IFileSystem {
 			},
 		});
 		while (true) {
-			const listDownloadFileCommands = await this.timingCommandManagement.getList<FileSystemDownloadFileResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: downloadFileCommand.receivedAt.toISOString(),
-				type: FileSystemDownloadFileResult,
-			});
+			const listDownloadFileCommands = await this.appletCommandManagement.list<FileSystemDownloadFileResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: downloadFileCommand.receivedAt,
+					type: FileSystemDownloadFileResult,
+				},
+			);
 			if (listDownloadFileCommands.length > 0) {
 				return listDownloadFileCommands[0].command.result;
 			}
@@ -331,9 +299,7 @@ export default class FileSystemCommands implements IFileSystem {
 	}
 
 	public async extractFile(archiveFilePath: IFilePath, destinationDirectionPath: IFilePath, method: string): Promise<void> {
-		const extractFileCommand = await this.timingCommandManagement.create<FileSystemExtractFileRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const extractFileCommand = await this.appletCommandManagement.send<FileSystemExtractFileRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: FileSystemExtractFileRequest,
 				archiveFilePath,
@@ -342,10 +308,8 @@ export default class FileSystemCommands implements IFileSystem {
 			},
 		});
 		while (true) {
-			const listExtractFileCommands = await this.timingCommandManagement.getList<FileSystemExtractFileResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: extractFileCommand.receivedAt.toISOString(),
+			const listExtractFileCommands = await this.appletCommandManagement.list<FileSystemExtractFileResult>(this.deviceUid, this.appletUid, {
+				receivedSince: extractFileCommand.receivedAt,
 				type: FileSystemExtractFileResult,
 			});
 			if (listExtractFileCommands.length > 0) {
@@ -356,9 +320,7 @@ export default class FileSystemCommands implements IFileSystem {
 	}
 
 	public async getFileChecksum(filePath: IFilePath, hashType: string): Promise<string> {
-		const getChecksumCommand = await this.timingCommandManagement.create<FileSystemGetFileChecksumRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const getChecksumCommand = await this.appletCommandManagement.send<FileSystemGetFileChecksumRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: FileSystemGetFileChecksumRequest,
 				filePath,
@@ -366,10 +328,8 @@ export default class FileSystemCommands implements IFileSystem {
 			},
 		});
 		while (true) {
-			const getChecksumCommands = await this.timingCommandManagement.getList<FileSystemGetFileChecksumResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: getChecksumCommand.receivedAt.toISOString(),
+			const getChecksumCommands = await this.appletCommandManagement.list<FileSystemGetFileChecksumResult>(this.deviceUid, this.appletUid, {
+				receivedSince: getChecksumCommand.receivedAt,
 				type: FileSystemGetFileChecksumResult,
 			});
 			if (getChecksumCommands.length > 0) {
@@ -380,21 +340,25 @@ export default class FileSystemCommands implements IFileSystem {
 	}
 
 	public async createDirectory(directoryPath: IFilePath): Promise<void> {
-		const createDirectoryCommand = await this.timingCommandManagement.create<FileSystemCreateDirectoryRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
-			command: {
-				type: FileSystemCreateDirectoryRequest,
-				directoryPath,
+		const createDirectoryCommand = await this.appletCommandManagement.send<FileSystemCreateDirectoryRequest>(
+			this.deviceUid,
+			this.appletUid,
+			{
+				command: {
+					type: FileSystemCreateDirectoryRequest,
+					directoryPath,
+				},
 			},
-		});
+		);
 		while (true) {
-			const listCreateDirectoryCommands = await this.timingCommandManagement.getList<FileSystemCreateDirectoryResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: createDirectoryCommand.receivedAt.toISOString(),
-				type: FileSystemCreateDirectoryResult,
-			});
+			const listCreateDirectoryCommands = await this.appletCommandManagement.list<FileSystemCreateDirectoryResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: createDirectoryCommand.receivedAt,
+					type: FileSystemCreateDirectoryResult,
+				},
+			);
 			if (listCreateDirectoryCommands.length > 0) {
 				return listCreateDirectoryCommands[0].command.result;
 			}
@@ -403,19 +367,15 @@ export default class FileSystemCommands implements IFileSystem {
 	}
 
 	public async isDirectory(filePath: IFilePath): Promise<boolean> {
-		const isDirectoryCommand = await this.timingCommandManagement.create<FileSystemIsDirectoryRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const isDirectoryCommand = await this.appletCommandManagement.send<FileSystemIsDirectoryRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: FileSystemIsDirectoryRequest,
 				filePath,
 			},
 		});
 		while (true) {
-			const isDirectoryCommands = await this.timingCommandManagement.getList<FileSystemIsDirectoryResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: isDirectoryCommand.receivedAt.toISOString(),
+			const isDirectoryCommands = await this.appletCommandManagement.list<FileSystemIsDirectoryResult>(this.deviceUid, this.appletUid, {
+				receivedSince: isDirectoryCommand.receivedAt,
 				type: FileSystemIsDirectoryResult,
 			});
 			if (isDirectoryCommands.length > 0) {

@@ -1,6 +1,6 @@
 import { DisplaySupportsRequest, DisplaySupportsResult } from '@signageos/front-applet/es6/Monitoring/Display/displayCommands';
 import wait from '../../../../Timer/wait';
-import TimingCommandManagement from '../../Command/TimingCommandManagement';
+import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
 
 export interface IDisplay {
 	supports(capability: string): Promise<boolean>;
@@ -14,23 +14,19 @@ export default class DisplayCommands implements IDisplay {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,
-		private timingCommandManagement: TimingCommandManagement,
+		private appletCommandManagement: AppletCommandManagement,
 	) {}
 
 	public async supports(capability: string): Promise<boolean> {
-		const supportsCommand = await this.timingCommandManagement.create<DisplaySupportsRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const supportsCommand = await this.appletCommandManagement.send<DisplaySupportsRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: DisplaySupportsRequest,
 				capability,
 			},
 		});
 		while (true) {
-			const supportsCommands = await this.timingCommandManagement.getList<DisplaySupportsResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: supportsCommand.receivedAt.toISOString(),
+			const supportsCommands = await this.appletCommandManagement.list<DisplaySupportsResult>(this.deviceUid, this.appletUid, {
+				receivedSince: supportsCommand.receivedAt,
 				type: DisplaySupportsResult,
 			});
 			if (supportsCommands.length > 0) {

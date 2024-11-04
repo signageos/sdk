@@ -1,4 +1,3 @@
-import TimingCommandManagement from '../../Command/TimingCommandManagement';
 import {
 	ManagementRemoteControlDisableRequest,
 	ManagementRemoteControlDisableResult,
@@ -14,6 +13,7 @@ import {
 	ManagementRemoteControlUnlockResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/RemoteControl/remoteControlCommands';
 import wait from '../../../../Timer/wait';
+import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
 
 export interface IManagementRemoteControl {
 	enable(): Promise<void>;
@@ -28,24 +28,24 @@ export default class ManagementRemoteControlCommands implements IManagementRemot
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,
-		private timingCommandManagement: TimingCommandManagement,
+		private appletCommandManagement: AppletCommandManagement,
 	) {}
 
 	public async enable(): Promise<void> {
-		const command = await this.timingCommandManagement.create<ManagementRemoteControlEnableRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementRemoteControlEnableRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementRemoteControlEnableRequest,
 			},
 		});
 		while (true) {
-			const systemRebootCommands = await this.timingCommandManagement.getList<ManagementRemoteControlEnableResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
-				type: ManagementRemoteControlEnableResult,
-			});
+			const systemRebootCommands = await this.appletCommandManagement.list<ManagementRemoteControlEnableResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: command.receivedAt,
+					type: ManagementRemoteControlEnableResult,
+				},
+			);
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
@@ -54,20 +54,20 @@ export default class ManagementRemoteControlCommands implements IManagementRemot
 	}
 
 	public async disable(): Promise<void> {
-		const command = await this.timingCommandManagement.create<ManagementRemoteControlDisableRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementRemoteControlDisableRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementRemoteControlDisableRequest,
 			},
 		});
 		while (true) {
-			const systemRebootCommands = await this.timingCommandManagement.getList<ManagementRemoteControlDisableResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
-				type: ManagementRemoteControlDisableResult,
-			});
+			const systemRebootCommands = await this.appletCommandManagement.list<ManagementRemoteControlDisableResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: command.receivedAt,
+					type: ManagementRemoteControlDisableResult,
+				},
+			);
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
@@ -76,20 +76,20 @@ export default class ManagementRemoteControlCommands implements IManagementRemot
 	}
 
 	public async isEnabled(): Promise<boolean> {
-		const command = await this.timingCommandManagement.create<ManagementRemoteControlIsEnabledRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementRemoteControlIsEnabledRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementRemoteControlIsEnabledRequest,
 			},
 		});
 		while (true) {
-			const systemRebootCommands = await this.timingCommandManagement.getList<ManagementRemoteControlIsEnabledResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
-				type: ManagementRemoteControlIsEnabledResult,
-			});
+			const systemRebootCommands = await this.appletCommandManagement.list<ManagementRemoteControlIsEnabledResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: command.receivedAt,
+					type: ManagementRemoteControlIsEnabledResult,
+				},
+			);
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
@@ -98,20 +98,20 @@ export default class ManagementRemoteControlCommands implements IManagementRemot
 	}
 
 	public async lock(): Promise<void> {
-		const command = await this.timingCommandManagement.create<ManagementRemoteControlLockRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementRemoteControlLockRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementRemoteControlLockRequest,
 			},
 		});
 		while (true) {
-			const systemRebootCommands = await this.timingCommandManagement.getList<ManagementRemoteControlLockResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
-				type: ManagementRemoteControlLockResult,
-			});
+			const systemRebootCommands = await this.appletCommandManagement.list<ManagementRemoteControlLockResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: command.receivedAt,
+					type: ManagementRemoteControlLockResult,
+				},
+			);
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
@@ -120,20 +120,20 @@ export default class ManagementRemoteControlCommands implements IManagementRemot
 	}
 
 	public async unlock(): Promise<void> {
-		const command = await this.timingCommandManagement.create<ManagementRemoteControlUnlockRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementRemoteControlUnlockRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementRemoteControlUnlockRequest,
 			},
 		});
 		while (true) {
-			const systemRebootCommands = await this.timingCommandManagement.getList<ManagementRemoteControlUnlockResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
-				type: ManagementRemoteControlUnlockResult,
-			});
+			const systemRebootCommands = await this.appletCommandManagement.list<ManagementRemoteControlUnlockResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: command.receivedAt,
+					type: ManagementRemoteControlUnlockResult,
+				},
+			);
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
@@ -142,20 +142,20 @@ export default class ManagementRemoteControlCommands implements IManagementRemot
 	}
 
 	public async isLocked(): Promise<boolean> {
-		const command = await this.timingCommandManagement.create<ManagementRemoteControlIsLockedRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementRemoteControlIsLockedRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementRemoteControlIsLockedRequest,
 			},
 		});
 		while (true) {
-			const systemRebootCommands = await this.timingCommandManagement.getList<ManagementRemoteControlIsLockedResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
-				type: ManagementRemoteControlIsLockedResult,
-			});
+			const systemRebootCommands = await this.appletCommandManagement.list<ManagementRemoteControlIsLockedResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: command.receivedAt,
+					type: ManagementRemoteControlIsLockedResult,
+				},
+			);
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}

@@ -23,7 +23,7 @@ describe('AppletCommandManagement', () => {
 		timingChecksum: 'c8f69XX5740',
 	};
 	const cmdResp: IAppletCommand[] = [cmd];
-	const sendCmd: IAppletCommandSendable = {
+	const sendCmd: IAppletCommandSendable<any> = {
 		command: {
 			type: 'Applet.Command',
 			payload: {
@@ -32,6 +32,7 @@ describe('AppletCommandManagement', () => {
 			},
 		},
 	};
+	const responseLocation = `${nockOpts.url}/v1/device/someUid/applet/appletUid/command/cmdUid`;
 
 	nock(nockOpts.url, {
 		reqheaders: {
@@ -43,7 +44,7 @@ describe('AppletCommandManagement', () => {
 		.get('/v1/device/someUid/applet/appletUid/command/cmdUid')
 		.reply(200, cmd)
 		.post('/v1/device/someUid/applet/appletUid/command', sendCmd as {})
-		.reply(200, 'Accepted');
+		.reply(202, 'Accepted', { location: responseLocation });
 
 	const acm = new AppletCommandManagement(nockOpts);
 

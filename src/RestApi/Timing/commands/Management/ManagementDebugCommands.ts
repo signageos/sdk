@@ -1,4 +1,3 @@
-import TimingCommandManagement from '../../Command/TimingCommandManagement';
 import {
 	ManagementDebugEnableRequest,
 	ManagementDebugEnableResult,
@@ -8,6 +7,7 @@ import {
 	ManagementDebugIsEnabledResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/Debug/debugCommands';
 import wait from '../../../../Timer/wait';
+import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
 
 export interface IManagementDebug {
 	enable(): Promise<void>;
@@ -19,22 +19,18 @@ export default class ManagementDebugCommands implements IManagementDebug {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,
-		private timingCommandManagement: TimingCommandManagement,
+		private appletCommandManagement: AppletCommandManagement,
 	) {}
 
 	public async enable(): Promise<void> {
-		const command = await this.timingCommandManagement.create<ManagementDebugEnableRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementDebugEnableRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementDebugEnableRequest,
 			},
 		});
 		while (true) {
-			const systemRebootCommands = await this.timingCommandManagement.getList<ManagementDebugEnableResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const systemRebootCommands = await this.appletCommandManagement.list<ManagementDebugEnableResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementDebugEnableResult,
 			});
 			if (systemRebootCommands.length > 0) {
@@ -45,18 +41,14 @@ export default class ManagementDebugCommands implements IManagementDebug {
 	}
 
 	public async disable(): Promise<void> {
-		const command = await this.timingCommandManagement.create<ManagementDebugDisableRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementDebugDisableRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementDebugDisableRequest,
 			},
 		});
 		while (true) {
-			const systemRebootCommands = await this.timingCommandManagement.getList<ManagementDebugDisableResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const systemRebootCommands = await this.appletCommandManagement.list<ManagementDebugDisableResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementDebugDisableResult,
 			});
 			if (systemRebootCommands.length > 0) {
@@ -67,18 +59,14 @@ export default class ManagementDebugCommands implements IManagementDebug {
 	}
 
 	public async isEnabled(): Promise<boolean> {
-		const command = await this.timingCommandManagement.create<ManagementDebugIsEnabledRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<ManagementDebugIsEnabledRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementDebugIsEnabledRequest,
 			},
 		});
 		while (true) {
-			const systemRebootCommands = await this.timingCommandManagement.getList<ManagementDebugIsEnabledResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const systemRebootCommands = await this.appletCommandManagement.list<ManagementDebugIsEnabledResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: ManagementDebugIsEnabledResult,
 			});
 			if (systemRebootCommands.length > 0) {

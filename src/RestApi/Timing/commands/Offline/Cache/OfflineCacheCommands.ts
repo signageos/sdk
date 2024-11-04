@@ -21,8 +21,8 @@ import {
 	OfflineCacheValidateChecksumResult,
 } from '@signageos/front-applet/es6/Monitoring/Offline/Cache/offlineCacheCommands';
 import wait from '../../../../../Timer/wait';
-import TimingCommandManagement from '../../../Command/TimingCommandManagement';
 import IFile from '@signageos/front-applet/es6/FrontApplet/Offline/Cache/IFile';
+import AppletCommandManagement from '../../../../Applet/Command/AppletCommandManagement';
 
 export interface IOfflineCache {
 	listFiles(): Promise<string[]>;
@@ -45,22 +45,16 @@ export default class OfflineCacheCommands implements IOfflineCache {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,
-		private timingCommandManagement: TimingCommandManagement,
+		private appletCommandManagement: AppletCommandManagement,
 	) {}
 
 	public async listFiles(): Promise<string[]> {
-		const listFilesCommand = await this.timingCommandManagement.create<OfflineCacheListFiles>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
-			command: {
-				type: OfflineCacheListFiles,
-			},
+		const listFilesCommand = await this.appletCommandManagement.send<OfflineCacheListFiles>(this.deviceUid, this.appletUid, {
+			command: { type: OfflineCacheListFiles },
 		});
 		while (true) {
-			const filesListedCommands = await this.timingCommandManagement.getList<OfflineCacheFilesListed>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: listFilesCommand.receivedAt.toISOString(),
+			const filesListedCommands = await this.appletCommandManagement.list<OfflineCacheFilesListed>(this.deviceUid, this.appletUid, {
+				receivedSince: listFilesCommand.receivedAt,
 				type: OfflineCacheFilesListed,
 			});
 			if (filesListedCommands.length > 0) {
@@ -71,19 +65,12 @@ export default class OfflineCacheCommands implements IOfflineCache {
 	}
 
 	public async loadFile(uid: string): Promise<IFile> {
-		const loadFileCommand = await this.timingCommandManagement.create<OfflineCacheLoadFile>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
-			command: {
-				type: OfflineCacheLoadFile,
-				uid,
-			},
+		const loadFileCommand = await this.appletCommandManagement.send<OfflineCacheLoadFile>(this.deviceUid, this.appletUid, {
+			command: { type: OfflineCacheLoadFile, uid },
 		});
 		while (true) {
-			const fileLoadedCommands = await this.timingCommandManagement.getList<OfflineCacheFileLoaded>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: loadFileCommand.receivedAt.toISOString(),
+			const fileLoadedCommands = await this.appletCommandManagement.list<OfflineCacheFileLoaded>(this.deviceUid, this.appletUid, {
+				receivedSince: loadFileCommand.receivedAt,
 				type: OfflineCacheFileLoaded,
 			});
 			if (fileLoadedCommands.length > 0) {
@@ -94,9 +81,7 @@ export default class OfflineCacheCommands implements IOfflineCache {
 	}
 
 	public async getChecksumFile(uid: string, hashType: string): Promise<string> {
-		const getChecksumFileCommand = await this.timingCommandManagement.create<OfflineCacheGetChecksumRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const getChecksumFileCommand = await this.appletCommandManagement.send<OfflineCacheGetChecksumRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: OfflineCacheGetChecksumRequest,
 				uid,
@@ -104,10 +89,8 @@ export default class OfflineCacheCommands implements IOfflineCache {
 			},
 		});
 		while (true) {
-			const getChecksumCommands = await this.timingCommandManagement.getList<OfflineCacheGetChecksumResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: getChecksumFileCommand.receivedAt.toISOString(),
+			const getChecksumCommands = await this.appletCommandManagement.list<OfflineCacheGetChecksumResult>(this.deviceUid, this.appletUid, {
+				receivedSince: getChecksumFileCommand.receivedAt,
 				type: OfflineCacheGetChecksumResult,
 			});
 			if (getChecksumCommands.length > 0) {
@@ -118,23 +101,22 @@ export default class OfflineCacheCommands implements IOfflineCache {
 	}
 
 	public async validateChecksumFile(uid: string, hash: string, hashType: string): Promise<boolean> {
-		const validateChecksumCommand = await this.timingCommandManagement.create<OfflineCacheValidateChecksumRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
-			command: {
-				type: OfflineCacheValidateChecksumRequest,
-				uid,
-				hash,
-				hashType,
+		const validateChecksumCommand = await this.appletCommandManagement.send<OfflineCacheValidateChecksumRequest>(
+			this.deviceUid,
+			this.appletUid,
+			{
+				command: { type: OfflineCacheValidateChecksumRequest, uid, hash, hashType },
 			},
-		});
+		);
 		while (true) {
-			const validateChecksumCommands = await this.timingCommandManagement.getList<OfflineCacheValidateChecksumResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: validateChecksumCommand.receivedAt.toISOString(),
-				type: OfflineCacheValidateChecksumResult,
-			});
+			const validateChecksumCommands = await this.appletCommandManagement.list<OfflineCacheValidateChecksumResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: validateChecksumCommand.receivedAt,
+					type: OfflineCacheValidateChecksumResult,
+				},
+			);
 			if (validateChecksumCommands.length > 0) {
 				return validateChecksumCommands[0].command.result;
 			}
@@ -143,21 +125,12 @@ export default class OfflineCacheCommands implements IOfflineCache {
 	}
 
 	public async loadOrSaveFile(uid: string, uri: string, headers?: { [key: string]: string } | undefined): Promise<IFile> {
-		const loadOrSaveCommand = await this.timingCommandManagement.create<OfflineCacheLoadOrSaveFileRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
-			command: {
-				type: OfflineCacheLoadOrSaveFileRequest,
-				uid,
-				uri,
-				headers,
-			},
+		const loadOrSaveCommand = await this.appletCommandManagement.send<OfflineCacheLoadOrSaveFileRequest>(this.deviceUid, this.appletUid, {
+			command: { type: OfflineCacheLoadOrSaveFileRequest, uid, uri, headers },
 		});
 		while (true) {
-			const loadOrSaveCommands = await this.timingCommandManagement.getList<OfflineCacheLoadOrSaveFileResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: loadOrSaveCommand.receivedAt.toISOString(),
+			const loadOrSaveCommands = await this.appletCommandManagement.list<OfflineCacheLoadOrSaveFileResult>(this.deviceUid, this.appletUid, {
+				receivedSince: loadOrSaveCommand.receivedAt,
 				type: OfflineCacheLoadOrSaveFileResult,
 			});
 			if (loadOrSaveCommands.length > 0) {
@@ -168,19 +141,12 @@ export default class OfflineCacheCommands implements IOfflineCache {
 	}
 
 	public async deleteFile(uid: string): Promise<void> {
-		const deleteFileCommand = await this.timingCommandManagement.create<OfflineCacheDeleteFileRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
-			command: {
-				type: OfflineCacheDeleteFileRequest,
-				uid,
-			},
+		const deleteFileCommand = await this.appletCommandManagement.send<OfflineCacheDeleteFileRequest>(this.deviceUid, this.appletUid, {
+			command: { type: OfflineCacheDeleteFileRequest, uid },
 		});
 		while (true) {
-			const deleteFileCommands = await this.timingCommandManagement.getList<OfflineCacheDeleteFileResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: deleteFileCommand.receivedAt.toISOString(),
+			const deleteFileCommands = await this.appletCommandManagement.list<OfflineCacheDeleteFileResult>(this.deviceUid, this.appletUid, {
+				receivedSince: deleteFileCommand.receivedAt,
 				type: OfflineCacheDeleteFileResult,
 			});
 			if (deleteFileCommands.length > 0) {
@@ -191,18 +157,14 @@ export default class OfflineCacheCommands implements IOfflineCache {
 	}
 
 	public async listContents(): Promise<string[]> {
-		const listContentsCommand = await this.timingCommandManagement.create<OfflineCacheListContentRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const listContentsCommand = await this.appletCommandManagement.send<OfflineCacheListContentRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: OfflineCacheListContentRequest,
 			},
 		});
 		while (true) {
-			const listContentsResults = await this.timingCommandManagement.getList<OfflineCacheListContentResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: listContentsCommand.receivedAt.toISOString(),
+			const listContentsResults = await this.appletCommandManagement.list<OfflineCacheListContentResult>(this.deviceUid, this.appletUid, {
+				receivedSince: listContentsCommand.receivedAt,
 				type: OfflineCacheListContentResult,
 			});
 			if (listContentsResults.length > 0) {
@@ -213,19 +175,15 @@ export default class OfflineCacheCommands implements IOfflineCache {
 	}
 
 	public async loadContent(uid: string): Promise<string> {
-		const command = await this.timingCommandManagement.create<OfflineCacheLoadContentRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<OfflineCacheLoadContentRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: OfflineCacheLoadContentRequest,
 				uid,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<OfflineCacheLoadContentResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<OfflineCacheLoadContentResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: OfflineCacheLoadContentResult,
 			});
 			if (results.length > 0) {
@@ -236,9 +194,7 @@ export default class OfflineCacheCommands implements IOfflineCache {
 	}
 
 	public async saveContent(uid: string, content: string): Promise<void> {
-		const command = await this.timingCommandManagement.create<OfflineCacheSaveContentRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<OfflineCacheSaveContentRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: OfflineCacheSaveContentRequest,
 				uid,
@@ -246,10 +202,8 @@ export default class OfflineCacheCommands implements IOfflineCache {
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<OfflineCacheSaveContentResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<OfflineCacheSaveContentResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: OfflineCacheSaveContentResult,
 			});
 			if (results.length > 0) {
@@ -260,19 +214,15 @@ export default class OfflineCacheCommands implements IOfflineCache {
 	}
 
 	public async deleteContent(uid: string): Promise<void> {
-		const command = await this.timingCommandManagement.create<OfflineCacheDeleteContentRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		const command = await this.appletCommandManagement.send<OfflineCacheDeleteContentRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: OfflineCacheDeleteContentRequest,
 				uid,
 			},
 		});
 		while (true) {
-			const results = await this.timingCommandManagement.getList<OfflineCacheDeleteContentResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<OfflineCacheDeleteContentResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: OfflineCacheDeleteContentResult,
 			});
 			if (results.length > 0) {

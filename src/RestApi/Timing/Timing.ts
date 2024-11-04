@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
 import ITiming from './ITiming';
-import TimingCommandManagement from './Command/TimingCommandManagement';
 import { TimingLoaded } from '@signageos/front-applet/es6/Monitoring/Timing/timingCommands';
 import {
 	EnableMonitoring,
@@ -11,7 +10,6 @@ import {
 import waitUntil from '../../Timer/waitUntil';
 import TimingManagement from './TimingManagement';
 import { ConsoleLogged } from '@signageos/front-applet/es6/Monitoring/Console/consoleCommands';
-import TimingCommand from './Command/TimingCommand';
 import { VideoStateChanged } from '@signageos/front-applet/es6/Monitoring/Video/videoCommands';
 import IVideoProperties from '@signageos/front-applet/es6/FrontApplet/Video/IVideoProperties';
 import { fillDataToEntity } from '../mapper';
@@ -22,6 +20,8 @@ import FileSystemCommands, { IFileSystem } from './commands/FileSystem/FileSyste
 import ManagementCommands from './commands/Management/ManagementCommands';
 import HtmlCommands, { IHtml } from './commands/Html/HtmlCommands';
 import NativeMdcCommands, { INativeMdcCommands } from './commands/NativeCommands/Mdc/NativeMdcCommands';
+import AppletCommandManagement from '../Applet/Command/AppletCommandManagement';
+import AppletCommand from '../Applet/Command/AppletCommand';
 
 type ILogOperations = {
 	getAll(since?: Date): Promise<string[]>;
@@ -81,16 +81,14 @@ export default class Timing implements ITiming {
 		(consoleMemo: IConsole, level: string) => ({
 			...consoleMemo,
 			[level]: {
-				getAll: async (since: Date = this.updatedAt) => {
-					const timingCommands = await this.timingCommandManagement.getList<ConsoleLogged>({
-						deviceUid: this.deviceUid,
-						appletUid: this.appletUid,
-						receivedSince: since.toISOString(),
+				getAll: async (receivedSince: Date = this.updatedAt) => {
+					const appletCommands = await this.appletCommandManagement.list<ConsoleLogged>(this.deviceUid, this.appletUid, {
+						receivedSince,
 						type: ConsoleLogged,
 					});
 					return _.flatMap(
-						timingCommands.filter((timingCommand: TimingCommand<ConsoleLogged>) => timingCommand.command.level === level),
-						(timingCommand: TimingCommand<ConsoleLogged>) => timingCommand.command.messages,
+						appletCommands.filter((appletCommand: AppletCommand<ConsoleLogged>) => appletCommand.command.level === level),
+						(appletCommand: AppletCommand<ConsoleLogged>) => appletCommand.command.messages,
 					);
 				},
 			},
@@ -102,18 +100,16 @@ export default class Timing implements ITiming {
 		(videoMemo: IVideo, state: VideoStateChanged['state']) => ({
 			...videoMemo,
 			[state]: {
-				getAll: async (since: Date = this.updatedAt) => {
-					const videoStateChangedCommands = await this.timingCommandManagement.getList<VideoStateChanged>({
-						deviceUid: this.deviceUid,
-						appletUid: this.appletUid,
-						receivedSince: since.toISOString(),
+				getAll: async (receivedSince: Date = this.updatedAt) => {
+					const videoStateChangedCommands = await this.appletCommandManagement.list<VideoStateChanged>(this.deviceUid, this.appletUid, {
+						receivedSince,
 						type: VideoStateChanged,
 					});
 					const videosByStateMap = _.groupBy(
 						videoStateChangedCommands,
-						(videoStateChangedCommand: TimingCommand<VideoStateChanged>) => videoStateChangedCommand.command.state,
+						(videoStateChangedCommand: AppletCommand<VideoStateChanged>) => videoStateChangedCommand.command.state,
 					);
-					const videosOfCurrentState = videosByStateMap[state].map((videoStateChangedCommand: TimingCommand<VideoStateChanged>) =>
+					const videosOfCurrentState = videosByStateMap[state].map((videoStateChangedCommand: AppletCommand<VideoStateChanged>) =>
 						_.pick(videoStateChangedCommand.command, 'uri', 'x', 'y', 'width', 'height'),
 					);
 					return videosOfCurrentState;
@@ -126,32 +122,30 @@ export default class Timing implements ITiming {
 	constructor(
 		data: ITiming,
 		private timingManagement: TimingManagement,
-		private timingCommandManagement: TimingCommandManagement,
+		private appletCommandManagement: AppletCommandManagement,
 	) {
 		fillDataToEntity(this, data);
-		this.display = new DisplayCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
+		this.display = new DisplayCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
 		this.offline = {
-			cache: new OfflineCacheCommands(this.deviceUid, this.appletUid, this.timingCommandManagement),
+			cache: new OfflineCacheCommands(this.deviceUid, this.appletUid, this.appletCommandManagement),
 		};
-		this.osd = new OSDCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
-		this.fileSystem = new FileSystemCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
-		this.management = new ManagementCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
-		this.html = new HtmlCommands(this.deviceUid, this.appletUid, this.timingCommandManagement);
+		this.osd = new OSDCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
+		this.fileSystem = new FileSystemCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
+		this.management = new ManagementCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
+		this.html = new HtmlCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
 		this.native = {
-			mdc: new NativeMdcCommands(this.deviceUid, this.appletUid, this.timingCommandManagement),
+			mdc: new NativeMdcCommands(this.deviceUid, this.appletUid, this.appletCommandManagement),
 		};
 	}
 
 	/**
 	 * @description Wait until the timing is loaded
-	 * @param since Date to wait for the timing to be loaded
+	 * @param receivedSince Date to wait for the timing to be loaded
 	 */
-	public async onLoaded(since: Date = this.updatedAt) {
+	public async onLoaded(receivedSince: Date = this.updatedAt) {
 		return waitUntil(async () => {
-			const timingCommands = await this.timingCommandManagement.getList<TimingLoaded>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: since.toISOString(),
+			const timingCommands = await this.appletCommandManagement.list<TimingLoaded>(this.deviceUid, this.appletUid, {
+				receivedSince,
 				type: TimingLoaded,
 			});
 			return timingCommands.length > 0;
@@ -162,18 +156,12 @@ export default class Timing implements ITiming {
 	 * @description Refresh the applet in timing
 	 */
 	public async refresh() {
-		const command = await this.timingCommandManagement.create<AppletRefreshRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
-			command: {
-				type: AppletRefreshRequest,
-			},
+		const command = await this.appletCommandManagement.send<AppletRefreshRequest>(this.deviceUid, this.appletUid, {
+			command: { type: AppletRefreshRequest },
 		});
 		return waitUntil(async () => {
-			const results = await this.timingCommandManagement.getList<AppletRefreshResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: command.receivedAt.toISOString(),
+			const results = await this.appletCommandManagement.list<AppletRefreshResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
 				type: AppletRefreshResult,
 			});
 			return results.length > 0;
@@ -181,17 +169,13 @@ export default class Timing implements ITiming {
 	}
 
 	public async enableMonitoring() {
-		await this.timingCommandManagement.create<EnableMonitoring>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		await this.appletCommandManagement.send<EnableMonitoring>(this.deviceUid, this.appletUid, {
 			command: { type: EnableMonitoring },
 		});
 	}
 
 	public async disableMonitoring() {
-		await this.timingCommandManagement.create<DisableMonitoring>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
+		await this.appletCommandManagement.send<DisableMonitoring>(this.deviceUid, this.appletUid, {
 			command: { type: DisableMonitoring },
 		});
 	}

@@ -1,6 +1,6 @@
 import { ShowOSDRequest, ShowOSDResult } from '@signageos/front-applet/es6/Monitoring/OSD/osdCommands';
-import TimingCommandManagement from '../../Command/TimingCommandManagement';
 import wait from '../../../../Timer/wait';
+import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
 
 export interface IOsd {
 	showOSD(): Promise<void>;
@@ -14,22 +14,16 @@ export default class OSDCommands implements IOsd {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,
-		private timingCommandManagement: TimingCommandManagement,
+		private appletCommandManagement: AppletCommandManagement,
 	) {}
 
 	public async showOSD(): Promise<void> {
-		const showOsdCommand = await this.timingCommandManagement.create<ShowOSDRequest>({
-			deviceUid: this.deviceUid,
-			appletUid: this.appletUid,
-			command: {
-				type: ShowOSDRequest,
-			},
+		const showOsdCommand = await this.appletCommandManagement.send<ShowOSDRequest>(this.deviceUid, this.appletUid, {
+			command: { type: ShowOSDRequest },
 		});
 		while (true) {
-			const showOsdCommands = await this.timingCommandManagement.getList<ShowOSDResult>({
-				deviceUid: this.deviceUid,
-				appletUid: this.appletUid,
-				receivedSince: showOsdCommand.receivedAt.toISOString(),
+			const showOsdCommands = await this.appletCommandManagement.list<ShowOSDResult>(this.deviceUid, this.appletUid, {
+				receivedSince: showOsdCommand.receivedAt,
 				type: ShowOSDResult,
 			});
 			if (showOsdCommands.length > 0) {

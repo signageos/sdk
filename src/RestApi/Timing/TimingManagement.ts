@@ -5,8 +5,8 @@ import ITiming, { ITimingUpdatable, ITimingCreateOnly } from './ITiming';
 import UnsupportedError from '../Error/UnsupportedError';
 import ITimingFilter from './ITimingFilter';
 import Timing from './Timing';
-import TimingCommandManagement from './Command/TimingCommandManagement';
 import { isEqual } from 'lodash';
+import AppletCommandManagement from '../Applet/Command/AppletCommandManagement';
 
 export default class TimingManagement {
 	private static readonly RESOURCE: string = 'timing';
@@ -15,7 +15,7 @@ export default class TimingManagement {
 	public readonly SCREEN_TAP: string = 'SCREEN_TAP';
 	public readonly IDLE_TIMEOUT: string = 'IDLE_TIMEOUT';
 
-	private timingCommandManagement: TimingCommandManagement = new TimingCommandManagement(this.options);
+	private appletCommandManagement: AppletCommandManagement = new AppletCommandManagement(this.options);
 
 	// eslint-disable-next-line no-empty-function
 	constructor(private options: IOptions) {}
@@ -57,13 +57,13 @@ export default class TimingManagement {
 		const response = await getResource(this.options, TimingManagement.RESOURCE, filter);
 		const timingsData: ITiming[] = await parseJSONResponse(response);
 
-		return timingsData.map((timingData: ITiming) => new Timing(timingData, this, this.timingCommandManagement));
+		return timingsData.map((timingData: ITiming) => new Timing(timingData, this, this.appletCommandManagement));
 	}
 
 	public async get(timingUid: string): Promise<Timing> {
 		const response = await getResource(this.options, TimingManagement.RESOURCE + '/' + timingUid);
 
-		return new Timing(await parseJSONResponse(response), this, this.timingCommandManagement);
+		return new Timing(await parseJSONResponse(response), this, this.appletCommandManagement);
 	}
 
 	private assertV1(): void {
