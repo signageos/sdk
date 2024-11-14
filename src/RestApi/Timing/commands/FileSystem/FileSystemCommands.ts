@@ -40,27 +40,7 @@ import {
 } from '@signageos/front-applet/es6/Monitoring/FileSystem/fileSystemCommands';
 import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-
-/**
- * @description See the documentation [File System](https://sdk.docs.signageos.io/api/js/content/5.5.0/js-file-system)
- */
-export interface IFileSystem {
-	listStorageUnits(): Promise<IStorageUnit[]>;
-	listFiles(directoryPath: IFilePath): Promise<IFilePath[]>;
-	exists(filePath: IFilePath): Promise<boolean>;
-	getFile(filePath: IFilePath): Promise<IFileSystemFile | null>;
-	writeFile(filePath: IFilePath, content: string): Promise<void>;
-	appendFile(filePath: IFilePath, content: string): Promise<void>;
-	readFile(filePath: IFilePath): Promise<string>;
-	copyFile(sourceFilePath: IFilePath, destinationFilePath: IFilePath, options: ICopyFileOptions | {}): Promise<void>;
-	moveFile(sourceFilePath: IFilePath, destinationFilePath: IFilePath, options: IMoveFileOptions | {}): Promise<void>;
-	deleteFile(filePath: IFilePath, recursive: boolean): Promise<void>;
-	downloadFile(filePath: IFilePath, sourceUri: string, headers?: IHeaders): Promise<void>;
-	extractFile(archiveFilePath: IFilePath, destinationDirectionPath: IFilePath, method: string): Promise<void>;
-	getFileChecksum(filePath: IFilePath, hashType: string): Promise<string>;
-	createDirectory(directoryPath: IFilePath): Promise<void>;
-	isDirectory(filePath: IFilePath): Promise<boolean>;
-}
+import IFileSystem from "@signageos/front-applet/es6/FrontApplet/FileSystem/IFileSystem";
 
 export default class FileSystemCommands implements IFileSystem {
 	constructor(
@@ -383,5 +363,27 @@ export default class FileSystemCommands implements IFileSystem {
 			}
 			await wait(500);
 		}
+	}
+
+	public async createArchive(_archiveFilePath: IFilePath, _archiveEntries: IFilePath[]): Promise<void> {
+		//TODO: implement
+		throw new Error('Not supported');
+	}
+
+	public async link(_sourceFilePath: IFilePath, _destinationFilePath: IFilePath): Promise<void> {
+		//TODO: Implement (only linux)
+		throw new Error('Not supported');
+	}
+
+	public async onStorageUnitsChanged(_listener: () => void): Promise<void> {
+		throw new Error('Not supported');
+	}
+
+	public removeAllListeners(): void {
+		throw new Error('Not supported');
+	}
+
+	public removeStorageUnitsChangedListener(_listener: () => void): void {
+		throw new Error('Not supported');
 	}
 }

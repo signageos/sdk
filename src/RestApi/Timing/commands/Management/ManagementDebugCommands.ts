@@ -8,14 +8,9 @@ import {
 } from '@signageos/front-applet/es6/Monitoring/Management/Debug/debugCommands';
 import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
+import IDebug from "@signageos/front-applet/es6/FrontApplet/Management/Debug/IDebug";
 
-export interface IManagementDebug {
-	enable(): Promise<void>;
-	disable(): Promise<void>;
-	isEnabled(): Promise<boolean>;
-}
-
-export default class ManagementDebugCommands implements IManagementDebug {
+export default class ManagementDebugCommands implements IDebug {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,

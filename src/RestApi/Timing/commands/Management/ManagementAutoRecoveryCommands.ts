@@ -1,4 +1,3 @@
-import { IAutoRecoveryConfiguration, IAutoRecoverySettings } from '@signageos/front-applet/es6/FrontApplet/Management/IAutoRecovery';
 import {
 	ManagementAutoRecoveryGetRequest,
 	ManagementAutoRecoveryGetResult,
@@ -7,20 +6,16 @@ import {
 } from '@signageos/front-applet/es6/Monitoring/Management/AutoRecovery/autoRecoveryCommands';
 import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
+import IAutoRecovery, { IAutoRecoveryConfiguration } from "@signageos/front-applet/es6/FrontApplet/Management/AutoRecovery/IAutoRecovery";
 
-export interface IManagementAutoRecovery {
-	get(): Promise<IAutoRecoverySettings>;
-	set(settings: IAutoRecoveryConfiguration): Promise<void>;
-}
-
-export default class ManagementAutoRecoveryCommands implements IManagementAutoRecovery {
+export default class ManagementAutoRecoveryCommands implements IAutoRecovery {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,
 		private appletCommandManagement: AppletCommandManagement,
 	) {}
 
-	public async get(): Promise<IAutoRecoverySettings> {
+	public async get(): Promise<IAutoRecoveryConfiguration> {
 		const command = await this.appletCommandManagement.send<ManagementAutoRecoveryGetRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementAutoRecoveryGetRequest,

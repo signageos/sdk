@@ -13,15 +13,20 @@ import { ConsoleLogged } from '@signageos/front-applet/es6/Monitoring/Console/co
 import { VideoStateChanged } from '@signageos/front-applet/es6/Monitoring/Video/videoCommands';
 import IVideoProperties from '@signageos/front-applet/es6/FrontApplet/Video/IVideoProperties';
 import { fillDataToEntity } from '../mapper';
-import DisplayCommands, { IDisplay } from './commands/Display/DisplayCommands';
-import OfflineCacheCommands, { IOfflineCache } from './commands/Offline/Cache/OfflineCacheCommands';
-import OSDCommands, { IOsd } from './commands/OSD/OSDCommands';
-import FileSystemCommands, { IFileSystem } from './commands/FileSystem/FileSystemCommands';
+import DisplayCommands from './commands/Display/DisplayCommands';
+import OfflineCacheCommands from './commands/Offline/Cache/OfflineCacheCommands';
+import OSDCommands from './commands/OSD/OSDCommands';
+import FileSystemCommands from './commands/FileSystem/FileSystemCommands';
 import ManagementCommands from './commands/Management/ManagementCommands';
 import HtmlCommands, { IHtml } from './commands/Html/HtmlCommands';
-import NativeMdcCommands, { INativeMdcCommands } from './commands/NativeCommands/Mdc/NativeMdcCommands';
+import NativeMdcCommands from './commands/NativeCommands/Mdc/NativeMdcCommands';
 import AppletCommandManagement from '../Applet/Command/AppletCommandManagement';
 import AppletCommand from '../Applet/Command/AppletCommand';
+import IFileSystem from "@signageos/front-applet/es6/FrontApplet/FileSystem/IFileSystem";
+import IOSD from "@signageos/front-applet/es6/FrontApplet/OSD/IOSD";
+import INativeMdcCommands from "@signageos/front-applet/es6/FrontApplet/NativeCommands/MDC/INativeMdcCommands";
+import ICache from "@signageos/front-applet/es6/FrontApplet/Offline/Cache/ICache";
+import IDisplay from "@signageos/front-applet/es6/FrontApplet/Display/IDisplay";
 
 type ILogOperations = {
 	getAll(since?: Date): Promise<string[]>;
@@ -67,9 +72,9 @@ export default class Timing implements ITiming {
 
 	public readonly display: IDisplay;
 	public readonly offline: {
-		cache: IOfflineCache;
+		cache: ICache;
 	};
-	public readonly osd: IOsd;
+	public readonly osd: IOSD;
 	public readonly fileSystem: IFileSystem;
 	public readonly management: ManagementCommands;
 	public readonly html: IHtml;

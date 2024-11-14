@@ -8,14 +8,9 @@ import {
 } from '@signageos/front-applet/es6/Monitoring/Management/App/applicationCommands';
 import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
+import IApp from "@signageos/front-applet/es6/FrontApplet/Management/App/IApp";
 
-export interface IManagementApplication {
-	getType(): Promise<string>;
-	getVersion(): Promise<string>;
-	upgrade(version: string, baseUrl?: string): Promise<void>;
-}
-
-export default class ManagementAppCommands implements IManagementApplication {
+export default class ManagementAppCommands implements IApp {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,

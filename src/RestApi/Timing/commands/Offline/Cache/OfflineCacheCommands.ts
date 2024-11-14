@@ -23,25 +23,13 @@ import {
 import wait from '../../../../../Timer/wait';
 import IFile from '@signageos/front-applet/es6/FrontApplet/Offline/Cache/IFile';
 import AppletCommandManagement from '../../../../Applet/Command/AppletCommandManagement';
-
-export interface IOfflineCache {
-	listFiles(): Promise<string[]>;
-	loadFile(uid: string): Promise<IFile>;
-	getChecksumFile(uid: string, hashType: string): Promise<string>;
-	validateChecksumFile(uid: string, hash: string, hashType: string): Promise<boolean>;
-	loadOrSaveFile(uid: string, uri: string, headers?: { [key: string]: string }): Promise<IFile>;
-	deleteFile(uid: string): Promise<void>;
-	listContents(): Promise<string[]>;
-	loadContent(uid: string): Promise<string>;
-	saveContent(uid: string, content: string): Promise<void>;
-	deleteContent(uid: string): Promise<void>;
-}
+import ICache from "@signageos/front-applet/es6/FrontApplet/Offline/Cache/ICache";
 
 /**
  * @description See the documentation
  * [Offline Cache for media files (File API)](https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
  */
-export default class OfflineCacheCommands implements IOfflineCache {
+export default class OfflineCacheCommands implements ICache {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,
@@ -230,5 +218,13 @@ export default class OfflineCacheCommands implements IOfflineCache {
 			}
 			await wait(500);
 		}
+	}
+
+	public async decompressFile(_uid: string, _destinationUid: string, _method: string): Promise<void> {
+		throw new Error('Not implemented');
+	}
+
+	public async saveFile(_uid: string, _uri: string, _headers?: { [p: string]: string }): Promise<void> {
+		throw new Error('Not implemented');
 	}
 }

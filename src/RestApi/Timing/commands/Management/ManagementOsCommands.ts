@@ -1,5 +1,3 @@
-import IOSInfo from '@signageos/front-applet/es6/FrontApplet/Management/IOSInfo';
-import { SystemMemoryInfo } from '@signageos/front-applet/es6/FrontApplet/Management/OS';
 import {
 	ManagementOsGetCpuUsageRequest,
 	ManagementOsGetInfoRequest,
@@ -10,14 +8,10 @@ import {
 } from '@signageos/front-applet/es6/Monitoring/Management/Os/osCommands';
 import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
+import IOS, { SystemMemoryInfo } from "@signageos/front-applet/es6/FrontApplet/Management/OS/IOS";
+import IOSInfo from "@signageos/front-applet/es6/FrontApplet/Management/OS/IOSInfo";
 
-export interface IManagementOs {
-	getInfo(): Promise<IOSInfo>;
-	getCpuUsage(): Promise<number>;
-	getMemoryUsage(): Promise<SystemMemoryInfo>;
-}
-
-export default class ManagementOsCommands implements IManagementOs {
+export default class ManagementOsCommands implements IOS {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,

@@ -21,47 +21,48 @@ import {
 	ManagementSetExtendedManagementUrlResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/managementCommands';
 import wait from '../../../../Timer/wait';
-import ManagementPowerCommands, { IManagementPower } from './ManagementPowerCommands';
-import ManagementAppCommands, { IManagementApplication } from './ManagementAppCommands';
+import ManagementPowerCommands from './ManagementPowerCommands';
+import ManagementAppCommands from './ManagementAppCommands';
 import IBatteryStatus from '@signageos/front-applet/es6/FrontApplet/Management/IBatteryStatus';
-import ManagementScreenCommands, { IManagementScreen } from './ManagementScreenCommands';
-import ManagementSecurityCommands, { IManagementSecurity } from './ManagementSecurityCommands';
-import ManagementAudioCommands, { IManagementAudio } from './ManagementAudioCommands';
-import ManagementRemoteControlCommands, { IManagementRemoteControl } from './ManagementRemoteControlCommands';
-import ManagementOsCommands, { IManagementOs } from './ManagementOsCommands';
-import ManagementDebugCommands, { IManagementDebug } from './ManagementDebugCommands';
-import ManagementTimeCommands, { IManagementTime } from './ManagementTimeCommands';
-import ManagementNetworkCommands, { IManagementNetwork } from './ManagementNetworkCommands';
-import ManagementPeerRecoveryCommands, { IManagementPeerRecovery } from './ManagementPeerRecoveryCommands';
-import ManagementAutoRecoveryCommands, { IManagementAutoRecovery } from './ManagementAutoRecoveryCommands';
+import ManagementScreenCommands from './ManagementScreenCommands';
+import ManagementSecurityCommands from './ManagementSecurityCommands';
+import ManagementAudioCommands from './ManagementAudioCommands';
+import ManagementRemoteControlCommands from './ManagementRemoteControlCommands';
+import ManagementOsCommands from './ManagementOsCommands';
+import ManagementDebugCommands from './ManagementDebugCommands';
+import ManagementTimeCommands from './ManagementTimeCommands';
+import ManagementNetworkCommands from './ManagementNetworkCommands';
+import ManagementPeerRecoveryCommands from './ManagementPeerRecoveryCommands';
+import ManagementAutoRecoveryCommands from './ManagementAutoRecoveryCommands';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-
-export interface IManagement {
-	supports(capability: string): Promise<boolean>;
-	getModel(): Promise<string>;
-	getSerialNumber(): Promise<string>;
-	getTemperature(): Promise<number>;
-	getBrand(): Promise<string>;
-	getBatteryStatus(): Promise<IBatteryStatus>;
-	resetSettings(): Promise<void>;
-	factoryReset(): Promise<void>;
-	getExtendedManagementUrl(): Promise<string | null>;
-	setExtendedManagementUrl(url: string): Promise<void>;
-}
+import IManagement from "@signageos/front-applet/es6/FrontApplet/Management/IManagement";
+import IPower from "@signageos/front-applet/es6/FrontApplet/Management/Power/IPower";
+import IApp from "@signageos/front-applet/es6/FrontApplet/Management/App/IApp";
+import IScreen from "@signageos/front-applet/es6/FrontApplet/Management/Screen/IScreen";
+import ISecurity from "@signageos/front-applet/es6/FrontApplet/Management/Security/ISecurity";
+import IAudio from "@signageos/front-applet/es6/FrontApplet/Management/Audio/IAudio";
+import IRemoteControl from "@signageos/front-applet/es6/FrontApplet/Management/RemoteControl/IRemoteControl";
+import IOS from "@signageos/front-applet/es6/FrontApplet/Management/OS/IOS";
+import IDebug from "@signageos/front-applet/es6/FrontApplet/Management/Debug/IDebug";
+import ITime from "@signageos/front-applet/es6/FrontApplet/Management/Time/ITime";
+import INetwork from "@signageos/front-applet/es6/FrontApplet/Management/Network/INetwork";
+import IPeerRecovery from "@signageos/front-applet/es6/FrontApplet/Management/PeerRecovery/IPeerRecovery";
+import IAutoRecovery from "@signageos/front-applet/es6/FrontApplet/Management/AutoRecovery/IAutoRecovery";
+import INetworkInfo from "@signageos/front-applet/es6/FrontApplet/Management/Network/INetworkInfo";
 
 export default class ManagementCommands implements IManagement {
-	public readonly power: IManagementPower;
-	public readonly app: IManagementApplication;
-	public readonly screen: IManagementScreen;
-	public readonly security: IManagementSecurity;
-	public readonly audio: IManagementAudio;
-	public readonly remoteControl: IManagementRemoteControl;
-	public readonly os: IManagementOs;
-	public readonly debug: IManagementDebug;
-	public readonly time: IManagementTime;
-	public readonly network: IManagementNetwork;
-	public readonly peerRecovery: IManagementPeerRecovery;
-	public readonly autoRecovery: IManagementAutoRecovery;
+	public readonly power: IPower;
+	public readonly app: IApp;
+	public readonly screen: IScreen;
+	public readonly security: ISecurity;
+	public readonly audio: IAudio;
+	public readonly remoteControl: IRemoteControl;
+	public readonly os: IOS;
+	public readonly debug: IDebug;
+	public readonly time: ITime;
+	public readonly network: INetwork;
+	public readonly peerRecovery: IPeerRecovery;
+	public readonly autoRecovery: IAutoRecovery;
 
 	constructor(
 		private deviceUid: string,
@@ -262,5 +263,12 @@ export default class ManagementCommands implements IManagement {
 			}
 			await wait(500);
 		}
+	}
+
+	/**
+	 * @deprecated
+	 */
+	public async getNetworkInfo(): Promise<INetworkInfo> {
+		throw new Error('Method not implemented.');
 	}
 }

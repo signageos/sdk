@@ -1,10 +1,7 @@
 import { DisplaySupportsRequest, DisplaySupportsResult } from '@signageos/front-applet/es6/Monitoring/Display/displayCommands';
 import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-
-export interface IDisplay {
-	supports(capability: string): Promise<boolean>;
-}
+import IDisplay from "@signageos/front-applet/es6/FrontApplet/Display/IDisplay";
 
 /**
  * @description See the documentation

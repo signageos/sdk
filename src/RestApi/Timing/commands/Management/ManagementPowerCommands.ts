@@ -21,25 +21,9 @@ import { ITimer, TimerType } from '@signageos/front-applet/es6/FrontApplet/Manag
 import { IProprietaryTimer } from '@signageos/front-applet/es6/FrontApplet/Management/helpers/ProprietaryTimerHelper';
 import waitUntil from '../../../../Timer/waitUntil';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
+import IPower from "@signageos/front-applet/es6/FrontApplet/Management/Power/IPower";
 
-export interface IManagementPower {
-	systemReboot(): Promise<void>;
-	appRestart(): Promise<void>;
-	getTimers(): Promise<ITimer[]>;
-	setTimer(type: keyof typeof TimerType, timeOn: string | null, timeOff: string | null, weekdays: string[], volume: number): Promise<void>;
-	unsetTimer(type: keyof typeof TimerType): Promise<void>;
-	getProprietaryTimers(): Promise<IProprietaryTimer[]>;
-	setProprietaryTimer(
-		type: keyof typeof TimerType,
-		timeOn: string | null,
-		timeOff: string | null,
-		weekdays: string[],
-		keepAppletRunning: boolean,
-	): Promise<void>;
-	unsetProprietaryTimer(type: keyof typeof TimerType): Promise<void>;
-}
-
-export default class ManagementPowerCommands implements IManagementPower {
+export default class ManagementPowerCommands implements IPower {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,

@@ -14,17 +14,9 @@ import {
 } from '@signageos/front-applet/es6/Monitoring/Management/RemoteControl/remoteControlCommands';
 import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
+import IRemoteControl from "@signageos/front-applet/es6/FrontApplet/Management/RemoteControl/IRemoteControl";
 
-export interface IManagementRemoteControl {
-	enable(): Promise<void>;
-	disable(): Promise<void>;
-	isEnabled(): Promise<boolean>;
-	lock(): Promise<void>;
-	unlock(): Promise<void>;
-	isLocked(): Promise<boolean>;
-}
-
-export default class ManagementRemoteControlCommands implements IManagementRemoteControl {
+export default class ManagementRemoteControlCommands implements IRemoteControl {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,

@@ -1,16 +1,13 @@
 import { ShowOSDRequest, ShowOSDResult } from '@signageos/front-applet/es6/Monitoring/OSD/osdCommands';
 import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-
-export interface IOsd {
-	showOSD(): Promise<void>;
-}
+import IOSD from "@signageos/front-applet/es6/FrontApplet/OSD/IOSD";
 
 /**
  * @description See the documentation
  * [OSD API](https://developers.signageos.io/sdk/content/js-osd)
  */
-export default class OSDCommands implements IOsd {
+export default class OSDCommands implements IOSD {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,

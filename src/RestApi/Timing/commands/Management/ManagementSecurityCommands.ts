@@ -8,14 +8,9 @@ import {
 	ManagementSecuritySetPinCodeResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/Security/securityCommands';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
+import ISecurity from "@signageos/front-applet/es6/FrontApplet/Management/Security/ISecurity";
 
-export interface IManagementSecurity {
-	getPinCode(): Promise<string>;
-	setPinCode(pinCode: string): Promise<void>;
-	generateRandomPinCode(): Promise<void>;
-}
-
-export default class ManagementSecurityCommands implements IManagementSecurity {
+export default class ManagementSecurityCommands implements ISecurity {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,

@@ -6,13 +6,9 @@ import {
 } from '@signageos/front-applet/es6/Monitoring/Management/Audio/audioCommands';
 import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
+import IAudio from "@signageos/front-applet/es6/FrontApplet/Management/Audio/IAudio";
 
-export interface IManagementAudio {
-	getVolume(): Promise<number>;
-	setVolume(volume: number): Promise<void>;
-}
-
-export default class ManagementAudioCommands implements IManagementAudio {
+export default class ManagementAudioCommands implements IAudio {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,

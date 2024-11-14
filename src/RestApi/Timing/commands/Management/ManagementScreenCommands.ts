@@ -1,6 +1,4 @@
 import wait from '../../../../Timer/wait';
-import IOrientation from '@signageos/front-applet/es6/FrontApplet/Management/IOrientation';
-import IBrightness from '@signageos/front-applet/es6/FrontApplet/Management/IBrightness';
 import {
 	ManagementScreenGetBrightnessRequest,
 	ManagementScreenGetBrightnessResult,
@@ -20,19 +18,11 @@ import {
 	ManagementScreenTakeScreenshotResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/Screen/screenCommands';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
+import IScreen from "@signageos/front-applet/es6/FrontApplet/Management/Screen/IScreen";
+import IOrientation from "@signageos/front-applet/es6/FrontApplet/Management/Screen/IOrientation";
+import IBrightness from "@signageos/front-applet/es6/FrontApplet/Management/Screen/IBrightness";
 
-export interface IManagementScreen {
-	resize(baseUrl: string, orientation: string, resolution: string, currentVersion: string, videoOrientation?: string): Promise<void>;
-	getOrientation(): Promise<IOrientation>;
-	setBrightness(timeFrom1: string, brightness1: number, timeFrom2: string, brightness2: number): Promise<void>;
-	getBrightness(): Promise<IBrightness>;
-	takeAndUploadScreenshot(uploadBaseUrl: string): Promise<string>;
-	powerOn(): Promise<void>;
-	powerOff(): Promise<void>;
-	isPoweredOn(): Promise<boolean>;
-}
-
-export default class ManagementScreenCommands implements IManagementScreen {
+export default class ManagementScreenCommands implements IScreen {
 	constructor(
 		private deviceUid: string,
 		private appletUid: string,
