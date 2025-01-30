@@ -17,6 +17,7 @@ import AlertManagement from './Alerts/AlertManagement';
 import IOptions from './IOptions';
 import PackageManagement from './Package/PackageManagement';
 import { Paginator } from '../Lib/Pagination/paginator';
+import { CustomScriptManagement } from './CustomScript/CustomScriptManagement';
 
 export default class RestApi {
 	// Note: We use different authentication here
@@ -42,6 +43,8 @@ export default class RestApi {
 
 	public readonly location: LocationManagement = new LocationManagement(this.organizationOptions);
 	public readonly locationOrganizationTag: LocationOrganizationTag = new LocationOrganizationTag(this.organizationOptions);
+
+	public readonly customScript: CustomScriptManagement = new CustomScriptManagement(this.organizationOptions);
 
 	constructor(
 		public readonly accountOptions: IOptions,
