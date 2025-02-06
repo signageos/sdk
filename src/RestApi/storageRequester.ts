@@ -30,7 +30,7 @@ export async function postStorage(url: string | Request, fields: any, data: Node
 		headers: form.getHeaders(),
 	};
 
-	return await doRequest(url, init);
+	return await doRequest({ url, init });
 }
 
 export async function parseStorageResponse(
