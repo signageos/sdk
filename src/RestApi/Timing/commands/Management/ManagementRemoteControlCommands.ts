@@ -12,9 +12,9 @@ import {
 	ManagementRemoteControlUnlockRequest,
 	ManagementRemoteControlUnlockResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/RemoteControl/remoteControlCommands';
-import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-import IRemoteControl from "@signageos/front-applet/es6/FrontApplet/Management/RemoteControl/IRemoteControl";
+import IRemoteControl from '@signageos/front-applet/es6/FrontApplet/Management/RemoteControl/IRemoteControl';
+import { waitUntilReturnValue } from '../../../../Timer/waitUntil';
 
 export default class ManagementRemoteControlCommands implements IRemoteControl {
 	constructor(
@@ -29,7 +29,7 @@ export default class ManagementRemoteControlCommands implements IRemoteControl {
 				type: ManagementRemoteControlEnableRequest,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const systemRebootCommands = await this.appletCommandManagement.list<ManagementRemoteControlEnableResult>(
 				this.deviceUid,
 				this.appletUid,
@@ -41,8 +41,7 @@ export default class ManagementRemoteControlCommands implements IRemoteControl {
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async disable(): Promise<void> {
@@ -51,7 +50,7 @@ export default class ManagementRemoteControlCommands implements IRemoteControl {
 				type: ManagementRemoteControlDisableRequest,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const systemRebootCommands = await this.appletCommandManagement.list<ManagementRemoteControlDisableResult>(
 				this.deviceUid,
 				this.appletUid,
@@ -63,8 +62,7 @@ export default class ManagementRemoteControlCommands implements IRemoteControl {
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async isEnabled(): Promise<boolean> {
@@ -73,7 +71,7 @@ export default class ManagementRemoteControlCommands implements IRemoteControl {
 				type: ManagementRemoteControlIsEnabledRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const systemRebootCommands = await this.appletCommandManagement.list<ManagementRemoteControlIsEnabledResult>(
 				this.deviceUid,
 				this.appletUid,
@@ -85,8 +83,7 @@ export default class ManagementRemoteControlCommands implements IRemoteControl {
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async lock(): Promise<void> {
@@ -95,7 +92,7 @@ export default class ManagementRemoteControlCommands implements IRemoteControl {
 				type: ManagementRemoteControlLockRequest,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const systemRebootCommands = await this.appletCommandManagement.list<ManagementRemoteControlLockResult>(
 				this.deviceUid,
 				this.appletUid,
@@ -107,8 +104,7 @@ export default class ManagementRemoteControlCommands implements IRemoteControl {
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async unlock(): Promise<void> {
@@ -117,7 +113,7 @@ export default class ManagementRemoteControlCommands implements IRemoteControl {
 				type: ManagementRemoteControlUnlockRequest,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const systemRebootCommands = await this.appletCommandManagement.list<ManagementRemoteControlUnlockResult>(
 				this.deviceUid,
 				this.appletUid,
@@ -129,8 +125,7 @@ export default class ManagementRemoteControlCommands implements IRemoteControl {
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async isLocked(): Promise<boolean> {
@@ -139,7 +134,7 @@ export default class ManagementRemoteControlCommands implements IRemoteControl {
 				type: ManagementRemoteControlIsLockedRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const systemRebootCommands = await this.appletCommandManagement.list<ManagementRemoteControlIsLockedResult>(
 				this.deviceUid,
 				this.appletUid,
@@ -151,7 +146,6 @@ export default class ManagementRemoteControlCommands implements IRemoteControl {
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 }

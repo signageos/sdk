@@ -6,9 +6,9 @@ import {
 	ApplicationUpgradeRequest,
 	ApplicationUpgradeResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/App/applicationCommands';
-import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-import IApp from "@signageos/front-applet/es6/FrontApplet/Management/App/IApp";
+import IApp from '@signageos/front-applet/es6/FrontApplet/Management/App/IApp';
+import { waitUntilReturnValue } from '../../../../Timer/waitUntil';
 
 export default class ManagementAppCommands implements IApp {
 	constructor(
@@ -23,7 +23,7 @@ export default class ManagementAppCommands implements IApp {
 				type: ApplicationGetTypeRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<ApplicationGetTypeResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ApplicationGetTypeResult,
@@ -31,8 +31,7 @@ export default class ManagementAppCommands implements IApp {
 			if (results.length > 0) {
 				return results[0].command.applicationType;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async getVersion(): Promise<string> {
@@ -41,7 +40,7 @@ export default class ManagementAppCommands implements IApp {
 				type: ApplicationGetVersionRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<ApplicationGetVersionResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ApplicationGetVersionResult,
@@ -49,8 +48,7 @@ export default class ManagementAppCommands implements IApp {
 			if (results.length > 0) {
 				return results[0].command.version;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async upgrade(version: string, baseUrl?: string | undefined): Promise<void> {
@@ -61,7 +59,7 @@ export default class ManagementAppCommands implements IApp {
 				baseUrl,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<ApplicationUpgradeResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ApplicationUpgradeResult,
@@ -69,7 +67,6 @@ export default class ManagementAppCommands implements IApp {
 			if (results.length > 0) {
 				return results[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 }

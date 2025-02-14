@@ -4,9 +4,9 @@ import {
 	ManagementAudioSetVolumeRequest,
 	ManagementAudioSetVolumeResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/Audio/audioCommands';
-import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-import IAudio from "@signageos/front-applet/es6/FrontApplet/Management/Audio/IAudio";
+import IAudio from '@signageos/front-applet/es6/FrontApplet/Management/Audio/IAudio';
+import { waitUntilReturnValue } from '../../../../Timer/waitUntil';
 
 export default class ManagementAudioCommands implements IAudio {
 	constructor(
@@ -21,7 +21,7 @@ export default class ManagementAudioCommands implements IAudio {
 				type: ManagementAudioGetVolumeRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const systemRebootCommands = await this.appletCommandManagement.list<ManagementAudioGetVolumeResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementAudioGetVolumeResult,
@@ -29,8 +29,7 @@ export default class ManagementAudioCommands implements IAudio {
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.volume;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async setVolume(volume: number): Promise<void> {
@@ -40,7 +39,7 @@ export default class ManagementAudioCommands implements IAudio {
 				volume,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const systemRebootCommands = await this.appletCommandManagement.list<ManagementAudioSetVolumeResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementAudioSetVolumeResult,
@@ -48,7 +47,6 @@ export default class ManagementAudioCommands implements IAudio {
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 }

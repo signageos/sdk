@@ -7,7 +7,7 @@ import {
 	AppletRefreshRequest,
 	AppletRefreshResult,
 } from '@signageos/front-applet/es6/Monitoring/monitoringCommands';
-import waitUntil from '../../Timer/waitUntil';
+import { waitUntilReturnValue } from '../../Timer/waitUntil';
 import TimingManagement from './TimingManagement';
 import { ConsoleLogged } from '@signageos/front-applet/es6/Monitoring/Console/consoleCommands';
 import { VideoStateChanged } from '@signageos/front-applet/es6/Monitoring/Video/videoCommands';
@@ -22,11 +22,11 @@ import HtmlCommands, { IHtml } from './commands/Html/HtmlCommands';
 import NativeMdcCommands from './commands/NativeCommands/Mdc/NativeMdcCommands';
 import AppletCommandManagement from '../Applet/Command/AppletCommandManagement';
 import AppletCommand from '../Applet/Command/AppletCommand';
-import IFileSystem from "@signageos/front-applet/es6/FrontApplet/FileSystem/IFileSystem";
-import IOSD from "@signageos/front-applet/es6/FrontApplet/OSD/IOSD";
-import INativeMdcCommands from "@signageos/front-applet/es6/FrontApplet/NativeCommands/MDC/INativeMdcCommands";
-import ICache from "@signageos/front-applet/es6/FrontApplet/Offline/Cache/ICache";
-import IDisplay from "@signageos/front-applet/es6/FrontApplet/Display/IDisplay";
+import IFileSystem from '@signageos/front-applet/es6/FrontApplet/FileSystem/IFileSystem';
+import IOSD from '@signageos/front-applet/es6/FrontApplet/OSD/IOSD';
+import INativeMdcCommands from '@signageos/front-applet/es6/FrontApplet/NativeCommands/MDC/INativeMdcCommands';
+import IOfflineCache from '@signageos/front-applet/es6/FrontApplet/Offline/Cache/IOfflineCache';
+import IDisplay from '@signageos/front-applet/es6/FrontApplet/Display/IDisplay';
 
 type ILogOperations = {
 	getAll(since?: Date): Promise<string[]>;
@@ -72,7 +72,7 @@ export default class Timing implements ITiming {
 
 	public readonly display: IDisplay;
 	public readonly offline: {
-		cache: ICache;
+		cache: IOfflineCache;
 	};
 	public readonly osd: IOSD;
 	public readonly fileSystem: IFileSystem;
@@ -148,7 +148,7 @@ export default class Timing implements ITiming {
 	 * @param receivedSince Date to wait for the timing to be loaded
 	 */
 	public async onLoaded(receivedSince: Date = this.updatedAt) {
-		return waitUntil(async () => {
+		return await waitUntilReturnValue(async () => {
 			const timingCommands = await this.appletCommandManagement.list<TimingLoaded>(this.deviceUid, this.appletUid, {
 				receivedSince,
 				type: TimingLoaded,
@@ -164,7 +164,7 @@ export default class Timing implements ITiming {
 		const command = await this.appletCommandManagement.send<AppletRefreshRequest>(this.deviceUid, this.appletUid, {
 			command: { type: AppletRefreshRequest },
 		});
-		return waitUntil(async () => {
+		return await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<AppletRefreshResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: AppletRefreshResult,

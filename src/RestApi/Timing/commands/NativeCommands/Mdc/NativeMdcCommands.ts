@@ -4,9 +4,9 @@ import {
 	ManagementNativeCommandsMdcSendOneRequest,
 	ManagementNativeCommandsMdcSendOneResult,
 } from '@signageos/front-applet/es6/Monitoring/NativeCommands/nativeMdcCommands';
-import wait from '../../../../../Timer/wait';
 import AppletCommandManagement from '../../../../Applet/Command/AppletCommandManagement';
-import INativeMdcCommands from "@signageos/front-applet/es6/FrontApplet/NativeCommands/MDC/INativeMdcCommands";
+import INativeMdcCommands from '@signageos/front-applet/es6/FrontApplet/NativeCommands/MDC/INativeMdcCommands';
+import { waitUntilReturnValue } from '../../../../../Timer/waitUntil';
 
 export default class NativeMdcCommands implements INativeMdcCommands {
 	constructor(
@@ -28,7 +28,7 @@ export default class NativeMdcCommands implements INativeMdcCommands {
 				},
 			},
 		);
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const commandResults = await this.appletCommandManagement.list<ManagementNativeCommandsMdcSendOneResult>(
 				this.deviceUid,
 				this.appletUid,
@@ -40,7 +40,6 @@ export default class NativeMdcCommands implements INativeMdcCommands {
 			if (commandResults.length > 0) {
 				return commandResults[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 }

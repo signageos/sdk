@@ -1,7 +1,7 @@
 import { DisplaySupportsRequest, DisplaySupportsResult } from '@signageos/front-applet/es6/Monitoring/Display/displayCommands';
-import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-import IDisplay from "@signageos/front-applet/es6/FrontApplet/Display/IDisplay";
+import IDisplay from '@signageos/front-applet/es6/FrontApplet/Display/IDisplay';
+import { waitUntilReturnValue } from '../../../../Timer/waitUntil';
 
 /**
  * @description See the documentation
@@ -21,7 +21,7 @@ export default class DisplayCommands implements IDisplay {
 				capability,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const supportsCommands = await this.appletCommandManagement.list<DisplaySupportsResult>(this.deviceUid, this.appletUid, {
 				receivedSince: supportsCommand.receivedAt,
 				type: DisplaySupportsResult,
@@ -29,7 +29,6 @@ export default class DisplayCommands implements IDisplay {
 			if (supportsCommands.length > 0) {
 				return supportsCommands[0].command.supports;
 			}
-			await wait(500);
-		}
+		});
 	}
 }

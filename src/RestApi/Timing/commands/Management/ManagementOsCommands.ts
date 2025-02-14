@@ -6,10 +6,10 @@ import {
 	ManagementOsGetMemoryUsageRequest,
 	ManagementOsGetMemoryUsageResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/Os/osCommands';
-import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-import IOS, { SystemMemoryInfo } from "@signageos/front-applet/es6/FrontApplet/Management/OS/IOS";
-import IOSInfo from "@signageos/front-applet/es6/FrontApplet/Management/OS/IOSInfo";
+import IOS, { SystemMemoryInfo } from '@signageos/front-applet/es6/FrontApplet/Management/OS/IOS';
+import IOSInfo from '@signageos/front-applet/es6/FrontApplet/Management/OS/IOSInfo';
+import { waitUntilReturnValue } from '../../../../Timer/waitUntil';
 
 export default class ManagementOsCommands implements IOS {
 	constructor(
@@ -24,7 +24,7 @@ export default class ManagementOsCommands implements IOS {
 				type: ManagementOsGetInfoRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const systemRebootCommands = await this.appletCommandManagement.list<ManagementOsGetInfoResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementOsGetInfoResult,
@@ -32,8 +32,7 @@ export default class ManagementOsCommands implements IOS {
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async getCpuUsage(): Promise<number> {
@@ -42,7 +41,7 @@ export default class ManagementOsCommands implements IOS {
 				type: ManagementOsGetCpuUsageRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const systemRebootCommands = await this.appletCommandManagement.list<ManagementOsGetCpuUsageResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementOsGetCpuUsageResult,
@@ -50,8 +49,7 @@ export default class ManagementOsCommands implements IOS {
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async getMemoryUsage(): Promise<SystemMemoryInfo> {
@@ -60,7 +58,7 @@ export default class ManagementOsCommands implements IOS {
 				type: ManagementOsGetMemoryUsageRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const systemRebootCommands = await this.appletCommandManagement.list<ManagementOsGetMemoryUsageResult>(
 				this.deviceUid,
 				this.appletUid,
@@ -72,7 +70,6 @@ export default class ManagementOsCommands implements IOS {
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 }

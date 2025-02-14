@@ -12,7 +12,7 @@ import {
 	ManagementGetBatteryStatusRequest,
 	ManagementGetBatteryStatusResult,
 	ManagementResetSettingsRequest,
-	ManagementRessetSettingsResult, //TODO: Ressset?
+	ManagementResetSettingsResult,
 	ManagementFactoryResetRequest,
 	ManagementFactoryResetResult,
 	ManagementGetExtendedManagementUrlRequest,
@@ -20,7 +20,6 @@ import {
 	ManagementSetExtendedManagementUrlRequest,
 	ManagementSetExtendedManagementUrlResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/managementCommands';
-import wait from '../../../../Timer/wait';
 import ManagementPowerCommands from './ManagementPowerCommands';
 import ManagementAppCommands from './ManagementAppCommands';
 import IBatteryStatus from '@signageos/front-applet/es6/FrontApplet/Management/IBatteryStatus';
@@ -35,20 +34,21 @@ import ManagementNetworkCommands from './ManagementNetworkCommands';
 import ManagementPeerRecoveryCommands from './ManagementPeerRecoveryCommands';
 import ManagementAutoRecoveryCommands from './ManagementAutoRecoveryCommands';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-import IManagement from "@signageos/front-applet/es6/FrontApplet/Management/IManagement";
-import IPower from "@signageos/front-applet/es6/FrontApplet/Management/Power/IPower";
-import IApp from "@signageos/front-applet/es6/FrontApplet/Management/App/IApp";
-import IScreen from "@signageos/front-applet/es6/FrontApplet/Management/Screen/IScreen";
-import ISecurity from "@signageos/front-applet/es6/FrontApplet/Management/Security/ISecurity";
-import IAudio from "@signageos/front-applet/es6/FrontApplet/Management/Audio/IAudio";
-import IRemoteControl from "@signageos/front-applet/es6/FrontApplet/Management/RemoteControl/IRemoteControl";
-import IOS from "@signageos/front-applet/es6/FrontApplet/Management/OS/IOS";
-import IDebug from "@signageos/front-applet/es6/FrontApplet/Management/Debug/IDebug";
-import ITime from "@signageos/front-applet/es6/FrontApplet/Management/Time/ITime";
-import INetwork from "@signageos/front-applet/es6/FrontApplet/Management/Network/INetwork";
-import IPeerRecovery from "@signageos/front-applet/es6/FrontApplet/Management/PeerRecovery/IPeerRecovery";
-import IAutoRecovery from "@signageos/front-applet/es6/FrontApplet/Management/AutoRecovery/IAutoRecovery";
-import INetworkInfo from "@signageos/front-applet/es6/FrontApplet/Management/Network/INetworkInfo";
+import IManagement from '@signageos/front-applet/es6/FrontApplet/Management/IManagement';
+import IPower from '@signageos/front-applet/es6/FrontApplet/Management/Power/IPower';
+import IApp from '@signageos/front-applet/es6/FrontApplet/Management/App/IApp';
+import IScreen from '@signageos/front-applet/es6/FrontApplet/Management/Screen/IScreen';
+import ISecurity from '@signageos/front-applet/es6/FrontApplet/Management/Security/ISecurity';
+import IAudio from '@signageos/front-applet/es6/FrontApplet/Management/Audio/IAudio';
+import IRemoteControl from '@signageos/front-applet/es6/FrontApplet/Management/RemoteControl/IRemoteControl';
+import IOS from '@signageos/front-applet/es6/FrontApplet/Management/OS/IOS';
+import IDebug from '@signageos/front-applet/es6/FrontApplet/Management/Debug/IDebug';
+import ITime from '@signageos/front-applet/es6/FrontApplet/Management/Time/ITime';
+import INetwork from '@signageos/front-applet/es6/FrontApplet/Management/Network/INetwork';
+import IPeerRecovery from '@signageos/front-applet/es6/FrontApplet/Management/PeerRecovery/IPeerRecovery';
+import IAutoRecovery from '@signageos/front-applet/es6/FrontApplet/Management/AutoRecovery/IAutoRecovery';
+import INetworkInfo from '@signageos/front-applet/es6/FrontApplet/Management/Network/INetworkInfo';
+import { waitUntilReturnValue } from '../../../../Timer/waitUntil';
 
 export default class ManagementCommands implements IManagement {
 	public readonly power: IPower;
@@ -90,7 +90,7 @@ export default class ManagementCommands implements IManagement {
 				capability,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<ManagementSupportsResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementSupportsResult,
@@ -98,8 +98,7 @@ export default class ManagementCommands implements IManagement {
 			if (results.length > 0) {
 				return results[0].command.supports;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async getModel(): Promise<string> {
@@ -108,7 +107,7 @@ export default class ManagementCommands implements IManagement {
 				type: ManagementGetModelRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<ManagementGetModelResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementGetModelResult,
@@ -116,8 +115,7 @@ export default class ManagementCommands implements IManagement {
 			if (results.length > 0) {
 				return results[0].command.model;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async getSerialNumber(): Promise<string> {
@@ -126,7 +124,7 @@ export default class ManagementCommands implements IManagement {
 				type: ManagementGetSerialNumberRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<ManagementGetSerialNumberResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementGetSerialNumberResult,
@@ -134,8 +132,7 @@ export default class ManagementCommands implements IManagement {
 			if (results.length > 0) {
 				return results[0].command.serialNumber;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async getTemperature(): Promise<number> {
@@ -144,7 +141,7 @@ export default class ManagementCommands implements IManagement {
 				type: ManagementGetTemperatureRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<ManagementGetTemperatureResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementGetTemperatureResult,
@@ -152,8 +149,7 @@ export default class ManagementCommands implements IManagement {
 			if (results.length > 0) {
 				return results[0].command.temperature;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async getBrand(): Promise<string> {
@@ -162,7 +158,7 @@ export default class ManagementCommands implements IManagement {
 				type: ManagementGetBrandRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<ManagementGetBrandResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementGetBrandResult,
@@ -170,8 +166,7 @@ export default class ManagementCommands implements IManagement {
 			if (results.length > 0) {
 				return results[0].command.brand;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async getBatteryStatus(): Promise<IBatteryStatus> {
@@ -180,7 +175,7 @@ export default class ManagementCommands implements IManagement {
 				type: ManagementGetBatteryStatusRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<ManagementGetBatteryStatusResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementGetBrandResult,
@@ -188,8 +183,7 @@ export default class ManagementCommands implements IManagement {
 			if (results.length > 0) {
 				return results[0].command.status;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async resetSettings(): Promise<void> {
@@ -198,16 +192,15 @@ export default class ManagementCommands implements IManagement {
 				type: ManagementResetSettingsRequest,
 			},
 		});
-		while (true) {
-			const results = await this.appletCommandManagement.list<ManagementRessetSettingsResult>(this.deviceUid, this.appletUid, {
+		await waitUntilReturnValue(async () => {
+			const results = await this.appletCommandManagement.list<ManagementResetSettingsResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementGetBrandResult,
 			});
 			if (results.length > 0) {
 				return results[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async factoryReset(): Promise<void> {
@@ -216,7 +209,7 @@ export default class ManagementCommands implements IManagement {
 				type: ManagementFactoryResetRequest,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<ManagementFactoryResetResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementGetBrandResult,
@@ -224,8 +217,7 @@ export default class ManagementCommands implements IManagement {
 			if (results.length > 0) {
 				return results[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async getExtendedManagementUrl(): Promise<string | null> {
@@ -234,7 +226,7 @@ export default class ManagementCommands implements IManagement {
 				type: ManagementGetExtendedManagementUrlRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<ManagementGetExtendedManagementUrlResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementGetExtendedManagementUrlResult,
@@ -242,8 +234,7 @@ export default class ManagementCommands implements IManagement {
 			if (results.length > 0) {
 				return results[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async setExtendedManagementUrl(url: string): Promise<void> {
@@ -253,7 +244,7 @@ export default class ManagementCommands implements IManagement {
 				url,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<ManagementSetExtendedManagementUrlResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementSetExtendedManagementUrlResult,
@@ -261,8 +252,7 @@ export default class ManagementCommands implements IManagement {
 			if (results.length > 0) {
 				return results[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	/**

@@ -1,4 +1,3 @@
-import wait from '../../../../Timer/wait';
 import {
 	ManagementSecurityGenerateRandomPinCodeRequest,
 	ManagementSecurityGenerateRandomPinCodeResult,
@@ -8,7 +7,8 @@ import {
 	ManagementSecuritySetPinCodeResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/Security/securityCommands';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-import ISecurity from "@signageos/front-applet/es6/FrontApplet/Management/Security/ISecurity";
+import ISecurity from '@signageos/front-applet/es6/FrontApplet/Management/Security/ISecurity';
+import { waitUntilReturnValue } from '../../../../Timer/waitUntil';
 
 export default class ManagementSecurityCommands implements ISecurity {
 	constructor(
@@ -23,7 +23,7 @@ export default class ManagementSecurityCommands implements ISecurity {
 				type: ManagementSecurityGetPinCodeRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<ManagementSecurityGetPinCodeResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementSecurityGetPinCodeResult,
@@ -31,8 +31,7 @@ export default class ManagementSecurityCommands implements ISecurity {
 			if (results.length > 0) {
 				return results[0].command.pinCode;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async setPinCode(pinCode: string): Promise<void> {
@@ -42,7 +41,7 @@ export default class ManagementSecurityCommands implements ISecurity {
 				pinCode,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<ManagementSecuritySetPinCodeResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementSecuritySetPinCodeResult,
@@ -50,8 +49,7 @@ export default class ManagementSecurityCommands implements ISecurity {
 			if (results.length > 0) {
 				return results[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async generateRandomPinCode(): Promise<void> {
@@ -64,7 +62,7 @@ export default class ManagementSecurityCommands implements ISecurity {
 				},
 			},
 		);
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const results = await this.appletCommandManagement.list<ManagementSecurityGenerateRandomPinCodeResult>(
 				this.deviceUid,
 				this.appletUid,
@@ -76,7 +74,6 @@ export default class ManagementSecurityCommands implements ISecurity {
 			if (results.length > 0) {
 				return results[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 }

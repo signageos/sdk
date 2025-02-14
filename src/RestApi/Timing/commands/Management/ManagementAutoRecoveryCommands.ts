@@ -4,9 +4,9 @@ import {
 	ManagementAutoRecoverySetRequest,
 	ManagementAutoRecoverySetResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/AutoRecovery/autoRecoveryCommands';
-import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-import IAutoRecovery, { IAutoRecoveryConfiguration } from "@signageos/front-applet/es6/FrontApplet/Management/AutoRecovery/IAutoRecovery";
+import IAutoRecovery, { IAutoRecoveryConfiguration } from '@signageos/front-applet/es6/FrontApplet/Management/AutoRecovery/IAutoRecovery';
+import { waitUntilReturnValue } from '../../../../Timer/waitUntil';
 
 export default class ManagementAutoRecoveryCommands implements IAutoRecovery {
 	constructor(
@@ -21,7 +21,7 @@ export default class ManagementAutoRecoveryCommands implements IAutoRecovery {
 				type: ManagementAutoRecoveryGetRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const responseCommands = await this.appletCommandManagement.list<ManagementAutoRecoveryGetResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementAutoRecoveryGetResult,
@@ -29,8 +29,7 @@ export default class ManagementAutoRecoveryCommands implements IAutoRecovery {
 			if (responseCommands.length > 0) {
 				return responseCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async set(configuration: IAutoRecoveryConfiguration): Promise<void> {
@@ -40,7 +39,7 @@ export default class ManagementAutoRecoveryCommands implements IAutoRecovery {
 				configuration,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const responseCommands = await this.appletCommandManagement.list<ManagementAutoRecoverySetResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementAutoRecoverySetResult,
@@ -48,7 +47,6 @@ export default class ManagementAutoRecoveryCommands implements IAutoRecovery {
 			if (responseCommands.length > 0) {
 				return responseCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 }

@@ -6,9 +6,9 @@ import {
 	ManagementDebugIsEnabledRequest,
 	ManagementDebugIsEnabledResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/Debug/debugCommands';
-import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-import IDebug from "@signageos/front-applet/es6/FrontApplet/Management/Debug/IDebug";
+import IDebug from '@signageos/front-applet/es6/FrontApplet/Management/Debug/IDebug';
+import { waitUntilReturnValue } from '../../../../Timer/waitUntil';
 
 export default class ManagementDebugCommands implements IDebug {
 	constructor(
@@ -23,7 +23,7 @@ export default class ManagementDebugCommands implements IDebug {
 				type: ManagementDebugEnableRequest,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const systemRebootCommands = await this.appletCommandManagement.list<ManagementDebugEnableResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementDebugEnableResult,
@@ -31,8 +31,7 @@ export default class ManagementDebugCommands implements IDebug {
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async disable(): Promise<void> {
@@ -41,7 +40,7 @@ export default class ManagementDebugCommands implements IDebug {
 				type: ManagementDebugDisableRequest,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const systemRebootCommands = await this.appletCommandManagement.list<ManagementDebugDisableResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementDebugDisableResult,
@@ -49,8 +48,7 @@ export default class ManagementDebugCommands implements IDebug {
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async isEnabled(): Promise<boolean> {
@@ -59,7 +57,7 @@ export default class ManagementDebugCommands implements IDebug {
 				type: ManagementDebugIsEnabledRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const systemRebootCommands = await this.appletCommandManagement.list<ManagementDebugIsEnabledResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementDebugIsEnabledResult,
@@ -67,7 +65,6 @@ export default class ManagementDebugCommands implements IDebug {
 			if (systemRebootCommands.length > 0) {
 				return systemRebootCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 }

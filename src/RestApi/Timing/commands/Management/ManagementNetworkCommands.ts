@@ -8,13 +8,14 @@ import {
 	ManagementNetworkDisableInterfaceRequest,
 	ManagementNetworkDisableInterfaceResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/Network/managementNetworkCommands';
-import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-import INetwork from "@signageos/front-applet/es6/FrontApplet/Management/Network/INetwork";
+import INetwork from '@signageos/front-applet/es6/FrontApplet/Management/Network/INetwork';
 import INetworkInfo, {
 	INetworkInterface,
-	INetworkOptions, INetworkOptionsLegacy,
-} from "@signageos/front-applet/es6/FrontApplet/Management/Network/INetworkInfo";
+	INetworkOptions,
+	INetworkOptionsLegacy,
+} from '@signageos/front-applet/es6/FrontApplet/Management/Network/INetworkInfo';
+import { waitUntilReturnValue } from '../../../../Timer/waitUntil';
 
 export default class ManagementNetworkCommands implements INetwork {
 	constructor(
@@ -29,7 +30,7 @@ export default class ManagementNetworkCommands implements INetwork {
 				type: ManagementNetworkListInterfacesRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const commandResults = await this.appletCommandManagement.list<ManagementNetworkListInterfacesResult>(
 				this.deviceUid,
 				this.appletUid,
@@ -41,13 +42,11 @@ export default class ManagementNetworkCommands implements INetwork {
 			if (commandResults.length > 0) {
 				return commandResults[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async setManual(options: INetworkOptionsLegacy): Promise<void>;
 	public async setManual(interfaceName: string, options: INetworkOptions): Promise<void>;
-
 	public async setManual(...args: [string, INetworkOptions] | [INetworkOptionsLegacy]) {
 		if (typeof args[0] === 'string') {
 			const [interfaceName, options] = args;
@@ -59,7 +58,7 @@ export default class ManagementNetworkCommands implements INetwork {
 					options, //TODO: Fix this
 				},
 			});
-			while (true) {
+			await waitUntilReturnValue(async () => {
 				const commandResults = await this.appletCommandManagement.list<ManagementNetworkSetManualResult>(this.deviceUid, this.appletUid, {
 					receivedSince: timingCommand.receivedAt,
 					type: ManagementNetworkSetManualResult,
@@ -67,8 +66,7 @@ export default class ManagementNetworkCommands implements INetwork {
 				if (commandResults.length > 0) {
 					return commandResults[0].command.result;
 				}
-				await wait(500);
-			}
+			});
 		} else {
 			throw new Error('Method not implemented.');
 		}
@@ -81,7 +79,7 @@ export default class ManagementNetworkCommands implements INetwork {
 				interfaceName,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const commandResults = await this.appletCommandManagement.list<ManagementNetworkSetDHCPServerResult>(this.deviceUid, this.appletUid, {
 				receivedSince: timingCommand.receivedAt,
 				type: ManagementNetworkSetDHCPServerResult,
@@ -89,8 +87,7 @@ export default class ManagementNetworkCommands implements INetwork {
 			if (commandResults.length > 0) {
 				return commandResults[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async disableInterface(interfaceName: string): Promise<void> {
@@ -104,7 +101,7 @@ export default class ManagementNetworkCommands implements INetwork {
 				},
 			},
 		);
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const commandResults = await this.appletCommandManagement.list<ManagementNetworkDisableInterfaceResult>(
 				this.deviceUid,
 				this.appletUid,
@@ -116,8 +113,7 @@ export default class ManagementNetworkCommands implements INetwork {
 			if (commandResults.length > 0) {
 				return commandResults[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async getActiveInfo(): Promise<INetworkInfo> {

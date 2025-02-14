@@ -16,12 +16,11 @@ import {
 	PowerSystemRebootRequest,
 	PowerSystemRebootResult,
 } from '@signageos/front-applet/es6/Monitoring/Management/Power/powerCommands';
-import wait from '../../../../Timer/wait';
 import { ITimer, TimerType } from '@signageos/front-applet/es6/FrontApplet/Management/helpers/TimerHelper';
 import { IProprietaryTimer } from '@signageos/front-applet/es6/FrontApplet/Management/helpers/ProprietaryTimerHelper';
-import waitUntil from '../../../../Timer/waitUntil';
+import { waitUntilResult, waitUntilReturnValue } from '../../../../Timer/waitUntil';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-import IPower from "@signageos/front-applet/es6/FrontApplet/Management/Power/IPower";
+import IPower from '@signageos/front-applet/es6/FrontApplet/Management/Power/IPower';
 
 export default class ManagementPowerCommands implements IPower {
 	constructor(
@@ -36,7 +35,8 @@ export default class ManagementPowerCommands implements IPower {
 				type: PowerSystemRebootRequest,
 			},
 		});
-		return waitUntil(async () => {
+		//TODO: This might fail if device will not send result
+		await waitUntilResult(async () => {
 			const results = await this.appletCommandManagement.list<PowerSystemRebootResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: PowerSystemRebootResult,
@@ -51,7 +51,7 @@ export default class ManagementPowerCommands implements IPower {
 				type: PowerAppRestartRequest,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const responseCommands = await this.appletCommandManagement.list<PowerAppRestartResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: PowerAppRestartResult,
@@ -59,8 +59,7 @@ export default class ManagementPowerCommands implements IPower {
 			if (responseCommands.length > 0) {
 				return responseCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async getTimers(): Promise<ITimer[]> {
@@ -69,7 +68,7 @@ export default class ManagementPowerCommands implements IPower {
 				type: ManagementPowerGetTimersRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const responseCommands = await this.appletCommandManagement.list<ManagementPowerGetTimersResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementPowerGetTimersResult,
@@ -77,8 +76,7 @@ export default class ManagementPowerCommands implements IPower {
 			if (responseCommands.length > 0) {
 				return responseCommands[0].command.timers;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async setTimer(
@@ -98,7 +96,7 @@ export default class ManagementPowerCommands implements IPower {
 				volume,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const responseCommands = await this.appletCommandManagement.list<ManagementPowerSetTimerResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementPowerSetTimerResult,
@@ -106,8 +104,7 @@ export default class ManagementPowerCommands implements IPower {
 			if (responseCommands.length > 0) {
 				return responseCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async unsetTimer(type: keyof typeof TimerType): Promise<void> {
@@ -117,7 +114,7 @@ export default class ManagementPowerCommands implements IPower {
 				timerType: type,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const responseCommands = await this.appletCommandManagement.list<ManagementPowerUnsetTimerResult>(this.deviceUid, this.appletUid, {
 				receivedSince: command.receivedAt,
 				type: ManagementPowerUnsetTimerResult,
@@ -125,8 +122,7 @@ export default class ManagementPowerCommands implements IPower {
 			if (responseCommands.length > 0) {
 				return responseCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async getProprietaryTimers(): Promise<IProprietaryTimer[]> {
@@ -135,7 +131,7 @@ export default class ManagementPowerCommands implements IPower {
 				type: ManagementPowerGetProprietaryTimersRequest,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const responseCommands = await this.appletCommandManagement.list<ManagementPowerGetProprietaryTimersResult>(
 				this.deviceUid,
 				this.appletUid,
@@ -147,8 +143,7 @@ export default class ManagementPowerCommands implements IPower {
 			if (responseCommands.length > 0) {
 				return responseCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async setProprietaryTimer(
@@ -168,7 +163,7 @@ export default class ManagementPowerCommands implements IPower {
 				keepAppletRunning,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const responseCommands = await this.appletCommandManagement.list<ManagementPowerSetProprietaryTimerResult>(
 				this.deviceUid,
 				this.appletUid,
@@ -180,8 +175,7 @@ export default class ManagementPowerCommands implements IPower {
 			if (responseCommands.length > 0) {
 				return responseCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 
 	public async unsetProprietaryTimer(type: keyof typeof TimerType): Promise<void> {
@@ -191,7 +185,7 @@ export default class ManagementPowerCommands implements IPower {
 				timerType: type,
 			},
 		});
-		while (true) {
+		await waitUntilReturnValue(async () => {
 			const responseCommands = await this.appletCommandManagement.list<ManagementPowerUnsetProprietaryTimerResult>(
 				this.deviceUid,
 				this.appletUid,
@@ -203,7 +197,6 @@ export default class ManagementPowerCommands implements IPower {
 			if (responseCommands.length > 0) {
 				return responseCommands[0].command.result;
 			}
-			await wait(500);
-		}
+		});
 	}
 }

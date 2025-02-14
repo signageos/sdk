@@ -1,7 +1,7 @@
 import { HtmlSnapshotTaken, TakeHtmlSnapshot } from '@signageos/front-applet/es6/Monitoring/Html/htmlCommands';
 import { JSDOM } from 'jsdom';
-import wait from '../../../../Timer/wait';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
+import { waitUntilReturnValue } from '../../../../Timer/waitUntil';
 
 export interface IHtml {
 	/** @returns Promise<[HTMLDocument](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDocument)> */
@@ -21,7 +21,7 @@ export default class HtmlCommands implements IHtml {
 				type: TakeHtmlSnapshot,
 			},
 		});
-		while (true) {
+		return await waitUntilReturnValue(async () => {
 			const timingCommands = await this.appletCommandManagement.list<HtmlSnapshotTaken>(this.deviceUid, this.appletUid, {
 				receivedSince: takeHtmlSnapshotCommand.receivedAt,
 				type: HtmlSnapshotTaken,
@@ -29,7 +29,6 @@ export default class HtmlCommands implements IHtml {
 			if (timingCommands.length > 0) {
 				return new JSDOM(timingCommands[0].command.html).window.document;
 			}
-			await wait(500);
-		}
+		});
 	}
 }

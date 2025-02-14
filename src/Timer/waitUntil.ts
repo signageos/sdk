@@ -27,3 +27,33 @@ export async function waitUntilResolved(waitCallback: () => Promise<void>, timeo
 		}
 	});
 }
+
+export async function waitUntilResult<T>(predicate: () => Promise<T>, interval: number = 10e3, timeoutMs: number = 120e3) {
+	const startTimestamp = now().valueOf();
+	while (true) {
+		const currentTimestamp = now().valueOf();
+		if (currentTimestamp - startTimestamp > timeoutMs) {
+			throw new Error('waitUntilResult function has reached timeout');
+		}
+		const result = await predicate();
+		if (result !== undefined) {
+			return result;
+		}
+
+		await wait(interval);
+	}
+}
+
+export async function waitUntilReturnValue<T>(callback: () => Promise<T>, timeoutMs: number = 120e3, interval: number = 10e3) {
+	return await waitUntilResult(
+		async () => {
+			try {
+				return await callback();
+			} catch (error) {
+				return undefined;
+			}
+		},
+		interval,
+		timeoutMs,
+	);
+}
