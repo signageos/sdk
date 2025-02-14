@@ -44,7 +44,9 @@ describe('AppletCommandManagement', () => {
 		.get('/v1/device/someUid/applet/appletUid/command/cmdUid')
 		.reply(200, cmd)
 		.post('/v1/device/someUid/applet/appletUid/command', sendCmd as {})
-		.reply(202, 'Accepted', { location: responseLocation });
+		.reply(202, 'Accepted', { location: responseLocation })
+		.get('/v1/device/someUid/applet/appletUid/command/cmdUid')
+		.reply(200, cmd);
 
 	const acm = new AppletCommandManagement(nockOpts);
 
@@ -69,7 +71,10 @@ describe('AppletCommandManagement', () => {
 	});
 
 	it('should send new applet command', async () => {
-		await acm.send('someUid', 'appletUid', sendCmd);
-		should(true).true();
+		const response = await acm.send('someUid', 'appletUid', sendCmd);
+		should(response.uid).equal(cmd.uid);
+		should(response.deviceUid).equal(cmd.deviceUid);
+		should(response.appletUid).equal(cmd.appletUid);
+		should(response.timingChecksum).equal(cmd.timingChecksum);
 	});
 });
