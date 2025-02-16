@@ -7,7 +7,7 @@ export default class TimingCommand<TCommandPayload extends ITimingCommandPayload
 	public readonly deviceUid: ITimingCommand<TCommandPayload>['deviceUid'];
 	public readonly receivedAt: ITimingCommand<TCommandPayload>['receivedAt'];
 	public readonly timingChecksum: ITimingCommand<TCommandPayload>['timingChecksum'];
-	public readonly commandPayload: ITimingCommand<TCommandPayload>['commandPayload'];
+	public readonly command: ITimingCommand<TCommandPayload>['command'];
 
 	constructor(data: ITimingCommand<TCommandPayload>) {
 		fillDataToEntity(this, data);

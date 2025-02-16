@@ -9,7 +9,7 @@ const nockOpts = getNockOpts({});
 
 describe('AppletCommandManagement', () => {
 	const cmd: IAppletCommand = {
-		commandPayload: {
+		command: {
 			type: 'Applet.Command',
 			payload: {
 				level: 'OK',
@@ -23,8 +23,8 @@ describe('AppletCommandManagement', () => {
 		timingChecksum: 'c8f69XX5740',
 	};
 	const cmdResp: IAppletCommand[] = [cmd];
-	const sendCmd: IAppletCommandSendable = {
-		commandPayload: {
+	const sendCmd: IAppletCommandSendable<any> = {
+		command: {
 			type: 'Applet.Command',
 			payload: {
 				level: 'OK',
@@ -32,6 +32,7 @@ describe('AppletCommandManagement', () => {
 			},
 		},
 	};
+	const responseLocation = `${nockOpts.url}/v1/device/someUid/applet/appletUid/command/cmdUid`;
 
 	nock(nockOpts.url, {
 		reqheaders: {
@@ -43,7 +44,9 @@ describe('AppletCommandManagement', () => {
 		.get('/v1/device/someUid/applet/appletUid/command/cmdUid')
 		.reply(200, cmd)
 		.post('/v1/device/someUid/applet/appletUid/command', sendCmd as {})
-		.reply(200, 'Accepted');
+		.reply(202, 'Accepted', { location: responseLocation })
+		.get('/v1/device/someUid/applet/appletUid/command/cmdUid')
+		.reply(200, cmd);
 
 	const acm = new AppletCommandManagement(nockOpts);
 
@@ -53,7 +56,7 @@ describe('AppletCommandManagement', () => {
 		should.equal(cmd.appletUid, c.appletUid);
 		should.deepEqual(cmd.receivedAt, c.receivedAt);
 		should.deepEqual(cmd.timingChecksum, c.timingChecksum);
-		should.deepEqual(cmd.commandPayload, c.commandPayload);
+		should.deepEqual(cmd.command, c.command);
 	};
 
 	it('should list all list', async () => {
@@ -68,7 +71,10 @@ describe('AppletCommandManagement', () => {
 	});
 
 	it('should send new applet command', async () => {
-		await acm.send('someUid', 'appletUid', sendCmd);
-		should(true).true();
+		const response = await acm.send('someUid', 'appletUid', sendCmd);
+		should(response.uid).equal(cmd.uid);
+		should(response.deviceUid).equal(cmd.deviceUid);
+		should(response.appletUid).equal(cmd.appletUid);
+		should(response.timingChecksum).equal(cmd.timingChecksum);
 	});
 });

@@ -6,7 +6,7 @@ export default class AppletCommand<P extends ICommandPayload = ICommandPayload> 
 	public readonly uid: IAppletCommand['uid'];
 	public readonly deviceUid: IAppletCommand['deviceUid'];
 	public readonly appletUid: IAppletCommand['appletUid'];
-	public readonly commandPayload: IAppletCommand<P>['commandPayload'];
+	public readonly command: IAppletCommand<P>['command'];
 	public readonly timingChecksum: IAppletCommand['timingChecksum'];
 	public readonly receivedAt: IAppletCommand['receivedAt'];
 

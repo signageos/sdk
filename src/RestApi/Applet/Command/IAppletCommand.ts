@@ -3,8 +3,8 @@ export interface ICommandPayload {
 	[key: string]: any;
 }
 
-export interface IAppletCommandSendable<P extends ICommandPayload = ICommandPayload> {
-	commandPayload: P;
+export interface IAppletCommandSendable<IPayload extends ICommandPayload> {
+	command: IPayload;
 }
 
 interface IAppletCommand<P extends ICommandPayload = ICommandPayload> extends IAppletCommandSendable<P> {
