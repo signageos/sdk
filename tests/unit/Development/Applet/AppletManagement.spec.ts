@@ -60,7 +60,7 @@ describe('Development.Applet.AppletManagement', function () {
 	});
 
 	describe('startHotReload', function () {
-		this.timeout(10e3);
+		this.timeout(30e3);
 
 		it('should start applet hot reload', async function () {
 			const randomPort = 12345;

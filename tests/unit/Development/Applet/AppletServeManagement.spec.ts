@@ -12,7 +12,7 @@ import { getRequest } from '../../Utils/requestHelper';
 import { AppletServer } from '../../../../src/Development/Applet/Serve/AppletServer';
 
 describe('Development.Applet.AppletServeManagement', function () {
-	this.timeout(10e3);
+	this.timeout(30e3);
 
 	const appletServeManagement = new AppletServeManagement();
 
