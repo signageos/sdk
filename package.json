@@ -70,7 +70,7 @@
   },
   "dependencies": {
     "@signageos/front-applet": "7.0.0",
-    "@signageos/forward-server-bridge": "0.0.1",
+    "@signageos/forward-server-bridge": "0.0.4",
     "@types/fs-extra": "8.1.0",
     "@types/geojson": "7946.0.8",
     "@types/ini": "1.3.30",
