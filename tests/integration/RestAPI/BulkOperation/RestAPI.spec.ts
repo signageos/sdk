@@ -62,7 +62,7 @@ describe('RestAPI - BulkOperation', function () {
 
 		testingPackage = await api.package.create({
 			packageName: faker.system.fileName(),
-			label: faker.system.fileName(),
+			label: faker.random.words(2),
 			description: undefined,
 		});
 
@@ -73,7 +73,7 @@ describe('RestAPI - BulkOperation', function () {
 		});
 
 		policy = await api.policy.create({
-			name: faker.system.fileName(),
+			name: faker.random.words(2),
 			organizationUid: parameters.organizationUid!,
 		});
 

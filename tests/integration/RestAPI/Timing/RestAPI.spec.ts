@@ -104,8 +104,8 @@ describe('RestAPI - Timing', function () {
 			try {
 				await api.timing.get('non-existent-timing-uid');
 			} catch (e) {
-				should(e.errorCode).be.equal(404102);
-				should(e.errorName).be.equal('NO_TIMING_TO_READ');
+				should(e.errorCode).be.equal(404311);
+				should(e.errorName).be.equal('RESOURCE_NOT_FOUND');
 			}
 		});
 
@@ -113,8 +113,8 @@ describe('RestAPI - Timing', function () {
 			try {
 				await api.timing.get('527a80735ad1fb8c1a3229103bb5734068e7');
 			} catch (e) {
-				should(e.errorCode).be.equal(403064);
-				should(e.errorName).be.equal('NO_OWN_TIMING_TO_READ');
+				should(e.errorCode).be.equal(404311);
+				should(e.errorName).be.equal('RESOURCE_NOT_FOUND');
 			}
 		});
 	});
@@ -217,8 +217,8 @@ describe('RestAPI - Timing', function () {
 					finishEvent: { type: 'DURATION', data: null },
 				});
 			} catch (e) {
-				should(e.errorCode).be.equal(404105);
-				should(e.errorName).be.equal('NO_TIMING_TO_UPDATE');
+				should(e.errorCode).be.equal(404311);
+				should(e.errorName).be.equal('RESOURCE_NOT_FOUND');
 			}
 		});
 
@@ -233,8 +233,8 @@ describe('RestAPI - Timing', function () {
 					finishEvent: { type: 'DURATION', data: null },
 				});
 			} catch (e) {
-				should(e.errorCode).be.equal(403067);
-				should(e.errorName).be.equal('NO_OWN_TIMING_TO_UPDATE');
+				should(e.errorCode).be.equal(404311);
+				should(e.errorName).be.equal('RESOURCE_NOT_FOUND');
 			}
 		});
 	});
@@ -245,7 +245,7 @@ describe('RestAPI - Timing', function () {
 			try {
 				await api.timing.get(timingUid);
 			} catch (e) {
-				should(e.errorCode).be.equal(404102);
+				should(e.errorCode).be.equal(404311);
 			}
 
 			// no need to assert anything because it was asserted above

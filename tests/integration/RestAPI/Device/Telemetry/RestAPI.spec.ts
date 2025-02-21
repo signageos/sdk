@@ -8,7 +8,7 @@ import { opts } from '../../helper';
 
 const api = new Api(opts);
 
-describe('RestAPI - Policy', () => {
+describe('RestAPI - Telemetry', () => {
 	let device: IDevice;
 
 	before('create device', async function () {
