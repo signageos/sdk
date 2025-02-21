@@ -10,9 +10,10 @@ describe('.env file for production build', function () {
 			processEnv: env,
 		});
 
-		const { SOS_API_URL, ...rest } = env;
+		const { SOS_API_URL, SOS_FORWARD_SERVER_URL, ...rest } = env;
 
 		should(SOS_API_URL).equal('https://api.signageos.io');
+		should(SOS_FORWARD_SERVER_URL).equal('https://forward.signageos.io');
 		should(Object.values(rest).every((v) => v === undefined || v === '')).be.true();
 	});
 });

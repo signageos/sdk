@@ -18,14 +18,14 @@ describe('RestAPI - Device Configuration', () => {
 		});
 
 		it('should configure device telemetry check intervals', async () => {
-			await api.device.configuration.setTelemetryIntervals(device.uid, { battery: 1500000 });
+			await api.device.configuration.setTelemetryIntervals(device.uid, { battery: 3600e3 });
 			should(true).be.true();
 		});
 
 		it('should fail due to invalid property provided', async () => {
 			try {
 				// @ts-ignore ignore not assignable parameter that is the point of a test
-				await api.device.configuration.setTelemetryIntervals(device.uid, { 'battery+': 1500000 });
+				await api.device.configuration.setTelemetryIntervals(device.uid, { 'battery+': 3600e3 });
 				should(true).be.equal('this should not be reached');
 			} catch (error) {
 				should(error.message).be.equal(
@@ -50,7 +50,7 @@ describe('RestAPI - Device Configuration', () => {
 					`Request failed with status code 400. Body: ${JSON.stringify({
 						status: 400,
 						message:
-							'Invalid request body - battery - Value should be a positive number and less than or equal to 31556926000 (1 year in milliseconds)',
+							'Invalid request body - battery - Value should be a number greater than or equal to 3600000 (60 minutes in milliseconds) and less than or equal to 2098800000 (583 hours in milliseconds)',
 						errorCode: 400301,
 						errorName: 'INVALID_BODY_PROPERTIES',
 						errorDetail: 'Received invalid body properties battery.',

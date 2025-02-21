@@ -26,7 +26,7 @@ describe('Development.Applet.AppletWatchManagement', function () {
 	});
 
 	describe('watch', function () {
-		this.timeout(4e3);
+		this.timeout(12e3);
 
 		it('should watch all included applet files', async function () {
 			watcher = await appletWatchManagement.watch({

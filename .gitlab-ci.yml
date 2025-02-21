@@ -18,7 +18,7 @@ before_script:
   - export TAG=`cat ./PRERELEASE`
   - npx --userconfig ./.npmrc @signageos/lib-ci@latest version-upgrade $VERSION
   - mkdir -p dist
-  - npm install --ignore-scripts
+  - npm install
 
 prepare:
   image: $CI_REGISTRY/signageos/docker:master
@@ -50,7 +50,7 @@ test:general:
         path: coverage/cobertura-coverage.xml
   script:
     - cp .env.automated.test .env
-    - npm install --ignore-scripts
+    - npm install
     - npm run test:coverage
 
 test:integration:
@@ -98,7 +98,7 @@ build:
   needs:
     - prepare
   script:
-    - npm run prepare --production
+    - npm run clean-build --production
   artifacts:
     when: on_success
     paths:
@@ -111,7 +111,7 @@ publish:npm:
     - build
   script:
     - cp .env.production .env
-    - npm publish --ignore-scripts --tag $TAG
+    - npm publish --tag $TAG
 
 publish:npm-public:
   stage: publish
@@ -126,7 +126,7 @@ publish:npm-public:
     - export NPM_REGISTRY_HOST=registry.npmjs.org
     - export NPM_AUTH_TOKEN=$PUBLIC_NPM_AUTH_TOKEN
     - node -e 'require("fs").writeFileSync("./package.json", JSON.stringify({ ...require("./package"), "publishConfig":{"registry":"https://registry.npmjs.org/","access":"public" } }, undefined, 2) + "\n")'
-    - npm publish --ignore-scripts --tag $TAG
+    - npm publish --tag $TAG
 
 publish:docs:
   stage: publish

@@ -122,8 +122,8 @@ describe('Integration.RestAPI.Location', async () => {
 		});
 
 		await api.location.delete(createdLocation.uid);
-		const response = await api.location.get(createdLocation.uid);
-
-		should(response.archivedAt instanceof Date).be.eql(true);
+		await should(api.location.get(createdLocation.uid)).rejectedWith(
+			'Request failed with status code 404. Body: {"status":404,"message":"Resource not found - Resource was not found","errorCode":404311,"errorName":"RESOURCE_NOT_FOUND","errorDetail":"Specified resource doesn\'t exist"}',
+		);
 	});
 });

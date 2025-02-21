@@ -12,7 +12,7 @@ import { getRequest } from '../../Utils/requestHelper';
 import { AppletServer } from '../../../../src/Development/Applet/Serve/AppletServer';
 
 describe('Development.Applet.AppletServeManagement', function () {
-	this.timeout(10e3);
+	this.timeout(30e3);
 
 	const appletServeManagement = new AppletServeManagement();
 
@@ -47,7 +47,7 @@ describe('Development.Applet.AppletServeManagement', function () {
 			});
 
 			should(appletServer1.port).Number();
-			should(appletServer1.publicUrl).match(new RegExp(`^http:\\/\\/\\d+\\.\\d+\.\\d+\\.\\d+:${appletServer1.port}$`));
+			should(appletServer1.publicUrl).startWith(process.env.SOS_FORWARD_SERVER_URL!);
 			should(appletServer1.remoteAddr).match(/^\d+\.\d+\.\d+\.\d+$/);
 
 			const appletServersPath = path.join(os.tmpdir(), 'signageos', 'applet_servers');

@@ -42,15 +42,31 @@ export class DeviceConnectManagement {
 	 * Reloads the applet on all currently connected devices.
 	 */
 	public async reloadConnected() {
-		const runtimeDir = this.getDevicesRuntimeDir();
-		await fs.ensureDir(runtimeDir);
-		const deviceUids = await fs.readdir(runtimeDir);
+		const deviceUids = await this.getConnectedDeviceUids();
 		for (const deviceUid of deviceUids) {
 			await this.restApiV1.device.powerAction.set(deviceUid, {
 				devicePowerAction: DevicePowerAction.AppletReload,
 			});
 		}
 		return { deviceUids };
+	}
+
+	private async getConnectedDeviceUids() {
+		const runtimeDir = this.getDevicesRuntimeDir();
+		await fs.ensureDir(runtimeDir);
+
+		const deviceUids: string[] = [];
+
+		const filenames = await fs.readdir(runtimeDir);
+		for (const filename of filenames) {
+			const deviceRuntimeDir = this.getDeviceRuntimeDir(filename);
+			const connectionFilePath = path.join(deviceRuntimeDir, CONNECTION_FILENAME);
+			if (await fs.pathExists(connectionFilePath)) {
+				deviceUids.push(filename);
+			}
+		}
+
+		return deviceUids;
 	}
 
 	private async createConnectionFile(device: IDevice) {
