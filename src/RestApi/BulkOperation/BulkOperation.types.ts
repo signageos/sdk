@@ -151,6 +151,7 @@ export type LogData = {
 	};
 	[DeviceActionType.SET_POLICY]: {
 		policyUid: string;
+		/** Higher number means higher priority */
 		priority: number;
 	};
 	[DeviceActionType.DELETE_POLICY]: {
