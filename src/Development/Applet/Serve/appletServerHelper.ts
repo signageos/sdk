@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import * as cors from 'cors';
 import * as express from 'express';
+import * as bodyParser from 'body-parser';
 import * as http from 'http';
 import { log } from '../../../Console/log';
 import { getAppletPackageArchivePath, getPackagePublicPath } from '../../runtimeFileSystem';
@@ -52,15 +53,59 @@ function createHttpServer(appletUid: string, appletVersion: string) {
 	const app = express();
 	app.use(cors());
 	app.use(noCacheMiddleware);
+	app.post('/log', bodyParser.json(), logHandler);
+	app.post('/error', bodyParser.json(), errorHandler);
 	app.use(packagePublicPath, logMiddleware, express.static(packageArchivePath));
 	const server = http.createServer(app);
 
 	return server;
 }
 
+type ConsoleType = 'debug' | 'log' | 'info' | 'warn' | 'error';
+
+type LogData = {
+	type: ConsoleType;
+	args: string[];
+};
+
+type ErrorData = {
+	message: string;
+	filename: string;
+	lineno: number;
+	colno: number;
+	error: string;
+};
+
+const consoleTypeToLogLevel = (consoleType: ConsoleType) => {
+	const levelsMap = {
+		debug: 'info',
+		log: 'info',
+		info: 'info',
+		warn: 'warning',
+		error: 'error',
+	} as const;
+	return levelsMap[consoleType] ?? 'info';
+};
+
+const logHandler = (req: express.Request, res: express.Response) => {
+	const data: LogData = req.body;
+	const logLevel = consoleTypeToLogLevel(data.type);
+	log(logLevel, `${new Date().toISOString()}:`, ...data.args);
+	res.status(200);
+	res.end();
+};
+
+const errorHandler = (req: express.Request, res: express.Response) => {
+	const data: ErrorData = req.body;
+	log('error', `${new Date().toISOString()}:`, data.message, `at ${data.filename}:${data.lineno}:${data.colno}`, data.error);
+	res.status(200);
+	res.end();
+};
+
 const logMiddleware = (req: express.Request, _res: express.Response, next: express.NextFunction) => {
+	const method = req.method.toUpperCase();
 	const reqPath = req.originalUrl;
-	log('info', `Serving applet file: ${reqPath}`);
+	log('info', `Serving applet file: ${method} ${reqPath}`);
 	next();
 };
 

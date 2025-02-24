@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - Allow starting AppletServer within the same process (not detached) as a default behavior
+- Accept logs and errors from connected device and show them in the console
 
 ## [1.26.2] - 2025-02-27
 ### Added
