@@ -172,6 +172,4 @@ cp .env.automated.test
 
 and fill in the missing values. You have to ask the maintainer of the repository for the values.
 
-Then,
-- for unit tests run `npm run test`
-- for integration tests, run `npm run test-integration`
+Then, run `npm run test`.
