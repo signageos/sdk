@@ -19,6 +19,15 @@ interface IOptions {
 	clientVersions: {
 		[clientName: string]: string;
 	};
+	/**
+	 * Will follow redirects if set to true.
+	 *
+	 * In practice it means that if the response contains a `Location` header,
+	 * it will make another request to the URL specified in the header.
+	 * This will be repeated until the response doesn't contain the `Location` header.
+	 * It will return the final response.
+	 */
+	followRedirects?: boolean;
 }
 
 export default IOptions;

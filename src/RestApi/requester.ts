@@ -34,23 +34,43 @@ function createUri(options: IOptions, resource: string, queryParams?: any) {
 }
 
 export async function getResource(options: IOptions, path: string, query?: any) {
-	return await doRequest(createUri(options, path, query), await createOptions('GET', options));
+	return await doRequest({
+		url: createUri(options, path, query),
+		init: await createOptions('GET', options),
+		followRedirects: options.followRedirects,
+	});
 }
 
 export async function postResource(options: IOptions, path: string, data: any, query?: any) {
-	return await doRequest(createUri(options, path, query), await createOptions('POST', options, data));
+	return await doRequest({
+		url: createUri(options, path, query),
+		init: await createOptions('POST', options, data),
+		followRedirects: options.followRedirects,
+	});
 }
 
 export async function putResource(options: IOptions, path: string, data: any, query?: any) {
-	return await doRequest(createUri(options, path, query), await createOptions('PUT', options, data));
+	return await doRequest({
+		url: createUri(options, path, query),
+		init: await createOptions('PUT', options, data),
+		followRedirects: options.followRedirects,
+	});
 }
 
 export async function deleteResource(options: IOptions, path: string, query?: any) {
-	return await doRequest(createUri(options, path, query), await createOptions('DELETE', options));
+	return await doRequest({
+		url: createUri(options, path, query),
+		init: await createOptions('DELETE', options),
+		followRedirects: options.followRedirects,
+	});
 }
 
 export async function getUrl(options: IOptions, url: string) {
-	return await doRequest(url, await createOptions('GET', options));
+	return await doRequest({
+		url,
+		init: await createOptions('GET', options),
+		followRedirects: options.followRedirects,
+	});
 }
 
 export async function parseJSONResponse(resp: Response): Promise<any> {
@@ -116,21 +136,52 @@ function wait(timeout: number) {
 	return new Promise<void>((resolve: () => void) => setTimeout(() => resolve(), timeout));
 }
 
-export async function doRequest(
-	url: string | Request,
-	init?: RequestInit,
-	fetchFn: (url: string | Request, init?: RequestInit) => Promise<Response> = doFetch,
-	waitFn: (timeout: number) => Promise<void> = wait,
-): Promise<Response> {
+export async function doRequest({
+	url,
+	init,
+	fetchFn = doFetch,
+	waitFn = wait,
+	followRedirects = false,
+	redirectCount = 0,
+}: {
+	url: string | Request;
+	init?: RequestInit;
+	fetchFn?: (url: string | Request, init?: RequestInit) => Promise<Response>;
+	waitFn?: (timeout: number) => Promise<void>;
+	followRedirects?: boolean;
+	redirectCount?: number;
+}): Promise<Response> {
 	let tries = parameters.requestMaxAttempts;
 	let currentTimeout = 1000;
 	let lastError: Error | null = null;
 
 	debug('doRequest', url, init);
 
+	if (redirectCount > 20) {
+		throw new Error('Too many redirects');
+	}
+
 	do {
 		try {
-			return await fetchFn(url, init);
+			const response = await fetchFn(url, init);
+			const redirectUrl = response.headers.get('location');
+
+			if (followRedirects && redirectUrl) {
+				return await doRequest({
+					url: redirectUrl,
+					init: {
+						...init,
+						method: 'GET',
+						body: undefined,
+					},
+					fetchFn,
+					waitFn,
+					followRedirects,
+					redirectCount: redirectCount + 1,
+				});
+			} else {
+				return response;
+			}
 		} catch (e) {
 			lastError = e;
 			if (lastError instanceof GatewayError) {
