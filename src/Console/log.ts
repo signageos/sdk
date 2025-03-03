@@ -5,8 +5,9 @@ export type Level = 'info' | 'warning' | 'error';
 export function log(level: Level, ...args: string[]) {
 	const chalkColor = getChalkColor(level);
 	for (const arg of args) {
-		process.stderr.write(chalkColor(arg) + '\n');
+		process.stderr.write(chalkColor(arg) + ' ');
 	}
+	process.stderr.write('\n');
 }
 
 function getChalkColor(level: Level) {

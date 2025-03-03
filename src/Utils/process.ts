@@ -1,10 +1,12 @@
 import * as Debug from 'debug';
 const debug = Debug('@signageos/sdk:Utils:process');
 
-export function killGracefullyWithTimeoutSigKill(
-	killable: { kill: (signal: NodeJS.Signals) => boolean; once: (event: 'close', listener: () => void) => void },
-	timeoutMs: number,
-): Promise<boolean> {
+export interface Killable {
+	kill(signal: NodeJS.Signals): boolean;
+	once(event: 'close', listener: () => void): void;
+}
+
+export function killGracefullyWithTimeoutSigKill(killable: Killable, timeoutMs: number): Promise<boolean> {
 	return new Promise<boolean>((resolve: (wasClosed: boolean) => void) => {
 		debug('Killing process with SIGTERM');
 		const termed = killable.kill('SIGTERM');

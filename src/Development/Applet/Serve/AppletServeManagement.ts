@@ -10,7 +10,7 @@ import { killGracefullyWithTimeoutSigKill } from '../../../Utils/process';
 import { getPackagePublicPath, RUNTIME_DIRNAME } from '../../runtimeFileSystem';
 import { AppletServer } from './AppletServer';
 import { log } from '../../../Console/log';
-import { getServerMessage } from './appletServerHelper';
+import { getServerMessage, startAppletServer } from './appletServerHelper';
 
 const debug = Debug('@signageos/sdk:Development:Applet:Serve:AppletServeManagement');
 
@@ -23,7 +23,7 @@ const PARENTS_FILENAME = 'parents';
 const PUBLIC_URL_FILENAME = 'public_url';
 const APPLET_SERVERS_DIRENAME = 'applet_servers';
 
-interface DetachedProcess {
+interface KillableProcess {
 	pid: number;
 	kill(signal: NodeJS.Signals): boolean;
 	once(event: 'close', listener: () => void): void;
@@ -44,6 +44,16 @@ export interface IServeOptions {
 	 * It can differ from localhost or local network IP address in case the reverse proxy is used.
 	 */
 	publicUrl?: string;
+	/**
+	 * The URL of the forward server bridge used for proxying the requests from the device to the local machine.
+	 */
+	forwardServerUrl?: string;
+	/**
+	 * If the server process should be detached from the current process.
+	 * If not specified, the default is false.
+	 * If the server process is detached, it will not be killed when at least one command is running.
+	 */
+	detachProcess?: boolean;
 }
 
 /**
@@ -65,12 +75,12 @@ export class AppletServeManagement {
 		const processPid = process.pid;
 		const processUid = Math.random().toString(36).substring(7);
 
-		let serverProcess: DetachedProcess;
+		let httpServer: KillableProcess;
 		let publicUrl: string | undefined;
 
 		const cleanUp = async () => {
 			process.removeListener('exit', cleanUp);
-			await this.cleanUpServer(options.appletUid, options.appletVersion, serverProcess, processPid, processUid);
+			await this.cleanUpServer(options.appletUid, options.appletVersion, httpServer, processPid, processUid, options.detachProcess);
 		};
 		process.addListener('exit', cleanUp);
 
@@ -79,7 +89,19 @@ export class AppletServeManagement {
 		await this.addToParentsFile(options.appletUid, options.appletVersion, processPid, processUid);
 
 		if (running) {
-			({ serverProcess, publicUrl } = await this.getRunningProcess(options.appletUid, options.appletVersion, running.pid));
+			if (options.detachProcess) {
+				({ serverProcess: httpServer, publicUrl } = await this.getRunningDetachedProcess(
+					options.appletUid,
+					options.appletVersion,
+					running.pid,
+				));
+			} else {
+				({ appletHttpServer: httpServer, publicUrl } = await this.getRunningSameProcess(
+					options.appletUid,
+					options.appletVersion,
+					running.pid,
+				));
+			}
 			const finalPublicUrl = publicUrl ?? defaultPublicUrl;
 			log('info', getServerMessage(options.appletUid, options.appletVersion, port, finalPublicUrl));
 			return new AppletServer(processUid, running.port, finalPublicUrl, remoteAddr, cleanUp);
@@ -87,9 +109,29 @@ export class AppletServeManagement {
 
 		await this.createPortFile(options.appletUid, options.appletVersion, port);
 
-		({ serverProcess, publicUrl } = await this.startServerProcess(options.appletUid, options.appletVersion, port, options.publicUrl));
-		await this.createPidFile(options.appletUid, options.appletVersion, serverProcess.pid);
-		debug('Server process started', serverProcess.pid);
+		if (options.detachProcess) {
+			let serverProcess: KillableProcess;
+			({ serverProcess, publicUrl } = await this.startServerDetachedProcess(
+				options.appletUid,
+				options.appletVersion,
+				port,
+				options.publicUrl,
+			));
+			await this.createPidFile(options.appletUid, options.appletVersion, serverProcess.pid);
+			debug('Server process started', serverProcess.pid);
+			httpServer = serverProcess;
+		} else {
+			({ appletHttpServer: httpServer, publicUrl } = await this.startServerSameProcess(
+				options.appletUid,
+				options.appletVersion,
+				port,
+				options.publicUrl,
+				options.forwardServerUrl,
+				processPid,
+			));
+			await this.createPidFile(options.appletUid, options.appletVersion, processPid); // Use the current process PID as the server PID
+			debug('Server started');
+		}
 
 		const finalNewPublicUrl = publicUrl ?? defaultPublicUrl;
 		log('info', getServerMessage(options.appletUid, options.appletVersion, port, finalNewPublicUrl));
@@ -127,17 +169,15 @@ export class AppletServeManagement {
 	 */
 	public async killRunningServer(appletUid: string, appletVersion: string) {
 		const parents = await this.getParents(appletUid, appletVersion);
-		if (parents.length > 0) {
-			for (const parent of parents) {
-				const { pid: parentPid } = this.parseParentPidAndUid(parent);
-				const { serverProcess: parentProcess } = await this.getRunningProcess(appletUid, appletVersion, parentPid);
-				await killGracefullyWithTimeoutSigKill(parentProcess, GRACEFUL_KILL_TIMEOUT_MS);
-			}
+		for (const parent of parents) {
+			const { pid: parentPid } = this.parseParentPidAndUid(parent);
+			const { serverProcess: parentProcess } = await this.getRunningDetachedProcess(appletUid, appletVersion, parentPid);
+			await killGracefullyWithTimeoutSigKill(parentProcess, GRACEFUL_KILL_TIMEOUT_MS);
 		}
 
 		const runningPid = await this.getRunningPid(appletUid, appletVersion);
 		if (runningPid) {
-			const { serverProcess } = await this.getRunningProcess(appletUid, appletVersion, runningPid);
+			const { serverProcess } = await this.getRunningDetachedProcess(appletUid, appletVersion, runningPid);
 			await killGracefullyWithTimeoutSigKill(serverProcess, GRACEFUL_KILL_TIMEOUT_MS);
 		}
 	}
@@ -145,14 +185,16 @@ export class AppletServeManagement {
 	private async cleanUpServer(
 		appletUid: string,
 		appletVersion: string,
-		serverProcess: DetachedProcess,
+		serverProcess: KillableProcess,
 		parentPid: number,
 		processUid: string,
+		detachProcess?: boolean,
 	) {
 		await this.removeFromParentsFile(appletUid, appletVersion, parentPid, processUid);
 
 		const parents = await this.getParents(appletUid, appletVersion);
-		if (parents.length === 0) {
+		if (parents.length === 0 || !detachProcess) {
+			// Same process has to kill self http server always
 			await killGracefullyWithTimeoutSigKill(serverProcess, GRACEFUL_KILL_TIMEOUT_MS);
 			await this.deleteAppletRuntimeDir(appletUid);
 		}
@@ -277,8 +319,31 @@ export class AppletServeManagement {
 		}
 	}
 
-	private async getRunningProcess(appletUid: string, appletVersion: string, pid: number) {
-		const serverProcess: DetachedProcess = {
+	private async getRunningSameProcess(
+		appletUid: string,
+		appletVersion: string,
+		pid: number,
+	): Promise<{ appletHttpServer: KillableProcess; publicUrl: string | undefined }> {
+		// Fake running same process with the current process that cannot be killed
+		const closeListeners: (() => void)[] = [];
+		const appletHttpServer: KillableProcess = {
+			pid,
+			kill: () => {
+				setTimeout(() => closeListeners.forEach((listener) => listener()));
+				return true;
+			},
+			once: (event: 'close', listener: () => void) => {
+				if (event === 'close') {
+					closeListeners.push(listener);
+				}
+			},
+		};
+		const publicUrl = await this.getRunningPublicUrl(appletUid, appletVersion);
+		return { appletHttpServer, publicUrl };
+	}
+
+	private async getRunningDetachedProcess(appletUid: string, appletVersion: string, pid: number) {
+		const serverProcess: KillableProcess = {
 			pid,
 			kill: (signal: NodeJS.Signals) => {
 				try {
@@ -302,7 +367,40 @@ export class AppletServeManagement {
 		return { serverProcess, publicUrl };
 	}
 
-	private async startServerProcess(appletUid: string, appletVersion: string, port: number, publicUrl: string | undefined) {
+	private async startServerSameProcess(
+		appletUid: string,
+		appletVersion: string,
+		port: number,
+		overridePublicUrl: string | undefined,
+		forwardServerUrl: string | undefined,
+		pid: number,
+	): Promise<{ appletHttpServer: KillableProcess; publicUrl: string | undefined }> {
+		const { stopServer, publicUrl } = await startAppletServer({
+			appletUid,
+			appletVersion,
+			port,
+			overridePublicUrl,
+			forwardServerUrl,
+		});
+		if (publicUrl) {
+			await this.createPublicUrlFile(appletUid, appletVersion, publicUrl);
+		}
+		const closeListeners: (() => void)[] = [];
+		return {
+			appletHttpServer: {
+				pid,
+				kill: () => !!stopServer().then(() => closeListeners.forEach((listener) => listener())),
+				once: (event: 'close', listener: () => void) => {
+					if (event === 'close') {
+						closeListeners.push(listener);
+					}
+				},
+			},
+			publicUrl,
+		};
+	}
+
+	private async startServerDetachedProcess(appletUid: string, appletVersion: string, port: number, publicUrl: string | undefined) {
 		const serverPath = path.join(__dirname, 'AppletServerProcess');
 		const serverProcess = child_process.fork(serverPath, [appletUid, appletVersion, port.toString(), ...(publicUrl ? [publicUrl] : [])], {
 			detached: true,
@@ -329,7 +427,7 @@ export class AppletServeManagement {
 			await this.createPublicUrlFile(appletUid, appletVersion, message.publicUrl);
 		}
 		return {
-			serverProcess: serverProcess as DetachedProcess,
+			serverProcess: serverProcess as KillableProcess,
 			publicUrl: message.publicUrl,
 		};
 	}

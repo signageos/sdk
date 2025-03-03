@@ -44,6 +44,7 @@ export const parameters = {
 	apiUrl,
 	requestMaxAttempts,
 	organizationUid: process.env.SOS_ORGANIZATION_UID,
+	forwardServerUrl: process.env.SOS_FORWARD_SERVER_URL,
 	organizationAuth:
 		process.env.SOS_AUTH_CLIENT_ID && process.env.SOS_AUTH_SECRET
 			? {

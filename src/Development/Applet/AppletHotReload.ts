@@ -8,7 +8,7 @@ import { AppletWatcher } from './Watch/AppletWatcher';
 export class AppletHotReload {
 	constructor(
 		private watcher: AppletWatcher,
-		private server: AppletServer,
+		public readonly server: AppletServer,
 		private clean: () => Promise<void>,
 	) {}
 
