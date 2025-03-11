@@ -2,7 +2,6 @@ import { log } from '../../Console/log';
 import RestApi from '../../RestApi/RestApi';
 import { DeviceConnectManagement } from '../Device/DeviceConnectManagement';
 import { AppletHotReload } from './AppletHotReload';
-import { AppletBuild } from './Build/AppletBuild';
 import { AppletBuildManagement } from './Build/AppletBuildManagement';
 import { AppletFilesManagement } from './Files/AppletFilesManagement';
 import { AppletIdentificationManagement } from './Identification/AppletIdentificationManagement';
@@ -41,12 +40,8 @@ export class AppletManagement {
 	public async startHotReload(options: IHotReloadOptions) {
 		const { appletUid, appletVersion } = await this.identification.getAppletUidAndVersion(options.appletPath);
 
-		let appletBuild: AppletBuild | undefined;
-
-		const watcher = await this.watch.watch(options);
-		const removeEditListener = watcher.onEdit(async (filePaths) => {
-			log('info', `Applet file "${filePaths.join('", "')}" was edited. Rebuilding applet...`);
-			appletBuild = await this.build.build({
+		const buildAndReload = async () => {
+			const build = await this.build.build({
 				...options,
 				appletUid,
 				appletVersion,
@@ -54,6 +49,16 @@ export class AppletManagement {
 			log('info', `Applet built. Reloading applet on all connected devices...`);
 			const { deviceUids } = await this.deviceConnectManagement.reloadConnected();
 			log('info', `Applet reloaded on devices: ${deviceUids.join(', ')}`);
+			return build;
+		};
+
+		log('info', `Initial building of applet...`);
+		let appletBuild = await buildAndReload();
+
+		const watcher = await this.watch.watch(options);
+		const removeEditListener = watcher.onEdit(async (filePaths) => {
+			log('info', `Applet file "${filePaths.join('", "')}" was edited. Rebuilding applet...`);
+			appletBuild = await buildAndReload();
 		});
 
 		const server = await this.serve.serve({
@@ -64,7 +69,7 @@ export class AppletManagement {
 
 		return new AppletHotReload(watcher, server, async () => {
 			removeEditListener();
-			await appletBuild?.clean();
+			await appletBuild.clean();
 		});
 	}
 }
