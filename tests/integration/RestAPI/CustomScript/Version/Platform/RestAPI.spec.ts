@@ -13,6 +13,7 @@ describe('RestAPI - Custom Script Version Platform', () => {
 	const version = '1.0.0';
 	const platform = 'tizen';
 	const md5Checksum = 'e50e3ab7aded00bb7015eb0c47ccf827';
+	const md5ChecksumHex = Buffer.from(md5Checksum, 'base64').toString('hex');
 
 	before(async () => {
 		const customScript = await api.customScript.create({
@@ -62,7 +63,7 @@ describe('RestAPI - Custom Script Version Platform', () => {
 				runtime: 'browser',
 			});
 			should(customScriptVersionPlatform.archiveUri).match(
-				new RegExp(`/custom-script/${customScriptUid}/${version}/${platform}.${md5Checksum}.zip`),
+				new RegExp(`/custom-script/${customScriptUid}/${version}/${platform}\.${md5ChecksumHex}\.zip$`),
 			);
 		});
 	});
@@ -90,7 +91,7 @@ describe('RestAPI - Custom Script Version Platform', () => {
 				runtime: 'browser',
 			});
 			should(customScriptVersionPlatform!.archiveUri).match(
-				new RegExp(`/custom-script/${customScriptUid}/${version}/${platform}.${md5Checksum}.zip`),
+				new RegExp(`/custom-script/${customScriptUid}/${version}/${platform}\.${md5ChecksumHex}\.zip$`),
 			);
 		});
 
@@ -124,7 +125,7 @@ describe('RestAPI - Custom Script Version Platform', () => {
 				md5Checksum,
 			});
 			should(customScriptVersionPlatform!.archiveUri).match(
-				new RegExp(`/custom-script/${customScriptUid}/${version}/${platform}.${md5Checksum}.zip`),
+				new RegExp(`/custom-script/${customScriptUid}/${version}/${platform}\.${md5ChecksumHex}\.zip$`),
 			);
 		});
 	});
