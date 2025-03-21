@@ -30,7 +30,7 @@
   "author": "Michael Zabka <zabka.michael@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": "20",
+    "node": ">=20",
     "npm": ">=10"
   },
   "engineStrict": false,
