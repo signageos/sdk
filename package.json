@@ -70,7 +70,7 @@
     "typescript": "4.9.4"
   },
   "dependencies": {
-    "@signageos/forward-server-bridge": "0.0.4",
+    "@signageos/forward-server-bridge": "0.0.6",
     "@signageos/front-applet": "7.0.0",
     "@types/fs-extra": "8.1.0",
     "@types/geojson": "7946.0.8",
