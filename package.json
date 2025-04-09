@@ -91,7 +91,8 @@
 		"globby": "11.1.0",
 		"ini": "1.3.6",
 		"jsdom": "18.0.1",
-		"node-fetch": "2.7.0"
+		"node-fetch": "2.7.0",
+		"zod": "3.24.2"
 	},
 	"description": "Library which allows you to fully manage signageOS applets, devices, management & monitoring using JS."
 }
