@@ -1,6 +1,6 @@
 import chalk from 'chalk';
-import * as cors from 'cors';
-import * as express from 'express';
+import cors from 'cors';
+import express from 'express';
 import * as bodyParser from 'body-parser';
 import * as http from 'http';
 import { log } from '../../../Console/log';

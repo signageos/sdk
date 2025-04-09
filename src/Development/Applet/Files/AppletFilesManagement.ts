@@ -1,8 +1,8 @@
 import chalk from 'chalk';
-import * as Debug from 'debug';
+import Debug from 'debug';
 import * as nativefs from 'fs';
 import * as fs from 'fs-extra';
-import * as globby from 'globby';
+import globby from 'globby';
 import * as path from 'path';
 import { log } from '../../../Console/log';
 import { loadPackage } from '../../../FileSystem/packageConfig';

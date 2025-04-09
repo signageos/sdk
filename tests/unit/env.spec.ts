@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 import * as path from 'path';
-import * as should from 'should';
+import should from 'should';
 
 describe('.env file for production build', function () {
 	it('should always contain exact values because this file is used in production build of @signageos/sdk library as default values', () => {

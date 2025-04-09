@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 import * as faker from 'faker';
 
 import { Api } from '../../../../src';

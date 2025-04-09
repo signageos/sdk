@@ -1,19 +1,15 @@
 {
-	"specials": [ "mocha" ],
+	"specials": ["mocha"],
 	"parsers": {
 		"**/*.ts": "typescript",
 		"**/*.js": "es6"
 	},
-	"detectors": [
-		"importDeclaration",
-		"requireCallExpression"
-	],
-	"ignore-dirs": [
-		"dist"
-	],
+	"detectors": ["importDeclaration", "requireCallExpression"],
+	"ignore-dirs": ["dist"],
 	"ignores": [
 		"@types/*",
 		"@signageos/codestyle",
+		"@swc/core",
 		"ts-node",
 		"source-map-support",
 		"mocha",

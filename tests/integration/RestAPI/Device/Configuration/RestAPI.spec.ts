@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 import { Api } from '../../../../../src';
 import IDevice from '../../../../../src/RestApi/Device/IDevice';
 import { opts } from '../../helper';
@@ -27,7 +27,7 @@ describe('RestAPI - Device Configuration', () => {
 				// @ts-ignore ignore not assignable parameter that is the point of a test
 				await api.device.configuration.setTelemetryIntervals(device.uid, { 'battery+': 3600e3 });
 				should(true).be.equal('this should not be reached');
-			} catch (error) {
+			} catch (error: any) {
 				should(error.message).be.equal(
 					`Request failed with status code 400. Body: ${JSON.stringify({
 						status: 400,
@@ -45,7 +45,7 @@ describe('RestAPI - Device Configuration', () => {
 				const ONE_YEAR_IN_MILLISECONDS_PLUS_ONE = 31556926 * 1e3 + 1;
 				await api.device.configuration.setTelemetryIntervals(device.uid, { battery: ONE_YEAR_IN_MILLISECONDS_PLUS_ONE });
 				should(true).be.equal('this should not be reached');
-			} catch (error) {
+			} catch (error: any) {
 				should(error.message).be.equal(
 					`Request failed with status code 400. Body: ${JSON.stringify({
 						status: 400,

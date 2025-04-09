@@ -1,5 +1,5 @@
 import * as faker from 'faker';
-import * as should from 'should';
+import should from 'should';
 import { Api } from '../../../../src';
 import IOrganization from '../../../../src/RestApi/Organization/IOrganization';
 import Organization from '../../../../src/RestApi/Organization/Organization';
@@ -18,9 +18,9 @@ describe('RestAPI - Organization', () => {
 	};
 
 	const toDelete: Organization[] = [];
-	after(() => {
+	after(async () => {
 		for (const org of toDelete) {
-			api.organization.delete(org.uid);
+			await api.organization.delete(org.uid);
 		}
 	});
 
@@ -72,7 +72,7 @@ describe('RestAPI - Organization', () => {
 		try {
 			await api.organization.get(org.uid);
 			should(true).eql(false);
-		} catch (err) {
+		} catch (err: any) {
 			should(err.errorName).eql('NO_ORGANIZATION_TO_READ');
 			should(err.errorCode).eql(404113);
 		}

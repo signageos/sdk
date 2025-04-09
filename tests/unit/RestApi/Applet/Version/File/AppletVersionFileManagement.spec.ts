@@ -1,6 +1,6 @@
-import * as should from 'should';
-import * as nock from 'nock';
-import * as streamToString from 'stream-to-string';
+import should from 'should';
+import nock from 'nock';
+import streamToString from 'stream-to-string';
 
 import { getNockOpts } from '../../../helper';
 import IAppletVersionFile, {

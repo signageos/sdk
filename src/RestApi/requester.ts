@@ -1,4 +1,4 @@
-import * as Debug from 'debug';
+import Debug from 'debug';
 import fetch, { BodyInit, Request, RequestInit, Response } from 'node-fetch';
 import { stringify } from 'querystring';
 import { deserializeJSON } from '../Utils/json';
@@ -153,7 +153,7 @@ export async function doRequest({
 }): Promise<Response> {
 	let tries = parameters.requestMaxAttempts;
 	let currentTimeout = 1000;
-	let lastError: Error | null = null;
+	let lastError: unknown = null;
 
 	debug('doRequest', url, init);
 

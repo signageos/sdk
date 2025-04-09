@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 import { Api } from '../../../../../src';
 import IDevice from '../../../../../src/RestApi/Device/IDevice';
 import { opts } from '../../helper';

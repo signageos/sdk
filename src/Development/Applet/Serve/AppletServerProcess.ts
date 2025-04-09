@@ -13,7 +13,7 @@ if (!options.appletUid || !options.appletVersion || !options.port) {
 	throw new Error('Invalid arguments. Usage: node AppletServerProcess.js <appletUid> <appletVersion> <port> [publicUrl]');
 }
 
-startAppletServer(options).then(({ publicUrl, stopServer }) => {
+void startAppletServer(options).then(({ publicUrl, stopServer }) => {
 	log('info', getServerMessage(options.appletUid, options.appletVersion, options.port, publicUrl));
 
 	process.send?.({ type: 'ready', publicUrl });

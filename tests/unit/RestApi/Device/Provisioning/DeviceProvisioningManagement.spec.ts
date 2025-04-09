@@ -1,4 +1,4 @@
-import * as nock from 'nock';
+import nock from 'nock';
 
 import { getNockOpts, successRes } from '../../helper';
 import DeviceProvisioningManagement from '../../../../../src/RestApi/Device/Provisioning/DeviceProvisioningManagement';

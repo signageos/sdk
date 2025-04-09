@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 import { createApiV1, createApiV2 } from '../../src';
 import { ApiVersions } from '../../src/RestApi/apiVersions';
 

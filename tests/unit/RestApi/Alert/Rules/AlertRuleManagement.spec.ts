@@ -1,5 +1,5 @@
-import * as nock from 'nock';
-import * as should from 'should';
+import nock from 'nock';
+import should from 'should';
 
 import IAlertRule, { IAlertRuleCreatable, IAlertRuleUpdateable } from '../../../../../src/RestApi/Alerts/Rules/IAlertRule';
 import AlertRulesManagement from '../../../../../src/RestApi/Alerts/Rules/AlertRulesManagement';

@@ -1,5 +1,5 @@
-import * as should from 'should';
-import * as nock from 'nock';
+import should from 'should';
+import nock from 'nock';
 
 import { ApiVersions } from '../../../../../src/RestApi/apiVersions';
 import { Resources } from '../../../../../src/RestApi/resources';

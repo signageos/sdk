@@ -1,7 +1,7 @@
 import { opts } from '../../helper';
 import IAlertRule from '../../../../../src/RestApi/Alerts/Rules/IAlertRule';
 import { Api } from '../../../../../src';
-import * as should from 'should';
+import should from 'should';
 
 const api = new Api(opts);
 

@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 import { Headers, Response } from 'node-fetch';
 import { getNextPageLink } from '../../../../src/Lib/Pagination/paginationLinkParser';
 

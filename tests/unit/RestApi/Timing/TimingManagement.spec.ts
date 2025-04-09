@@ -1,5 +1,5 @@
-import * as nock from 'nock';
-import * as should from 'should';
+import nock from 'nock';
+import should from 'should';
 import ITiming, { ITimingUpdatable } from '../../../../src/RestApi/Timing/ITiming';
 import TimingManagement from '../../../../src/RestApi/Timing/TimingManagement';
 import { ApiVersions } from '../../../../src/RestApi/apiVersions';

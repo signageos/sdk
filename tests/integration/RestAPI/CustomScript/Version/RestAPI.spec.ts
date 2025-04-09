@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 import { createApiV1 } from '../../../../../src';
 import { CustomScriptVersion } from '../../../../../src/RestApi/CustomScript/Version/CustomScriptVersion';
 import { opts } from '../../helper';

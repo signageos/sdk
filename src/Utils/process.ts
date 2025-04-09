@@ -1,4 +1,4 @@
-import * as Debug from 'debug';
+import Debug from 'debug';
 const debug = Debug('@signageos/sdk:Utils:process');
 
 export interface Killable {

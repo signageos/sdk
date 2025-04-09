@@ -1,5 +1,5 @@
-import * as should from 'should';
-import * as nock from 'nock';
+import should from 'should';
+import nock from 'nock';
 
 import { errorResp, errorRespMessage, getNockOpts, successRes } from '../../helper';
 import IDevicePackage, { IDevicePackageUpdatable } from '../../../../../src/RestApi/Device/Package/IDevicePackage';
@@ -55,7 +55,7 @@ describe('DevicePackageManagement', () => {
 		it('should throw error', async () => {
 			try {
 				await dpm.list('shouldFail');
-			} catch (e) {
+			} catch (e: any) {
 				should(e.message).equal(errorRespMessage(500));
 			}
 		});
@@ -69,7 +69,7 @@ describe('DevicePackageManagement', () => {
 		it('should fail when api returns non 200 status', async () => {
 			try {
 				await dpm.install('shouldFail', validSetReq);
-			} catch (e) {
+			} catch (e: any) {
 				should(e.message).equal(errorRespMessage(500));
 			}
 		});

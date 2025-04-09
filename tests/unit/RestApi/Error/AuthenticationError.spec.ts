@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 import AuthenticationError from '../../../../src/RestApi/Error/AuthenticationError';
 
 describe('RestApi.Error.AuthenticationError', () => {

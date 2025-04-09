@@ -1,6 +1,6 @@
 import { readFile } from 'fs-extra';
-import * as nock from 'nock';
-import * as should from 'should';
+import nock from 'nock';
+import should from 'should';
 
 import { ApiVersions } from '../../../../src/RestApi/apiVersions';
 import { ILocationCreate, ILocation, ILocationUpdate } from '../../../../src/RestApi/Location/Location';

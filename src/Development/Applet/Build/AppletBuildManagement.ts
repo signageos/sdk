@@ -1,4 +1,4 @@
-import * as archiver from 'archiver';
+import archiver from 'archiver';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import {

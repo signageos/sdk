@@ -1,5 +1,5 @@
-import * as should from 'should';
-import * as nock from 'nock';
+import should from 'should';
+import nock from 'nock';
 
 import { getNockOpts, successRes } from '../../helper';
 import { DevicePowerAction } from '../../../../../src/RestApi/Device/PowerAction/IPowerAction';

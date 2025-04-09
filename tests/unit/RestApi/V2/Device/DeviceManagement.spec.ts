@@ -1,5 +1,5 @@
-import * as nock from 'nock';
-import * as should from 'should';
+import nock from 'nock';
+import should from 'should';
 
 import { ApiVersions } from '../../../../../src/RestApi/apiVersions';
 import DeviceManagementV2 from '../../../../../src/RestApi/V2/Device/DeviceManagement';
