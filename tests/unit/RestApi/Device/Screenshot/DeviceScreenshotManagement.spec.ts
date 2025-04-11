@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 
 import { ApiVersions } from '../../../../../src/RestApi/apiVersions';
 import { Resources } from '../../../../../src/RestApi/resources';

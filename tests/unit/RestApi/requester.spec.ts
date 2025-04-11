@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 import * as sinon from 'sinon';
 import { Response } from 'node-fetch';
 import { doRequest } from '../../../src/RestApi/requester';
@@ -15,7 +15,7 @@ const mockResponse = {
 
 describe('requester', function () {
 	it('should fail on bad gateway', async function () {
-		const doFetch = async (_: string) => {
+		const doFetch = async (_: unknown) => {
 			throw new GatewayError(502, 'Bad Gateway');
 		};
 		const spiedWait = sinon.spy(wait);
@@ -30,7 +30,7 @@ describe('requester', function () {
 	});
 
 	it('should fail on not found', async function () {
-		const doFetch = async (_: string) => {
+		const doFetch = async (_: unknown) => {
 			throw new NotFoundError(404, 'Not Found');
 		};
 		const spiedWait = sinon.spy(wait);
@@ -45,7 +45,7 @@ describe('requester', function () {
 	});
 
 	it('should return valid response', async function () {
-		const doFetch = async (_: string) => mockResponse;
+		const doFetch = async (_: unknown) => mockResponse;
 		await should(
 			doRequest({
 				url: 'url',

@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 import TooMAnyRequestsError from '../../../../src/RestApi/Error/TooMAnyRequestsError';
 
 describe('RestApi.Error.TooMAnyRequestsError', () => {

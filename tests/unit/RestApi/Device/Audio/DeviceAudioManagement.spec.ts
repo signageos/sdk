@@ -1,5 +1,5 @@
-import * as should from 'should';
-import * as nock from 'nock';
+import should from 'should';
+import nock from 'nock';
 
 import { errorResp, errorRespMessage, getNockOpts, successRes } from '../../helper';
 import IDeviceAudio, { IDeviceAudioUpdatable } from '../../../../../src/RestApi/Device/Audio/IDeviceAudio';
@@ -49,7 +49,7 @@ describe('DeviceAudioManagement', () => {
 		it('should throw error', async () => {
 			try {
 				await dvm.list('shouldFail');
-			} catch (e) {
+			} catch (e: any) {
 				should(e.message).equal(errorRespMessage(500));
 			}
 		});
@@ -64,7 +64,7 @@ describe('DeviceAudioManagement', () => {
 		it('should fail when api returns non 200 status', async () => {
 			try {
 				await dvm.set('shouldFail', validSetReq);
-			} catch (e) {
+			} catch (e: any) {
 				should(e.message).equal(errorRespMessage(500));
 			}
 		});

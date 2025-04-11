@@ -1,5 +1,5 @@
 import * as child_process from 'child_process';
-import * as Debug from 'debug';
+import Debug from 'debug';
 import * as fs from 'fs-extra';
 import * as http from 'http';
 import * as os from 'os';

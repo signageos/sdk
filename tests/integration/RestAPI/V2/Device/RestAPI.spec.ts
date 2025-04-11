@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 
 import { createApiV2 } from '../../../../../src';
 import IDeviceV2, { SocketDriver } from '../../../../../src/RestApi/V2/Device/Device';

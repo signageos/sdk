@@ -1,6 +1,6 @@
-import * as should from 'should';
+import should from 'should';
 import * as http from 'http';
-import * as express from 'express';
+import express from 'express';
 import { Paginator } from '../../../../src/Lib/Pagination/paginator';
 import IOptions from '../../../../src/RestApi/IOptions';
 import { ApiVersions } from '../../../../src/RestApi/apiVersions';

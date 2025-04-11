@@ -1,6 +1,5 @@
 dist/
 node_modules/
-src/**/*.js
 tests/**/*.js
 docs/*
 .idea

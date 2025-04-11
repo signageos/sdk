@@ -1,7 +1,7 @@
-import * as should from 'should';
+import should from 'should';
 import * as path from 'path';
 import * as os from 'os';
-import * as extract from 'extract-zip';
+import extract from 'extract-zip';
 import * as fs from 'fs-extra';
 import AppletManagementRestApi from '../../../../src/RestApi/Applet/AppletManagement';
 import { AppletManagement } from '../../../../src/Development/Applet/AppletManagement';

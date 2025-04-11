@@ -1,5 +1,5 @@
-import * as should from 'should';
-import * as nock from 'nock';
+import should from 'should';
+import nock from 'nock';
 
 import DeviceBrightnessManagement from '../../../../../src/RestApi/Device/Brightness/DeviceBrightnessManagement';
 import IDeviceBrightness, { IDeviceBrightnessUpdatable } from '../../../../../src/RestApi/Device/Brightness/IDeviceBrightness';
@@ -57,7 +57,7 @@ describe('DeviceBrightnessManagement', () => {
 		it('should throw error', async () => {
 			try {
 				await dbm.list('shouldFail');
-			} catch (e) {
+			} catch (e: any) {
 				should(e.message).equal(errorRespMessage(500));
 			}
 		});
@@ -72,7 +72,7 @@ describe('DeviceBrightnessManagement', () => {
 		it('should fail when api returns non 200 status', async () => {
 			try {
 				await dbm.set('shouldFail', validSetReq);
-			} catch (e) {
+			} catch (e: any) {
 				should(e.message).equal(errorRespMessage(500));
 			}
 		});

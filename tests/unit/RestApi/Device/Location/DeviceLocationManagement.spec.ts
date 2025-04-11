@@ -1,6 +1,6 @@
-import * as nock from 'nock';
+import nock from 'nock';
 import { random } from 'faker';
-import * as should from 'should';
+import should from 'should';
 
 import { ApiVersions } from '../../../../../src/RestApi/apiVersions';
 import DeviceLocationManagement from '../../../../../src/RestApi/Device/Location/DeviceLocationManagement';

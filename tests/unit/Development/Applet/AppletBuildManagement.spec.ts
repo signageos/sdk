@@ -1,7 +1,7 @@
-import * as should from 'should';
+import should from 'should';
 import * as path from 'path';
 import * as os from 'os';
-import * as extract from 'extract-zip';
+import extract from 'extract-zip';
 import * as fs from 'fs-extra';
 import { AppletBuildManagement } from '../../../../src/Development/Applet/Build/AppletBuildManagement';
 import { AppletFilesManagement } from '../../../../src/Development/Applet/Files/AppletFilesManagement';
@@ -16,8 +16,8 @@ describe('Development.Applet.AppletBuildManagement', function () {
 		const applet1Dirname = path.join(fixturesDirename, 'applet-1');
 
 		beforeEach(async function () {
-			fs.remove(targetDir);
-			fs.ensureDir(targetDir);
+			await fs.remove(targetDir);
+			await fs.ensureDir(targetDir);
 			await fs.remove(path.join(applet1Dirname, 'dir-1', 'file-X'));
 		});
 

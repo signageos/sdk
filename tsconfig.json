@@ -1,27 +1,16 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "outDir": "dist",
-        "sourceMap": true,
-        "target": "es5",
-        "declaration": true,
-        "moduleResolution": "node",
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "pretty": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "skipLibCheck": true,
-        "noImplicitThis": true,
-        "noUnusedParameters": true,
-        "noUnusedLocals": true,
-        "typeRoots": [
-            "node_modules/@types/"
-        ],
-        "lib": ["dom", "es5", "scripthost", "esnext"],
-        "downlevelIteration": true
-    },
-    "include": [
-        "src/**/*.ts"
-    ]
+	"extends": "@signageos/codestyle/tsconfig-strict.json",
+	"compilerOptions": {
+		"target": "es6",
+    "declaration": true,
+		"noUncheckedIndexedAccess": false,
+		"strictPropertyInitialization": false,
+		"lib": ["DOM"],
+		"checkJs": false,
+		"outDir": "dist"
+	},
+	"include": ["src/**/*.ts", "test/**/*.ts"],
+	"ts-node": {
+		"swc": true
+	}
 }

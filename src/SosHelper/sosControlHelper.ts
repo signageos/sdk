@@ -40,7 +40,7 @@ export async function loadConfig(options?: IConfigOptions): Promise<ISafeConfig>
 	}
 
 	const profile = options?.profile ?? parameters.profile;
-	const config = profile ? configFile[`profile ${profile}`] ?? {} : configFile;
+	const config = profile ? (configFile[`profile ${profile}`] ?? {}) : configFile;
 
 	// Overriding from env vars if available
 	if (parameters.accountAuth?.tokenId) {

@@ -1,5 +1,5 @@
-import * as should from 'should';
-import * as nock from 'nock';
+import should from 'should';
+import nock from 'nock';
 
 import DevicePinCodeManagement from '../../../../../src/RestApi/Device/PinCode/DevicePinCodeManagement';
 import IDevicePin from '../../../../../src/RestApi/Device/PinCode/IDevicePin';
@@ -34,7 +34,7 @@ describe('DevicePinCodeManagement', () => {
 	it('should throw error when api returns non 200', async () => {
 		try {
 			await dpm.get('shouldFail');
-		} catch (e) {
+		} catch (e: any) {
 			should(e.message).equal(errorRespMessage(500));
 		}
 	});

@@ -1,5 +1,5 @@
-import * as nock from 'nock';
-import * as should from 'should';
+import nock from 'nock';
+import should from 'should';
 import { ApiVersions } from '../../../../../src/RestApi/apiVersions';
 import { Resources } from '../../../../../src/RestApi/resources';
 import { IDeviceAutoRecoveryEnabled, IDeviceAutoRecoveryDisabled } from '../../../../../src/RestApi/Device/AutoRecovery/DeviceAutoRecovery';

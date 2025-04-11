@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs-extra';

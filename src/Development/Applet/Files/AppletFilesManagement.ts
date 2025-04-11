@@ -1,8 +1,8 @@
 import chalk from 'chalk';
-import * as Debug from 'debug';
+import Debug from 'debug';
 import * as nativefs from 'fs';
 import * as fs from 'fs-extra';
-import * as globby from 'globby';
+import globby from 'globby';
 import * as path from 'path';
 import { log } from '../../../Console/log';
 import { loadPackage } from '../../../FileSystem/packageConfig';
@@ -54,16 +54,10 @@ export class AppletFilesManagement {
 	 * Unlike the listAppletFiles, it does not resolve the patterns to the actual file paths.
 	 */
 	public async getAppletFilePatterns(options: IFilesOptions) {
-		const packageConfig = (await loadPackage(options.appletPath)) ?? {};
+		const packageConfig = await loadPackage(options.appletPath);
 		const ignoreBasePath = options.ignoreBasePath ?? options.appletPath;
-		if (packageConfig.files) {
-			if (!(packageConfig.files instanceof Array)) {
-				throw new Error(`Invalid package.json "files" property. Expected array, got ${typeof packageConfig.files}.`);
-			}
-			return packageConfig.files;
-		} else {
-			return await this.resolveNotIgnoredFilePatterns(ignoreBasePath);
-		}
+
+		return packageConfig?.sos?.files ?? packageConfig?.files ?? (await this.resolveNotIgnoredFilePatterns(ignoreBasePath));
 	}
 
 	private async resolveIncludeFiles(appletPath: string, files: string[], fileSystems: IFileSystem[] = [nativefs]) {

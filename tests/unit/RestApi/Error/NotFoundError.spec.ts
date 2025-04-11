@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 import NotFoundError from '../../../../src/RestApi/Error/NotFoundError';
 
 describe('RestApi.Error.NotFoundError', () => {

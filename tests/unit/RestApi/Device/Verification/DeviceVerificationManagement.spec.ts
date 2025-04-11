@@ -1,5 +1,5 @@
-import * as should from 'should';
-import * as nock from 'nock';
+import should from 'should';
+import nock from 'nock';
 
 import { getNockOpts, successRes } from '../../helper';
 import IDeviceVerification, { IDeviceVerificationUpdatable } from '../../../../../src/RestApi/Device/Verification/IDeviceVerification';
@@ -58,7 +58,7 @@ describe('DeviceVerificationManagement', () => {
 		it('should fail on 404 error', async () => {
 			try {
 				await dvm.set(invalidSetReq);
-			} catch (e) {
+			} catch (e: any) {
 				should(e.message.includes('Device verification was not found by hash cc5d2c')).true();
 			}
 		});

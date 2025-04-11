@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 import { Api } from '../../../../src';
 import IDevice from '../../../../src/RestApi/Device/IDevice';
 import { ITimingCreateOnly, ITimingUpdatable } from '../../../../src/RestApi/Timing/ITiming';
@@ -103,7 +103,7 @@ describe('RestAPI - Timing', function () {
 		it('should throw error if timing does not exist', async function () {
 			try {
 				await api.timing.get('non-existent-timing-uid');
-			} catch (e) {
+			} catch (e: any) {
 				should(e.errorCode).be.equal(404311);
 				should(e.errorName).be.equal('RESOURCE_NOT_FOUND');
 			}
@@ -112,7 +112,7 @@ describe('RestAPI - Timing', function () {
 		it('should throw error when timing is not under specified organization', async function () {
 			try {
 				await api.timing.get('527a80735ad1fb8c1a3229103bb5734068e7');
-			} catch (e) {
+			} catch (e: any) {
 				should(e.errorCode).be.equal(404311);
 				should(e.errorName).be.equal('RESOURCE_NOT_FOUND');
 			}
@@ -216,7 +216,7 @@ describe('RestAPI - Timing', function () {
 					position: 1,
 					finishEvent: { type: 'DURATION', data: null },
 				});
-			} catch (e) {
+			} catch (e: any) {
 				should(e.errorCode).be.equal(404311);
 				should(e.errorName).be.equal('RESOURCE_NOT_FOUND');
 			}
@@ -232,7 +232,7 @@ describe('RestAPI - Timing', function () {
 					position: 1,
 					finishEvent: { type: 'DURATION', data: null },
 				});
-			} catch (e) {
+			} catch (e: any) {
 				should(e.errorCode).be.equal(404311);
 				should(e.errorName).be.equal('RESOURCE_NOT_FOUND');
 			}
@@ -244,7 +244,7 @@ describe('RestAPI - Timing', function () {
 			await api.timing.delete(timingUid);
 			try {
 				await api.timing.get(timingUid);
-			} catch (e) {
+			} catch (e: any) {
 				should(e.errorCode).be.equal(404311);
 			}
 
@@ -262,7 +262,7 @@ describe('RestAPI - Timing', function () {
 		it('should not delete non-existent timing', async function () {
 			try {
 				await api.timing.delete('non-existent-timing-uid');
-			} catch (e) {
+			} catch (e: any) {
 				should(e.errorCode).be.equal(403099);
 				should(e.errorName).be.equal('NO_TIMING_TO_DELETE');
 			}
@@ -271,7 +271,7 @@ describe('RestAPI - Timing', function () {
 		it('should throw error when timing is not under specified organization', async function () {
 			try {
 				await api.timing.delete('527a80735ad1fb8c1a3229103bb5734068e7');
-			} catch (e) {
+			} catch (e: any) {
 				should(e.errorCode).be.equal(403067);
 				should(e.errorName).be.equal('NO_OWN_TIMING_TO_DELETE');
 			}

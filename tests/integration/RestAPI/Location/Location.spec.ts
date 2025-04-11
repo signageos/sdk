@@ -1,5 +1,5 @@
 import { readFile } from 'fs-extra';
-import * as should from 'should';
+import should from 'should';
 
 import { Api } from '../../../../src';
 import Location, { ILocation } from '../../../../src/RestApi/Location/Location';

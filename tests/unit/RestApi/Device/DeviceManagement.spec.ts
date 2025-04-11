@@ -1,5 +1,5 @@
-import * as should from 'should';
-import * as nock from 'nock';
+import should from 'should';
+import nock from 'nock';
 
 import { errorResp, errorRespMessage, getNockOpts } from '../helper';
 import DeviceManagement from '../../../../src/RestApi/Device/DeviceManagement';
@@ -104,7 +104,7 @@ describe('DeviceManagement', () => {
 		it('should throw error', async () => {
 			try {
 				await dm.get('shouldFail');
-			} catch (e) {
+			} catch (e: any) {
 				should(e.message).equal(errorRespMessage(500));
 			}
 		});
@@ -120,7 +120,7 @@ describe('DeviceManagement', () => {
 		it('should fail when api returns non 200 status', async () => {
 			try {
 				await dm.set('shouldFail', validSetReq);
-			} catch (e) {
+			} catch (e: any) {
 				should(e.message).equal(errorRespMessage(500));
 			}
 		});

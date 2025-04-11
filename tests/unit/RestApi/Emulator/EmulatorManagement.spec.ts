@@ -1,5 +1,5 @@
-import * as should from 'should';
-import * as nock from 'nock';
+import should from 'should';
+import nock from 'nock';
 
 import { getNockOpts } from '../helper';
 import IEmulator, { IEmulatorCreatable } from '../../../../src/RestApi/Emulator/IEmulator';

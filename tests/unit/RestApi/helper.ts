@@ -1,4 +1,4 @@
-import * as nock from 'nock';
+import nock from 'nock';
 
 import IOptions, { IAuthOptions } from '../../../src/RestApi/IOptions';
 import RequestError from '../../../src/RestApi/Error/RequestError';

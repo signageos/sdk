@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 import InternalApiError from '../../../../src/RestApi/Error/InternalApiError';
 
 describe('RestApi.Error.InternalApiError', () => {

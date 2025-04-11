@@ -1,4 +1,4 @@
-import * as should from 'should';
+import should from 'should';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import waitUntil from '../../../../src/Timer/waitUntil';

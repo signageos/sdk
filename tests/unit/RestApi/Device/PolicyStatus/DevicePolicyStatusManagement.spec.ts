@@ -1,5 +1,5 @@
-import * as should from 'should';
-import * as nock from 'nock';
+import should from 'should';
+import nock from 'nock';
 
 import { getNockOpts, nockAuthHeader1 } from '../../helper';
 import IDevicePolicyStatus from '../../../../../src/RestApi/Device/PolicyStatus/IDevicePolicyStatus';

@@ -1,5 +1,5 @@
 import { Request, Response, RequestInit } from 'node-fetch';
-import * as FormData from 'form-data';
+import FormData from 'form-data';
 import { doRequest } from './requester';
 import IAppletVersionFile from './Applet/Version/File/IAppletVersionFile';
 
