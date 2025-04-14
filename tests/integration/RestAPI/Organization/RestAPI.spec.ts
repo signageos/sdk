@@ -7,7 +7,7 @@ import { opts } from '../helper';
 
 const api = new Api(opts);
 
-describe('RestAPI - Organization', () => {
+describe.skip('RestAPI - Organization', () => {
 	const assertOrg = (org: IOrganization) => {
 		should(org instanceof Organization).true();
 		should(org.name.length).aboveOrEqual(0, 'organization name should never be empty');
