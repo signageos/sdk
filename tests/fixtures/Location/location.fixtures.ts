@@ -1,5 +1,4 @@
-import { random } from 'faker';
-
+import faker from 'faker';
 import { Api } from '../../../src';
 import { ILocation, ILocationCreate, ILocationUpdate, Coordinates } from '../../../src/RestApi/Location/Location';
 import { ORGANIZATION_TAG_1 } from '../../unit/RestApi/Organization/Tag/OrganizationTag.fixtures';
@@ -22,28 +21,28 @@ export const COORDINATES_2: Coordinates = { long: -74.011025, lat: 40.707085 }; 
 export const ADDRESS_1 = 'Howard Street, San Francisco, CA, USA'; // Coordinates: COORDINATES_1
 export const ADDRESS_2 = '11 Wall Street, New York, New York 10005, United States'; // Coordinates: COORDINATES_2
 
-export const LOCATION_CREATE_1: LocationCreateWithoutOrg = {
-	name: `SDK Location (0)`,
-	coordinates: COORDINATES_1,
-	description: 'test note 1',
-	customId: random.uuid(),
-};
-export const LOCATION_CREATE_2: LocationCreateWithoutOrg = {
-	name: `SDK Location (1)`,
-	address: ADDRESS_1,
-	description: 'test note 2',
-	customId: undefined,
-};
+export function generateLocationCreatable(override: Partial<LocationCreateWithoutOrg> = {}): LocationCreateWithoutOrg {
+	return {
+		name: `SDK Location (${faker.random.number(1000)})`,
+		coordinates: COORDINATES_1,
+		description: faker.lorem.sentence(),
+		customId: faker.random.alphaNumeric(10),
+		...override,
+	};
+}
 
-export const LOCATION_UPDATE_1: Omit<ILocationUpdate, 'organizationUid'> = {
-	name: `SDK Location (update-1)`,
-	coordinates: COORDINATES_1,
-	description: 'test note 2',
-	customId: random.uuid(),
-};
+export function generateLocationUpdatable(override: Partial<ILocationUpdate> = {}): ILocationUpdate {
+	return {
+		name: `SDK Location (${faker.random.number(1000)})`,
+		coordinates: COORDINATES_2,
+		description: faker.lorem.sentence(),
+		customId: faker.random.alphaNumeric(10),
+		...override,
+	};
+}
 
 export const LOCATION_1: LocationWithoutOrg = {
-	uid: random.uuid(),
+	uid: faker.random.uuid(),
 	name: `SDK Location (2)`,
 	feature: {
 		type: 'Feature',
@@ -59,12 +58,12 @@ export const LOCATION_1: LocationWithoutOrg = {
 	},
 	attachments: ['www.attachment-1.com', 'www.attachment-2.com'],
 	description: 'test note 1',
-	customId: random.uuid(),
+	customId: faker.random.uuid(),
 	createdAt: new Date(),
 	updatedAt: new Date(),
 };
 export const LOCATION_2: LocationWithoutOrg = {
-	uid: random.uuid(),
+	uid: faker.random.uuid(),
 	name: `SDK Location (3)`,
 	feature: {
 		type: 'Feature',
@@ -85,7 +84,7 @@ export const LOCATION_2: LocationWithoutOrg = {
 	updatedAt: new Date(),
 };
 export const LOCATION_3: LocationWithoutOrg = {
-	uid: random.uuid(),
+	uid: faker.random.uuid(),
 	name: `SDK Location (4)`,
 	feature: {
 		type: 'Feature',

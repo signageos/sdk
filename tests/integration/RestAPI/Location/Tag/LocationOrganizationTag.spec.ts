@@ -3,7 +3,7 @@ import should from 'should';
 import { Api } from '../../../../../src';
 import { getOrganizationUid } from '../../../../fixtures/Organization/organization.fixtures';
 import { generateOrganizationTagCreate } from '../../../../fixtures/Organization/Tag/organizationTag.fixtures';
-import { LOCATION_CREATE_1, handleCreateLocation } from '../../../../fixtures/Location/location.fixtures';
+import { generateLocationCreatable, handleCreateLocation } from '../../../../fixtures/Location/location.fixtures';
 import { opts } from '../../helper';
 import Location from '../../../../../src/RestApi/Location/Location';
 
@@ -20,7 +20,7 @@ describe('Integration.RestAPI.Device.Location.Tag.LocationOrganizationTag', asyn
 
 	it('should assign and unassign organization tag to and from location', async function () {
 		const createdLocation1 = await handleCreateLocation(api, {
-			location: LOCATION_CREATE_1,
+			location: generateLocationCreatable(),
 			organizationUid: getOrganizationUid(),
 		});
 		toDelete.push(createdLocation1);

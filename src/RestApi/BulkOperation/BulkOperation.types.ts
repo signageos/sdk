@@ -157,11 +157,9 @@ export type LogData = {
 		policyUid: string;
 	};
 	[DeviceActionType.SET_ORGANIZATION_TAGS]: {
-		deviceIdentityHash: string;
 		tagUids: string[];
 	};
 	[DeviceActionType.DELETE_ORGANIZATION_TAGS]: {
-		deviceIdentityHash: string;
 		tagUids: string[];
 	};
 	[DeviceActionType.SET_ORGANIZATION]: {
@@ -188,22 +186,15 @@ export type LogData = {
 				autoEnableTimeoutMs?: number;
 		  };
 	[DeviceActionType.ENABLE_EXTENDED_TELEMETRY]: {
-		deviceIdentityHash: string;
 		duration: number;
 	};
-	[DeviceActionType.DISABLE_EXTENDED_TELEMETRY]: {
-		deviceIdentityHash: string;
-	};
+	[DeviceActionType.DISABLE_EXTENDED_TELEMETRY]: {};
 	[DeviceActionType.TELEMETRY_INTERVALS]: {
-		deviceIdentityHash: string;
 		telemetryCheckIntervals: TelemetryCheckIntervals;
 	};
 };
 
 export interface IFilter {
-	identityHash?: string;
-	identityHashes?: string[];
-	identityHashesExclude?: string[];
 	uids?: string[];
 	uidsExclude?: string[];
 	duids?: string[];
