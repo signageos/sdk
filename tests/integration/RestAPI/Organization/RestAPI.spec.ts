@@ -65,7 +65,6 @@ describe('RestAPI - Organization', () => {
 			name: getOrgName(),
 			title: getOrgTitle(),
 		});
-		toDelete.push(org);
 
 		await api.organization.delete(org.uid);
 

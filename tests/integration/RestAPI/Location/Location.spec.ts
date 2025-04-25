@@ -2,15 +2,10 @@ import { readFile } from 'fs-extra';
 import should from 'should';
 
 import { Api } from '../../../../src';
-import Location, { ILocation } from '../../../../src/RestApi/Location/Location';
+import Location from '../../../../src/RestApi/Location/Location';
 import { getOrganizationUid } from '../../../fixtures/Organization/organization.fixtures';
 import { parameters } from '../../../../src/parameters';
-import {
-	LOCATION_CREATE_1,
-	LOCATION_CREATE_2,
-	LOCATION_UPDATE_1,
-	handleCreateLocation,
-} from '../../../fixtures/Location/location.fixtures';
+import { generateLocationCreatable, generateLocationUpdatable, handleCreateLocation } from '../../../fixtures/Location/location.fixtures';
 import { opts } from '../helper';
 
 const api = new Api(opts);
@@ -29,7 +24,7 @@ describe('Integration.RestAPI.Location', async () => {
 
 	it('should create location', async () => {
 		const createdLocation = await handleCreateLocation(api, {
-			location: LOCATION_CREATE_1,
+			location: generateLocationCreatable(),
 			organizationUid: getOrganizationUid(),
 		});
 		toDelete.push(createdLocation);
@@ -39,7 +34,7 @@ describe('Integration.RestAPI.Location', async () => {
 
 	it('should get one location', async () => {
 		const createdLocation = await handleCreateLocation(api, {
-			location: LOCATION_CREATE_1,
+			location: generateLocationCreatable(),
 			organizationUid: getOrganizationUid(),
 		});
 		toDelete.push(createdLocation);
@@ -49,40 +44,37 @@ describe('Integration.RestAPI.Location', async () => {
 	});
 
 	it('should get two locations', async () => {
-		const expectedNames = [LOCATION_CREATE_1.name, LOCATION_CREATE_2.name];
+		const location1 = generateLocationCreatable();
+		const location2 = generateLocationCreatable();
 
-		[LOCATION_CREATE_1, LOCATION_CREATE_2].forEach(async (location) => {
-			const createdLocation = await handleCreateLocation(api, { location, organizationUid: getOrganizationUid() });
-			toDelete.push(createdLocation);
-		});
+		const createdLocation1 = await handleCreateLocation(api, { location: location1, organizationUid: getOrganizationUid() });
+		const createdLocation2 = await handleCreateLocation(api, { location: location2, organizationUid: getOrganizationUid() });
+
+		toDelete.push(createdLocation1);
+		toDelete.push(createdLocation2);
 
 		const locations = await api.location.list();
-
-		expectedNames.forEach((expectedName) => {
-			const location = locations.find(({ name }) => name === expectedName) as ILocation;
-
-			should(location.name).be.eql(expectedName);
-		});
+		should(locations.find((location) => location.uid === createdLocation1.uid)).not.be.eql(undefined);
+		should(locations.find((location) => location.uid === createdLocation2.uid)).not.be.eql(undefined);
 	});
 
 	it('should update location', async () => {
 		const createdLocation = await handleCreateLocation(api, {
-			location: LOCATION_CREATE_1,
+			location: generateLocationCreatable(),
 			organizationUid: getOrganizationUid(),
 		});
 		toDelete.push(createdLocation);
-		const locationUpdatePayload = LOCATION_UPDATE_1;
+		const locationUpdatePayload = generateLocationUpdatable();
 
 		await api.location.update(createdLocation.uid, locationUpdatePayload);
 
 		const updatedLocation = await api.location.get(createdLocation.uid);
-
-		should(updatedLocation.name).be.eql(LOCATION_UPDATE_1.name);
+		should(updatedLocation.name).be.eql(locationUpdatePayload.name);
 	});
 
 	it('should add attachment', async () => {
 		const createdLocation = await handleCreateLocation(api, {
-			location: LOCATION_CREATE_1,
+			location: generateLocationCreatable(),
 			organizationUid: getOrganizationUid(),
 		});
 		toDelete.push(createdLocation);
@@ -96,7 +88,7 @@ describe('Integration.RestAPI.Location', async () => {
 
 	it('should remove attachments', async () => {
 		const createdLocation = await handleCreateLocation(api, {
-			location: LOCATION_CREATE_1,
+			location: generateLocationCreatable(),
 			organizationUid: getOrganizationUid(),
 		});
 		toDelete.push(createdLocation);
@@ -117,7 +109,7 @@ describe('Integration.RestAPI.Location', async () => {
 
 	it('should delete location', async () => {
 		const createdLocation = await handleCreateLocation(api, {
-			location: LOCATION_CREATE_1,
+			location: generateLocationCreatable(),
 			organizationUid: getOrganizationUid(),
 		});
 

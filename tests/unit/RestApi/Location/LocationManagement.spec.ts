@@ -7,14 +7,14 @@ import { ILocationCreate, ILocation, ILocationUpdate } from '../../../../src/Res
 import LocationManagement, { LocationResources } from '../../../../src/RestApi/Location/LocationManagement';
 import { Resources } from '../../../../src/RestApi/resources';
 import { parameters } from '../../../../src/parameters';
-import { LOCATION_1, LOCATION_2, LOCATION_CREATE_1, LOCATION_UPDATE_1 } from '../../../fixtures/Location/location.fixtures';
+import { generateLocationCreatable, generateLocationUpdatable, LOCATION_1, LOCATION_2 } from '../../../fixtures/Location/location.fixtures';
 import { getNockOpts, nockAuthHeader1 } from '../helper';
 
 const nockOpts = getNockOpts({});
 const locationManagement = new LocationManagement(nockOpts);
 
-const validCreateReq: ILocationCreate = { ...LOCATION_CREATE_1 };
-const validUpdateReq: ILocationUpdate = LOCATION_UPDATE_1;
+const validCreateReq: ILocationCreate = generateLocationCreatable();
+const validUpdateReq: ILocationUpdate = generateLocationUpdatable();
 const validGetResp: ILocation = { ...LOCATION_1, organizationUid: 'organization-uid-1' };
 const validListResp: ILocation[] = [
 	{ ...LOCATION_1, organizationUid: 'organization-uid-1' },

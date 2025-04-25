@@ -4,7 +4,7 @@ import Location from '../../../../../src/RestApi/Location/Location';
 import { Api } from '../../../../../src';
 import IDevice from '../../../../../src/RestApi/Device/IDevice';
 import { getOrganizationUid } from '../../../../fixtures/Organization/organization.fixtures';
-import { LOCATION_CREATE_1, handleCreateLocation } from '../../../../fixtures/Location/location.fixtures';
+import { generateLocationCreatable, handleCreateLocation } from '../../../../fixtures/Location/location.fixtures';
 import { opts } from '../../helper';
 
 const api = new Api(opts);
@@ -20,7 +20,7 @@ describe('Integration.RestAPI.Device.Location.DeviceLocation', async () => {
 
 	it('should assign and unassign location to and from device', async function () {
 		const createdLocation = await handleCreateLocation(api, {
-			location: LOCATION_CREATE_1,
+			location: generateLocationCreatable(),
 			organizationUid: getOrganizationUid(),
 		});
 		toDelete.push(createdLocation);

@@ -19,7 +19,6 @@ import ITiming from '../../../../src/RestApi/Timing/ITiming';
 import { parameters } from '../../../../src/parameters';
 import { LogData } from '../../../../src/RestApi/BulkOperation/BulkOperation.types';
 import { InputSource } from '../../../../src/RestApi/Device/InputSource';
-import { SocketDriver } from '../../../../src/RestApi/V2/Device/Device';
 import { IBulkOperationCreatable } from '../../../../src/RestApi/BulkOperation/IBulkOperation';
 
 const testingBulkOperation = {
@@ -255,7 +254,7 @@ describe('RestAPI - BulkOperation', function () {
 				uploadBaseUrl: 'testingUploadBaseUrl',
 				weinreUri: 'testingWeinreUri',
 				extendedManagementUrl: 'testingManagementUrl',
-				socketDriver: SocketDriver.Websocket,
+				socketDriver: 'ws',
 			};
 
 			await assertBulkOperation(bulkData, DeviceActionType.UPDATE_CONFIGURATION);
@@ -565,7 +564,6 @@ describe('RestAPI - BulkOperation', function () {
 
 		it('should create new bulk operation with payload set organization tags', async function () {
 			let bulkData = {
-				deviceIdentityHash: device.uid,
 				tagUids: ['tagUid'],
 			};
 
@@ -574,7 +572,6 @@ describe('RestAPI - BulkOperation', function () {
 
 		it('should create new bulk operation with payload delete organization tags', async function () {
 			let bulkData = {
-				deviceIdentityHash: device.uid,
 				tagUids: ['tagUid'],
 			};
 
@@ -608,7 +605,6 @@ describe('RestAPI - BulkOperation', function () {
 
 		it('should create new bulk operation with payload enable extended telemetry', async function () {
 			let bulkData = {
-				deviceIdentityHash: device.uid,
 				duration: 60000,
 			};
 
@@ -616,16 +612,11 @@ describe('RestAPI - BulkOperation', function () {
 		});
 
 		it('should create new bulk operation with payload disable extended telemetry', async function () {
-			let bulkData = {
-				deviceIdentityHash: device.uid,
-			};
-
-			await assertBulkOperation(bulkData, DeviceActionType.DISABLE_EXTENDED_TELEMETRY);
+			await assertBulkOperation({}, DeviceActionType.DISABLE_EXTENDED_TELEMETRY);
 		});
 
 		it('should create new bulk operation with payload telemetry intervals', async function () {
 			let bulkData = {
-				deviceIdentityHash: device.uid,
 				telemetryCheckIntervals: {
 					volume: 120000,
 					brightness: 150000,
