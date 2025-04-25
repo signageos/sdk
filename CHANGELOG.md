@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Fixed
+- Building applet using `dev.applet.startHotReload()` method waits for the initial build before serving the applet. It fixes some edge `--hot-reload` cases for older devices.
+
 ## [1.27.3] - 2025-04-15
 ### Fixed
 - Add support for `sos.files` field in package.json, which overrides the `files` for applet upload.

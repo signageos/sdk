@@ -29,11 +29,25 @@ export class AppletWatchManagement {
 	public async watch(options: IWatchOptions) {
 		const filePatterns = await this.appletFilesManagement.getAppletFilePatterns(options);
 		const watcher = chokidar.watch(filePatterns, {
+			ignoreInitial: true,
 			...options.chokidarOptions,
 			cwd: options.appletPath,
 		});
 		log('info', `Watching applet files in ${options.appletPath}: ${filePatterns.join(', ')}`);
 
+		await waitInitialScanReady(watcher);
+
 		return new AppletWatcher(watcher, filePatterns, options.debounceTimeMs ?? DEFAULT_DEBOUNCE_TIME_MS);
 	}
+}
+
+function waitInitialScanReady(watcher: chokidar.FSWatcher) {
+	return new Promise<void>((resolve, reject) => {
+		watcher.on('error', (error) => {
+			reject(error);
+		});
+		watcher.on('ready', () => {
+			resolve();
+		});
+	});
 }

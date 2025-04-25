@@ -39,13 +39,32 @@ describe('Development.Applet.AppletWatchManagement', function () {
 				editedFilePaths.push(...filePaths);
 			});
 
+			await fs.writeFile(path.join(applet1Dirname, 'dir-1', 'file-X'), 'test-1');
+			await waitUntil(async () => editedFilePaths.length === 1);
+			should(editedFilePaths).eql(['dir-1/file-X']);
+		});
+
+		it('should watch all included applet files without initial because it was emitted before the watcher returned', async function () {
+			watcher = await appletWatchManagement.watch({
+				appletPath: applet1Dirname,
+				chokidarOptions: {
+					ignoreInitial: false,
+				},
+			});
+
+			const editedFilePaths: string[] = [];
+
+			watcher.onEdit((filePaths) => {
+				editedFilePaths.push(...filePaths);
+			});
+
 			// initial
-			await waitUntil(async () => editedFilePaths.length === 3);
-			should(editedFilePaths).eql(['file-1', 'dir-1/file-2', 'dir-1/dir-2/file-3']);
+			await waitUntil(async () => editedFilePaths.length === 0);
+			should(editedFilePaths).eql([]);
 
 			await fs.writeFile(path.join(applet1Dirname, 'dir-1', 'file-X'), 'test-1');
-			await waitUntil(async () => editedFilePaths.length === 4);
-			should(editedFilePaths).eql(['file-1', 'dir-1/file-2', 'dir-1/dir-2/file-3', 'dir-1/file-X']);
+			await waitUntil(async () => editedFilePaths.length === 1);
+			should(editedFilePaths).eql(['dir-1/file-X']);
 		});
 	});
 });
