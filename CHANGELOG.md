@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.27.4] - 2025-04-25
 ### Fixed
 - Building applet using `dev.applet.startHotReload()` method waits for the initial build before serving the applet. It fixes some edge `--hot-reload` cases for older devices.
 
