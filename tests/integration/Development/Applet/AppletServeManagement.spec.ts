@@ -8,7 +8,7 @@ import {
 	getAppletPackageArchivePath,
 	getAppletVersionBuildRuntimeDir,
 } from '../../../../src/Development/runtimeFileSystem';
-import { getRequest } from '../../Utils/requestHelper';
+import { getRequest } from '../../requestHelper';
 import { AppletServer } from '../../../../src/Development/Applet/Serve/AppletServer';
 
 describe('Development.Applet.AppletServeManagement', function () {
