@@ -9,7 +9,6 @@ import { zodError } from '../Utils/zodError';
  * Dependencies that are used in signageOS applets to use correct front-applet version.
  */
 type IDependencies = {
-	['@signageos/front-applet']: string;
 	[packageName: string]: string;
 };
 
@@ -81,7 +80,7 @@ export async function loadPackage(currentDirectory: string): Promise<IPackageCon
 
 const depSchema = z
 	.object({
-		['@signageos/front-applet']: z.string(),
+		['@signageos/front-applet']: z.string().optional(),
 	})
 	.catchall(z.string());
 
