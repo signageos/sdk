@@ -2,6 +2,7 @@ import should from 'should';
 import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs-extra';
+import * as child_process from 'child_process';
 import { AppletServeManagement } from '../../../../src/Development/Applet/Serve/AppletServeManagement';
 import {
 	getAppletBuildRuntimeDir,
@@ -10,18 +11,34 @@ import {
 } from '../../../../src/Development/runtimeFileSystem';
 import { getRequest } from '../../requestHelper';
 import { AppletServer } from '../../../../src/Development/Applet/Serve/AppletServer';
+import wait from '../../../../src/Timer/wait';
 
 describe('Development.Applet.AppletServeManagement', function () {
 	this.timeout(30e3);
 
 	const appletServeManagement = new AppletServeManagement();
+	let forwardServerProcess: child_process.ChildProcess;
+	const forwardServerPort = 8097;
+	const forwardServerUrl = `http://localhost:${forwardServerPort}`;
 
-	before(function () {
+	before(async function () {
 		// In tests the typescript is not compiled and the AppletServerProcess is running as separate process.
 		process.env.SOS_DEVELOPMENT_APPLET_SERVE_EXEC_ARGV = '-r ts-node/register';
+
+		const forwardServerPath = require.resolve('@signageos/forward-server-bridge');
+		forwardServerProcess = child_process.fork(forwardServerPath, {
+			env: {
+				PORT: forwardServerPort.toString(),
+			},
+		});
+		await wait(1e3); // Wait until the forward server is properly started
 	});
 
 	after(function () {
+		if (forwardServerProcess) {
+			forwardServerProcess.kill();
+		}
+
 		delete process.env.SOS_DEVELOPMENT_APPLET_SERVE_EXEC_ARGV;
 	});
 
@@ -46,11 +63,11 @@ describe('Development.Applet.AppletServeManagement', function () {
 					appletUid: 'applet-1',
 					appletVersion: '1.0.0',
 					detachProcess,
-					forwardServerUrl: process.env.SOS_FORWARD_SERVER_URL,
+					forwardServerUrl: forwardServerUrl,
 				});
 
 				should(appletServer1.port).Number();
-				should(appletServer1.publicUrl).startWith(process.env.SOS_FORWARD_SERVER_URL!);
+				should(appletServer1.publicUrl).startWith(forwardServerUrl);
 				should(appletServer1.remoteAddr).match(/^\d+\.\d+\.\d+\.\d+$/);
 
 				const appletServersPath = path.join(os.tmpdir(), 'signageos', 'applet_servers');
