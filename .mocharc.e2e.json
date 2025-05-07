@@ -1,0 +1,6 @@
+{
+	"require": ["should", "ts-node/register"],
+	"spec": "tests/e2e/**/*.spec.ts",
+	"timeout": 240e3,
+	"retries": 5
+}

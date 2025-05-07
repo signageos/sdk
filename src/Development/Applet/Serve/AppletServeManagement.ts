@@ -116,6 +116,7 @@ export class AppletServeManagement {
 				options.appletVersion,
 				port,
 				options.publicUrl,
+				options.forwardServerUrl,
 			));
 			await this.createPidFile(options.appletUid, options.appletVersion, serverProcess.pid);
 			debug('Server process started', serverProcess.pid);
@@ -400,7 +401,13 @@ export class AppletServeManagement {
 		};
 	}
 
-	private async startServerDetachedProcess(appletUid: string, appletVersion: string, port: number, publicUrl: string | undefined) {
+	private async startServerDetachedProcess(
+		appletUid: string,
+		appletVersion: string,
+		port: number,
+		publicUrl: string | undefined,
+		forwardServerUrl: string | undefined,
+	) {
 		const serverPath = path.join(__dirname, 'AppletServerProcess');
 		const serverProcess = child_process.fork(serverPath, [appletUid, appletVersion, port.toString(), ...(publicUrl ? [publicUrl] : [])], {
 			detached: true,
@@ -408,6 +415,7 @@ export class AppletServeManagement {
 			execArgv: process.env.SOS_DEVELOPMENT_APPLET_SERVE_EXEC_ARGV?.split(' '),
 			env: {
 				...process.env,
+				SOS_FORWARD_SERVER_URL: forwardServerUrl,
 			},
 		});
 		const message = await new Promise((resolve, reject) => {
