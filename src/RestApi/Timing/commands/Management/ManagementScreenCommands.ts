@@ -112,11 +112,17 @@ export default class ManagementScreenCommands implements IScreen {
 		});
 	}
 
-	public async takeAndUploadScreenshot(uploadBaseUrl: string): Promise<string> {
+	public async takeAndUploadScreenshot(uploadBaseUrl: string): Promise<string>;
+	public async takeAndUploadScreenshot(uploadBaseUrl: string, computeHash?: boolean): Promise<{ screenshotUrl: string; aHash?: string }>;
+	public async takeAndUploadScreenshot(
+		uploadBaseUrl: string,
+		computeHash?: boolean,
+	): Promise<string | { screenshotUrl: string; aHash?: string }> {
 		const command = await this.appletCommandManagement.send<ManagementScreenTakeScreenshotRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: ManagementScreenTakeScreenshotRequest,
 				uploadBaseUrl,
+				computeHash,
 			},
 		});
 		return await waitUntilReturnValue(async () => {
@@ -125,7 +131,14 @@ export default class ManagementScreenCommands implements IScreen {
 				type: ManagementScreenTakeScreenshotResult,
 			});
 			if (results.length > 0) {
-				return results[0].command.screenshotUrl;
+				const result = results[0].command;
+				if (computeHash !== undefined) {
+					return {
+						screenshotUrl: result.screenshotUrl,
+						aHash: result.aHash,
+					};
+				}
+				return result.screenshotUrl;
 			}
 		});
 	}
