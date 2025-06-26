@@ -27,6 +27,8 @@ import IOSD from '@signageos/front-applet/es6/FrontApplet/OSD/IOSD';
 import INativeMdcCommands from '@signageos/front-applet/es6/FrontApplet/NativeCommands/MDC/INativeMdcCommands';
 import IOfflineCache from '@signageos/front-applet/es6/FrontApplet/Offline/Cache/IOfflineCache';
 import IDisplay from '@signageos/front-applet/es6/FrontApplet/Display/IDisplay';
+import { IDeviceInfo } from '@signageos/front-applet/es6/FrontApplet/DeviceInfo/IDeviceInfo';
+import DeviceInfoCommands from './commands/DeviceInfo/DeviceInfoCommands';
 
 type ILogOperations = {
 	getAll(since?: Date): Promise<string[]>;
@@ -81,6 +83,7 @@ export default class Timing implements ITiming {
 	public readonly native: {
 		mdc: INativeMdcCommands;
 	};
+	public readonly deviceInfo: IDeviceInfo;
 
 	public readonly console: IConsole = ['log', 'error', 'warn', 'info', 'debug'].reduce<any>(
 		(consoleMemo: IConsole, level: string) => ({
@@ -141,6 +144,7 @@ export default class Timing implements ITiming {
 		this.native = {
 			mdc: new NativeMdcCommands(this.deviceUid, this.appletUid, this.appletCommandManagement),
 		};
+		this.deviceInfo = new DeviceInfoCommands(this.deviceUid, this.appletUid, this.appletCommandManagement);
 	}
 
 	/**
