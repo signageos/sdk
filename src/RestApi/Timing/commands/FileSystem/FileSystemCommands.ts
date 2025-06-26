@@ -11,6 +11,8 @@ import {
 	FileSystemAppendFileResult,
 	FileSystemCopyFileRequest,
 	FileSystemCopyFileResult,
+	FileSystemCreateArchiveFileRequest,
+	FileSystemCreateArchiveFileResult,
 	FileSystemCreateDirectoryRequest,
 	FileSystemCreateDirectoryResult,
 	FileSystemDeleteFileRequest,
@@ -27,6 +29,8 @@ import {
 	FileSystemGetFileResult,
 	FileSystemIsDirectoryRequest,
 	FileSystemIsDirectoryResult,
+	FileSystemLinkRequest,
+	FileSystemLinkResult,
 	FileSystemListFilesRequest,
 	FileSystemListFilesResult,
 	FileSystemListOfStorageUnitsRequest,
@@ -35,6 +39,8 @@ import {
 	FileSystemMoveFileResult,
 	FileSystemReadFileRequest,
 	FileSystemReadFileResult,
+	FileSystemWipeoutRequest,
+	FileSystemWipeoutResult,
 	FileSystemWriteFileRequest,
 	FileSystemWriteFileResult,
 } from '@signageos/front-applet/es6/Monitoring/FileSystem/fileSystemCommands';
@@ -350,14 +356,50 @@ export default class FileSystemCommands implements IFileSystem {
 		});
 	}
 
-	public async createArchive(_archiveFilePath: IFilePath, _archiveEntries: IFilePath[]): Promise<void> {
-		//TODO: implement
-		throw new Error('Not supported');
+	public async createArchive(archiveFilePath: IFilePath, archiveEntries: IFilePath[]): Promise<void> {
+		const createArchiveCommand = await this.appletCommandManagement.send<FileSystemCreateArchiveFileRequest>(
+			this.deviceUid,
+			this.appletUid,
+			{
+				command: {
+					type: FileSystemCreateArchiveFileRequest,
+					archiveFilePath,
+					archiveEntries,
+				},
+			},
+		);
+		await waitUntilReturnValue(async () => {
+			const createArchiveCommands = await this.appletCommandManagement.list<FileSystemCreateArchiveFileResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: createArchiveCommand.receivedAt,
+					type: FileSystemCreateArchiveFileResult,
+				},
+			);
+			if (createArchiveCommands.length > 0) {
+				return createArchiveCommands[0].command.result;
+			}
+		});
 	}
 
-	public async link(_sourceFilePath: IFilePath, _destinationFilePath: IFilePath): Promise<void> {
-		//TODO: Implement (only linux)
-		throw new Error('Not supported');
+	public async link(sourceFilePath: IFilePath, destinationFilePath: IFilePath): Promise<void> {
+		const command = await this.appletCommandManagement.send<FileSystemLinkRequest>(this.deviceUid, this.appletUid, {
+			command: {
+				type: FileSystemLinkRequest,
+				sourceFilePath,
+				destinationFilePath,
+			},
+		});
+		await waitUntilReturnValue(async () => {
+			const isDirectoryCommands = await this.appletCommandManagement.list<FileSystemLinkResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
+				type: FileSystemLinkResult,
+			});
+			if (isDirectoryCommands.length > 0) {
+				return isDirectoryCommands[0].command.result;
+			}
+		});
 	}
 
 	public async onStorageUnitsChanged(_listener: () => void): Promise<void> {
@@ -370,5 +412,22 @@ export default class FileSystemCommands implements IFileSystem {
 
 	public removeStorageUnitsChangedListener(_listener: () => void): void {
 		throw new Error('Not supported');
+	}
+
+	public async wipeout(): Promise<void> {
+		const command = await this.appletCommandManagement.send<FileSystemWipeoutRequest>(this.deviceUid, this.appletUid, {
+			command: {
+				type: FileSystemWipeoutRequest,
+			},
+		});
+		await waitUntilReturnValue(async () => {
+			const isDirectoryCommands = await this.appletCommandManagement.list<FileSystemWipeoutResult>(this.deviceUid, this.appletUid, {
+				receivedSince: command.receivedAt,
+				type: FileSystemWipeoutResult,
+			});
+			if (isDirectoryCommands.length > 0) {
+				return isDirectoryCommands[0].command.result;
+			}
+		});
 	}
 }
