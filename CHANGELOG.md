@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.28.0] - 2025-07-07
 ### Added
 - New applet commands for file system functions - `wipeout()`, `link()`, `createArchive()`, aHash screenshots - `takeAndUploadScreenshot()`, scheduled power actions - `setScheduledReboot()` etc., device & organization tags - `getOrganizationTags()`
 
