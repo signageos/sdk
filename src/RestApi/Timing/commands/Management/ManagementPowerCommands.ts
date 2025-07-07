@@ -1,10 +1,18 @@
 import {
+	ManagementPowerClearScheduledRebootsRequest,
+	ManagementPowerClearScheduledRebootsResult,
 	ManagementPowerGetProprietaryTimersRequest,
 	ManagementPowerGetProprietaryTimersResult,
+	ManagementPowerGetScheduledRebootsRequest,
+	ManagementPowerGetScheduledRebootsResult,
 	ManagementPowerGetTimersRequest,
 	ManagementPowerGetTimersResult,
+	ManagementPowerRemoveScheduledRebootRequest,
+	ManagementPowerRemoveScheduledRebootResult,
 	ManagementPowerSetProprietaryTimerRequest,
 	ManagementPowerSetProprietaryTimerResult,
+	ManagementPowerSetScheduledRebootRequest,
+	ManagementPowerSetScheduledRebootResult,
 	ManagementPowerSetTimerRequest,
 	ManagementPowerSetTimerResult,
 	ManagementPowerUnsetProprietaryTimerRequest,
@@ -20,7 +28,7 @@ import { ITimer, TimerType } from '@signageos/front-applet/es6/FrontApplet/Manag
 import { IProprietaryTimer } from '@signageos/front-applet/es6/FrontApplet/Management/helpers/ProprietaryTimerHelper';
 import { waitUntilResult, waitUntilReturnValue } from '../../../../Timer/waitUntil';
 import AppletCommandManagement from '../../../Applet/Command/AppletCommandManagement';
-import IPower from '@signageos/front-applet/es6/FrontApplet/Management/Power/IPower';
+import IPower, { IScheduledRebootActions, WeekdayType } from '@signageos/front-applet/es6/FrontApplet/Management/Power/IPower';
 
 export default class ManagementPowerCommands implements IPower {
 	constructor(
@@ -192,6 +200,93 @@ export default class ManagementPowerCommands implements IPower {
 				{
 					receivedSince: command.receivedAt,
 					type: ManagementPowerUnsetProprietaryTimerResult,
+				},
+			);
+			if (responseCommands.length > 0) {
+				return responseCommands[0].command.result;
+			}
+		});
+	}
+
+	public async clearScheduledReboots(): Promise<void> {
+		const command = await this.appletCommandManagement.send<ManagementPowerClearScheduledRebootsRequest>(this.deviceUid, this.appletUid, {
+			command: {
+				type: ManagementPowerClearScheduledRebootsRequest,
+			},
+		});
+		await waitUntilReturnValue(async () => {
+			const responseCommands = await this.appletCommandManagement.list<ManagementPowerClearScheduledRebootsResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: command.receivedAt,
+					type: ManagementPowerClearScheduledRebootsResult,
+				},
+			);
+			if (responseCommands.length > 0) {
+				return responseCommands[0].command.result;
+			}
+		});
+	}
+
+	public async getScheduledReboots(): Promise<IScheduledRebootActions[]> {
+		const command = await this.appletCommandManagement.send<ManagementPowerGetScheduledRebootsRequest>(this.deviceUid, this.appletUid, {
+			command: {
+				type: ManagementPowerGetScheduledRebootsRequest,
+			},
+		});
+		return await waitUntilReturnValue(async () => {
+			const responseCommands = await this.appletCommandManagement.list<ManagementPowerGetScheduledRebootsResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: command.receivedAt,
+					type: ManagementPowerGetScheduledRebootsResult,
+				},
+			);
+			if (responseCommands.length > 0) {
+				return responseCommands[0].command.result;
+			}
+		});
+	}
+
+	public async removeScheduledReboot(id: string): Promise<void> {
+		const command = await this.appletCommandManagement.send<ManagementPowerRemoveScheduledRebootRequest>(this.deviceUid, this.appletUid, {
+			command: {
+				type: ManagementPowerRemoveScheduledRebootRequest,
+				id,
+			},
+		});
+		await waitUntilReturnValue(async () => {
+			const responseCommands = await this.appletCommandManagement.list<ManagementPowerRemoveScheduledRebootResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: command.receivedAt,
+					type: ManagementPowerRemoveScheduledRebootResult,
+				},
+			);
+			if (responseCommands.length > 0) {
+				return responseCommands[0].command.result;
+			}
+		});
+	}
+
+	public async setScheduledReboot(weekdays: WeekdayType[], time: string): Promise<void> {
+		const command = await this.appletCommandManagement.send<ManagementPowerSetScheduledRebootRequest>(this.deviceUid, this.appletUid, {
+			command: {
+				type: ManagementPowerSetScheduledRebootRequest,
+				weekdays,
+				time,
+			},
+		});
+		await waitUntilReturnValue(async () => {
+			const responseCommands = await this.appletCommandManagement.list<ManagementPowerSetScheduledRebootResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: command.receivedAt,
+					type: ManagementPowerSetScheduledRebootResult,
 				},
 			);
 			if (responseCommands.length > 0) {

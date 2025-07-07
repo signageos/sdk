@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- New applet commands for file system functions - `wipeout()`, `link()`, `createArchive()`, aHash screenshots - `takeAndUploadScreenshot()`, scheduled power actions - `setScheduledReboot()` etc., device & organization tags - `getOrganizationTags()`
+
 ## [1.27.4] - 2025-04-25
 ### Fixed
 - Building applet using `dev.applet.startHotReload()` method waits for the initial build before serving the applet. It fixes some edge `--hot-reload` cases for older devices.
