@@ -8,6 +8,11 @@ import Timing from './Timing';
 import { isEqual } from 'lodash';
 import AppletCommandManagement from '../Applet/Command/AppletCommandManagement';
 
+interface ValidateDataValues {
+	configuration?: boolean;
+	dataValues?: boolean;
+}
+
 export default class TimingManagement {
 	private static readonly RESOURCE: string = 'timing';
 
@@ -29,7 +34,7 @@ export default class TimingManagement {
 		do {
 			await wait(500);
 			const timings = await this.getList({ deviceUid: data.deviceUid });
-			timing = timings.find((t: Timing) => this.areDataSame(t, data));
+			timing = timings.find((t: Timing) => this.areDataSame(t, data, { configuration: true, dataValues: true }));
 		} while (!timing);
 
 		return timing;
@@ -72,7 +77,11 @@ export default class TimingManagement {
 		}
 	}
 
-	private areDataSame(t1: ITimingCreateOnly & ITimingUpdatable, t2: ITimingCreateOnly & ITimingUpdatable) {
+	private areDataSame(
+		t1: ITimingCreateOnly & ITimingUpdatable,
+		t2: ITimingCreateOnly & ITimingUpdatable,
+		additionalValidation?: ValidateDataValues,
+	) {
 		if (t1.appletUid !== t2.appletUid) {
 			return false;
 		}
@@ -94,11 +103,16 @@ export default class TimingManagement {
 		if (t1.finishEvent.type !== t2.finishEvent.type) {
 			return false;
 		}
-		if (!isEqual(t1.finishEvent.data, t2.finishEvent.data)) {
-			return false;
+		// When we are updating timing, configuration might change, so we need to check it always
+		if (additionalValidation && additionalValidation.configuration) {
+			if (JSON.stringify(t1.configuration) !== JSON.stringify(t2.configuration)) {
+				return false;
+			}
 		}
-		if (JSON.stringify(t1.configuration) !== JSON.stringify(t2.configuration)) {
-			return false;
+		if (additionalValidation && additionalValidation.dataValues) {
+			if (!isEqual(t1.finishEvent.data, t2.finishEvent.data)) {
+				return false;
+			}
 		}
 		return true;
 	}
