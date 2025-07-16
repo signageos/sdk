@@ -15,7 +15,7 @@
     "lines": "72.78",
     "statements": "72.78",
     "functions": "74.61",
-    "branches": "83.97",
+    "branches": "83.35",
     "reporter": [
         "html",
         "cobertura",

@@ -5,6 +5,7 @@ import TimingManagement from '../../../../src/RestApi/Timing/TimingManagement';
 import { ApiVersions } from '../../../../src/RestApi/apiVersions';
 import { Resources } from '../../../../src/RestApi/resources';
 import { getNockOpts, nockAuthHeader1 } from '../helper';
+import { areConfigurationsEqual } from '../../../../src/RestApi/Timing/compareTimings';
 
 const nockOpts = getNockOpts({});
 const timingManagement = new TimingManagement(nockOpts);
@@ -35,7 +36,10 @@ describe('Unit.RestApi.Timing.TimingManagement', () => {
 		appletVersion: '1.0.0',
 		startsAt: new Date('2023-03-31T12:00:00'),
 		endsAt: new Date('2023-04-01T00:00:00'),
-		configuration: {},
+		configuration: {
+			identification: '75a3a61201',
+			randomValue: 'randomValue123',
+		},
 		position: 1,
 		finishEvent: { type: 'DURATION', data: null },
 	};
@@ -80,5 +84,30 @@ describe('Unit.RestApi.Timing.TimingManagement', () => {
 		nock(nockOpts.url, nockAuthHeader1).delete(`/${ApiVersions.V1}/${Resources.Timing}/${validGetResp.uid}`).reply(200, { message: 'OK' });
 
 		await should(timingManagement.delete(validGetResp.uid)).be.fulfilled();
+	});
+
+	describe('areConfigurationsEqual', () => {
+		const previousConfig = {
+			identification: '75a3a61201',
+			authKey: 'randomValue123',
+		};
+		const newConfig = {
+			identification: '75a3a61201',
+			authKey: 'randomValue456',
+		};
+		it('should be true if configurations are equal', () => {
+			should(areConfigurationsEqual(previousConfig, previousConfig)).be.true();
+		});
+		it('should be false if configurations are different', () => {
+			should(areConfigurationsEqual(previousConfig, newConfig)).be.false();
+		});
+		it('should be false if previous configuration has more keys', () => {
+			const prevConfig = { ...previousConfig, extraKey: 'extraValue' };
+			should(areConfigurationsEqual(prevConfig, newConfig)).be.false();
+		});
+		it('should be false if new configuration has more keys', () => {
+			const newConf = { ...newConfig, extraKey: 'extraValue' };
+			should(areConfigurationsEqual(previousConfig, newConf)).be.false();
+		});
 	});
 });
