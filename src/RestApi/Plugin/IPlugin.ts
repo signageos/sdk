@@ -6,4 +6,4 @@ export interface IPlugin {
 }
 
 export type IPluginCreatable = Pick<IPlugin, 'name' | 'title' | 'description'>;
-export type IPluginUpdatable = Partial<Pick<IPlugin, 'name' | 'title' | 'description' >>;
+export type IPluginUpdatable = Partial<Pick<IPlugin, 'name' | 'title' | 'description'>>;

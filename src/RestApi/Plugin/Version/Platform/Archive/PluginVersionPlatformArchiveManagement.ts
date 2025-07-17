@@ -17,14 +17,7 @@ export interface UploadFile {
 export class PluginVersionPlatformArchiveManagement {
 	constructor(private options: IOptions) {}
 
-	public async upload({
-		pluginUid,
-		version,
-		platform,
-		md5Checksum,
-		stream,
-		size,
-	}: IPluginVersionPlatformId & UploadFile): Promise<void> {
+	public async upload({ pluginUid, version, platform, md5Checksum, stream, size }: IPluginVersionPlatformId & UploadFile): Promise<void> {
 		const url = getUrl({ pluginUid, version, platform });
 		const response = await postResource(this.options, url, JSON.stringify({ md5Checksum }));
 		const body = await response.json();

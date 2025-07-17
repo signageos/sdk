@@ -3,12 +3,7 @@ import IOptions from '../../IOptions';
 import { deleteResource, getResource, parseJSONResponse, postResource, putResource } from '../../requester';
 import { getUrl as getPluginUrl } from '../PluginManagement';
 import { PluginVersion } from './PluginVersion';
-import {
-	IPluginVersion,
-	IPluginVersionCreatable,
-	IPluginVersionId,
-	IPluginVersionUpdatable,
-} from './IPluginVersion';
+import { IPluginVersion, IPluginVersionCreatable, IPluginVersionId, IPluginVersionUpdatable } from './IPluginVersion';
 import { PluginVersionPlatformManagement } from './Platform/PluginVersionPlatformManagement';
 
 export function getUrl(pluginUid: string, version?: string): string {
