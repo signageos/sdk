@@ -34,7 +34,8 @@ export class PluginManagement {
 
 	public async create(data: IPluginCreatable): Promise<IPlugin> {
 		const options = { ...this.options, followRedirects: true };
-		const response = await postResource(options, getUrl(), JSON.stringify(data));
+		console.log('Creating plugin', JSON.stringify(data));
+		const response = await postResource(options, 'plugin', JSON.stringify(data));
 		return new Plugin(await parseJSONResponse(response));
 	}
 

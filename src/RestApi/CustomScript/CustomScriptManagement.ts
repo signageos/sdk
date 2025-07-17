@@ -34,6 +34,7 @@ export class CustomScriptManagement {
 
 	public async create(data: ICustomScriptCreatable): Promise<ICustomScript> {
 		const options = { ...this.options, followRedirects: true };
+		console.log('Creating custom script', JSON.stringify(data));
 		const response = await postResource(options, getUrl(), JSON.stringify(data));
 		return new CustomScript(await parseJSONResponse(response));
 	}

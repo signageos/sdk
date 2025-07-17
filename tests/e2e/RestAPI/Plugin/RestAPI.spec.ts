@@ -18,13 +18,13 @@ describe('e2e.RestAPI - Plugin', () => {
 
 			should(plugin.uid).be.not.empty();
 			should(plugin.name).be.equal('test-plugin');
+			should(plugin.title).be.equal('Test Plugin');
 			should(plugin.description).be.equal('Test plugin description');
+			should(plugin.organizationUid).be.not.empty();
 
 			pluginUid = plugin.uid;
 		});
-	});
-
-	describe('list', () => {
+	});	describe('list', () => {
 		it('should list plugins', async () => {
 			const plugins = await api.plugin.list();
 
@@ -41,6 +41,7 @@ describe('e2e.RestAPI - Plugin', () => {
 			should(plugin).be.an.instanceOf(Plugin);
 			should(plugin!.uid).be.equal(pluginUid);
 			should(plugin!.name).be.equal('test-plugin');
+			should(plugin!.title).be.equal('Test Plugin');
 			should(plugin!.description).be.equal('Test plugin description');
 		});
 

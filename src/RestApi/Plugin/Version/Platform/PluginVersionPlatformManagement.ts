@@ -29,10 +29,10 @@ export class PluginVersionPlatformManagement {
 		return data.map((item: IPluginVersionPlatform) => new PluginVersionPlatform(item));
 	}
 
-	public async get(id: IPluginVersionPlatformId): Promise<IPluginVersionPlatform | null> {
+	public async get(pluginVersionPlatformId: IPluginVersionPlatformId): Promise<IPluginVersionPlatform | null> {
 		return await returnNullOn404(
 			(async () => {
-				const url = getUrl(id);
+				const url = getUrl(pluginVersionPlatformId);
 				const response = await getResource(this.options, url);
 				return new PluginVersionPlatform(await parseJSONResponse(response));
 			})(),
