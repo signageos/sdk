@@ -13,7 +13,6 @@ export interface IPluginVersionPlatform {
 	archiveUri: string;
 }
 
-
 export type IPluginVersionPlatformId = Pick<IPluginVersionPlatform, 'pluginUid' | 'version' | 'platform'>;
 export type IPluginVersionPlatformCreatable = Pick<IPluginVersionPlatform, 'platform' | 'runtime' | 'mainFile' | 'md5Checksum'>;
 export type IPluginVersionPlatformUpdatable = Pick<IPluginVersionPlatform, 'runtime' | 'mainFile' | 'md5Checksum'>;

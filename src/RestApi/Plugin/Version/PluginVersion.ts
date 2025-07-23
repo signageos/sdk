@@ -9,7 +9,6 @@ export class PluginVersion implements IPluginVersion {
 	public readonly output?: IPluginVersion['output'];
 	public readonly jsApiVersion?: IPluginVersion['jsApiVersion'];
 	public readonly description?: IPluginVersion['description'];
-	
 
 	constructor(data: IPluginVersion) {
 		fillDataToEntity(this, data);

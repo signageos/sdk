@@ -2,18 +2,19 @@ import { returnNullOn404 } from '../../../Lib/request';
 import IOptions from '../../IOptions';
 import { deleteResource, getResource, parseJSONResponse, postResource, putResource } from '../../requester';
 import { IRunnerVersion, IRunnerVersionCreatable, IRunnerVersionUpdatable } from './IRunnerVersion';
+import { RunnerVersionPlatformManagement } from './Platform/RunnerVersionPlatformManagement';
 import { RunnerVersion } from './RunnerVersion';
 
 export function getUrl(runnerUid: string, version?: string): string {
-	const baseUrl = `${getUrl(runnerUid)}/version`;
+	const baseUrl = `runner/${runnerUid}/version`;
 	return version ? `${baseUrl}/${version}` : baseUrl;
 }
 
 export class RunnerVersionManagement {
-	public readonly platform: RunnerVersionManagement;
+	public readonly platform: RunnerVersionPlatformManagement;
 
 	constructor(private options: IOptions) {
-		this.platform = new RunnerVersionManagement(options);
+		this.platform = new RunnerVersionPlatformManagement(options);
 	}
 
 	public async list(runnerUid: string): Promise<IRunnerVersion[]> {
@@ -23,7 +24,7 @@ export class RunnerVersionManagement {
 		return data.map((item: IRunnerVersion) => new RunnerVersion(item));
 	}
 
-	public async get({ runnerUid, version }: IRunnerVersion): Promise<IRunnerVersion | null> {
+	public async get(runnerUid: string, version: string): Promise<IRunnerVersion | null> {
 		const url = getUrl(runnerUid, version);
 
 		return returnNullOn404(
@@ -34,19 +35,19 @@ export class RunnerVersionManagement {
 		);
 	}
 
-	public async create({ runnerUid, ...data }: IRunnerVersion & IRunnerVersionCreatable): Promise<IRunnerVersion> {
+	public async create(runnerUid: string, version: string, data: IRunnerVersionCreatable): Promise<IRunnerVersion> {
 		const options = { ...this.options, followRedirects: true };
-		const url = getUrl(runnerUid);
+		const url = getUrl(runnerUid, version);
 		const response = await postResource(options, url, JSON.stringify(data));
 		return new RunnerVersion(await parseJSONResponse(response));
 	}
 
-	public async update({ runnerUid, version, ...data }: IRunnerVersion & IRunnerVersionUpdatable) {
+	public async update(runnerUid: string, version: string, data: IRunnerVersionUpdatable) {
 		const url = getUrl(runnerUid, version);
 		await putResource(this.options, url, JSON.stringify(data));
 	}
 
-	public async delete({ runnerUid, version }: IRunnerVersion) {
+	public async delete(runnerUid: string, version: string) {
 		const url = getUrl(runnerUid, version);
 		await deleteResource(this.options, url);
 	}

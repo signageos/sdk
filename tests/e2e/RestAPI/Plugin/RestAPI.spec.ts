@@ -24,7 +24,8 @@ describe('e2e.RestAPI - Plugin', () => {
 
 			pluginUid = plugin.uid;
 		});
-	});	describe('list', () => {
+	});
+	describe('list', () => {
 		it('should list plugins', async () => {
 			const plugins = await api.plugin.list();
 

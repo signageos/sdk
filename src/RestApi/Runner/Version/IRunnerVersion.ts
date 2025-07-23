@@ -1,9 +1,20 @@
 export interface IRunnerVersion {
+	uid: string;
 	runnerUid: string;
 	version: string;
-	configDefinition: any; // TODO
+	configDefinition: any;
+	input: any;
+	output: any;
+	telemetry?: any;
+	jsApiVersion?: string;
+	description: string;
 }
 
 export type IRunnerVersionId = Pick<IRunnerVersion, 'runnerUid' | 'version'>;
-export type IRunnerVersionCreatable = Pick<IRunnerVersion, 'configDefinition'>;
-export type IRunnerVersionUpdatable = Pick<IRunnerVersion, 'configDefinition'>;
+export type IRunnerVersionCreatable = Pick<
+	IRunnerVersion,
+	'configDefinition' | 'input' | 'output' | 'telemetry' | 'jsApiVersion' | 'description'
+>;
+export type IRunnerVersionUpdatable = Partial<
+	Pick<IRunnerVersion, 'configDefinition' | 'input' | 'output' | 'telemetry' | 'jsApiVersion' | 'description'>
+>;

@@ -10,10 +10,6 @@ export class Plugin implements IPlugin {
 	public readonly tagUids?: IPlugin['tagUids'];
 	public readonly supportedPlatforms?: IPlugin['supportedPlatforms'];
 	public readonly latestVersion?: IPlugin['latestVersion'];
-	public readonly createdAt?: IPlugin['createdAt'];
-	public readonly updatedAt?: IPlugin['updatedAt'];
-	public readonly createdBy?: IPlugin['createdBy'];
-	public readonly updatedBy?: IPlugin['updatedBy'];
 
 	constructor(data: IPlugin) {
 		fillDataToEntity(this, data);

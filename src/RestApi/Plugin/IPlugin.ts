@@ -7,13 +7,7 @@ export interface IPlugin {
 	tagUids?: string[];
 	supportedPlatforms?: string[];
 	latestVersion?: string;
-	createdAt?: string;
-	updatedAt?: string;
-	createdBy?: any;
-	updatedBy?: any;
 }
 
-export type IPluginCreatable = Pick<IPlugin, 'name' | 'title' | 'description' | 'tagUids'> & {
-	organizationUid?: string;
-};
+export type IPluginCreatable = Pick<IPlugin, 'name' | 'title' | 'description' | 'tagUids'>;
 export type IPluginUpdatable = Partial<Pick<IPlugin, 'name' | 'title' | 'description' | 'tagUids'>>;
