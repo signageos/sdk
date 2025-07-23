@@ -33,6 +33,8 @@ import {
 	FileSystemLinkResult,
 	FileSystemListFilesRequest,
 	FileSystemListFilesResult,
+	FileSystemListOfInternalStorageUnitsRequest,
+	FileSystemListOfInternalStorageUnitsResult,
 	FileSystemListOfStorageUnitsRequest,
 	FileSystemListOfStorageUnitsResult,
 	FileSystemMoveFileRequest,
@@ -76,6 +78,31 @@ export default class FileSystemCommands implements IFileSystem {
 			);
 			if (listOfStorageUnitsCommands.length > 0) {
 				return listOfStorageUnitsCommands[0].command.storageUnits;
+			}
+		});
+	}
+
+	public async listInternalStorageUnits(): Promise<IStorageUnit[]> {
+		const listInternalStorageUnitsCommand = await this.appletCommandManagement.send<FileSystemListOfInternalStorageUnitsRequest>(
+			this.deviceUid,
+			this.appletUid,
+			{
+				command: {
+					type: FileSystemListOfInternalStorageUnitsRequest,
+				},
+			},
+		);
+		return await waitUntilReturnValue(async () => {
+			const listOfInternalStorageUnitsCommand = await this.appletCommandManagement.list<FileSystemListOfInternalStorageUnitsResult>(
+				this.deviceUid,
+				this.appletUid,
+				{
+					receivedSince: listInternalStorageUnitsCommand.receivedAt,
+					type: FileSystemListOfInternalStorageUnitsResult,
+				},
+			);
+			if (listOfInternalStorageUnitsCommand.length > 0) {
+				return listOfInternalStorageUnitsCommand[0].command.storageUnits;
 			}
 		});
 	}
