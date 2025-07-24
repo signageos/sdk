@@ -5,8 +5,7 @@ export class PluginVersion implements IPluginVersion {
 	public readonly pluginUid: IPluginVersion['pluginUid'];
 	public readonly version: IPluginVersion['version'];
 	public readonly configDefinition?: IPluginVersion['configDefinition'];
-	public readonly input?: IPluginVersion['input'];
-	public readonly output?: IPluginVersion['output'];
+	public readonly schema?: IPluginVersion['schema'];
 	public readonly jsApiVersion?: IPluginVersion['jsApiVersion'];
 	public readonly description?: IPluginVersion['description'];
 

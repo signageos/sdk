@@ -1,4 +1,6 @@
 export interface IRunnerVersionPlatform {
+	runnerUid: string;
+	version: string;
 	/** Platform name (i.e. linux, tizen, webos,...) */
 	platform: string;
 	/** Script runtime (i.e. browser.js, node.js, bash,...) */
@@ -11,6 +13,6 @@ export interface IRunnerVersionPlatform {
 	mainFile: string;
 }
 
-export type IRunnerVersionPlatformId = Pick<IRunnerVersionPlatform, 'platform'>;
-export type IRunnerVersionPlatformCreatable = Pick<IRunnerVersionPlatform, 'platform' | 'runtime' | 'mainFile'>;
-export type IRunnerVersionPlatformUpdatable = Pick<IRunnerVersionPlatform, 'runtime' | 'mainFile'>;
+export type IRunnerVersionPlatformId = Pick<IRunnerVersionPlatform, 'runnerUid' | 'version' | 'platform'>;
+export type IRunnerVersionPlatformCreatable = Pick<IRunnerVersionPlatform, 'platform' | 'runtime' | 'mainFile' | 'md5Checksum'>;
+export type IRunnerVersionPlatformUpdatable = Pick<IRunnerVersionPlatform, 'runtime' | 'mainFile' | 'md5Checksum'>;

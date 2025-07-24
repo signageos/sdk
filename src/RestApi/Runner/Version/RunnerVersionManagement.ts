@@ -1,12 +1,13 @@
 import { returnNullOn404 } from '../../../Lib/request';
 import IOptions from '../../IOptions';
 import { deleteResource, getResource, parseJSONResponse, postResource, putResource } from '../../requester';
-import { IRunnerVersion, IRunnerVersionCreatable, IRunnerVersionUpdatable } from './IRunnerVersion';
+import { IRunnerVersion, IRunnerVersionCreatable, IRunnerVersionId, IRunnerVersionUpdatable } from './IRunnerVersion';
 import { RunnerVersionPlatformManagement } from './Platform/RunnerVersionPlatformManagement';
 import { RunnerVersion } from './RunnerVersion';
+import { getUrl as getRunnerUrl } from '../RunnerManagement';
 
 export function getUrl(runnerUid: string, version?: string): string {
-	const baseUrl = `runner/${runnerUid}/version`;
+	const baseUrl = `${getRunnerUrl(runnerUid)}/version`;
 	return version ? `${baseUrl}/${version}` : baseUrl;
 }
 
@@ -24,7 +25,7 @@ export class RunnerVersionManagement {
 		return data.map((item: IRunnerVersion) => new RunnerVersion(item));
 	}
 
-	public async get(runnerUid: string, version: string): Promise<IRunnerVersion | null> {
+	public async get({ runnerUid, version }: IRunnerVersionId): Promise<IRunnerVersion | null> {
 		const url = getUrl(runnerUid, version);
 
 		return returnNullOn404(
@@ -35,19 +36,19 @@ export class RunnerVersionManagement {
 		);
 	}
 
-	public async create(runnerUid: string, version: string, data: IRunnerVersionCreatable): Promise<IRunnerVersion> {
+	public async create({ runnerUid, ...data }: IRunnerVersion & IRunnerVersionCreatable): Promise<IRunnerVersion> {
 		const options = { ...this.options, followRedirects: true };
-		const url = getUrl(runnerUid, version);
+		const url = getUrl(runnerUid);
 		const response = await postResource(options, url, JSON.stringify(data));
 		return new RunnerVersion(await parseJSONResponse(response));
 	}
 
-	public async update(runnerUid: string, version: string, data: IRunnerVersionUpdatable) {
+	public async update({ runnerUid, version, ...data }: IRunnerVersion & IRunnerVersionUpdatable) {
 		const url = getUrl(runnerUid, version);
 		await putResource(this.options, url, JSON.stringify(data));
 	}
 
-	public async delete(runnerUid: string, version: string) {
+	public async delete({ runnerUid, version }: IRunnerVersionId): Promise<void> {
 		const url = getUrl(runnerUid, version);
 		await deleteResource(this.options, url);
 	}

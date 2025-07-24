@@ -2,6 +2,8 @@ import { fillDataToEntity } from '../../../mapper';
 import { IRunnerVersionPlatform } from './IRunnerVersionPlatform';
 
 export class RunnerVersionPlatform implements IRunnerVersionPlatform {
+	public readonly runnerUid: IRunnerVersionPlatform['runnerUid'];
+	public readonly version: IRunnerVersionPlatform['version'];
 	public readonly platform: IRunnerVersionPlatform['platform'];
 	public readonly runtime: IRunnerVersionPlatform['runtime'];
 	public readonly archiveUri: IRunnerVersionPlatform['archiveUri'];

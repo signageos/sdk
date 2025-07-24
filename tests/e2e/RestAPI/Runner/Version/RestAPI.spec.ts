@@ -59,7 +59,9 @@ describe('e2e.RestAPI - Runner Version', () => {
 				},
 			];
 
-			const runnerVersion = await api.runner.version.create(runnerUid, version, {
+			const runnerVersion = await api.runner.version.create({
+				runnerUid,
+				version,
 				configDefinition,
 				input,
 				output,
@@ -87,7 +89,7 @@ describe('e2e.RestAPI - Runner Version', () => {
 
 	describe('get', () => {
 		it('should get runner version', async () => {
-			const runnerVersion = await api.runner.version.get(runnerUid, version);
+			const runnerVersion = await api.runner.version.get({ runnerUid, version });
 
 			should(runnerVersion).be.an.instanceOf(RunnerVersion);
 			should(runnerVersion!.runnerUid).be.equal(runnerUid);
@@ -98,7 +100,7 @@ describe('e2e.RestAPI - Runner Version', () => {
 		});
 
 		it('should return null for non-existing runner version', async () => {
-			const runnerVersion = await api.runner.version.get(runnerUid, 'non-existing');
+			const runnerVersion = await api.runner.version.get({ runnerUid, version: 'non-existing' });
 			should(runnerVersion).be.null();
 		});
 	});
@@ -116,12 +118,16 @@ describe('e2e.RestAPI - Runner Version', () => {
 				},
 			];
 
-			await api.runner.version.update(runnerUid, version, {
+			await api.runner.version.update({
+				runnerUid,
+				version,
 				configDefinition: updatedConfig,
+				input: [],
+				output: [],
 				description: 'Updated description',
 			});
 
-			const runnerVersion = await api.runner.version.get(runnerUid, version);
+			const runnerVersion = await api.runner.version.get({ runnerUid, version });
 			should(runnerVersion!.configDefinition).deepEqual(updatedConfig);
 			should(runnerVersion!.description).be.equal('Updated description');
 		});
@@ -129,9 +135,12 @@ describe('e2e.RestAPI - Runner Version', () => {
 
 	describe('delete', () => {
 		it('should delete runner version', async () => {
-			await api.runner.version.delete(runnerUid, version);
+			await api.runner.version.delete({
+				runnerUid,
+				version,
+			});
 
-			const runnerVersion = await api.runner.version.get(runnerUid, version);
+			const runnerVersion = await api.runner.version.get({ runnerUid, version });
 			should(runnerVersion).be.null();
 		});
 	});

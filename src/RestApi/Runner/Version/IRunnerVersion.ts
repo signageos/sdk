@@ -1,5 +1,4 @@
 export interface IRunnerVersion {
-	uid: string;
 	runnerUid: string;
 	version: string;
 	configDefinition: any;

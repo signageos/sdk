@@ -19,7 +19,9 @@ describe('e2e.RestAPI - Runner Version Platform', () => {
 
 		runnerUid = runner.uid;
 
-		await api.runner.version.create(runnerUid, version, {
+		await api.runner.version.create({
+			runnerUid,
+			version,
 			configDefinition: [],
 			input: [],
 			output: [],
@@ -33,10 +35,13 @@ describe('e2e.RestAPI - Runner Version Platform', () => {
 
 	describe('create', () => {
 		it('should create runner version platform', async () => {
-			const runnerVersionPlatform = await api.runner.version.platform.create(runnerUid, version, platform, {
+			const runnerVersionPlatform = await api.runner.version.platform.create({
+				runnerUid,
+				version,
 				platform,
 				mainFile: 'index.js',
 				runtime: 'node.js',
+				md5Checksum: 'dummy-checksum',
 			});
 
 			should(runnerVersionPlatform.platform).be.equal(platform);
@@ -47,7 +52,7 @@ describe('e2e.RestAPI - Runner Version Platform', () => {
 
 	describe('list', () => {
 		it('should list runner version platforms', async () => {
-			const runnerVersionPlatforms = await api.runner.version.platform.list(runnerUid, version);
+			const runnerVersionPlatforms = await api.runner.version.platform.list({ runnerUid, version });
 
 			should(runnerVersionPlatforms).be.an.Array();
 			should(runnerVersionPlatforms.length).be.greaterThanOrEqual(1);
@@ -59,7 +64,7 @@ describe('e2e.RestAPI - Runner Version Platform', () => {
 
 	describe('get', () => {
 		it('should get runner version platform', async () => {
-			const runnerVersionPlatform = await api.runner.version.platform.get(runnerUid, version, platform);
+			const runnerVersionPlatform = await api.runner.version.platform.get({ runnerUid, version, platform });
 
 			should(runnerVersionPlatform).be.an.instanceOf(RunnerVersionPlatform);
 			should(runnerVersionPlatform!.platform).be.equal(platform);
@@ -68,41 +73,33 @@ describe('e2e.RestAPI - Runner Version Platform', () => {
 		});
 
 		it('should return null for non-existing runner version platform', async () => {
-			const runnerVersionPlatform = await api.runner.version.platform.get(runnerUid, version, 'non-existing');
+			const runnerVersionPlatform = await api.runner.version.platform.get({ runnerUid, version, platform: 'non-existing' });
 			should(runnerVersionPlatform).be.null();
 		});
 	});
 
 	describe('update', () => {
 		it('should update runner version platform', async () => {
-			const updatedPlatform = await api.runner.version.platform.update(runnerUid, version, platform, {
+			await api.runner.version.platform.update({
+				runnerUid,
+				version,
+				platform,
 				mainFile: 'updated-index.js',
 				runtime: 'sh',
+				md5Checksum: 'updated-checksum',
 			});
 
-			should(updatedPlatform.mainFile).be.equal('updated-index.js');
-			should(updatedPlatform.runtime).be.equal('sh');
-
-			const runnerVersionPlatform = await api.runner.version.platform.get(runnerUid, version, platform);
+			const runnerVersionPlatform = await api.runner.version.platform.get({ runnerUid, version, platform });
 			should(runnerVersionPlatform!.mainFile).be.equal('updated-index.js');
 			should(runnerVersionPlatform!.runtime).be.equal('sh');
 		});
 	});
 
-	describe('archive', () => {
-		it('should create archive upload URL', async () => {
-			const result = await api.runner.version.platform.archive.create(runnerUid, version, platform, 'test-md5-checksum');
-
-			should(result).have.property('uploadUrl');
-			should(result.uploadUrl).be.a.String();
-		});
-	});
-
 	describe('delete', () => {
 		it('should delete runner version platform', async () => {
-			await api.runner.version.platform.delete(runnerUid, version, platform);
+			await api.runner.version.platform.delete({ runnerUid, version, platform });
 
-			const runnerVersionPlatform = await api.runner.version.platform.get(runnerUid, version, platform);
+			const runnerVersionPlatform = await api.runner.version.platform.get({ runnerUid, version, platform });
 			should(runnerVersionPlatform).be.null();
 		});
 	});

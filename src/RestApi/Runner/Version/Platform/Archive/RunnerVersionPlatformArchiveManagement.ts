@@ -1,9 +1,11 @@
 import IOptions from '../../../../IOptions';
-import { parseJSONResponse, postResource } from '../../../../requester';
+import { postResource } from '../../../../requester';
 import { postStorage } from '../../../../storageRequester';
+import { IRunnerVersionPlatformId } from '../IRunnerVersionPlatform';
+import { getUrl as getRunnerVersionPlatformUrl } from '../RunnerVersionPlatformManagement';
 
-export function getUrl(runnerUid: string, version: string, platform: string): string {
-	return `runner/${runnerUid}/version/${version}/platform/${platform}/archive`;
+export function getUrl(id: IRunnerVersionPlatformId): string {
+	return `${getRunnerVersionPlatformUrl(id)}/archive`;
 }
 
 export interface UploadFile {
@@ -15,16 +17,10 @@ export interface UploadFile {
 export class RunnerVersionPlatformArchiveManagement {
 	constructor(private options: IOptions) {}
 
-	public async create(runnerUid: string, version: string, platform: string, md5Checksum: string): Promise<{ uploadUrl: string }> {
-		const url = getUrl(runnerUid, version, platform);
+	public async upload({ runnerUid, version, platform, md5Checksum, stream, size }: IRunnerVersionPlatformId & UploadFile): Promise<void> {
+		const url = getUrl({ runnerUid, version, platform });
 		const response = await postResource(this.options, url, JSON.stringify({ md5Checksum }));
-		return await parseJSONResponse(response);
-	}
-
-	public async upload(runnerUid: string, version: string, platform: string, { md5Checksum, stream, size }: UploadFile): Promise<void> {
-		const url = getUrl(runnerUid, version, platform);
-		const response = await postResource(this.options, url, JSON.stringify({ md5Checksum }));
-		const body = await parseJSONResponse(response);
+		const body = await response.json();
 		await postStorage(body.upload.request.url, body.upload.request.fields, stream, size);
 	}
 }
