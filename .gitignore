@@ -5,6 +5,7 @@ docs/*
 .idea
 .vscode
 .env
+.DS_Store
 
 # Test
 coverage/*

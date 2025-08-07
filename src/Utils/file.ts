@@ -1,8 +1,8 @@
-import { fromBuffer } from 'file-type';
+import { fileTypeFromBuffer } from 'file-type/node';
 
 // TODO: Copied from @signageos/lib, we can add this lib to dependencies ?
 export const getFileExtension = async (file: Buffer) => {
-	const fileType = await fromBuffer(file);
+	const fileType = await fileTypeFromBuffer(file);
 	const extension = fileType?.ext ?? fileType?.mime;
 
 	return extension;

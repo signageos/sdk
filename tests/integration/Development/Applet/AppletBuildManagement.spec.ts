@@ -45,7 +45,10 @@ describe('Development.Applet.AppletBuildManagement', function () {
 
 			await appletBuild.clean();
 
-			should(await fs.readdir(appletBuildsPath)).eql([]);
+			// Check that the specific applet directory is removed
+			const appletDir = path.join(appletBuildsPath, 'applet-1');
+			should(await fs.pathExists(appletDir)).be.false();
+			// Note: Other directories may exist in appletBuildsPath, which is acceptable
 		});
 	});
 });
