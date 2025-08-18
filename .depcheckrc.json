@@ -21,6 +21,7 @@
 		"typescript",
 		"tslint",
 		"@istanbuljs/nyc-config-typescript",
-		"c8"
+		"c8",
+		"file-type"
 	]
 }

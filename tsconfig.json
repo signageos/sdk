@@ -2,14 +2,15 @@
 	"extends": "@signageos/codestyle/tsconfig-strict.json",
 	"compilerOptions": {
 		"target": "es6",
-    "declaration": true,
+		"declaration": true,
 		"noUncheckedIndexedAccess": false,
 		"strictPropertyInitialization": false,
 		"lib": ["DOM"],
 		"checkJs": false,
-		"outDir": "dist"
+		"outDir": "dist",
+		"moduleResolution": "NodeNext"
 	},
-	"include": ["src/**/*.ts", "test/**/*.ts"],
+	"include": ["src/**/*.ts", "tests/**/*.ts"],
 	"ts-node": {
 		"swc": true
 	}
