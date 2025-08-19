@@ -18,6 +18,8 @@ import IOptions from './IOptions';
 import PackageManagement from './Package/PackageManagement';
 import { Paginator } from '../Lib/Pagination/paginator';
 import { CustomScriptManagement } from './CustomScript/CustomScriptManagement';
+import { PluginManagement } from './Plugin/PluginManagement';
+import { RunnerManagement } from './Runner/RunnerManagement';
 
 export default class RestApi {
 	// Note: We use different authentication here
@@ -45,6 +47,8 @@ export default class RestApi {
 	public readonly locationOrganizationTag: LocationOrganizationTag = new LocationOrganizationTag(this.organizationOptions);
 
 	public readonly customScript: CustomScriptManagement = new CustomScriptManagement(this.organizationOptions);
+	public readonly plugin: PluginManagement = new PluginManagement(this.organizationOptions);
+	public readonly runner: RunnerManagement = new RunnerManagement(this.organizationOptions);
 
 	constructor(
 		public readonly accountOptions: IOptions,

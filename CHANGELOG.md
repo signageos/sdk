@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 - Support for internal storage listing functionality in file system applet commands
+- Support for `api.plugin`, `api.plugin.version`, `api.runner` and `api.runner.version` management
 
 ## [1.28.1] - 2025-07-15
 ### Fixed
