@@ -8,9 +8,10 @@
 		"lib": ["DOM"],
 		"checkJs": false,
 		"outDir": "dist",
+		"rootDir": "src",
 		"moduleResolution": "NodeNext"
 	},
-	"include": ["src/**/*.ts", "tests/**/*.ts"],
+	"include": ["src/**/*.ts"],
 	"ts-node": {
 		"swc": true
 	}

@@ -1,6 +1,5 @@
 dist/
 node_modules/
-tests/**/*.js
 docs/*
 .idea
 .vscode
@@ -9,4 +8,5 @@ docs/*
 
 # Test
 coverage/*
-.DS_Store
+tests/**/*.d.ts
+tests/**/*.js
