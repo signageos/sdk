@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Changed
-- Updated `jsdom@18.0.1` to `jsdom@26.1.0` which requires `canvas@3` and `node@18`
+- **BREAKING**: Updated `jsdom@18.0.1` to `jsdom@26.1.0` which requires `node@18+` minimum
+  - Users running Node 16 or older must upgrade to Node 18+ to use this version
+  - The JSDOM API surface remains the same, but internal behavior may have changed
+  - Test your `instanceof` checks with DOM objects if you use them
+  - Verify WebSocket SSL connections if applicable  
 
 ## [1.29.0] - 2025-08-19
 ### Added
