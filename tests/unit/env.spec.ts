@@ -2,11 +2,14 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 import should from 'should';
 
+// Load from repository root instead of tests directory
+const envPath = path.resolve(process.cwd(), '.env.production');
+
 describe('.env file for production build', function () {
 	it('should always contain exact values because this file is used in production build of @signageos/sdk library as default values', () => {
 		const env: Record<string, string> = {};
 		dotenv.config({
-			path: path.join(__dirname, '..', '..', '.env.production'),
+			path: envPath,
 			processEnv: env,
 		});
 
