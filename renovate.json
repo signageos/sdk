@@ -1,0 +1,5 @@
+{
+  "extends": [
+    "gitlab>signageos/infra/renovate-config"
+  ]
+}

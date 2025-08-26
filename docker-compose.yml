@@ -1,7 +1,6 @@
 services:
     app:
-        image: 172396373649.dkr.ecr.eu-central-1.amazonaws.com/signageos/docker-node:20-alpine-build
-        build: .
+        image: node:20-alpine
         volumes:
             - $PWD:/app
         command: tail -f /dev/null
@@ -9,3 +8,17 @@ services:
         init: true
         env_file:
             - ~/.signageos/npm.env
+        environment:
+            # Fallback environment variables (will be overridden by env_file if present)
+            # Organization API SECURITY TOKENS
+            - SOS_AUTH_CLIENT_ID=${SOS_AUTH_CLIENT_ID:-}
+            - SOS_AUTH_SECRET=${SOS_AUTH_SECRET:-}
+            # Account API SECURITY TOKENS  
+            - SOS_API_IDENTIFICATION=${SOS_API_IDENTIFICATION:-}
+            - SOS_API_SECURITY_TOKEN=${SOS_API_SECURITY_TOKEN:-}
+            # Optional settings with defaults
+            - SOS_API_URL=${SOS_API_URL:-https://api.signageos.io}
+            - SOS_REQUEST_MAX_ATTEMPTS=${SOS_REQUEST_MAX_ATTEMPTS:-3}
+            - SOS_FORWARD_SERVER_URL=${SOS_FORWARD_SERVER_URL:-https://forward.signageos.io}
+            - SOS_ORGANIZATION_UID=${SOS_ORGANIZATION_UID:-}
+            - SOS_PROFILE=${SOS_PROFILE:-}
