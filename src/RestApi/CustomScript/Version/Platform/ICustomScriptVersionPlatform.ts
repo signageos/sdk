@@ -5,7 +5,7 @@ export interface ICustomScriptVersionPlatform {
 	platform: string;
 	/** Main file of the script that should be executed */
 	mainFile: string;
-	/** Script runtime (i.e. browser.js, node.js, bash,...) */
+	/** Script runtime. Valid values: 'ps1' | 'bash' | 'sh' | 'nodejs' | 'browser' | 'brs' */
 	runtime: string;
 	/** Checksum of the archive, that contains the script files */
 	md5Checksum: string;

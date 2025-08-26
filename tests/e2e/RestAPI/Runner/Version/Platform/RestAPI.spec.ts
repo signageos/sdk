@@ -40,13 +40,13 @@ describe('e2e.RestAPI - Runner Version Platform', () => {
 				version,
 				platform,
 				mainFile: 'index.js',
-				runtime: 'node.js',
+				runtime: 'nodejs',
 				md5Checksum: 'dummy-checksum',
 			});
 
 			should(runnerVersionPlatform.platform).be.equal(platform);
 			should(runnerVersionPlatform.mainFile).be.equal('index.js');
-			should(runnerVersionPlatform.runtime).be.equal('node.js');
+			should(runnerVersionPlatform.runtime).be.equal('nodejs');
 		});
 	});
 
@@ -69,7 +69,7 @@ describe('e2e.RestAPI - Runner Version Platform', () => {
 			should(runnerVersionPlatform).be.an.instanceOf(RunnerVersionPlatform);
 			should(runnerVersionPlatform!.platform).be.equal(platform);
 			should(runnerVersionPlatform!.mainFile).be.equal('index.js');
-			should(runnerVersionPlatform!.runtime).be.equal('node.js');
+			should(runnerVersionPlatform!.runtime).be.equal('nodejs');
 		});
 
 		it('should return null for non-existing runner version platform', async () => {

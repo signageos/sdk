@@ -22,6 +22,7 @@ describe('e2e.RestAPI - Plugin Version Platform', () => {
 		await api.plugin.version.create({
 			pluginUid,
 			version,
+			description: 'Test plugin version description',
 			configDefinition: [],
 		});
 	});
