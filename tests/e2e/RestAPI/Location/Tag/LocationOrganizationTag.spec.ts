@@ -19,33 +19,41 @@ describe('e2e.RestAPI.Device.Location.Tag.LocationOrganizationTag', async () => 
 	});
 
 	it('should assign and unassign organization tag to and from location', async function () {
-		const createdLocation1 = await handleCreateLocation(api, {
-			location: generateLocationCreatable(),
-			organizationUid: getOrganizationUid(),
-		});
-		toDelete.push(createdLocation1);
+		try {
+			const createdLocation1 = await handleCreateLocation(api, {
+				location: generateLocationCreatable(),
+				organizationUid: getOrganizationUid(),
+			});
+			toDelete.push(createdLocation1);
 
-		const organizationTag1 = await api.organizationTag.create(generateOrganizationTagCreate());
-		const organizationTag2 = await api.organizationTag.create(generateOrganizationTagCreate());
+			const organizationTag1 = await api.organizationTag.create(generateOrganizationTagCreate());
+			const organizationTag2 = await api.organizationTag.create(generateOrganizationTagCreate());
 
-		await api.locationOrganizationTag.assign(createdLocation1.uid, organizationTag1.uid);
-		const locationWithOrganizationTag1 = await api.location.get(createdLocation1.uid);
+			await api.locationOrganizationTag.assign(createdLocation1.uid, organizationTag1.uid);
+			const locationWithOrganizationTag1 = await api.location.get(createdLocation1.uid);
 
-		should(locationWithOrganizationTag1.tagUids).be.deepEqual([organizationTag1.uid]);
+			should(locationWithOrganizationTag1.tagUids).be.deepEqual([organizationTag1.uid]);
 
-		await api.locationOrganizationTag.assign(createdLocation1.uid, organizationTag2.uid);
-		const locationWithOrganizationTag2 = await api.location.get(createdLocation1.uid);
+			await api.locationOrganizationTag.assign(createdLocation1.uid, organizationTag2.uid);
+			const locationWithOrganizationTag2 = await api.location.get(createdLocation1.uid);
 
-		should(locationWithOrganizationTag2.tagUids).be.deepEqual([organizationTag1.uid, organizationTag2.uid]);
+			should(locationWithOrganizationTag2.tagUids).be.deepEqual([organizationTag1.uid, organizationTag2.uid]);
 
-		await api.locationOrganizationTag.unassign(createdLocation1.uid, organizationTag1.uid);
-		const locationWithOrganizationTag3 = await api.location.get(createdLocation1.uid);
+			await api.locationOrganizationTag.unassign(createdLocation1.uid, organizationTag1.uid);
+			const locationWithOrganizationTag3 = await api.location.get(createdLocation1.uid);
 
-		should(locationWithOrganizationTag3.tagUids).be.deepEqual([organizationTag2.uid]);
+			should(locationWithOrganizationTag3.tagUids).be.deepEqual([organizationTag2.uid]);
 
-		await api.locationOrganizationTag.unassign(createdLocation1.uid, organizationTag2.uid);
-		const locationWithOrganizationTag4 = await api.location.get(createdLocation1.uid);
+			await api.locationOrganizationTag.unassign(createdLocation1.uid, organizationTag2.uid);
+			const locationWithOrganizationTag4 = await api.location.get(createdLocation1.uid);
 
-		should(locationWithOrganizationTag4.tagUids).be.deepEqual([]);
+			should(locationWithOrganizationTag4.tagUids).be.deepEqual([]);
+		} catch (error: any) {
+			// Skip test if Location feature is not available on the server
+			if (error.errorName === 'LOCATION_CREATE_NOT_FOUND_FEATURE_NOT_FOUND') {
+				this.skip();
+			}
+			throw error;
+		}
 	});
 });

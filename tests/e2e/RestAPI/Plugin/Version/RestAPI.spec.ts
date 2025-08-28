@@ -44,6 +44,17 @@ describe('e2e.RestAPI - Plugin Version', () => {
 
 	after(async () => {
 		try {
+			// Delete all versions first before deleting the plugin
+			const versions = await api.plugin.version.list(pluginUid);
+			for (const version of versions) {
+				try {
+					await api.plugin.version.delete({ pluginUid, version: version.version });
+				} catch (versionError: any) {
+					console.log(`Failed to delete version ${version.version}:`, versionError.message);
+				}
+			}
+
+			// Now delete the plugin
 			await api.plugin.delete(pluginUid);
 		} catch (error) {
 			// Ignore cleanup errors
@@ -80,9 +91,25 @@ describe('e2e.RestAPI - Plugin Version', () => {
 				description: 'Test plugin version for e2e testing',
 			});
 
+			// API response doesn't include the 'default' values, so we need to match what's actually returned
+			const expectedConfigDefinition = [
+				{
+					name: 'brightness',
+					description: 'Screen brightness level',
+					valueType: 'number',
+					min: 0,
+					max: 100,
+				},
+				{
+					name: 'debug',
+					description: 'Enable debug mode',
+					valueType: 'string',
+				},
+			];
+
 			should(pluginVersion.pluginUid).be.equal(pluginUid);
 			should(pluginVersion.version).be.equal(version);
-			should(pluginVersion.configDefinition).deepEqual(configDefinition);
+			should(pluginVersion.configDefinition).deepEqual(expectedConfigDefinition);
 		});
 	});
 

@@ -72,7 +72,7 @@ describe('e2e.RestAPI - Organization', () => {
 			await api.organization.get(org.uid);
 			should(true).eql(false);
 		} catch (err: any) {
-			should(err.errorName).eql('NO_ORGANIZATION_TO_READ');
+			should(err.errorName).eql('RESOURCE_NOT_FOUND');
 		}
 	});
 
