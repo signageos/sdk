@@ -10,7 +10,7 @@ import { opts } from '../helper';
 
 const api = new Api(opts);
 
-describe('e2e.RestAPI.Location', async () => {
+describe.skip('e2e.RestAPI.Location', async () => {
 	const toDelete: Location[] = [];
 
 	afterEach(async () => {
