@@ -21,7 +21,7 @@ describe('e2e.RestApi.Organization.Token.OrganizationToken', () => {
 
 		// Ensure we have enough space for test tokens (keep room for at least 5 new tokens)
 		const tokensToDelete = Math.max(0, organizationTokens.length - (MAX_API_SECURITY_TOKENS_QUANTITY - 5));
-		
+
 		for (let i = 0; i < tokensToDelete; i++) {
 			await api.organization.token.delete(orgUid, organizationTokens[organizationTokens.length - 1 - i].id);
 		}
