@@ -45,7 +45,12 @@ export class RunnerVersionManagement {
 
 	public async update({ runnerUid, version, ...data }: IRunnerVersion & IRunnerVersionUpdatable) {
 		const url = getUrl(runnerUid, version);
-		await putResource(this.options, url, JSON.stringify(data));
+		// Only send fields that the API accepts for runner version update
+		const allowedFields = {
+			...(data.configDefinition && { configDefinition: data.configDefinition }),
+			...(data.jsApiVersion && { jsApiVersion: data.jsApiVersion }),
+		};
+		await putResource(this.options, url, JSON.stringify(allowedFields));
 	}
 
 	public async delete({ runnerUid, version }: IRunnerVersionId): Promise<void> {
