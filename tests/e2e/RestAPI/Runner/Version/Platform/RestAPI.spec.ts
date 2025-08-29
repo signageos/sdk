@@ -93,9 +93,7 @@ describe('e2e.RestAPI - Runner Version Platform', () => {
 			should(runnerVersionPlatform.mainFile).be.equal('index.js');
 			should(runnerVersionPlatform.runtime).be.equal('nodejs');
 			should(runnerVersionPlatform.md5Checksum).be.equal(md5Checksum);
-			should(runnerVersionPlatform.archiveUri).match(
-				new RegExp(`/runner/${runnerUid}/${version}/${platform}\\.${md5ChecksumHex}\\.zip$`),
-			);
+			should(runnerVersionPlatform.archiveUri).match(new RegExp(`/runner/${runnerUid}/${version}/${platform}\\.${md5ChecksumHex}\\.zip$`));
 		});
 	});
 
@@ -122,9 +120,7 @@ describe('e2e.RestAPI - Runner Version Platform', () => {
 				runtime: 'nodejs',
 				md5Checksum,
 			});
-			should(runnerVersionPlatform!.archiveUri).match(
-				new RegExp(`/runner/${runnerUid}/${version}/${platform}\\.${md5ChecksumHex}\\.zip$`),
-			);
+			should(runnerVersionPlatform!.archiveUri).match(new RegExp(`/runner/${runnerUid}/${version}/${platform}\\.${md5ChecksumHex}\\.zip$`));
 		});
 
 		it('should return null for non-existing runner version platform', async () => {
@@ -151,9 +147,7 @@ describe('e2e.RestAPI - Runner Version Platform', () => {
 				runtime: 'sh',
 				md5Checksum,
 			});
-			should(runnerVersionPlatform!.archiveUri).match(
-				new RegExp(`/runner/${runnerUid}/${version}/${platform}\\.${md5ChecksumHex}\\.zip$`),
-			);
+			should(runnerVersionPlatform!.archiveUri).match(new RegExp(`/runner/${runnerUid}/${version}/${platform}\\.${md5ChecksumHex}\\.zip$`));
 		});
 	});
 

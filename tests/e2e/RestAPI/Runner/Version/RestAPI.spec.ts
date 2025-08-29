@@ -36,7 +36,7 @@ describe('e2e.RestAPI - Runner Version', () => {
 		} catch {
 			// Ignore listing errors
 		}
-		
+
 		try {
 			await api.runner.delete(runnerUid);
 		} catch {
@@ -149,12 +149,14 @@ describe('e2e.RestAPI - Runner Version', () => {
 			await api.runner.version.create({
 				runnerUid,
 				version,
-				configDefinition: [{
-					name: 'timeout',
-					valueType: 'number',
-					default: 30,
-					description: 'Original timeout',
-				}],
+				configDefinition: [
+					{
+						name: 'timeout',
+						valueType: 'number',
+						default: 30,
+						description: 'Original timeout',
+					},
+				],
 				input: [],
 				output: [],
 				description: 'Test version for update',
@@ -177,7 +179,7 @@ describe('e2e.RestAPI - Runner Version', () => {
 				version,
 				configDefinition: updatedConfig,
 				input: [], // Required by SDK interface but ignored by API
-				output: [], // Required by SDK interface but ignored by API  
+				output: [], // Required by SDK interface but ignored by API
 				description: 'Test runner version', // Required by SDK interface but ignored by API
 			});
 

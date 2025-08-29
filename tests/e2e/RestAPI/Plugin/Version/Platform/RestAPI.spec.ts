@@ -93,9 +93,7 @@ describe('e2e.RestAPI - Plugin Version Platform', () => {
 				runtime: 'browser',
 				md5Checksum,
 			});
-			should(pluginVersionPlatform.archiveUri).match(
-				new RegExp(`/plugin/${pluginUid}/${version}/${platform}\\.${md5ChecksumHex}\\.zip$`),
-			);
+			should(pluginVersionPlatform.archiveUri).match(new RegExp(`/plugin/${pluginUid}/${version}/${platform}\\.${md5ChecksumHex}\\.zip$`));
 		});
 	});
 
@@ -126,9 +124,7 @@ describe('e2e.RestAPI - Plugin Version Platform', () => {
 				runtime: 'browser',
 				md5Checksum,
 			});
-			should(pluginVersionPlatform!.archiveUri).match(
-				new RegExp(`/plugin/${pluginUid}/${version}/${platform}\\.${md5ChecksumHex}\\.zip$`),
-			);
+			should(pluginVersionPlatform!.archiveUri).match(new RegExp(`/plugin/${pluginUid}/${version}/${platform}\\.${md5ChecksumHex}\\.zip$`));
 		});
 
 		it('should return null for non-existing plugin version platform', async () => {
@@ -164,9 +160,7 @@ describe('e2e.RestAPI - Plugin Version Platform', () => {
 				runtime: 'nodejs',
 				md5Checksum,
 			});
-			should(pluginVersionPlatform!.archiveUri).match(
-				new RegExp(`/plugin/${pluginUid}/${version}/${platform}\\.${md5ChecksumHex}\\.zip$`),
-			);
+			should(pluginVersionPlatform!.archiveUri).match(new RegExp(`/plugin/${pluginUid}/${version}/${platform}\\.${md5ChecksumHex}\\.zip$`));
 		});
 	});
 
