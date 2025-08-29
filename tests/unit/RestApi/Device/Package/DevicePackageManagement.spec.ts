@@ -17,7 +17,6 @@ describe('DevicePackageManagement', () => {
 		createdAt: new Date('2018-05-23T14:37:07.362Z'),
 		succeededAt: null,
 		failedAt: null,
-		postponedAt: null,
 	};
 	const validGetResp: IDevicePackage[] = [dPkg];
 	const validSetReq: IDevicePackageUpdatable = {
