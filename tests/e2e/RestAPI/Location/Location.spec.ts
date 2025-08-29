@@ -22,149 +22,100 @@ describe('e2e.RestAPI.Location', async () => {
 		}
 	});
 
-	it('should create location', async function() {
-		try {
-			const createdLocation = await handleCreateLocation(api, {
-				location: generateLocationCreatable(),
-				organizationUid: getOrganizationUid(),
-			});
-			toDelete.push(createdLocation);
+	it('should create location', async function () {
+		const createdLocation = await handleCreateLocation(api, {
+			location: generateLocationCreatable(),
+			organizationUid: getOrganizationUid(),
+		});
+		toDelete.push(createdLocation);
 
-			should(createdLocation.uid).not.be.eql(null);
-		} catch (error: any) {
-			if (error.message.includes('LOCATION_CREATE_NOT_FOUND_FEATURE_NOT_FOUND')) {
-				this.skip();
-			}
-			throw error;
-		}
+		should(createdLocation.uid).not.be.eql(null);
 	});
 
-	it('should get one location', async function() {
-		try {
-			const createdLocation = await handleCreateLocation(api, {
-				location: generateLocationCreatable(),
-				organizationUid: getOrganizationUid(),
-			});
-			toDelete.push(createdLocation);
-			const location = await api.location.get(createdLocation.uid);
+	it('should get one location', async function () {
+		const createdLocation = await handleCreateLocation(api, {
+			location: generateLocationCreatable(),
+			organizationUid: getOrganizationUid(),
+		});
+		toDelete.push(createdLocation);
+		const location = await api.location.get(createdLocation.uid);
 
-			should(location.uid).not.be.eql(null);
-		} catch (error: any) {
-			if (error.message.includes('LOCATION_CREATE_NOT_FOUND_FEATURE_NOT_FOUND')) {
-				this.skip();
-			}
-			throw error;
-		}
+		should(location.uid).not.be.eql(null);
 	});
 
-	it('should get two locations', async function() {
-		try {
-			const location1 = generateLocationCreatable();
-			const location2 = generateLocationCreatable();
+	it('should get two locations', async function () {
+		const location1 = generateLocationCreatable();
+		const location2 = generateLocationCreatable();
 
-			const createdLocation1 = await handleCreateLocation(api, { location: location1, organizationUid: getOrganizationUid() });
-			const createdLocation2 = await handleCreateLocation(api, { location: location2, organizationUid: getOrganizationUid() });
+		const createdLocation1 = await handleCreateLocation(api, { location: location1, organizationUid: getOrganizationUid() });
+		const createdLocation2 = await handleCreateLocation(api, { location: location2, organizationUid: getOrganizationUid() });
 
-			toDelete.push(createdLocation1);
-			toDelete.push(createdLocation2);
+		toDelete.push(createdLocation1);
+		toDelete.push(createdLocation2);
 
-			const locations = await api.location.list();
-			should(locations.find((location) => location.uid === createdLocation1.uid)).not.be.eql(undefined);
-			should(locations.find((location) => location.uid === createdLocation2.uid)).not.be.eql(undefined);
-		} catch (error: any) {
-			if (error.message.includes('LOCATION_CREATE_NOT_FOUND_FEATURE_NOT_FOUND')) {
-				this.skip();
-			}
-			throw error;
-		}
+		const locations = await api.location.list();
+		should(locations.find((location) => location.uid === createdLocation1.uid)).not.be.eql(undefined);
+		should(locations.find((location) => location.uid === createdLocation2.uid)).not.be.eql(undefined);
 	});
 
-	it('should update location', async function() {
-		try {
-			const createdLocation = await handleCreateLocation(api, {
-				location: generateLocationCreatable(),
-				organizationUid: getOrganizationUid(),
-			});
-			toDelete.push(createdLocation);
-			const locationUpdatePayload = generateLocationUpdatable();
+	it('should update location', async function () {
+		const createdLocation = await handleCreateLocation(api, {
+			location: generateLocationCreatable(),
+			organizationUid: getOrganizationUid(),
+		});
+		toDelete.push(createdLocation);
+		const locationUpdatePayload = generateLocationUpdatable();
 
-			await api.location.update(createdLocation.uid, locationUpdatePayload);
+		await api.location.update(createdLocation.uid, locationUpdatePayload);
 
-			const updatedLocation = await api.location.get(createdLocation.uid);
-			should(updatedLocation.name).be.eql(locationUpdatePayload.name);
-		} catch (error: any) {
-			if (error.message.includes('LOCATION_CREATE_NOT_FOUND_FEATURE_NOT_FOUND')) {
-				this.skip();
-			}
-			throw error;
-		}
+		const updatedLocation = await api.location.get(createdLocation.uid);
+		should(updatedLocation.name).be.eql(locationUpdatePayload.name);
 	});
 
-	it('should add attachment', async function() {
-		try {
-			const createdLocation = await handleCreateLocation(api, {
-				location: generateLocationCreatable(),
-				organizationUid: getOrganizationUid(),
-			});
-			toDelete.push(createdLocation);
-			const attachment = await readFile(`${parameters.paths.rootPath}/tests/assets/image_1.png`);
+	it('should add attachment', async function () {
+		const createdLocation = await handleCreateLocation(api, {
+			location: generateLocationCreatable(),
+			organizationUid: getOrganizationUid(),
+		});
+		toDelete.push(createdLocation);
+		const attachment = await readFile(`${parameters.paths.rootPath}/tests/assets/image_1.png`);
 
-			await api.location.addAttachment(createdLocation.uid, attachment);
-			const location = await api.location.get(createdLocation.uid);
+		await api.location.addAttachment(createdLocation.uid, attachment);
+		const location = await api.location.get(createdLocation.uid);
 
-			should(location.attachments.length).be.eql(1);
-		} catch (error: any) {
-			if (error.message.includes('LOCATION_CREATE_NOT_FOUND_FEATURE_NOT_FOUND')) {
-				this.skip();
-			}
-			throw error;
-		}
+		should(location.attachments.length).be.eql(1);
 	});
 
-	it('should remove attachments', async function() {
-		try {
-			const createdLocation = await handleCreateLocation(api, {
-				location: generateLocationCreatable(),
-				organizationUid: getOrganizationUid(),
-			});
-			toDelete.push(createdLocation);
-			const attachment1 = await readFile(`${parameters.paths.rootPath}/tests/assets/image_1.png`);
-			const attachment2 = await readFile(`${parameters.paths.rootPath}/tests/assets/image_2.jpeg`);
+	it('should remove attachments', async function () {
+		const createdLocation = await handleCreateLocation(api, {
+			location: generateLocationCreatable(),
+			organizationUid: getOrganizationUid(),
+		});
+		toDelete.push(createdLocation);
+		const attachment1 = await readFile(`${parameters.paths.rootPath}/tests/assets/image_1.png`);
+		const attachment2 = await readFile(`${parameters.paths.rootPath}/tests/assets/image_2.jpeg`);
 
-			await api.location.addAttachment(createdLocation.uid, attachment1);
-			await api.location.addAttachment(createdLocation.uid, attachment2);
-			const locationWithAddedAttachments = await api.location.get(createdLocation.uid);
+		await api.location.addAttachment(createdLocation.uid, attachment1);
+		await api.location.addAttachment(createdLocation.uid, attachment2);
+		const locationWithAddedAttachments = await api.location.get(createdLocation.uid);
 
-			should(locationWithAddedAttachments.attachments.length).be.eql(2);
+		should(locationWithAddedAttachments.attachments.length).be.eql(2);
 
-			await api.location.removeAttachments(createdLocation.uid, locationWithAddedAttachments.attachments);
-			const locationWithRemovedAttachments = await api.location.get(createdLocation.uid);
+		await api.location.removeAttachments(createdLocation.uid, locationWithAddedAttachments.attachments);
+		const locationWithRemovedAttachments = await api.location.get(createdLocation.uid);
 
-			should(locationWithRemovedAttachments.attachments.length).be.eql(0);
-		} catch (error: any) {
-			if (error.message.includes('LOCATION_CREATE_NOT_FOUND_FEATURE_NOT_FOUND')) {
-				this.skip();
-			}
-			throw error;
-		}
+		should(locationWithRemovedAttachments.attachments.length).be.eql(0);
 	});
 
-	it('should delete location', async function() {
-		try {
-			const createdLocation = await handleCreateLocation(api, {
-				location: generateLocationCreatable(),
-				organizationUid: getOrganizationUid(),
-			});
+	it('should delete location', async function () {
+		const createdLocation = await handleCreateLocation(api, {
+			location: generateLocationCreatable(),
+			organizationUid: getOrganizationUid(),
+		});
 
-			await api.location.delete(createdLocation.uid);
-			await should(api.location.get(createdLocation.uid)).rejectedWith(
-				'Request failed with status code 404. Body: {"status":404,"message":"Resource not found - Resource was not found","errorCode":404311,"errorName":"RESOURCE_NOT_FOUND","errorDetail":"Specified resource doesn\'t exist"}',
-			);
-		} catch (error: any) {
-			if (error.message.includes('LOCATION_CREATE_NOT_FOUND_FEATURE_NOT_FOUND')) {
-				this.skip();
-			}
-			throw error;
-		}
+		await api.location.delete(createdLocation.uid);
+		await should(api.location.get(createdLocation.uid)).rejectedWith(
+			'Request failed with status code 404. Body: {"status":404,"message":"Resource not found - Resource was not found","errorCode":404311,"errorName":"RESOURCE_NOT_FOUND","errorDetail":"Specified resource doesn\'t exist"}',
+		);
 	});
 });
