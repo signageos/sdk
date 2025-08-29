@@ -9,7 +9,7 @@ import { opts } from '../../helper';
 
 const api = new Api(opts);
 
-describe.skip('e2e.RestAPI.Device.Location.DeviceLocation', async () => {
+describe('e2e.RestAPI.Device.Location.DeviceLocation', async () => {
 	const toDelete: Location[] = [];
 
 	after('remove location', async function () {
@@ -19,28 +19,36 @@ describe.skip('e2e.RestAPI.Device.Location.DeviceLocation', async () => {
 	});
 
 	it('should assign and unassign location to and from device', async function () {
-		const createdLocation = await handleCreateLocation(api, {
-			location: generateLocationCreatable(),
-			organizationUid: getOrganizationUid(),
-		});
-		toDelete.push(createdLocation);
+		try {
+			const createdLocation = await handleCreateLocation(api, {
+				location: generateLocationCreatable(),
+				organizationUid: getOrganizationUid(),
+			});
+			toDelete.push(createdLocation);
 
-		// TODO: This approach is taken from the Device, since there is no create method. This should be addressed
-		const devices = await api.device.list();
+			// TODO: This approach is taken from the Device, since there is no create method. This should be addressed
+			const devices = await api.device.list();
 
-		should(devices.length > 0).true();
+			should(devices.length > 0).true();
 
-		const device: IDevice = devices[0];
-		const deviceUid: IDevice['uid'] = device?.uid;
+			const device: IDevice = devices[0];
+			const deviceUid: IDevice['uid'] = device?.uid;
 
-		await api.deviceLocation.assign(deviceUid, createdLocation.uid);
-		const deviceWithAssignedLocation = await api.device.get(deviceUid);
+			await api.deviceLocation.assign(deviceUid, createdLocation.uid);
+			const deviceWithAssignedLocation = await api.device.get(deviceUid);
 
-		should(deviceWithAssignedLocation.locationUid).be.eql(createdLocation.uid);
+			should(deviceWithAssignedLocation.locationUid).be.eql(createdLocation.uid);
 
-		await api.deviceLocation.unassign(deviceUid, createdLocation.uid);
-		const deviceWithUnassignedLocation = await api.device.get(deviceUid);
+			await api.deviceLocation.unassign(deviceUid, createdLocation.uid);
+			const deviceWithUnassignedLocation = await api.device.get(deviceUid);
 
-		should(deviceWithUnassignedLocation.locationUid).be.null();
+			should(deviceWithUnassignedLocation.locationUid).be.null();
+		} catch (error: any) {
+			// Skip test if Location feature is not available on the server
+			if (error.errorName === 'LOCATION_CREATE_NOT_FOUND_FEATURE_NOT_FOUND') {
+				this.skip();
+			}
+			throw error;
+		}
 	});
 });
