@@ -3,7 +3,7 @@ export interface IRunnerVersionPlatform {
 	version: string;
 	/** Platform name (i.e. linux, tizen, webos,...) */
 	platform: string;
-	/** Script runtime (i.e. browser.js, node.js, bash,...) */
+	/** Script runtime. Valid values: 'ps1' | 'bash' | 'sh' | 'nodejs' | 'browser' | 'brs' */
 	runtime: string;
 	/** URI where the archive with the script code can be downloaded */
 	archiveUri: string;
