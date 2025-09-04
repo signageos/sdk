@@ -11,7 +11,6 @@ export default class DevicePackage implements IDevicePackage {
 	public readonly build: IDevicePackage['build'];
 	public readonly succeededAt: IDevicePackage['succeededAt'];
 	public readonly failedAt: IDevicePackage['failedAt'];
-	public readonly postponedAt: IDevicePackage['postponedAt'];
 
 	constructor(data: IDevicePackage) {
 		fillDataToEntity(this, data);

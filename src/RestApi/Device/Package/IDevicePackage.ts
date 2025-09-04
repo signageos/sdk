@@ -10,7 +10,6 @@ export interface IDevicePackage extends IDevicePackageUpdatable {
 	createdAt: Date;
 	succeededAt: Date | null;
 	failedAt: Date | null;
-	postponedAt: Date | null;
 }
 
 export default IDevicePackage;

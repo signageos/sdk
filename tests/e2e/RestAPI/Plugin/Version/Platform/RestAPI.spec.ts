@@ -1,4 +1,7 @@
 import should from 'should';
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import { omit } from 'lodash';
 import { createApiV1 } from '../../../../../../src';
 import { PluginVersionPlatform } from '../../../../../../src/RestApi/Plugin/Version/Platform/PluginVersionPlatform';
 import { opts } from '../../../helper';
@@ -9,6 +12,8 @@ describe('e2e.RestAPI - Plugin Version Platform', () => {
 	let pluginUid: string;
 	const version = '1.0.0';
 	const platform = 'tizen';
+	const md5Checksum = 'e50e3ab7aded00bb7015eb0c47ccf827';
+	const md5ChecksumHex = Buffer.from(md5Checksum, 'base64').toString('hex');
 
 	before(async () => {
 		const plugin = await api.plugin.create({
@@ -22,31 +27,73 @@ describe('e2e.RestAPI - Plugin Version Platform', () => {
 		await api.plugin.version.create({
 			pluginUid,
 			version,
+			description: 'Test plugin version description',
 			configDefinition: [],
 		});
 	});
 
 	after(async () => {
-		await api.plugin.delete(pluginUid);
+		// Clean up platforms first to avoid cascade issues
+		try {
+			const platforms = await api.plugin.version.platform.list({ pluginUid, version });
+			for (const platform of platforms) {
+				try {
+					await api.plugin.version.platform.delete({ pluginUid, version, platform: platform.platform });
+				} catch {
+					// Ignore deletion errors in cleanup
+				}
+			}
+		} catch {
+			// Ignore listing errors in cleanup
+		}
+
+		// Delete plugin version and plugin
+		try {
+			await api.plugin.version.delete({ pluginUid, version });
+		} catch {
+			// Ignore version deletion errors
+		}
+
+		try {
+			await api.plugin.delete(pluginUid);
+		} catch {
+			// Ignore plugin deletion errors in cleanup
+		}
 	});
 
 	describe('create', () => {
 		it('should create plugin version platform', async () => {
+			// First upload the archive
+			const filePath = path.join(__dirname, 'test.zip');
+			const size = (await fs.stat(filePath)).size;
+			const archiveFileStream = fs.createReadStream(filePath);
+
+			await api.plugin.version.platform.archive.upload({
+				pluginUid,
+				version,
+				platform,
+				md5Checksum,
+				size,
+				stream: archiveFileStream,
+			});
+
+			// Then create the platform
 			const pluginVersionPlatform = await api.plugin.version.platform.create({
 				pluginUid,
 				version,
 				platform,
 				mainFile: 'index.js',
-				runtime: 'browser.js',
-				md5Checksum: 'abc123def456',
+				runtime: 'browser',
+				md5Checksum,
 			});
 
-			should(pluginVersionPlatform.pluginUid).be.equal(pluginUid);
-			should(pluginVersionPlatform.version).be.equal(version);
-			should(pluginVersionPlatform.platform).be.equal(platform);
-			should(pluginVersionPlatform.mainFile).be.equal('index.js');
-			should(pluginVersionPlatform.runtime).be.equal('browser.js');
-			should(pluginVersionPlatform.md5Checksum).be.equal('abc123def456');
+			should(omit(pluginVersionPlatform, 'archiveUri')).deepEqual({
+				platform,
+				mainFile: 'index.js',
+				runtime: 'browser',
+				md5Checksum,
+			});
+			should(pluginVersionPlatform.archiveUri).match(new RegExp(`/plugin/${pluginUid}/${version}/${platform}\\.${md5ChecksumHex}\\.zip$`));
 		});
 	});
 
@@ -71,16 +118,20 @@ describe('e2e.RestAPI - Plugin Version Platform', () => {
 			});
 
 			should(pluginVersionPlatform).be.an.instanceOf(PluginVersionPlatform);
-			should(pluginVersionPlatform!.pluginUid).be.equal(pluginUid);
-			should(pluginVersionPlatform!.version).be.equal(version);
-			should(pluginVersionPlatform!.platform).be.equal(platform);
+			should(omit(pluginVersionPlatform, 'archiveUri')).deepEqual({
+				platform,
+				mainFile: 'index.js',
+				runtime: 'browser',
+				md5Checksum,
+			});
+			should(pluginVersionPlatform!.archiveUri).match(new RegExp(`/plugin/${pluginUid}/${version}/${platform}\\.${md5ChecksumHex}\\.zip$`));
 		});
 
 		it('should return null for non-existing plugin version platform', async () => {
 			const pluginVersionPlatform = await api.plugin.version.platform.get({
 				pluginUid,
 				version,
-				platform: 'non-existing',
+				platform: 'webos',
 			});
 			should(pluginVersionPlatform).be.null();
 		});
@@ -93,8 +144,8 @@ describe('e2e.RestAPI - Plugin Version Platform', () => {
 				version,
 				platform,
 				mainFile: 'updated-index.js',
-				runtime: 'node.js',
-				md5Checksum: 'updated123hash456',
+				runtime: 'nodejs',
+				md5Checksum,
 			});
 
 			const pluginVersionPlatform = await api.plugin.version.platform.get({
@@ -103,9 +154,13 @@ describe('e2e.RestAPI - Plugin Version Platform', () => {
 				platform,
 			});
 
-			should(pluginVersionPlatform!.mainFile).be.equal('updated-index.js');
-			should(pluginVersionPlatform!.runtime).be.equal('node.js');
-			should(pluginVersionPlatform!.md5Checksum).be.equal('updated123hash456');
+			should(omit(pluginVersionPlatform, 'archiveUri')).deepEqual({
+				platform,
+				mainFile: 'updated-index.js',
+				runtime: 'nodejs',
+				md5Checksum,
+			});
+			should(pluginVersionPlatform!.archiveUri).match(new RegExp(`/plugin/${pluginUid}/${version}/${platform}\\.${md5ChecksumHex}\\.zip$`));
 		});
 	});
 

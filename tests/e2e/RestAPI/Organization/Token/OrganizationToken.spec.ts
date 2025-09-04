@@ -19,15 +19,23 @@ describe('e2e.RestApi.Organization.Token.OrganizationToken', () => {
 	before(async () => {
 		const organizationTokens = await api.organization.token.get(orgUid);
 
-		if (organizationTokens.length === MAX_API_SECURITY_TOKENS_QUANTITY) {
-			await api.organization.token.delete(orgUid, organizationTokens[organizationTokens.length - 1].id);
-			await api.organization.token.delete(orgUid, organizationTokens[organizationTokens.length - 2].id);
+		// Ensure we have enough space for test tokens (keep room for at least 5 new tokens)
+		const tokensToDelete = Math.max(0, organizationTokens.length - (MAX_API_SECURITY_TOKENS_QUANTITY - 5));
+
+		for (let i = 0; i < tokensToDelete; i++) {
+			await api.organization.token.delete(orgUid, organizationTokens[organizationTokens.length - 1 - i].id);
 		}
 	});
 
 	after(async () => {
+		// Clean up tokens created during tests
 		for (const orgToken of toDelete) {
-			await api.organization.token.delete(orgUid, orgToken.id);
+			try {
+				await api.organization.token.delete(orgUid, orgToken.id);
+			} catch (error) {
+				// Token may already be deleted, ignore error
+				console.warn(`Failed to delete token ${orgToken.id}:`, error instanceof Error ? error.message : String(error));
+			}
 		}
 	});
 

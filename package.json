@@ -14,8 +14,8 @@
   },
   "scripts": {
     "clean": "rm -rf dist/*",
-    "build": "npx check-engine@latest && tsc",
-    "clean-build": "npm run clean && npm run build && git config blame.ignoreRevsFile .git-blame-ignore-revs",
+    "build": "tsc",
+    "clean-build": "npm run clean && npm run build",
     "watch": "tsc --watch",
     "check-types": "tsc --noEmit && tsc --project tsconfig.test.json --noEmit",
     "lint": "eslint",

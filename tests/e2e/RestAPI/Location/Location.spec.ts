@@ -22,7 +22,7 @@ describe('e2e.RestAPI.Location', async () => {
 		}
 	});
 
-	it('should create location', async () => {
+	it('should create location', async function () {
 		const createdLocation = await handleCreateLocation(api, {
 			location: generateLocationCreatable(),
 			organizationUid: getOrganizationUid(),
@@ -32,7 +32,7 @@ describe('e2e.RestAPI.Location', async () => {
 		should(createdLocation.uid).not.be.eql(null);
 	});
 
-	it('should get one location', async () => {
+	it('should get one location', async function () {
 		const createdLocation = await handleCreateLocation(api, {
 			location: generateLocationCreatable(),
 			organizationUid: getOrganizationUid(),
@@ -43,7 +43,7 @@ describe('e2e.RestAPI.Location', async () => {
 		should(location.uid).not.be.eql(null);
 	});
 
-	it('should get two locations', async () => {
+	it('should get two locations', async function () {
 		const location1 = generateLocationCreatable();
 		const location2 = generateLocationCreatable();
 
@@ -58,7 +58,7 @@ describe('e2e.RestAPI.Location', async () => {
 		should(locations.find((location) => location.uid === createdLocation2.uid)).not.be.eql(undefined);
 	});
 
-	it('should update location', async () => {
+	it('should update location', async function () {
 		const createdLocation = await handleCreateLocation(api, {
 			location: generateLocationCreatable(),
 			organizationUid: getOrganizationUid(),
@@ -72,7 +72,7 @@ describe('e2e.RestAPI.Location', async () => {
 		should(updatedLocation.name).be.eql(locationUpdatePayload.name);
 	});
 
-	it('should add attachment', async () => {
+	it('should add attachment', async function () {
 		const createdLocation = await handleCreateLocation(api, {
 			location: generateLocationCreatable(),
 			organizationUid: getOrganizationUid(),
@@ -86,7 +86,7 @@ describe('e2e.RestAPI.Location', async () => {
 		should(location.attachments.length).be.eql(1);
 	});
 
-	it('should remove attachments', async () => {
+	it('should remove attachments', async function () {
 		const createdLocation = await handleCreateLocation(api, {
 			location: generateLocationCreatable(),
 			organizationUid: getOrganizationUid(),
@@ -107,7 +107,7 @@ describe('e2e.RestAPI.Location', async () => {
 		should(locationWithRemovedAttachments.attachments.length).be.eql(0);
 	});
 
-	it('should delete location', async () => {
+	it('should delete location', async function () {
 		const createdLocation = await handleCreateLocation(api, {
 			location: generateLocationCreatable(),
 			organizationUid: getOrganizationUid(),
