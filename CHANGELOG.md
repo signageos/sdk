@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.0.0] - 2025-09-05
 ### Changed
 - **BREAKING**: Updated `jsdom@18.0.1` to `jsdom@26.1.0` which requires `node@18+` minimum
   - Users running Node 16 or older must upgrade to Node 18+ to use this version
