@@ -82,7 +82,7 @@
     "archiver": "5.3.2",
     "body-parser": "2.2.0",
     "chalk": "2.4.2",
-    "chokidar": "3.5.3",
+    "chokidar": "3.6.0",
     "cors": "2.8.5",
     "debug": "4.3.4",
     "dotenv": "16.4.1",
