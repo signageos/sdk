@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.0.1] - 2025-09-09
+
 ## [2.0.0] - 2025-09-05
 ### Changed
 - **BREAKING**: Updated `jsdom@18.0.1` to `jsdom@26.1.0` which requires `node@18+` minimum
