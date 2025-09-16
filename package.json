@@ -15,7 +15,7 @@
   "scripts": {
     "clean": "rm -rf dist/*",
     "build": "tsc",
-    "clean-build": "npm run clean && npm run build",
+    "clean-build": "npm run clean && test -f .env || cp .env.production .env && npm run build",
     "clean-build-public": "npm run clean-build",
     "watch": "tsc --watch",
     "check-types": "tsc --noEmit && tsc --project tsconfig.test.json --noEmit",
