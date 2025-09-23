@@ -85,6 +85,26 @@ describe('e2e.RestAPI - Timing', function () {
 			should(timing.uid).be.ok();
 			should(timing.updatedAt).be.ok();
 		});
+
+		it('should create new timing with encrypted configuration', async function () {
+			const encryptedConfiguration = {
+				encryptedData: 'jfnwijnfweiwbfweifbneiejnbfijewnf',
+			};
+
+			const props: ITimingCreateOnly & ITimingUpdatable = {
+				...createProps,
+				configuration: { identification: identification, encryptedConfiguration },
+			};
+
+			const timing = await api.timing.create(props);
+
+			// save for later tests
+			timingUidWithFinishedEventString = timing.uid;
+
+			should(timing).be.containDeep(props);
+			should(timing.uid).be.ok();
+			should(timing.updatedAt).be.ok();
+		});
 	});
 
 	describe('GET', function () {

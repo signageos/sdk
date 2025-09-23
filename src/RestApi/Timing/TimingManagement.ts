@@ -7,6 +7,7 @@ import ITimingFilter from './ITimingFilter';
 import Timing from './Timing';
 import { isEqual } from 'lodash';
 import AppletCommandManagement from '../Applet/Command/AppletCommandManagement';
+import { areConfigurationsEqual } from './compareTimings';
 
 interface ValidateDataValues {
 	configuration?: boolean;
@@ -105,7 +106,7 @@ export default class TimingManagement {
 		}
 		// When we are updating timing, configuration might change, so we need to check it always
 		if (additionalValidation && additionalValidation.configuration) {
-			if (JSON.stringify(t1.configuration) !== JSON.stringify(t2.configuration)) {
+			if (!areConfigurationsEqual(t1.configuration, t2.configuration)) {
 				return false;
 			}
 		}
