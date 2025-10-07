@@ -21,8 +21,8 @@
     "check-types": "tsc --noEmit && tsc --project tsconfig.test.json --noEmit",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "lint:prettier": "prettier  \"(src|tests|tools)/**/*.+(ts|tsx|json|js)\" --check",
-    "lint:prettier:fix": "prettier  \"(src|tests|tools)/**/*.+(ts|tsx|json|js)\" --write",    
+    "lint:prettier": "prettier  \"**/*.+(ts|tsx|json|js)\" --check",
+    "lint:prettier:fix": "prettier  \"**/*.+(ts|tsx|json|js)\" --write",    
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "env NODE_ENV=test mocha --config .mocharc.unit.json",
     "test:integration": "env NODE_ENV=test mocha --config .mocharc.integration.json",
@@ -33,7 +33,7 @@
     "depcheck": "depcheck --config .depcheckrc.json",
     "docs": "typedoc ./src/index.ts ./src/RestApi/RestApi.ts ./src/RestApi/RestApiV2.ts ./src/Development/Development.ts"
   },
-  "author": "Michael Zabka <zabka.michael@gmail.com>",
+  "author": "signageOS <dev@signageos.io>",
   "license": "MIT",
   "engines": {
     "node": ">=20",
