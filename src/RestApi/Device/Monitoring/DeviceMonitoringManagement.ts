@@ -14,10 +14,6 @@ import IScreenshot from './Screenshot/IScreenshot';
 import Screenshot from './Screenshot/Screenshot';
 
 export default class DeviceMonitoringManagement {
-	private static getUrl(deviceUid: string, resource: string): string {
-		return `${Resources.Device}/${deviceUid}/${resource}`;
-	}
-
 	constructor(private options: IOptions) {}
 
 	public async takeScreenshot(deviceUid: string): Promise<void> {
@@ -56,5 +52,9 @@ export default class DeviceMonitoringManagement {
 		const data: IReportFile[] = await parseJSONResponse(response);
 
 		return data.map((item: IReportFile) => new ReportFile(item));
+	}
+
+	private static getUrl(deviceUid: string, resource: string): string {
+		return `${Resources.Device}/${deviceUid}/${resource}`;
 	}
 }

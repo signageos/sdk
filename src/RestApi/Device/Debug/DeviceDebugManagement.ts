@@ -5,10 +5,6 @@ import DeviceDebug from './DeviceDebug';
 import IDeviceDebug, { IDeviceDebugUpdatable } from './IDeviceDebug';
 
 export default class DeviceDebugManagement {
-	private static getUrl(deviceUid: string): string {
-		return `${Resources.Device}/${deviceUid}/debug`;
-	}
-
 	constructor(private options: IOptions) {}
 
 	public async list(deviceUid: string): Promise<IDeviceDebug[]> {
@@ -20,5 +16,9 @@ export default class DeviceDebugManagement {
 
 	public async set(deviceUid: string, settings: IDeviceDebugUpdatable): Promise<void> {
 		await putResource(this.options, DeviceDebugManagement.getUrl(deviceUid), JSON.stringify(settings));
+	}
+
+	private static getUrl(deviceUid: string): string {
+		return `${Resources.Device}/${deviceUid}/debug`;
 	}
 }

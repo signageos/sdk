@@ -5,10 +5,6 @@ import DeviceVolume from './DeviceAudio';
 import IOptions from '../../IOptions';
 
 export default class DeviceAudioManagement {
-	private static getUrl(deviceUid: string): string {
-		return `${Resources.Device}/${deviceUid}/volume`;
-	}
-
 	constructor(private options: IOptions) {}
 
 	public async list(deviceUid: string): Promise<IDeviceAudio[]> {
@@ -20,5 +16,9 @@ export default class DeviceAudioManagement {
 
 	public async set(deviceUid: string, settings: IDeviceAudioUpdatable): Promise<void> {
 		await putResource(this.options, DeviceAudioManagement.getUrl(deviceUid), JSON.stringify(settings));
+	}
+
+	private static getUrl(deviceUid: string): string {
+		return `${Resources.Device}/${deviceUid}/volume`;
 	}
 }

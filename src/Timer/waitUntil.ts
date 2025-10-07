@@ -49,7 +49,7 @@ export async function waitUntilReturnValue<T>(callback: () => Promise<T>, timeou
 		async () => {
 			try {
 				return await callback();
-			} catch (error) {
+			} catch {
 				return undefined;
 			}
 		},

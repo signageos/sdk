@@ -1,4 +1,4 @@
-const cacheMap = new WeakMap<Function, unknown>();
+const cacheMap = new WeakMap<(...args: any[]) => any, unknown>();
 
 /**
  * Cache the first result of async function. Then always forever return cached value.

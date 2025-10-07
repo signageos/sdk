@@ -1,5 +1,3 @@
 {
-  "extends": [
-    "gitlab>signageos/infra/renovate-config"
-  ]
+	"extends": ["gitlab>signageos/infra/renovate-config"]
 }

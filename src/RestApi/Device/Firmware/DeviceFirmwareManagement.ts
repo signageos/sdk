@@ -7,10 +7,6 @@ import DeviceChangeResponse from '../DeviceChangeResponse';
 import IDeviceChangeResponse from '../IDeviceChangeResponse';
 
 export default class DeviceFirmwareManagement {
-	private static getUrl(deviceUid: string): string {
-		return `${Resources.Device}/${deviceUid}/firmware`;
-	}
-
 	constructor(private options: IOptions) {}
 
 	public async get(deviceUid: string): Promise<IDeviceFirmware> {
@@ -23,5 +19,9 @@ export default class DeviceFirmwareManagement {
 		const response = await putResource(this.options, DeviceFirmwareManagement.getUrl(deviceUid), JSON.stringify(settings));
 
 		return new DeviceChangeResponse(await parseJSONResponse(response));
+	}
+
+	private static getUrl(deviceUid: string): string {
+		return `${Resources.Device}/${deviceUid}/firmware`;
 	}
 }

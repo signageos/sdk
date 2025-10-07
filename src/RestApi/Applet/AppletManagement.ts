@@ -14,10 +14,6 @@ export default class AppletManagement {
 	public version: AppletVersionManagement;
 	public tests: AppletTestSuiteManagement;
 
-	private static getUrl(appletUid: string): string {
-		return `${RESOURCE}/${appletUid}/`;
-	}
-
 	constructor(private options: IOptions) {
 		this.command = new AppletCommandManagement(options);
 		this.version = new AppletVersionManagement(options);
@@ -53,5 +49,9 @@ export default class AppletManagement {
 
 	public async delete(appletUid: string): Promise<void> {
 		await deleteResource(this.options, AppletManagement.getUrl(appletUid));
+	}
+
+	private static getUrl(appletUid: string): string {
+		return `${RESOURCE}/${appletUid}/`;
 	}
 }

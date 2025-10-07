@@ -10,10 +10,6 @@ import wait from '../../../Timer/wait';
 import RequestError from '../../Error/RequestError';
 
 export default class AppletCommandManagement {
-	private static getResource(deviceUid: string, appletUid: string): string {
-		return `${Resources.Device}/${deviceUid}/${APPLET}/${appletUid}/command`;
-	}
-
 	constructor(private options: IOptions) {}
 
 	public async list<TCommandPayload extends ITimingCommandPayload>(
@@ -52,12 +48,16 @@ export default class AppletCommandManagement {
 				await wait(500);
 				try {
 					return await this.get<TCommandPayload>(deviceUid, appletUid, commandUid);
-				} catch (error) {
+				} catch {
 					// when 404 command does not exist yet
 				}
 			}
 		} else {
 			throw new RequestError(response.status, body);
 		}
+	}
+
+	private static getResource(deviceUid: string, appletUid: string): string {
+		return `${Resources.Device}/${deviceUid}/${APPLET}/${appletUid}/command`;
 	}
 }

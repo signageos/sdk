@@ -17,10 +17,6 @@ interface IDeviceScreenshotFilter {
 }
 
 export default class DeviceScreenshotManagement {
-	private static getUrl(deviceUid: string): string {
-		return `${Resources.Device}/${deviceUid}/screenshot`;
-	}
-
 	constructor(private options: IOptions) {}
 
 	public async listLastScreenshotsByDevices({ filter, sort, pagination }: ILastScreenshotsByDevicesParams) {
@@ -43,5 +39,9 @@ export default class DeviceScreenshotManagement {
 		const screenshotsData: IDeviceScreenshot[] = await parseJSONResponse(response);
 
 		return screenshotsData.map((screenshotData: IDeviceScreenshot) => new DeviceScreenshot(screenshotData));
+	}
+
+	private static getUrl(deviceUid: string): string {
+		return `${Resources.Device}/${deviceUid}/screenshot`;
 	}
 }

@@ -14,10 +14,6 @@ enum OperationType {
  * So it can be easily developed and tested according to locally built applet.
  */
 export default class DeviceConnectManagement {
-	private static getUrl(deviceUid: string, operationType: OperationType): string {
-		return `${Resources.Device}/${deviceUid}/${operationType}`;
-	}
-
 	constructor(private options: IOptions) {}
 
 	/**
@@ -34,5 +30,9 @@ export default class DeviceConnectManagement {
 	 */
 	public async disconnect(deviceUid: string) {
 		await postResource(this.options, DeviceConnectManagement.getUrl(deviceUid, OperationType.Disconnect), JSON.stringify({}));
+	}
+
+	private static getUrl(deviceUid: string, operationType: OperationType): string {
+		return `${Resources.Device}/${deviceUid}/${operationType}`;
 	}
 }

@@ -5,10 +5,6 @@ import DeviceResolution from './DeviceResolution';
 import IOptions from '../../IOptions';
 
 export default class DeviceResolutionManagement {
-	private static getUrl(deviceUid: string): string {
-		return `${Resources.Device}/${deviceUid}/resolution`;
-	}
-
 	constructor(private options: IOptions) {}
 
 	public async list(deviceUid: string): Promise<IDeviceResolution[]> {
@@ -20,5 +16,9 @@ export default class DeviceResolutionManagement {
 
 	public async set(deviceUid: string, settings: IDeviceResolutionUpdatable): Promise<void> {
 		await putResource(this.options, DeviceResolutionManagement.getUrl(deviceUid), JSON.stringify(settings));
+	}
+
+	private static getUrl(deviceUid: string): string {
+		return `${Resources.Device}/${deviceUid}/resolution`;
 	}
 }

@@ -9,13 +9,17 @@ import UnsupportedError from '../../Error/UnsupportedError';
 
 /** @deprecated duplicate implementation, use AppletCommandManagement */
 export default class TimingCommandManagement {
-	private static readonly RESOURCE: string[] = ['device', 'applet', 'command'];
-
 	public readonly DURATION: string = 'DURATION';
 	public readonly SCREEN_TAP: string = 'SCREEN_TAP';
 	public readonly IDLE_TIMEOUT: string = 'IDLE_TIMEOUT';
 
-	constructor(private options: IOptions) {}
+	private static readonly RESOURCE: string[] = ['device', 'applet', 'command'];
+
+	private options: IOptions;
+
+	constructor(options: IOptions) {
+		this.options = options;
+	}
 
 	/** @deprecated duplicate implementation, use AppletCommandManagement.list() */
 	public async getList<TCommandPayload extends ITimingCommandPayload>(filter: ITimingCommandFilter) {
@@ -91,7 +95,7 @@ export default class TimingCommandManagement {
 					await wait(500);
 					try {
 						return await this.get<TCommandPayload>(timingCommandData.deviceUid, timingCommandData.appletUid, timingCommandUid);
-					} catch (error) {
+					} catch {
 						// when 404 command does not exists yet
 					}
 				}

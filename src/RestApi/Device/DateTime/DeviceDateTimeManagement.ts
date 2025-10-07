@@ -5,10 +5,6 @@ import IDeviceDateTime, { IDeviceDateTimeUpdatable } from './IDeviceDateTime';
 import DeviceDateTime from './DeviceDateTime';
 
 export default class DeviceDateTimeManagement {
-	private static getUrl(deviceUid: string): string {
-		return `${Resources.Device}/${deviceUid}/time`;
-	}
-
 	constructor(private options: IOptions) {}
 
 	public async list(deviceUid: string): Promise<IDeviceDateTime[]> {
@@ -20,5 +16,9 @@ export default class DeviceDateTimeManagement {
 
 	public async set(deviceUid: string, settings: IDeviceDateTimeUpdatable): Promise<void> {
 		await putResource(this.options, DeviceDateTimeManagement.getUrl(deviceUid), JSON.stringify(settings));
+	}
+
+	private static getUrl(deviceUid: string): string {
+		return `${Resources.Device}/${deviceUid}/time`;
 	}
 }

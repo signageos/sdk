@@ -5,10 +5,6 @@ import IOptions from '../../IOptions';
 import DeviceRemoteControl from './DeviceRemoteControl';
 
 export default class DeviceRemoteControlManagement {
-	private static getUrl(deviceUid: string): string {
-		return `${Resources.Device}/${deviceUid}/remote-control`;
-	}
-
 	constructor(private options: IOptions) {}
 
 	public async list(deviceUid: string): Promise<IDeviceRemoteControl[]> {
@@ -20,5 +16,9 @@ export default class DeviceRemoteControlManagement {
 
 	public async set(deviceUid: string, settings: IDeviceRemoteControlUpdatable): Promise<void> {
 		await putResource(this.options, DeviceRemoteControlManagement.getUrl(deviceUid), JSON.stringify(settings));
+	}
+
+	private static getUrl(deviceUid: string): string {
+		return `${Resources.Device}/${deviceUid}/remote-control`;
 	}
 }

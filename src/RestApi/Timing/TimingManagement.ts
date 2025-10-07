@@ -15,16 +15,19 @@ interface ValidateDataValues {
 }
 
 export default class TimingManagement {
-	private static readonly RESOURCE: string = 'timing';
-
 	public readonly DURATION: string = 'DURATION';
 	public readonly SCREEN_TAP: string = 'SCREEN_TAP';
 	public readonly IDLE_TIMEOUT: string = 'IDLE_TIMEOUT';
 
-	private appletCommandManagement: AppletCommandManagement = new AppletCommandManagement(this.options);
+	private static readonly RESOURCE: string = 'timing';
 
-	// eslint-disable-next-line no-empty-function
-	constructor(private options: IOptions) {}
+	private options: IOptions;
+	private appletCommandManagement: AppletCommandManagement;
+
+	constructor(options: IOptions) {
+		this.options = options;
+		this.appletCommandManagement = new AppletCommandManagement(this.options);
+	}
 
 	public async create(data: ITimingCreateOnly & ITimingUpdatable): Promise<Timing> {
 		this.assertV1();
@@ -105,12 +108,12 @@ export default class TimingManagement {
 			return false;
 		}
 		// When we are updating timing, configuration might change, so we need to check it always
-		if (additionalValidation && additionalValidation.configuration) {
+		if (additionalValidation?.configuration) {
 			if (!areConfigurationsEqual(t1.configuration, t2.configuration)) {
 				return false;
 			}
 		}
-		if (additionalValidation && additionalValidation.dataValues) {
+		if (additionalValidation?.dataValues) {
 			if (!isEqual(t1.finishEvent.data, t2.finishEvent.data)) {
 				return false;
 			}

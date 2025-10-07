@@ -5,8 +5,8 @@ export abstract class BaseError extends Error {
 	) {
 		const message =
 			`${reasonMessage}\n` +
-			` \nYou can try the following:\n` +
-			` ${recommendations.map((recommendation) => `* ${recommendation}`).join('\n')}`;
+			` \nYou can try the following:\n` +
+			` ${recommendations.map((recommendation) => `* ${recommendation}`).join('\n')}`;
 		super(message);
 		Object.setPrototypeOf(this, BaseError.prototype);
 	}

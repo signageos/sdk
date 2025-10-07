@@ -81,7 +81,7 @@ export async function parseJSONResponse(resp: Response): Promise<any> {
 async function parseJSON(text: string): Promise<any> {
 	try {
 		return JSON.parse(text, deserializeJSON);
-	} catch (error) {
+	} catch {
 		throw new ResponseBodyFormatError(text);
 	}
 }

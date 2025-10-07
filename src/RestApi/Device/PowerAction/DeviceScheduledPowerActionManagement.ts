@@ -6,14 +6,6 @@ import ScheduledPowerAction from './ScheduledPowerAction';
 import { Headers } from 'node-fetch';
 
 export default class DeviceScheduledPowerActionManagement {
-	private static getUrl(deviceUid: string): string {
-		return `${Resources.Device}/${deviceUid}/scheduled-power-action`;
-	}
-
-	private static getDetailUrl(deviceUid: string, scheduledPowerActionId: string): string {
-		return DeviceScheduledPowerActionManagement.getUrl(deviceUid) + '/' + scheduledPowerActionId;
-	}
-
 	constructor(private options: IOptions) {}
 
 	public async list(deviceUid: string): Promise<IScheduledPowerAction[]> {
@@ -36,6 +28,14 @@ export default class DeviceScheduledPowerActionManagement {
 
 	public async cancel(deviceUid: string, sPowerActionId: string): Promise<void> {
 		await deleteResource(this.options, DeviceScheduledPowerActionManagement.getDetailUrl(deviceUid, sPowerActionId));
+	}
+
+	private static getUrl(deviceUid: string): string {
+		return `${Resources.Device}/${deviceUid}/scheduled-power-action`;
+	}
+
+	private static getDetailUrl(deviceUid: string, scheduledPowerActionId: string): string {
+		return DeviceScheduledPowerActionManagement.getUrl(deviceUid) + '/' + scheduledPowerActionId;
 	}
 
 	private async extractLocationFromHeader(headers: Headers, message: string) {

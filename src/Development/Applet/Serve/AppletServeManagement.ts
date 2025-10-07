@@ -292,7 +292,7 @@ export class AppletServeManagement {
 		try {
 			process.kill(pid, 0); // throws an error if the process doesn't exist
 			return true;
-		} catch (error) {
+		} catch {
 			return false;
 		}
 	}
