@@ -15,11 +15,7 @@ export default class TimingCommandManagement {
 
 	private static readonly RESOURCE: string[] = ['device', 'applet', 'command'];
 
-	private options: IOptions;
-
-	constructor(options: IOptions) {
-		this.options = options;
-	}
+	constructor(private options: IOptions) {}
 
 	/** @deprecated duplicate implementation, use AppletCommandManagement.list() */
 	public async getList<TCommandPayload extends ITimingCommandPayload>(filter: ITimingCommandFilter) {
