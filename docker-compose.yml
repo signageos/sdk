@@ -1,14 +1,18 @@
 services:
-    app:
-        image: node:20-alpine
-        volumes:
-            - $PWD:/app
-        command: tail -f /dev/null
-        working_dir: /app
-        init: true
-        env_file:
-            - ~/.signageos/npm.env
-        environment:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      cache_from: ['172396373649.dkr.ecr.eu-central-1.amazonaws.com/signageos/display/front-applet/runtime:latest']
+      target: dev
+      tags: ['172396373649.dkr.ecr.eu-central-1.amazonaws.com/signageos/display/front-applet/runtime:latest']
+    volumes:
+      - .:/app:delegated
+    command: tail -f /dev/null
+    working_dir: /app
+    env_file:
+      - ~/.signageos/npm.env
+    environment:
             # Fallback environment variables (will be overridden by env_file if present)
             # Organization API SECURITY TOKENS
             - SOS_AUTH_CLIENT_ID=${SOS_AUTH_CLIENT_ID:-}
