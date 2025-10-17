@@ -16,45 +16,66 @@ import DeviceLocationManagement from './Device/Location/DeviceLocationManagement
 import AlertManagement from './Alerts/AlertManagement';
 import IOptions from './IOptions';
 import PackageManagement from './Package/PackageManagement';
-import { Paginator } from '../Lib/Pagination/paginator';
 import { CustomScriptManagement } from './CustomScript/CustomScriptManagement';
 import { PluginManagement } from './Plugin/PluginManagement';
 import { RunnerManagement } from './Runner/RunnerManagement';
+import { createDependencies } from './Dependencies';
 
 export default class RestApi {
 	// Note: We use different authentication here
-	public readonly organization: OrganizationManagement = new OrganizationManagement(this.accountOptions);
-	public readonly organizationTag: OrganizationTagManagement = new OrganizationTagManagement(this.organizationOptions);
-	public readonly company: CompanyManagement = new CompanyManagement(this.accountOptions);
-	public readonly firmwareVersion: FirmwareVersionManagement = new FirmwareVersionManagement(this.accountOptions);
+	public readonly organization: OrganizationManagement;
+	public readonly organizationTag: OrganizationTagManagement;
+	public readonly company: CompanyManagement;
+	public readonly firmwareVersion: FirmwareVersionManagement;
 
-	public readonly timing: TimingManagement = new TimingManagement(this.organizationOptions);
+	public readonly timing: TimingManagement;
 	/** @deprecated replaced by api.applet.command and will be removed in the future */
-	public readonly timingCommand: TimingCommandManagement = new TimingCommandManagement(this.organizationOptions);
+	public readonly timingCommand: TimingCommandManagement;
 
-	public readonly applet: AppletManagement = new AppletManagement(this.organizationOptions);
-	public readonly policy: PolicyManagement = new PolicyManagement(this.organizationOptions);
-	public readonly bulkOperation: BulkOperationManagement = new BulkOperationManagement(this.organizationOptions);
-	public readonly device: DeviceManagement = new DeviceManagement(this.accountOptions, this.organizationOptions);
-	public readonly emulator: EmulatorManagement = new EmulatorManagement(this.organizationOptions);
+	public readonly applet: AppletManagement;
+	public readonly policy: PolicyManagement;
+	public readonly bulkOperation: BulkOperationManagement;
+	public readonly device: DeviceManagement;
+	public readonly emulator: EmulatorManagement;
 	public readonly deviceAlive: DeviceAliveManagement;
-	public readonly deviceLocation: DeviceLocationManagement = new DeviceLocationManagement(this.organizationOptions);
+	public readonly deviceLocation: DeviceLocationManagement;
 
-	public readonly alert: AlertManagement = new AlertManagement(this.organizationOptions);
-	public readonly package: PackageManagement = new PackageManagement(this.organizationOptions);
+	public readonly alert: AlertManagement;
+	public readonly package: PackageManagement;
 
-	public readonly location: LocationManagement = new LocationManagement(this.organizationOptions);
-	public readonly locationOrganizationTag: LocationOrganizationTag = new LocationOrganizationTag(this.organizationOptions);
+	public readonly location: LocationManagement;
+	public readonly locationOrganizationTag: LocationOrganizationTag;
 
-	public readonly customScript: CustomScriptManagement = new CustomScriptManagement(this.organizationOptions);
-	public readonly plugin: PluginManagement = new PluginManagement(this.organizationOptions);
-	public readonly runner: RunnerManagement = new RunnerManagement(this.organizationOptions);
+	public readonly customScript: CustomScriptManagement;
+	public readonly plugin: PluginManagement;
+	public readonly runner: RunnerManagement;
 
 	constructor(
 		public readonly accountOptions: IOptions,
 		public readonly organizationOptions: IOptions,
 	) {
-		const paginator = new Paginator(this.organizationOptions);
-		this.deviceAlive = new DeviceAliveManagement(this.organizationOptions, paginator);
+		const accountDependencies = createDependencies(this.accountOptions);
+		const organizationDependencies = createDependencies(this.organizationOptions);
+
+		this.organization = new OrganizationManagement(accountDependencies);
+		this.organizationTag = new OrganizationTagManagement(organizationDependencies);
+		this.company = new CompanyManagement(accountDependencies);
+		this.firmwareVersion = new FirmwareVersionManagement(accountDependencies);
+		this.timing = new TimingManagement(organizationDependencies);
+		this.timingCommand = new TimingCommandManagement(organizationDependencies);
+		this.applet = new AppletManagement(organizationDependencies);
+		this.policy = new PolicyManagement(organizationDependencies);
+		this.bulkOperation = new BulkOperationManagement(organizationDependencies);
+		this.device = new DeviceManagement(accountDependencies, organizationDependencies);
+		this.emulator = new EmulatorManagement(organizationDependencies);
+		this.deviceAlive = new DeviceAliveManagement(organizationDependencies);
+		this.deviceLocation = new DeviceLocationManagement(organizationDependencies);
+		this.alert = new AlertManagement(organizationDependencies);
+		this.package = new PackageManagement(organizationDependencies);
+		this.location = new LocationManagement(organizationDependencies);
+		this.locationOrganizationTag = new LocationOrganizationTag(organizationDependencies);
+		this.customScript = new CustomScriptManagement(organizationDependencies);
+		this.plugin = new PluginManagement(organizationDependencies);
+		this.runner = new RunnerManagement(organizationDependencies);
 	}
 }

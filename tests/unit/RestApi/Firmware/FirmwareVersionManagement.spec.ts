@@ -8,6 +8,7 @@ import IFirmwareVersion, {
 } from '../../../../src/RestApi/Firmware/Version/IFirmwareVersion';
 import FirmwareVersionManagement from '../../../../src/RestApi/Firmware/Version/FirmwareVersionManagement';
 import { createReadableStream } from '../Applet/Version/File/helper';
+import { createDependencies } from '../../../../src/RestApi/Dependencies';
 
 const nockOpts = getNockOpts({});
 
@@ -85,7 +86,7 @@ describe('FirmwareVersionManagement', () => {
 		nock('http://myNiceStorage').post('/create').reply(204).post('/update').reply(204);
 	});
 
-	const fm = new FirmwareVersionManagement(nockOpts);
+	const fm = new FirmwareVersionManagement(createDependencies(nockOpts));
 	const assertFwv = (fwv: IFirmwareVersion) => {
 		should.equal(validGetResp.uid, fwv.uid);
 		should.equal(validGetResp.applicationType, fwv.applicationType);

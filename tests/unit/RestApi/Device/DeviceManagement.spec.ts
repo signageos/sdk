@@ -5,6 +5,7 @@ import { errorResp, errorRespMessage, getNockOpts } from '../helper';
 import DeviceManagement from '../../../../src/RestApi/Device/DeviceManagement';
 import IDevice, { IDeviceUpdatable } from '../../../../src/RestApi/Device/IDevice';
 import Device from '../../../../src/RestApi/Device/Device';
+import { createDependencies } from '../../../../src/RestApi/Dependencies';
 
 const nockOpts = getNockOpts({});
 
@@ -80,7 +81,7 @@ describe('DeviceManagement', () => {
 		.put('/v1/device/someUid/organization', { organizationUid: 'testOrgUid1' })
 		.reply(204);
 
-	const dm = new DeviceManagement(nockOpts, nockOpts);
+	const dm = new DeviceManagement(createDependencies(nockOpts), createDependencies(nockOpts));
 
 	describe('get device list information', () => {
 		it('should parse the response', async () => {

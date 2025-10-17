@@ -6,9 +6,9 @@ import { Resources } from '../../../../../src/RestApi/resources';
 import DeviceAliveManagement from '../../../../../src/RestApi/Device/Alive/DeviceAliveManagement';
 import { nockOpts1, nockAuthHeader1 } from '../../helper';
 import { DEVICE_ALIVE_1, DEVICE_ALIVE_2 } from './DeviceAliveManagement.utils';
-import { Paginator } from '../../../../../src/Lib/Pagination/paginator';
+import { createDependencies } from '../../../../../src/RestApi/Dependencies';
 
-const deviceAliveManagement = new DeviceAliveManagement(nockOpts1, new Paginator(nockOpts1));
+const deviceAliveManagement = new DeviceAliveManagement(createDependencies(nockOpts1));
 
 describe('Unit.RestApi.Device.Alive', () => {
 	it('should get many', async () => {

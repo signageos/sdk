@@ -7,6 +7,7 @@ import chalk from 'chalk';
 import IRestApiOptions, { IAuthOptions } from '../RestApi/IOptions';
 import { AccountAuthMissingError, DefaultOrganizationMissingError } from './errors';
 import OrganizationManagement from '../RestApi/Organization/OrganizationManagement';
+import { createDependencies } from '../RestApi/Dependencies';
 import { parameters } from '../parameters';
 import { log } from '../Console/log';
 
@@ -126,7 +127,7 @@ export async function loadOrganizationAuthOptions(
 	if (!organizationUid) {
 		throw new DefaultOrganizationMissingError();
 	}
-	const organizationManagement = new OrganizationManagement(accountAuthOptions);
+	const organizationManagement = new OrganizationManagement(createDependencies(accountAuthOptions));
 	const defaultOrganization = await organizationManagement.get(organizationUid);
 	// TODO add API for new organization tokens
 	return {

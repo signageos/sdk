@@ -12,9 +12,10 @@ import {
 import { getNockOpts, nockAuthHeader1 } from '../../helper';
 import { IOrganizationFullToken, OrganizationToken } from '../../../../../src/RestApi/Organization/Token/OrganizationToken';
 import { OrganizationTokenManagement } from '../../../../../src/RestApi/Organization/Token/OrganizationTokenManagement';
+import { createDependencies } from '../../../../../src/RestApi/Dependencies';
 
 const nockOpts = getNockOpts({});
-const organizationTokenManagement = new OrganizationTokenManagement(nockOpts);
+const organizationTokenManagement = new OrganizationTokenManagement(createDependencies(nockOpts));
 
 const postRespHeaders: nock.ReplyHeaders = {
 	Location: `https://example.com/${ApiVersions.V1}/organization/${ORGANIZATION_UID}`,

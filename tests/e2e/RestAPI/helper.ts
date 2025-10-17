@@ -12,4 +12,5 @@ export const opts: IOptions = {
 	organizationUid,
 	organizationAuth: parameters.organizationAuth,
 	accountAuth: parameters.accountAuth,
+	clientVersions: {},
 };

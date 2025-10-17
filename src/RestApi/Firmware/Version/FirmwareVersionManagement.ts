@@ -1,6 +1,6 @@
 import { getResource, parseJSONResponse, putResource, postResource } from '../../requester';
 import IFirmwareVersion, { IFirmwareVersionUpdatable, IFirmwareVersionCreatable, IFile } from './IFirmwareVersion';
-import IOptions from '../../IOptions';
+import { Dependencies } from '../../Dependencies';
 import FirmwareVersion from './FirmwareVersion';
 import { postStorage } from '../../storageRequester';
 import * as _ from 'lodash';
@@ -8,10 +8,10 @@ import * as _ from 'lodash';
 export default class FirmwareVersionManagement {
 	public static readonly RESOURCE: string = 'firmware/version';
 
-	constructor(private options: IOptions) {}
+	constructor(private readonly dependencies: Dependencies) {}
 
 	public async list(): Promise<IFirmwareVersion[]> {
-		const response = await getResource(this.options, FirmwareVersionManagement.RESOURCE);
+		const response = await getResource(this.dependencies.options, FirmwareVersionManagement.RESOURCE);
 		const data: IFirmwareVersion[] = await parseJSONResponse(response);
 
 		return data.map((item: IFirmwareVersion) => new FirmwareVersion(item));
@@ -32,7 +32,7 @@ export default class FirmwareVersionManagement {
 		force: boolean = false,
 	): Promise<void> {
 		await putResource(
-			this.options,
+			this.dependencies.options,
 			FirmwareVersionManagement.getUrl(applicationType, version, type),
 			JSON.stringify(settings),
 			force ? { force } : {},
@@ -45,7 +45,7 @@ export default class FirmwareVersionManagement {
 	 */
 	public async create(settings: IFirmwareVersionCreatable, force: boolean = false): Promise<void> {
 		const response = await postResource(
-			this.options,
+			this.dependencies.options,
 			FirmwareVersionManagement.RESOURCE,
 			JSON.stringify({
 				applicationType: settings.applicationType,

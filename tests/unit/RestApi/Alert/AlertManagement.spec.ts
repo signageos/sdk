@@ -4,6 +4,7 @@ import should from 'should';
 import { getNockOpts, successRes } from '../helper';
 import IAlert, { AlertSnooze, DeviceAlertSnooze, IAlertCreatable } from '../../../../src/RestApi/Alerts/IAlert';
 import AlertManagement from '../../../../src/RestApi/Alerts/AlertManagement';
+import { createDependencies } from '../../../../src/RestApi/Dependencies';
 
 const nockOpts = getNockOpts({});
 
@@ -83,7 +84,7 @@ describe('AlertManagement', () => {
 		.delete('/v1/alert/someAlertUid/deviceUid/device-snooze')
 		.reply(204);
 
-	const alertManagement = new AlertManagement(nockOpts);
+	const alertManagement = new AlertManagement(createDependencies(nockOpts));
 
 	const assertAlert = (verifiedAlert: IAlert, originalAlert: IAlert) => {
 		should(verifiedAlert.alertUid).be.equal(originalAlert.alertUid);

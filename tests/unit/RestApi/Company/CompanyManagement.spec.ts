@@ -4,6 +4,7 @@ import nock from 'nock';
 import { getNockOpts } from '../helper';
 import IOrganization from '../../../../src/RestApi/Organization/IOrganization';
 import CompanyManagement, { ICompany } from '../../../../src/RestApi/Company/CompanyManagement';
+import { createDependencies } from '../../../../src/RestApi/Dependencies';
 
 const nockOpts = getNockOpts({});
 
@@ -32,7 +33,7 @@ describe('CompanyManagement', () => {
 		.put('/v1/company/someUid/billingPlan/enterprise')
 		.reply(200, '');
 
-	const cm = new CompanyManagement(nockOpts);
+	const cm = new CompanyManagement(createDependencies(nockOpts));
 	const assertCompany = (org: IOrganization) => {
 		should.equal(validGetResp.uid, org.uid);
 		should.equal(validGetResp.name, org.name);

@@ -1,28 +1,28 @@
-import IOptions from '../../IOptions';
+import { Dependencies } from '../../Dependencies';
 import { getResource, parseJSONResponse, postResource, putResource } from '../../requester';
 import IAlertRule, { IAlertRuleCreatable, IAlertRuleUpdateable } from './IAlertRule';
 import AlertRule from './AlertRule';
 import IAlertRuleFilter from './IAlertRuleFilter';
+import { PaginatedList } from '../../../Lib/Pagination/PaginatedList';
 
 export const RESOURCE: string = 'alert-rule';
 
 export default class AlertRulesManagement {
-	constructor(protected options: IOptions) {}
+	constructor(private readonly dependencies: Dependencies) {}
 
-	public async list(filter: IAlertRuleFilter = {}): Promise<IAlertRule[]> {
-		const response = await getResource(this.options, RESOURCE, filter);
-		const data: IAlertRule[] = await parseJSONResponse(response);
-		return data.map((item: IAlertRule) => new AlertRule(item));
+	public async list(filter: IAlertRuleFilter = {}): Promise<PaginatedList<AlertRule>> {
+		const response = await getResource(this.dependencies.options, RESOURCE, filter);
+		return this.dependencies.paginator.getPaginatedListFromResponse(response, (item: IAlertRule) => new AlertRule(item));
 	}
 
 	public async get(alertRuleUid: string): Promise<IAlertRule> {
-		const response = await getResource(this.options, `${RESOURCE}/${alertRuleUid}`);
+		const response = await getResource(this.dependencies.options, `${RESOURCE}/${alertRuleUid}`);
 		const data: IAlertRule = await parseJSONResponse(response);
 		return new AlertRule(data);
 	}
 
 	public async create(settings: IAlertRuleCreatable): Promise<IAlertRule> {
-		const { headers } = await postResource(this.options, RESOURCE, JSON.stringify(settings));
+		const { headers } = await postResource(this.dependencies.options, RESOURCE, JSON.stringify(settings));
 		const headerLocation = headers.get('location');
 
 		if (!headerLocation) {
@@ -35,18 +35,18 @@ export default class AlertRulesManagement {
 	}
 
 	public async update(alertRuleUid: string, settings: IAlertRuleUpdateable): Promise<void> {
-		await putResource(this.options, `${RESOURCE}/${alertRuleUid}`, JSON.stringify(settings));
+		await putResource(this.dependencies.options, `${RESOURCE}/${alertRuleUid}`, JSON.stringify(settings));
 	}
 
 	public async archive(alertRuleUid: string): Promise<void> {
-		await putResource(this.options, `${RESOURCE}/${alertRuleUid}/archive`, JSON.stringify({ alertRuleUid }));
+		await putResource(this.dependencies.options, `${RESOURCE}/${alertRuleUid}/archive`, JSON.stringify({ alertRuleUid }));
 	}
 
 	public async pause(alertRuleUid: string): Promise<void> {
-		await putResource(this.options, `${RESOURCE}/${alertRuleUid}/pause`, JSON.stringify({ alertRuleUid }));
+		await putResource(this.dependencies.options, `${RESOURCE}/${alertRuleUid}/pause`, JSON.stringify({ alertRuleUid }));
 	}
 
 	public async unpause(alertRuleUid: string): Promise<void> {
-		await putResource(this.options, `${RESOURCE}/${alertRuleUid}/unpause`, JSON.stringify({ alertRuleUid }));
+		await putResource(this.dependencies.options, `${RESOURCE}/${alertRuleUid}/unpause`, JSON.stringify({ alertRuleUid }));
 	}
 }

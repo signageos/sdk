@@ -64,3 +64,6 @@ export const dev = createDevelopment();
 
 export { now } from './Utils/time';
 export { waitUntilResolved as waitUntil } from './Timer/waitUntil';
+export { PaginatedList } from './Lib/Pagination/PaginatedList';
+export type { IPaginatedList } from './Lib/Pagination/PaginatedList';
+export type { IPaginationFilter } from './Lib/Pagination/IPaginationFilter';

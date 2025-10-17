@@ -3,6 +3,7 @@ import should from 'should';
 
 import IAlertRule, { IAlertRuleCreatable, IAlertRuleUpdateable } from '../../../../../src/RestApi/Alerts/Rules/IAlertRule';
 import AlertRulesManagement from '../../../../../src/RestApi/Alerts/Rules/AlertRulesManagement';
+import { createDependencies } from '../../../../../src/RestApi/Dependencies';
 import { getNockOpts, successRes } from '../../helper';
 
 const nockOpts = getNockOpts({});
@@ -63,7 +64,7 @@ describe('AlertRuleManagement', () => {
 		.put('/v1/alert-rule/someAlertRuleUid/unpause')
 		.reply(200, successRes);
 
-	const alertRuleManagement = new AlertRulesManagement(nockOpts);
+	const alertRuleManagement = new AlertRulesManagement(createDependencies(nockOpts));
 
 	const assertAlertRule = (verifiedAlertRule: IAlertRule, originalAlertRule: IAlertRule) => {
 		should(verifiedAlertRule.alertRuleUid).be.equal(originalAlertRule.alertRuleUid);

@@ -4,6 +4,7 @@ import nock from 'nock';
 import { getNockOpts, nockAuthHeader1 } from '../helper';
 import IOrganization, { IOrganizationCreatable } from '../../../../src/RestApi/Organization/IOrganization';
 import OrganizationManagement from '../../../../src/RestApi/Organization/OrganizationManagement';
+import { createDependencies } from '../../../../src/RestApi/Dependencies';
 
 const nockOpts = getNockOpts({});
 
@@ -49,7 +50,7 @@ describe('OrganizationManagement', () => {
 		.put('/v1/organization/someUid', validUpdateReqBody as {})
 		.reply(200, '');
 
-	const om = new OrganizationManagement(nockOpts);
+	const om = new OrganizationManagement(createDependencies(nockOpts));
 	const assertOrg = (org: IOrganization) => {
 		should.equal(validGetResp.uid, org.uid);
 		should.equal(validGetResp.name, org.name);

@@ -41,7 +41,11 @@ export async function startAppletServer({ appletUid, appletVersion, port, overri
 			return;
 		}
 		const closeHttpPromise = new Promise<void>((resolve, reject) => server.close((error) => (error ? reject(error) : resolve())));
-		await Promise.all([closeHttpPromise, forwarding?.stop()]);
+		const promises = [closeHttpPromise];
+		if (forwarding) {
+			promises.push(forwarding.stop());
+		}
+		await Promise.all(promises);
 	};
 	return { stopServer, publicUrl };
 }

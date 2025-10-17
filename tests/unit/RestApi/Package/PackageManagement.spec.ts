@@ -4,6 +4,7 @@ import nock from 'nock';
 import { getNockOpts, nockAuthHeader1, successRes } from '../helper';
 import PackageManagement from '../../../../src/RestApi/Package/PackageManagement';
 import Package from '../../../../src/RestApi/Package/Package';
+import { createDependencies } from '../../../../src/RestApi/Dependencies';
 
 const nockOpts = getNockOpts({});
 const API_PREFIX = 'v1';
@@ -49,7 +50,7 @@ describe('PackageManagement', () => {
 		)
 		.reply(200, successRes, getLocationHeader(`packageUid`));
 
-	const packageManagement = new PackageManagement(nockOpts);
+	const packageManagement = new PackageManagement(createDependencies(nockOpts));
 
 	it('should get list of packages by filter', async () => {
 		const packagesDb = await packageManagement.list({

@@ -1,8 +1,9 @@
 import { deleteResource, getResource, parseJSONResponse, postResource, putResource } from '../requester';
 import { Resources } from '../resources';
-import IOptions from '../IOptions';
+import { Dependencies } from '../Dependencies';
 import Location, { ILocation, ILocationCreate, ILocationUpdate, ILocationFilter } from './Location';
 import { getAttachmentExtension } from './location.utils';
+import { PaginatedList } from '../../Lib/Pagination/PaginatedList';
 
 export enum LocationResources {
 	AddAttachment = 'add-attachment',
@@ -10,10 +11,10 @@ export enum LocationResources {
 }
 
 export default class LocationManagement {
-	constructor(private options: IOptions) {}
+	constructor(private readonly dependencies: Dependencies) {}
 
 	public async create(location: ILocationCreate) {
-		const { headers } = await postResource(this.options, Resources.Location, JSON.stringify(location));
+		const { headers } = await postResource(this.dependencies.options, Resources.Location, JSON.stringify(location));
 		const headerLocation = headers.get('location');
 
 		if (!headerLocation) {
@@ -26,21 +27,19 @@ export default class LocationManagement {
 		return await this.get(locationUid);
 	}
 
-	public async list(filter: ILocationFilter = {}) {
-		const response = await getResource(this.options, Resources.Location, filter);
-		const data: ILocation[] = await parseJSONResponse(response);
-
-		return data.map((item) => new Location(item));
+	public async list(filter: ILocationFilter = {}): Promise<PaginatedList<Location>> {
+		const response = await getResource(this.dependencies.options, Resources.Location, filter);
+		return this.dependencies.paginator.getPaginatedListFromResponse(response, (item: ILocation) => new Location(item));
 	}
 
 	public async get(uid: ILocation['uid'], filter: ILocationFilter = {}) {
-		const response = await getResource(this.options, `${Resources.Location}/${uid}`, filter);
+		const response = await getResource(this.dependencies.options, `${Resources.Location}/${uid}`, filter);
 
 		return new Location(await parseJSONResponse(response));
 	}
 
 	public async update(uid: ILocation['uid'], location: ILocationUpdate) {
-		await putResource(this.options, `${Resources.Location}/${uid}`, JSON.stringify(location));
+		await putResource(this.dependencies.options, `${Resources.Location}/${uid}`, JSON.stringify(location));
 	}
 
 	/**
@@ -48,7 +47,7 @@ export default class LocationManagement {
 	 */
 	public async addAttachment(uid: ILocation['uid'], attachment: Buffer) {
 		await putResource(
-			{ ...this.options, contentType: `image/${await getAttachmentExtension(attachment)}` },
+			{ ...this.dependencies.options, contentType: `image/${await getAttachmentExtension(attachment)}` },
 			`${Resources.Location}/${uid}/${LocationResources.AddAttachment}`,
 			attachment,
 		);
@@ -60,13 +59,13 @@ export default class LocationManagement {
 	 */
 	public async removeAttachments(uid: ILocation['uid'], attachments: ILocation['attachments']) {
 		await putResource(
-			this.options,
+			this.dependencies.options,
 			`${Resources.Location}/${uid}/${LocationResources.RemoveAttachments}`,
 			JSON.stringify({ attachmentsToRemove: attachments }),
 		);
 	}
 
 	public async delete(uid: ILocation['uid']) {
-		await deleteResource(this.options, `${Resources.Location}/${uid}`);
+		await deleteResource(this.dependencies.options, `${Resources.Location}/${uid}`);
 	}
 }

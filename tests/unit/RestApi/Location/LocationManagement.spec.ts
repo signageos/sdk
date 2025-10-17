@@ -9,9 +9,10 @@ import { Resources } from '../../../../src/RestApi/resources';
 import { parameters } from '../../../../src/parameters';
 import { generateLocationCreatable, generateLocationUpdatable, LOCATION_1, LOCATION_2 } from '../../../fixtures/Location/location.fixtures';
 import { getNockOpts, nockAuthHeader1 } from '../helper';
+import { createDependencies } from '../../../../src/RestApi/Dependencies';
 
 const nockOpts = getNockOpts({});
-const locationManagement = new LocationManagement(nockOpts);
+const locationManagement = new LocationManagement(createDependencies(nockOpts));
 
 const validCreateReq: ILocationCreate = generateLocationCreatable();
 const validUpdateReq: ILocationUpdate = generateLocationUpdatable();

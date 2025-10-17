@@ -13,8 +13,11 @@ export class Paginator {
 	 * The next page is fetched lazily when the method `getNextPage` is called.
 	 * It returns a `null` value if there is no next page.
 	 */
-	async getPaginatedListFromResponse<TItem>(resp: Response, createEntity: (data: TItem) => TItem): Promise<PaginatedList<TItem>> {
-		const rawItems: TItem[] = await parseJSONResponse(resp);
+	async getPaginatedListFromResponse<TRaw, TItem = TRaw>(
+		resp: Response,
+		createEntity: (data: TRaw) => TItem,
+	): Promise<PaginatedList<TItem>> {
+		const rawItems: TRaw[] = await parseJSONResponse(resp);
 
 		const items = rawItems.map((rawItem) => createEntity(rawItem));
 		const getNextPage = async () => {

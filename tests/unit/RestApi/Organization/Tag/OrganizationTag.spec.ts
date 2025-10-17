@@ -7,9 +7,10 @@ import IOrganizationTag from '../../../../../src/RestApi/Organization/Tag/Organi
 import { Resources } from '../../../../../src/RestApi/resources';
 import { ORGANIZATION_TAG_1, ORGANIZATION_TAG_UPDATE_1 } from './OrganizationTag.fixtures';
 import { getNockOpts, nockAuthHeader1 } from '../../helper';
+import { createDependencies } from '../../../../../src/RestApi/Dependencies';
 
 const nockOpts = getNockOpts({});
-const organizationTagManagement = new OrganizationTagManagement(nockOpts);
+const organizationTagManagement = new OrganizationTagManagement(createDependencies(nockOpts));
 
 const postRespHeaders: nock.ReplyHeaders = {
 	Location: `https://example.com/${ApiVersions.V1}/${Resources.OrganizationTag}/${ORGANIZATION_TAG_1.uid}`,
