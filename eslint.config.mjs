@@ -8,14 +8,12 @@ export default [
 			'dist/',
 			'dist-test/',
 			'coverage/',
-			'tests/',
 			'**/*.config.js',
 			'**/*.config.mjs',
 			'.prettierrc.mjs',
 			'.mocharc.*.json',
-			'package.json',
-			'**/*.d.ts',
-			'**/*.js',
+			'docs/**/*.js',
+			'tests/',
 		],
 	},
 	{
@@ -23,6 +21,14 @@ export default [
 		languageOptions: {
 			parserOptions: {
 				project: './tsconfig.json',
+			},
+		},
+	},
+	{
+		files: ['tests/**/*.ts'],
+		languageOptions: {
+			parserOptions: {
+				project: './tsconfig.test.json',
 			},
 		},
 	},

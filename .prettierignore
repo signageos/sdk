@@ -1,14 +1,9 @@
 # General
 node_modules/*
-package.json
-package-lock.json
 
 # IDE
 .idea/*
 .vscode/*
-
-# Typescript
-tsconfig.json
 
 # Other
 dist/*
