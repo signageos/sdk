@@ -9,7 +9,10 @@ import { getResource } from '../../../../src/RestApi/requester';
 describe('Lib.Pagination.Paginator', function () {
 	describe('getPaginatedListFromResponse', function () {
 		class DataWrapper {
-			constructor(public readonly data: unknown) {}
+			public readonly data: unknown;
+			constructor(data: unknown) {
+				this.data = data;
+			}
 		}
 
 		const TEST_PORT = 12345;

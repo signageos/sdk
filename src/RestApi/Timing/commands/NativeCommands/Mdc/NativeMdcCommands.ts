@@ -42,4 +42,8 @@ export default class NativeMdcCommands implements INativeMdcCommands {
 			}
 		});
 	}
+
+	public async sendOneRaw(): Promise<IMDCResponse> {
+		throw new Error('sendOneRaw is not implemented in management SDK');
+	}
 }

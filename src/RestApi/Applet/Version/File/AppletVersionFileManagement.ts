@@ -20,14 +20,6 @@ interface IUploadOptions {
 export default class AppletVersionFileManagement {
 	private static readonly RESOURCE: string = 'file';
 
-	private static getResource(appletUid: string, appletVersion: string): string {
-		return `${APPLET}/${appletUid}/${VERSION}/${appletVersion}/${AppletVersionFileManagement.RESOURCE}`;
-	}
-
-	private static getUrl(appletUid: string, appletVersion: string, filePath: string): string {
-		return `${AppletVersionFileManagement.getResource(appletUid, appletVersion)}/${filePath}`;
-	}
-
 	constructor(private options: IOptions) {}
 
 	public async list(appletUid: string, appletVersion: string): Promise<IAppletVersionFile[]> {
@@ -96,5 +88,13 @@ export default class AppletVersionFileManagement {
 		const appletVersionPath = AppletVersionFileManagement.getUrl(appletUid, appletVersion, filePath);
 
 		await deleteResource(this.options, appletVersionPath, options);
+	}
+
+	private static getResource(appletUid: string, appletVersion: string): string {
+		return `${APPLET}/${appletUid}/${VERSION}/${appletVersion}/${AppletVersionFileManagement.RESOURCE}`;
+	}
+
+	private static getUrl(appletUid: string, appletVersion: string, filePath: string): string {
+		return `${AppletVersionFileManagement.getResource(appletUid, appletVersion)}/${filePath}`;
 	}
 }

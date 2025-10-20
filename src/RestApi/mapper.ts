@@ -1,4 +1,4 @@
-export function fillDataToEntity<T extends object>(entity: T & { constructor: Function }, data: T) {
+export function fillDataToEntity<T extends object>(entity: T, data: T) {
 	for (const key in data) {
 		entity[key] = data[key];
 	}

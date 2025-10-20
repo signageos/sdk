@@ -217,7 +217,11 @@ export default class FileSystemCommands implements IFileSystem {
 		});
 	}
 
-	public async copyFile(sourceFilePath: IFilePath, destinationFilePath: IFilePath, options: {} | ICopyFileOptions): Promise<void> {
+	public async copyFile(
+		sourceFilePath: IFilePath,
+		destinationFilePath: IFilePath,
+		options: Record<string, never> | ICopyFileOptions,
+	): Promise<void> {
 		const copyFileCommand = await this.appletCommandManagement.send<FileSystemCopyFileRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: FileSystemCopyFileRequest,
@@ -237,7 +241,11 @@ export default class FileSystemCommands implements IFileSystem {
 		});
 	}
 
-	public async moveFile(sourceFilePath: IFilePath, destinationFilePath: IFilePath, options: {} | IMoveFileOptions): Promise<void> {
+	public async moveFile(
+		sourceFilePath: IFilePath,
+		destinationFilePath: IFilePath,
+		options: Record<string, never> | IMoveFileOptions,
+	): Promise<void> {
 		const moveFileCommand = await this.appletCommandManagement.send<FileSystemMoveFileRequest>(this.deviceUid, this.appletUid, {
 			command: {
 				type: FileSystemMoveFileRequest,

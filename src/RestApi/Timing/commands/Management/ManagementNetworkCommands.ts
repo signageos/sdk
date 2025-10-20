@@ -54,7 +54,7 @@ export default class ManagementNetworkCommands implements INetwork {
 				command: {
 					type: ManagementNetworkSetManualRequest,
 					interfaceName,
-					// @ts-ignore
+					// @ts-expect-error TODO: Fix type mismatch
 					options, //TODO: Fix this
 				},
 			});

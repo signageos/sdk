@@ -1,6 +1,6 @@
 include:
-  - project: "signageos/infra/gitlab-ci"
-    file: "/pipelines/ts-lib-public.yaml"
+  - project: 'signageos/infra/gitlab-ci'
+    file: '/pipelines/ts-lib-public.yaml'
     ref: master
 
 test:e2e:

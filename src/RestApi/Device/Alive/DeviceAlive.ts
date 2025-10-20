@@ -18,4 +18,4 @@ export default class DeviceAlive implements IDeviceAlive {
 	}
 }
 
-export interface IDeviceAliveList extends IPaginatedList<IDeviceAlive> {}
+export type IDeviceAliveList = IPaginatedList<IDeviceAlive>;

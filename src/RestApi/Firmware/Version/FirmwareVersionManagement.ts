@@ -8,10 +8,6 @@ import * as _ from 'lodash';
 export default class FirmwareVersionManagement {
 	public static readonly RESOURCE: string = 'firmware/version';
 
-	private static getUrl(applicationType: string, version: string, type: string | undefined): string {
-		return `${FirmwareVersionManagement.RESOURCE}/${applicationType}/${version}${type ? '/' + type : ''}`;
-	}
-
 	constructor(private options: IOptions) {}
 
 	public async list(): Promise<IFirmwareVersion[]> {
@@ -73,5 +69,9 @@ export default class FirmwareVersionManagement {
 		);
 
 		await this.set(settings.applicationType, settings.version, settings.type, { uploaded: true }, force);
+	}
+
+	private static getUrl(applicationType: string, version: string, type: string | undefined): string {
+		return `${FirmwareVersionManagement.RESOURCE}/${applicationType}/${version}${type ? '/' + type : ''}`;
 	}
 }

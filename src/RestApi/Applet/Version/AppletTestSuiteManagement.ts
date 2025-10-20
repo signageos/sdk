@@ -5,14 +5,6 @@ import IAppletTestSuite, { IAppletTestSuiteCreatable, IAppletTestSuiteUpdatable 
 import AppletTestSuite from './AppletTestSuite';
 
 export default class AppletTestSuiteManagement {
-	private static getResource(appletUid: string, appletVersion: string): string {
-		return `${APPLET}/${appletUid}/version/${appletVersion}/test`;
-	}
-
-	private static getDetailResource(appletUid: string, appletVersion: string, identifier: string): string {
-		return `${APPLET}/${appletUid}/version/${appletVersion}/test/${identifier}`;
-	}
-
 	constructor(private options: IOptions) {}
 
 	public async list(appletUid: string, appletVersion: string): Promise<IAppletTestSuite[]> {
@@ -43,5 +35,13 @@ export default class AppletTestSuiteManagement {
 	public async delete(appletUid: string, appletVersion: string, identifier: string): Promise<void> {
 		const url = AppletTestSuiteManagement.getDetailResource(appletUid, appletVersion, identifier);
 		await deleteResource(this.options, url);
+	}
+
+	private static getResource(appletUid: string, appletVersion: string): string {
+		return `${APPLET}/${appletUid}/version/${appletVersion}/test`;
+	}
+
+	private static getDetailResource(appletUid: string, appletVersion: string, identifier: string): string {
+		return `${APPLET}/${appletUid}/version/${appletVersion}/test/${identifier}`;
 	}
 }

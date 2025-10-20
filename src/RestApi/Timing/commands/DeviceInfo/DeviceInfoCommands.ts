@@ -66,7 +66,7 @@ export default class DeviceInfoCommands implements IDeviceInfo {
 				receivedSince: command.receivedAt,
 				type: DeviceInfoGetDeviceNameResult,
 			});
-			if (systemRebootCommands.length > 0) {
+			if (systemRebootCommands.length > 0 && systemRebootCommands[0].command.result !== null) {
 				return systemRebootCommands[0].command.result;
 			}
 		});

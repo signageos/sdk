@@ -4,7 +4,6 @@ import nock from 'nock';
 import { getNockOpts } from '../helper';
 import IEmulator, { IEmulatorCreatable } from '../../../../src/RestApi/Emulator/IEmulator';
 import EmulatorManagement from '../../../../src/RestApi/Emulator/EmulatorManagement';
-import DeviceManagement from '../../../../src/RestApi/Device/DeviceManagement';
 
 const nockOpts = { ...getNockOpts({}), url: 'https://example.com' };
 
@@ -37,7 +36,7 @@ describe('EmulatorManagement', () => {
 		.delete(/v1\/emulator\/[a-zA-Z0-9]+$/)
 		.reply(204, 'Deleted');
 
-	const em = new EmulatorManagement(nockOpts, new DeviceManagement(nockOpts, nockOpts));
+	const em = new EmulatorManagement(nockOpts);
 	const assertEmulator = (emul: IEmulator) => {
 		should(emul.uid).be.equal(emulator.uid);
 		should(emul.duid).be.equal(emulator.duid);

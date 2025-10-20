@@ -16,7 +16,6 @@ import { DevicePowerAction } from '../../../../src/RestApi/Device/PowerAction/IP
 import IPolicy from '../../../../src/RestApi/Policy/IPolicy';
 import IApplet from '../../../../src/RestApi/Applet/IApplet';
 import ITiming from '../../../../src/RestApi/Timing/ITiming';
-import { parameters } from '../../../../src/parameters';
 import { LogData } from '../../../../src/RestApi/BulkOperation/BulkOperation.types';
 import { InputSource } from '../../../../src/RestApi/Device/InputSource';
 import { IBulkOperationCreatable } from '../../../../src/RestApi/BulkOperation/IBulkOperation';
@@ -55,9 +54,9 @@ describe('e2e.RestAPI - BulkOperation', function () {
 	let timing: ITiming;
 
 	before('create fixtures', async function () {
-		organization = await api.organization.get(parameters.organizationUid!);
+		organization = await api.organization.get(opts.organizationUid!);
 
-		device = await api.emulator.create({ organizationUid: parameters.organizationUid! });
+		device = await api.emulator.create({ organizationUid: opts.organizationUid! });
 
 		testingPackage = await api.package.create({
 			packageName: faker.system.fileName(),
@@ -73,7 +72,7 @@ describe('e2e.RestAPI - BulkOperation', function () {
 
 		policy = await api.policy.create({
 			name: faker.random.words(2),
-			organizationUid: parameters.organizationUid!,
+			organizationUid: opts.organizationUid!,
 		});
 
 		applet = await api.applet.create({ name: faker.system.fileName() });
@@ -97,7 +96,9 @@ describe('e2e.RestAPI - BulkOperation', function () {
 	});
 
 	after('remove fixtures', async function () {
-		await api.emulator.delete(device.uid);
+		if (device?.uid) {
+			await api.emulator.delete(device.uid);
+		}
 	});
 
 	it('should create new bulk operation', async () => {

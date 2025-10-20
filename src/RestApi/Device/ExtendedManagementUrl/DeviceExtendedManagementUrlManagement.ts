@@ -5,10 +5,6 @@ import DeviceExtendedManagementUrl from './DeviceExtendedManagementUrl';
 import IOptions from '../../IOptions';
 
 export default class DeviceExtendedManagementUrlManagement {
-	private static getUrl(deviceUid: string): string {
-		return `${Resources.Device}/${deviceUid}/extended-management`;
-	}
-
 	constructor(private options: IOptions) {}
 
 	public async list(deviceUid: string): Promise<IDeviceExtendedManagementUrl[]> {
@@ -20,5 +16,9 @@ export default class DeviceExtendedManagementUrlManagement {
 
 	public async set(deviceUid: string, settings: IDeviceExtendedManagementUrlUpdatable): Promise<void> {
 		await putResource(this.options, DeviceExtendedManagementUrlManagement.getUrl(deviceUid), JSON.stringify(settings));
+	}
+
+	private static getUrl(deviceUid: string): string {
+		return `${Resources.Device}/${deviceUid}/extended-management`;
 	}
 }

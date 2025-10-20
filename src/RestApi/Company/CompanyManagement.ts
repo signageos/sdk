@@ -4,11 +4,11 @@ import { IOrganizationFilter } from '../Organization/IOrganizationFilter';
 import IOrganization from '../Organization/IOrganization';
 import Organization from '../Organization/Organization';
 
-export interface ICompany extends IOrganization {}
+export type ICompany = IOrganization;
 
 export class Company extends Organization implements ICompany {}
 
-export interface ICompanyFilter extends IOrganizationFilter {}
+export type ICompanyFilter = IOrganizationFilter;
 
 export type BillingPlan = 'open' | 'medium' | 'enterprise';
 

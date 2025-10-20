@@ -61,8 +61,7 @@ export type LogData = {
 	[DeviceActionType.UNINSTALL_PACKAGE]: {
 		packageName: string;
 		applicationType: ApplicationType;
-		// eslint-disable-next-line @typescript-eslint/ban-types
-		specs: object;
+		specs: Record<string, unknown>;
 	};
 	[DeviceActionType.POWER_ACTION]: {
 		powerType: string;
@@ -188,7 +187,7 @@ export type LogData = {
 	[DeviceActionType.ENABLE_EXTENDED_TELEMETRY]: {
 		duration: number;
 	};
-	[DeviceActionType.DISABLE_EXTENDED_TELEMETRY]: {};
+	[DeviceActionType.DISABLE_EXTENDED_TELEMETRY]: Record<string, never>;
 	[DeviceActionType.TELEMETRY_INTERVALS]: {
 		telemetryCheckIntervals: TelemetryCheckIntervals;
 	};

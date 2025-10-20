@@ -2,11 +2,15 @@
 node_modules/*
 
 # IDE
-.idea
-.vscode
+.idea/*
+.vscode/*
 
 # Other
+dist/*
+coverage/*
 .prettierignore
+CHANGELOG.md
+.mocharc.*.json
 
 # Test
 .c8rc

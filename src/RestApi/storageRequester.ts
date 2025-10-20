@@ -3,7 +3,9 @@ import FormData from 'form-data';
 import { doRequest } from './requester';
 import IAppletVersionFile from './Applet/Version/File/IAppletVersionFile';
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace StorageResponse {
+	// eslint-disable-next-line @typescript-eslint/no-namespace
 	export namespace S3 {
 		export interface AppletVersionFile {
 			content: NodeJS.ReadableStream;
@@ -71,9 +73,9 @@ function createS3ResponseParser(parse: ParseObject) {
 
 function createDefaultParser() {
 	return async (response: Response) => {
-		const body = response.json();
+		const body = await response.json();
 		const headers = response.headers.raw();
-		const content = response.text();
+		const content = await response.text();
 
 		const data = {
 			...body,

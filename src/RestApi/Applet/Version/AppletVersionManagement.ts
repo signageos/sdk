@@ -12,14 +12,6 @@ export const RESOURCE: string = 'version';
 export default class AppletVersionManagement {
 	public file: AppletVersionFileManagement;
 
-	private static getResource(appletUid: string): string {
-		return `${APPLET}/${appletUid}/${RESOURCE}/`;
-	}
-
-	private static getUrl(appletUid: string, version: string): string {
-		return `${AppletVersionManagement.getResource(appletUid)}${version}/`;
-	}
-
 	constructor(private options: IOptions) {
 		this.file = new AppletVersionFileManagement(options);
 	}
@@ -76,5 +68,13 @@ export default class AppletVersionManagement {
 		const data = settings.entryFile ? JSON.stringify(settings) : settings.binary;
 
 		await putResource(options, path, data);
+	}
+
+	private static getResource(appletUid: string): string {
+		return `${APPLET}/${appletUid}/${RESOURCE}/`;
+	}
+
+	private static getUrl(appletUid: string, version: string): string {
+		return `${AppletVersionManagement.getResource(appletUid)}${version}/`;
 	}
 }

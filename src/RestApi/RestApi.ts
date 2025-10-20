@@ -36,7 +36,7 @@ export default class RestApi {
 	public readonly policy: PolicyManagement = new PolicyManagement(this.organizationOptions);
 	public readonly bulkOperation: BulkOperationManagement = new BulkOperationManagement(this.organizationOptions);
 	public readonly device: DeviceManagement = new DeviceManagement(this.accountOptions, this.organizationOptions);
-	public readonly emulator: EmulatorManagement = new EmulatorManagement(this.accountOptions, this.device);
+	public readonly emulator: EmulatorManagement = new EmulatorManagement(this.organizationOptions);
 	public readonly deviceAlive: DeviceAliveManagement;
 	public readonly deviceLocation: DeviceLocationManagement = new DeviceLocationManagement(this.organizationOptions);
 
