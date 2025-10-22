@@ -35,6 +35,8 @@ describe('OrganizationManagement', () => {
 	nock(nockOpts.url, nockAuthHeader1)
 		.get('/v1/organization')
 		.reply(200, validListResp)
+		.get('/v1/company/companyUid123/organizations')
+		.reply(200, validListResp)
 		.get('/v1/organization/someUid')
 		.reply(200, validGetResp)
 		.get('/v1/organization/someUid?name=signageos')
@@ -43,6 +45,8 @@ describe('OrganizationManagement', () => {
 		.reply(200, 'Created', validPostRespHeaders)
 		.get('/v1/organization/someUid')
 		.reply(200, validGetResp)
+		.post('/v1/organization', validCreateReq as {})
+		.reply(200, 'Created', {}) // No Location header
 		.put('/v1/organization/someUid/subscriptionType/medium')
 		.reply(200, '')
 		.delete('/v1/organization/someUid')
@@ -66,6 +70,12 @@ describe('OrganizationManagement', () => {
 		assertOrg(orgs[0]);
 	});
 
+	it('should get the organization list filtered by companyUid', async () => {
+		const orgs = await om.list({ companyUid: 'companyUid123' });
+		should.equal(1, orgs.length);
+		assertOrg(orgs[0]);
+	});
+
 	it('should get the single organization', async () => {
 		const org = await om.get('someUid');
 		assertOrg(org);
@@ -79,6 +89,15 @@ describe('OrganizationManagement', () => {
 	it('should create new organization', async () => {
 		await om.create(validCreateReq);
 		should(true).true();
+	});
+
+	it('should throw error when creating organization without location header', async () => {
+		try {
+			await om.create(validCreateReq);
+			should.fail('Expected error to be thrown');
+		} catch (error: any) {
+			should(error.message).containEql("Api didn't return location header to created organization");
+		}
 	});
 
 	it('should set subscription type', async () => {
