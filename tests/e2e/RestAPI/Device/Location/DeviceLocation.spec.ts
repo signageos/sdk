@@ -11,10 +11,18 @@ const api = new Api(opts);
 
 describe('e2e.RestAPI.Device.Location.DeviceLocation', async () => {
 	const toDelete: Location[] = [];
+	let testDevice: IDevice;
 
-	after('remove location', async function () {
+	before('create test device', async function () {
+		testDevice = await api.emulator.create({ organizationUid: opts.organizationUid! });
+	});
+
+	after('remove location and device', async function () {
 		for (const location of toDelete) {
 			await api.location.delete(location.uid);
+		}
+		if (testDevice) {
+			await api.emulator.delete(testDevice.uid);
 		}
 	});
 
@@ -25,13 +33,7 @@ describe('e2e.RestAPI.Device.Location.DeviceLocation', async () => {
 		});
 		toDelete.push(createdLocation);
 
-		// TODO: This approach is taken from the Device, since there is no create method. This should be addressed
-		const devices = await api.device.list();
-
-		should(devices.length > 0).true();
-
-		const device: IDevice = devices[0];
-		const deviceUid: IDevice['uid'] = device?.uid;
+		const deviceUid: IDevice['uid'] = testDevice.uid;
 
 		await api.deviceLocation.assign(deviceUid, createdLocation.uid);
 		const deviceWithAssignedLocation = await api.device.get(deviceUid);

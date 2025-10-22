@@ -94,7 +94,7 @@ describe('OrganizationManagement', () => {
 	it('should throw error when creating organization without location header', async () => {
 		try {
 			await om.create(validCreateReq);
-			should.fail('Expected error to be thrown');
+			throw new Error('Expected error to be thrown');
 		} catch (error: any) {
 			should(error.message).containEql("Api didn't return location header to created organization");
 		}
