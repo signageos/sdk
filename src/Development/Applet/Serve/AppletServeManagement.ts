@@ -147,7 +147,7 @@ export class AppletServeManagement {
 	public async getRunningPort(appletUid: string, appletVersion: string) {
 		const portFilePath = this.getRuntimePortFile(appletUid, appletVersion);
 		if (await fs.pathExists(portFilePath)) {
-			const port = parseInt(await fs.readFile(portFilePath, 'utf8'));
+			const port = Number.parseInt(await fs.readFile(portFilePath, 'utf8'));
 			debug('Port file exists', port);
 			if (await this.isPortInUse(appletUid, appletVersion, port)) {
 				return port;
@@ -204,7 +204,7 @@ export class AppletServeManagement {
 	private async getRunningPid(appletUid: string, appletVersion: string) {
 		const pidFilePath = this.getRuntimePidFile(appletUid, appletVersion);
 		if (await fs.pathExists(pidFilePath)) {
-			const pid = parseInt(await fs.readFile(pidFilePath, 'utf8'));
+			const pid = Number.parseInt(await fs.readFile(pidFilePath, 'utf8'));
 			debug('Pid file exists', pid);
 			if (this.isProcessRunningByPid(pid)) {
 				return pid;
@@ -237,7 +237,7 @@ export class AppletServeManagement {
 
 	private parseParentPidAndUid(parent: string) {
 		const [pid, uid] = parent.split('/');
-		return { pid: parseInt(pid), uid };
+		return { pid: Number.parseInt(pid), uid };
 	}
 
 	private async validateRunningServer(appletUid: string, appletVersion: string, port: number) {

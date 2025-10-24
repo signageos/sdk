@@ -2,6 +2,7 @@ import should from 'should';
 import nock from 'nock';
 
 import { getNockOpts } from '../../helper';
+import { createDependencies } from '../../../../../src/RestApi/Dependencies';
 import AppletCommandManagement from '../../../../../src/RestApi/Applet/Command/AppletCommandManagement';
 import IAppletCommand, { IAppletCommandSendable } from '../../../../../src/RestApi/Applet/Command/IAppletCommand';
 
@@ -48,7 +49,7 @@ describe('AppletCommandManagement', () => {
 		.get('/v1/device/someUid/applet/appletUid/command/cmdUid')
 		.reply(200, cmd);
 
-	const acm = new AppletCommandManagement(nockOpts);
+	const acm = new AppletCommandManagement(createDependencies(nockOpts));
 
 	const assertCmd = (c: IAppletCommand) => {
 		should.equal(cmd.uid, c.uid);

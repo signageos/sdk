@@ -5,10 +5,11 @@ import TimingManagement from '../../../../src/RestApi/Timing/TimingManagement';
 import { ApiVersions } from '../../../../src/RestApi/apiVersions';
 import { Resources } from '../../../../src/RestApi/resources';
 import { getNockOpts, nockAuthHeader1 } from '../helper';
+import { createDependencies } from '../../../../src/RestApi/Dependencies';
 import { areConfigurationsEqual } from '../../../../src/RestApi/Timing/compareTimings';
 
 const nockOpts = getNockOpts({});
-const timingManagement = new TimingManagement(nockOpts);
+const timingManagement = new TimingManagement(createDependencies(nockOpts));
 
 describe('Unit.RestApi.Timing.TimingManagement', () => {
 	const validGetResp: ITiming = {

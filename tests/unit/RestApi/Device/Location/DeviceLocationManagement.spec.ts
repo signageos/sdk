@@ -8,9 +8,10 @@ import { Resources } from '../../../../../src/RestApi/resources';
 import { LOCATION_1 } from '../../../../fixtures/Location/location.fixtures';
 import { DEVICE_1 } from '../../../../fixtures/Device/Device.fixtures';
 import { getNockOpts, nockAuthHeader1 } from '../../helper';
+import { createDependencies } from '../../../../../src/RestApi/Dependencies';
 
 const nockOpts = getNockOpts({});
-const deviceLocationManagement = new DeviceLocationManagement(nockOpts);
+const deviceLocationManagement = new DeviceLocationManagement(createDependencies(nockOpts));
 
 describe('Unit.RestApi.Device.Location', () => {
 	it('should assign and unassign location to and from device', async () => {

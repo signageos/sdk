@@ -4,6 +4,7 @@ import nock from 'nock';
 import { getNockOpts, nockAuthHeader1 } from '../helper';
 import IOrganization, { IOrganizationCreatable } from '../../../../src/RestApi/Organization/IOrganization';
 import OrganizationManagement from '../../../../src/RestApi/Organization/OrganizationManagement';
+import { createDependencies } from '../../../../src/RestApi/Dependencies';
 
 const nockOpts = getNockOpts({});
 
@@ -34,6 +35,8 @@ describe('OrganizationManagement', () => {
 	nock(nockOpts.url, nockAuthHeader1)
 		.get('/v1/organization')
 		.reply(200, validListResp)
+		.get('/v1/company/companyUid123/organizations')
+		.reply(200, validListResp)
 		.get('/v1/organization/someUid')
 		.reply(200, validGetResp)
 		.get('/v1/organization/someUid?name=signageos')
@@ -42,6 +45,8 @@ describe('OrganizationManagement', () => {
 		.reply(200, 'Created', validPostRespHeaders)
 		.get('/v1/organization/someUid')
 		.reply(200, validGetResp)
+		.post('/v1/organization', validCreateReq as {})
+		.reply(200, 'Created', {}) // No Location header
 		.put('/v1/organization/someUid/subscriptionType/medium')
 		.reply(200, '')
 		.delete('/v1/organization/someUid')
@@ -49,7 +54,7 @@ describe('OrganizationManagement', () => {
 		.put('/v1/organization/someUid', validUpdateReqBody as {})
 		.reply(200, '');
 
-	const om = new OrganizationManagement(nockOpts);
+	const om = new OrganizationManagement(createDependencies(nockOpts));
 	const assertOrg = (org: IOrganization) => {
 		should.equal(validGetResp.uid, org.uid);
 		should.equal(validGetResp.name, org.name);
@@ -61,6 +66,12 @@ describe('OrganizationManagement', () => {
 
 	it('should get the organization list', async () => {
 		const orgs = await om.list();
+		should.equal(1, orgs.length);
+		assertOrg(orgs[0]);
+	});
+
+	it('should get the organization list filtered by companyUid', async () => {
+		const orgs = await om.list({ companyUid: 'companyUid123' });
 		should.equal(1, orgs.length);
 		assertOrg(orgs[0]);
 	});
@@ -78,6 +89,15 @@ describe('OrganizationManagement', () => {
 	it('should create new organization', async () => {
 		await om.create(validCreateReq);
 		should(true).true();
+	});
+
+	it('should throw error when creating organization without location header', async () => {
+		try {
+			await om.create(validCreateReq);
+			throw new Error('Expected error to be thrown');
+		} catch (error: any) {
+			should(error.message).containEql("Api didn't return location header to created organization");
+		}
 	});
 
 	it('should set subscription type', async () => {

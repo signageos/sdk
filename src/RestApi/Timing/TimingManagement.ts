@@ -1,6 +1,6 @@
 import wait from '../../Timer/wait';
 import { postResource, putResource, deleteResource, getResource, parseJSONResponse } from '../requester';
-import IOptions from '../IOptions';
+import { Dependencies } from '../Dependencies';
 import ITiming, { ITimingUpdatable, ITimingCreateOnly } from './ITiming';
 import UnsupportedError from '../Error/UnsupportedError';
 import ITimingFilter from './ITimingFilter';
@@ -21,18 +21,16 @@ export default class TimingManagement {
 
 	private static readonly RESOURCE: string = 'timing';
 
-	private options: IOptions;
-	private appletCommandManagement: AppletCommandManagement;
+	private readonly appletCommandManagement: AppletCommandManagement;
 
-	constructor(options: IOptions) {
-		this.options = options;
-		this.appletCommandManagement = new AppletCommandManagement(this.options);
+	constructor(private readonly dependencies: Dependencies) {
+		this.appletCommandManagement = new AppletCommandManagement(dependencies);
 	}
 
 	public async create(data: ITimingCreateOnly & ITimingUpdatable): Promise<Timing> {
 		this.assertV1();
 
-		await postResource(this.options, TimingManagement.RESOURCE, JSON.stringify(data));
+		await postResource(this.dependencies.options, TimingManagement.RESOURCE, JSON.stringify(data));
 		// v1 does not respond created uid
 		let timing: Timing | undefined;
 		do {
@@ -47,7 +45,7 @@ export default class TimingManagement {
 	public async update(timingUid: string, data: ITimingUpdatable): Promise<Timing> {
 		this.assertV1();
 
-		await putResource(this.options, TimingManagement.RESOURCE + '/' + timingUid, JSON.stringify(data));
+		await putResource(this.dependencies.options, TimingManagement.RESOURCE + '/' + timingUid, JSON.stringify(data));
 		// v1 does not respond created uid
 		let timing: Timing;
 		do {
@@ -59,25 +57,25 @@ export default class TimingManagement {
 	}
 
 	public async delete(timingUid: string) {
-		await deleteResource(this.options, TimingManagement.RESOURCE + '/' + timingUid);
+		await deleteResource(this.dependencies.options, TimingManagement.RESOURCE + '/' + timingUid);
 	}
 
 	public async getList(filter: ITimingFilter = {}): Promise<Timing[]> {
-		const response = await getResource(this.options, TimingManagement.RESOURCE, filter);
+		const response = await getResource(this.dependencies.options, TimingManagement.RESOURCE, filter);
 		const timingsData: ITiming[] = await parseJSONResponse(response);
 
 		return timingsData.map((timingData: ITiming) => new Timing(timingData, this, this.appletCommandManagement));
 	}
 
 	public async get(timingUid: string): Promise<Timing> {
-		const response = await getResource(this.options, TimingManagement.RESOURCE + '/' + timingUid);
+		const response = await getResource(this.dependencies.options, TimingManagement.RESOURCE + '/' + timingUid);
 
 		return new Timing(await parseJSONResponse(response), this, this.appletCommandManagement);
 	}
 
 	private assertV1(): void {
-		if (this.options.version !== 'v1') {
-			throw new UnsupportedError(`API version ${this.options.version} is not implemented`);
+		if (this.dependencies.options.version !== 'v1') {
+			throw new UnsupportedError(`API version ${this.dependencies.options.version} is not implemented`);
 		}
 	}
 

@@ -10,7 +10,7 @@ const distPath = rootPath + '/dist';
 require('dotenv').config(); // try CWD path first
 require('dotenv').config({ path: path.join(rootPath, '.env') }); // default looks to lib path
 
-const requestMaxAttempts = process.env.SOS_REQUEST_MAX_ATTEMPTS ? parseInt(process.env.SOS_REQUEST_MAX_ATTEMPTS) : 3;
+const requestMaxAttempts = process.env.SOS_REQUEST_MAX_ATTEMPTS ? Number.parseInt(process.env.SOS_REQUEST_MAX_ATTEMPTS) : 3;
 const configurableEnvVars = [
 	'SOS_PROFILE',
 	'SOS_API_IDENTIFICATION',

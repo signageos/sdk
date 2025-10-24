@@ -1,5 +1,5 @@
 import { getResource, parseJSONResponse, postResource } from '../../requester';
-import IOptions from '../../IOptions';
+import { Dependencies } from '../../Dependencies';
 import ITimingCommand, { ITimingCommandCreateOnly, ITimingCommandPayload } from './ITimingCommand';
 import RequestError from '../../Error/RequestError';
 import ITimingCommandFilter from './ITimingCommandFilter';
@@ -15,12 +15,12 @@ export default class TimingCommandManagement {
 
 	private static readonly RESOURCE: string[] = ['device', 'applet', 'command'];
 
-	constructor(private options: IOptions) {}
+	constructor(private readonly dependencies: Dependencies) {}
 
 	/** @deprecated duplicate implementation, use AppletCommandManagement.list() */
 	public async getList<TCommandPayload extends ITimingCommandPayload>(filter: ITimingCommandFilter) {
 		const response = await getResource(
-			this.options,
+			this.dependencies.options,
 			TimingCommandManagement.RESOURCE[0] +
 				'/' +
 				filter.deviceUid +
@@ -44,7 +44,7 @@ export default class TimingCommandManagement {
 	/** @deprecated duplicate implementation, use AppletCommandManagement.get() */
 	public async get<TCommandPayload extends ITimingCommandPayload>(deviceUid: string, appletUid: string, timingCommandUid: string) {
 		const response = await getResource(
-			this.options,
+			this.dependencies.options,
 			TimingCommandManagement.RESOURCE[0] +
 				'/' +
 				deviceUid +
@@ -67,9 +67,9 @@ export default class TimingCommandManagement {
 
 	/** @deprecated duplicate implementation, use AppletCommandManagement.send() */
 	public async create<TCommandPayload extends ITimingCommandPayload>(timingCommandData: ITimingCommandCreateOnly<TCommandPayload>) {
-		if (this.options.version === 'v1') {
+		if (this.dependencies.options.version === 'v1') {
 			const response = await postResource(
-				this.options,
+				this.dependencies.options,
 				TimingCommandManagement.RESOURCE[0] +
 					'/' +
 					timingCommandData.deviceUid +
@@ -99,7 +99,7 @@ export default class TimingCommandManagement {
 				throw new RequestError(response.status, body);
 			}
 		} else {
-			throw new UnsupportedError(`API version ${this.options.version} is not implemented`);
+			throw new UnsupportedError(`API version ${this.dependencies.options.version} is not implemented`);
 		}
 	}
 }

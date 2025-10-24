@@ -4,7 +4,7 @@ import { getServerMessage, startAppletServer } from './appletServerHelper';
 const options = {
 	appletUid: process.argv[2],
 	appletVersion: process.argv[3],
-	port: parseInt(process.argv[4]),
+	port: Number.parseInt(process.argv[4]),
 	overridePublicUrl: process.argv[5],
 	forwardServerUrl: process.env.SOS_FORWARD_SERVER_URL,
 };

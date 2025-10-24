@@ -2,6 +2,7 @@ import should from 'should';
 import nock from 'nock';
 
 import { getNockOpts, nockAuthHeader1, successRes } from '../helper';
+import { createDependencies } from '../../../../src/RestApi/Dependencies';
 import { IBulkOperationCreatable } from '../../../../src/RestApi/BulkOperation/IBulkOperation';
 import { DeviceActionType } from '../../../../src/RestApi/BulkOperation/BulkOperation.enums';
 import BulkOperation from '../../../../src/RestApi/BulkOperation/BulkOperation';
@@ -101,7 +102,7 @@ describe('BulkOperationManagement', () => {
 		.put(`/v1/${bulkOperationResource}/bulkOperationUid/resume`, rollingUpdateRequest)
 		.reply(200, successRes);
 
-	const bulkOperationManagement = new BulkOperationManagement(nockOpts);
+	const bulkOperationManagement = new BulkOperationManagement(createDependencies(nockOpts));
 
 	it('should get bulk operation by its uid', async () => {
 		const bulkOperation = await bulkOperationManagement.get('bulkOperationUid');

@@ -4,6 +4,7 @@ import nock from 'nock';
 import { getNockOpts, nockAuthHeader1, successRes } from '../helper';
 import IPolicy, { IPolicyCreatable, IPolicyUpdatable, IPolicyClonable } from '../../../../src/RestApi/Policy/IPolicy';
 import PolicyManagement from '../../../../src/RestApi/Policy/PolicyManagement';
+import { createDependencies } from '../../../../src/RestApi/Dependencies';
 
 const nockOpts = getNockOpts({});
 
@@ -56,7 +57,7 @@ describe('PolicyManagement', () => {
 		.put('/v1/policy/someUid/archive', { archived: false })
 		.reply(204, successRes);
 
-	const pm = new PolicyManagement(nockOpts);
+	const pm = new PolicyManagement(createDependencies(nockOpts));
 	const assertPolicy = (firstPolicy: IPolicy, secondPolicy: IPolicy) => {
 		should(firstPolicy.uid).be.equal(secondPolicy.uid);
 		should(firstPolicy.name).be.equal(secondPolicy.name);

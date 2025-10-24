@@ -7,10 +7,11 @@ import LocationOrganizationTag from '../../../../../src/RestApi/Location/Organiz
 import { LOCATION_1, LOCATION_3 } from '../../../../fixtures/Location/location.fixtures';
 import { generateOrganizationTagCreate } from '../../../../fixtures/Organization/Tag/organizationTag.fixtures';
 import { getNockOpts, nockAuthHeader1 } from '../../helper';
+import { createDependencies } from '../../../../../src/RestApi/Dependencies';
 import { random } from 'faker';
 
 const nockOpts = getNockOpts({});
-const locationOrganizationTag = new LocationOrganizationTag(nockOpts);
+const locationOrganizationTag = new LocationOrganizationTag(createDependencies(nockOpts));
 const organizationTagCreate = {
 	uid: random.uuid(),
 	...generateOrganizationTagCreate(),

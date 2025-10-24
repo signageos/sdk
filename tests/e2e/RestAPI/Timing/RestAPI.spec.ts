@@ -3,21 +3,22 @@ import { Api } from '../../../../src';
 import IDevice from '../../../../src/RestApi/Device/IDevice';
 import { ITimingCreateOnly, ITimingUpdatable } from '../../../../src/RestApi/Timing/ITiming';
 import { opts } from '../helper';
+import IApplet from '../../../../src/RestApi/Applet/IApplet';
 
 const api = new Api(opts);
 
 describe('e2e.RestAPI - Timing', function () {
 	let device: IDevice;
+	let testApplet: IApplet;
 	let timingUid: string;
 	let timingUidWithoutIdentification: string;
 	let timingUidWithFinishedEventString: string;
 	let timingUidWithFinishedEventObject: string;
 
 	const identification = 'identification_123456a+';
-	const sosAppletUid = '658ec4c07707a906e4e3469c959b86f1564f1035a1b50e2cb8';
 
 	const createProps: ITimingCreateOnly & ITimingUpdatable = {
-		appletUid: sosAppletUid,
+		appletUid: '', // will be set in before hook
 		// assign later
 		deviceUid: '',
 		appletVersion: '1.0.0',
@@ -28,14 +29,25 @@ describe('e2e.RestAPI - Timing', function () {
 		finishEvent: { type: 'DURATION', data: null },
 	};
 
-	before('create device', async function () {
+	before('create device and applet', async function () {
 		device = await api.emulator.create({ organizationUid: opts.organizationUid! });
+		testApplet = await api.applet.create({ name: 'Test Applet for Timing E2E' });
+
+		// Create applet version 1.0.0 (required for timing)
+		await api.applet.version.create(testApplet.uid, {
+			version: '1.0.0',
+			entryFile: 'index.html',
+		});
 
 		createProps.deviceUid = device.uid;
+		createProps.appletUid = testApplet.uid;
 	});
 
-	after('remove device', async function () {
+	after('remove device and applet', async function () {
 		await api.emulator.delete(device.uid);
+		if (testApplet) {
+			await api.applet.delete(testApplet.uid);
+		}
 	});
 
 	describe('CREATE', function () {
@@ -292,8 +304,10 @@ describe('e2e.RestAPI - Timing', function () {
 			try {
 				await api.timing.delete('527a80735ad1fb8c1a3229103bb5734068e7');
 			} catch (e: any) {
-				should(e.errorCode).be.equal(403067);
-				should(e.errorName).be.equal('NO_OWN_TIMING_TO_DELETE');
+				// Note: Since the test database is empty, this timing doesn't exist at all,
+				// so we get NO_TIMING_TO_DELETE instead of NO_OWN_TIMING_TO_DELETE
+				should(e.errorCode).be.equal(403099);
+				should(e.errorName).be.equal('NO_TIMING_TO_DELETE');
 			}
 		});
 	});

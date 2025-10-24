@@ -4,6 +4,7 @@ import nock from 'nock';
 import { getNockOpts, successRes } from '../helper';
 import IApplet, { IAppletCreatable } from '../../../../src/RestApi/Applet/IApplet';
 import AppletManagement from '../../../../src/RestApi/Applet/AppletManagement';
+import { createDependencies } from '../../../../src/RestApi/Dependencies';
 
 const nockOpts = getNockOpts({});
 
@@ -36,7 +37,7 @@ describe('AppletManagement', () => {
 		.delete('/v1/applet/someUid/')
 		.reply(200, successRes);
 
-	const am = new AppletManagement(nockOpts);
+	const am = new AppletManagement(createDependencies(nockOpts));
 
 	it('should parse the get response', async () => {
 		const applet = await am.get('someUid');

@@ -25,7 +25,6 @@ describe('Lib.Pagination.Paginator', function () {
 			url: `http://localhost:${TEST_PORT}`,
 			version: ApiVersions.V1,
 		};
-		const paginator = new Paginator(restOptions);
 		const testCreateEntity = (data: unknown) => new DataWrapper(data);
 
 		const PAGE_1_ITEMS = [{ id: 1 }, { id: 2 }];
@@ -34,8 +33,10 @@ describe('Lib.Pagination.Paginator', function () {
 		const pages = [PAGE_1_ITEMS, PAGE_2_ITEMS, PAGE_3_ITEMS];
 
 		let server: http.Server;
+		let paginator: Paginator;
 
 		before('start http server', function (done) {
+			paginator = new Paginator(restOptions);
 			const app = express();
 			app.get(`/${ApiVersions.V1}/resource-single-page`, (_req, res) => {
 				res.writeHead(200, {
@@ -44,7 +45,7 @@ describe('Lib.Pagination.Paginator', function () {
 				res.end(JSON.stringify(PAGE_1_ITEMS));
 			});
 			app.get(`/${ApiVersions.V1}/resource-multi-page`, (req, res) => {
-				const page = typeof req.query.page === 'string' ? parseInt(req.query.page) : 1;
+				const page = typeof req.query.page === 'string' ? Number.parseInt(req.query.page) : 1;
 				if (page < 3) {
 					res.header('Link', `<http://localhost:${TEST_PORT}/${ApiVersions.V1}/resource-multi-page?page=${page + 1}>; rel="next"`);
 				}
