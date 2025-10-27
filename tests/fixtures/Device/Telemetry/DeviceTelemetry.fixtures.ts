@@ -10,12 +10,11 @@ export const TELEMETRY_BRIGHTNESS_1 = {
 	data: { brightness: 20 },
 };
 
-export const DEVICE_TELEMETRY_1: ITelemetryItem<DeviceTelemetryType.OFFLINE_RANGE> = {
+export const DEVICE_TELEMETRY_1: ITelemetryItem<DeviceTelemetryType.ONLINE_STATUS> = {
 	id: random.uuid(),
 	updatedAt: new Date('2022-01-01T10:00:00.000Z'),
 	data: {
-		since: new Date(),
-		until: new Date(),
+		online: true,
 	},
 };
 export const DEVICE_TELEMETRY_2: ITelemetryItem<DeviceTelemetryType.REMOTE_CONTROL> = {
@@ -25,11 +24,10 @@ export const DEVICE_TELEMETRY_2: ITelemetryItem<DeviceTelemetryType.REMOTE_CONTR
 		enabled: true,
 	},
 };
-export const DEVICE_TELEMETRY_3: ITelemetryItem<DeviceTelemetryType.OFFLINE_RANGE> = {
+export const DEVICE_TELEMETRY_3: ITelemetryItem<DeviceTelemetryType.ONLINE_STATUS> = {
 	id: random.uuid(),
 	updatedAt: new Date('2022-01-03T10:00:00.000Z'),
 	data: {
-		since: new Date(),
-		until: new Date(),
+		online: false,
 	},
 };

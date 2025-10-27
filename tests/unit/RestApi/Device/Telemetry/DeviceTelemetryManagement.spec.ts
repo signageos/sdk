@@ -41,7 +41,7 @@ describe('Unit.RestApi.Device.Telemetry.DeviceTelemetryManagement', () => {
 					deviceUid: DEVICE_2.uid,
 					createdAt: DEVICE_2.createdAt,
 					telemetries: {
-						[DeviceTelemetryType.OFFLINE_RANGE]: DEVICE_TELEMETRY_1,
+						[DeviceTelemetryType.ONLINE_STATUS]: DEVICE_TELEMETRY_1,
 						[DeviceTelemetryType.REMOTE_CONTROL]: DEVICE_TELEMETRY_2,
 					},
 				},
@@ -49,7 +49,7 @@ describe('Unit.RestApi.Device.Telemetry.DeviceTelemetryManagement', () => {
 					deviceUid: DEVICE_3.uid,
 					createdAt: DEVICE_3.createdAt,
 					telemetries: {
-						[DeviceTelemetryType.OFFLINE_RANGE]: DEVICE_TELEMETRY_3,
+						[DeviceTelemetryType.ONLINE_STATUS]: DEVICE_TELEMETRY_3,
 					},
 				},
 			]);
@@ -66,7 +66,7 @@ describe('Unit.RestApi.Device.Telemetry.DeviceTelemetryManagement', () => {
 				deviceUid: DEVICE_2.uid,
 				createdAt: DEVICE_2.createdAt,
 				telemetries: {
-					[DeviceTelemetryType.OFFLINE_RANGE]: DEVICE_TELEMETRY_1,
+					[DeviceTelemetryType.ONLINE_STATUS]: DEVICE_TELEMETRY_1,
 					[DeviceTelemetryType.REMOTE_CONTROL]: DEVICE_TELEMETRY_2,
 				},
 			});
@@ -76,7 +76,7 @@ describe('Unit.RestApi.Device.Telemetry.DeviceTelemetryManagement', () => {
 		should(deviceUid).be.eql(DEVICE_2.uid);
 		should(createdAt).be.eql(DEVICE_2.createdAt);
 		should(telemetries).be.deepEqual({
-			[DeviceTelemetryType.OFFLINE_RANGE]: DEVICE_TELEMETRY_1,
+			[DeviceTelemetryType.ONLINE_STATUS]: DEVICE_TELEMETRY_1,
 			[DeviceTelemetryType.REMOTE_CONTROL]: DEVICE_TELEMETRY_2,
 		});
 	});
