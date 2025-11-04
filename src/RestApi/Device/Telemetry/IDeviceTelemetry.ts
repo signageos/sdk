@@ -146,7 +146,6 @@ export enum DeviceTelemetryType {
 	DISPLAY_SETTING = 'DISPLAY_SETTING',
 	INPUT_SOURCE = 'INPUT_SOURCE',
 	FRONT_DISPLAY_VERSION = 'FRONT_DISPLAY_VERSION',
-	OFFLINE_RANGE = 'OFFLINE_RANGE',
 	ONLINE_STATUS = 'ONLINE_STATUS',
 	CONNECTION_METHOD = 'CONNECTION_METHOD',
 	EXTENDED_MANAGEMENT = 'EXTENDED_MANAGEMENT',
@@ -204,10 +203,6 @@ export type LogData = {
 	[DeviceTelemetryType.POWER_ACTIONS_SCHEDULE]: IPowerActionsScheduleSettings[];
 	[DeviceTelemetryType.TEMPERATURE]: {
 		temperature: number;
-	};
-	[DeviceTelemetryType.OFFLINE_RANGE]: {
-		since: Date;
-		until: Date;
 	};
 	[DeviceTelemetryType.ONLINE_STATUS]: {
 		online: boolean;
