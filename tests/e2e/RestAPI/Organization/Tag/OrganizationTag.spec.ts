@@ -15,6 +15,15 @@ describe('e2e.RestAPI.Organization.Tag.OrganizationTag', async () => {
 		should(organizationTag.uid).not.be.eql(null);
 	});
 
+	it('should list organization tags', async () => {
+		const now = new Date();
+		for (let i = 0; i < 10; i++) {
+			await api.organizationTag.create(generateOrganizationTagCreate());
+		}
+		const organizationTags = await api.organizationTag.list({ since: now, limit: 10 });
+		should(organizationTags.length).be.eql(10);
+	});
+
 	it('should get one organization tag', async () => {
 		const createdOrganizationTag = await api.organizationTag.create(generateOrganizationTagCreate());
 		const organizationTag = await api.organizationTag.getOne(createdOrganizationTag.uid);

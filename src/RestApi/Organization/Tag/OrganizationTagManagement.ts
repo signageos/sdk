@@ -1,10 +1,20 @@
 import { Dependencies } from '../../Dependencies';
 import { deleteResource, getResource, parseJSONResponse, postResource, putResource } from '../../requester';
 import { Resources } from '../../resources';
-import OrganizationTag, { IOrganizationTagCreate, IOrganizationTag, IOrganizationTagUpdate } from './OrganizationTag';
+import OrganizationTag, {
+	IOrganizationTagCreate,
+	IOrganizationTag,
+	IOrganizationTagUpdate,
+	IOrganizationTagFilter,
+} from './OrganizationTag';
 
 export default class OrganizationTagManagement {
 	constructor(private dependencies: Dependencies) {}
+
+	public async list(filter: IOrganizationTagFilter = {}) {
+		const response = await getResource(this.dependencies.options, Resources.OrganizationTag, filter);
+		return this.dependencies.paginator.getPaginatedListFromResponse(response, (item: IOrganizationTag) => new OrganizationTag(item));
+	}
 
 	public async getOne(uid: IOrganizationTag['uid']) {
 		const response = await getResource(this.dependencies.options, `${Resources.OrganizationTag}/${uid}`);

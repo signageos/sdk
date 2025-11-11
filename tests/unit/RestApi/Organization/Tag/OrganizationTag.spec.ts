@@ -5,7 +5,7 @@ import { ApiVersions } from '../../../../../src/RestApi/apiVersions';
 import OrganizationTagManagement from '../../../../../src/RestApi/Organization/Tag/OrganizationTagManagement';
 import IOrganizationTag from '../../../../../src/RestApi/Organization/Tag/OrganizationTag';
 import { Resources } from '../../../../../src/RestApi/resources';
-import { ORGANIZATION_TAG_1, ORGANIZATION_TAG_UPDATE_1 } from './OrganizationTag.fixtures';
+import { ORGANIZATION_TAG_1, ORGANIZATION_TAG_UPDATE_1, ORGANIZATION_TAGS_1 } from './OrganizationTag.fixtures';
 import { getNockOpts, nockAuthHeader1 } from '../../helper';
 import { createDependencies } from '../../../../../src/RestApi/Dependencies';
 
@@ -35,6 +35,18 @@ describe('Unit.RestApi.Organization.Tag.OrganizationTag', () => {
 		const organizationTag = await organizationTagManagement.create(ORGANIZATION_TAG_1);
 
 		assertOrganizationTag(organizationTag);
+	});
+
+	it('should list organization tags', async () => {
+		nock(nockOpts.url, nockAuthHeader1).get(`/${ApiVersions.V1}/${Resources.OrganizationTag}`).reply(200, ORGANIZATION_TAGS_1);
+
+		const organizationTags = await organizationTagManagement.list();
+		should(organizationTags.length).be.eql(ORGANIZATION_TAGS_1.length);
+		const arrayTags = [];
+		for (const tag of organizationTags) {
+			arrayTags.push({ ...tag });
+		}
+		should(arrayTags).containDeep(ORGANIZATION_TAGS_1.map((tag) => ({ ...tag })));
 	});
 
 	it('should get one organization tag', async () => {
