@@ -1,5 +1,12 @@
 import { fillDataToEntity } from '../../mapper';
 
+export interface IOrganizationTagFilter {
+	since?: Date;
+	until?: Date;
+	limit?: number;
+	descending?: boolean;
+}
+
 export interface IOrganizationTagCreate {
 	name: string;
 	organizationUid: string;
