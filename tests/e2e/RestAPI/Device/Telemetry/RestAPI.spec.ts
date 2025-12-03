@@ -36,10 +36,10 @@ describe('e2e.RestAPI - Telemetry', () => {
 		await should(api.device.telemetry.getLatest(device.uid, DeviceTelemetryType.BRIGHTNESS)).rejectedWith(
 			`Request failed with status code 404. Body: ${JSON.stringify({
 				status: 404,
-				message: 'Resource not found',
-				errorCode: 404135,
-				errorName: 'NO_DEVICE_TELEMETRY_LATEST_TO_READ',
-				errorDetail: 'No telemetry data found for given device and their type specified in URI path',
+				message: 'Resource not found - BRIGHTNESS telemetry was not found',
+				errorCode: 404311,
+				errorName: 'RESOURCE_NOT_FOUND',
+				errorDetail: "Specified resource doesn't exist",
 			})}`,
 		);
 	});
