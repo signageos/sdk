@@ -9,6 +9,7 @@ import IAppletVersionFile, {
 } from '../../../../../../src/RestApi/Applet/Version/File/IAppletVersionFile';
 import AppletVersionFileManagement from '../../../../../../src/RestApi/Applet/Version/File/AppletVersionFileManagement';
 import { createReadableStream } from './helper';
+import { createDependencies } from '../../../../../../src/RestApi/Dependencies';
 
 const nockOpts = getNockOpts({});
 
@@ -82,7 +83,7 @@ describe('AppletVersionFileManagement', function () {
 
 	nock('http://storage').post('/create').reply(204).post('/update').reply(204);
 
-	const avfm = new AppletVersionFileManagement(nockOpts);
+	const avfm = new AppletVersionFileManagement(createDependencies(nockOpts));
 
 	it('should parse the get response', async function () {
 		const file = await avfm.get('appletUid', '1.1.0', 'path/testFile');

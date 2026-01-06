@@ -1,11 +1,12 @@
 import * as path from 'path';
-import { getResource, parseJSONResponse, postResource, putResource, deleteResource } from '../../../requester';
-import IOptions from '../../../IOptions';
+import { getResource, postResource, putResource, deleteResource } from '../../../requester';
 import { RESOURCE as APPLET } from '../../AppletManagement';
 import { RESOURCE as VERSION } from '../AppletVersionManagement';
 import IAppletVersionFile, { IAppletVersionFileCreatable, IAppletVersionFileUpdatable } from './IAppletVersionFile';
 import AppletVersionFile from './AppletVersionFile';
 import { postStorage, parseStorageResponse, StorageResponse } from '../../../storageRequester';
+import { Dependencies } from '../../../Dependencies';
+import { PaginatedList } from '../../../../Lib/Pagination/PaginatedList';
 
 interface IUploadOptions {
 	/**
@@ -20,17 +21,15 @@ interface IUploadOptions {
 export default class AppletVersionFileManagement {
 	private static readonly RESOURCE: string = 'file';
 
-	constructor(private options: IOptions) {}
+	constructor(private dependencies: Dependencies) {}
 
-	public async list(appletUid: string, appletVersion: string): Promise<IAppletVersionFile[]> {
-		const response = await getResource(this.options, AppletVersionFileManagement.getResource(appletUid, appletVersion));
-		const data: IAppletVersionFile[] = await parseJSONResponse(response);
-
-		return data.map((item: IAppletVersionFile) => new AppletVersionFile(item));
+	public async list(appletUid: string, appletVersion: string): Promise<PaginatedList<AppletVersionFile>> {
+		const response = await getResource(this.dependencies.options, AppletVersionFileManagement.getResource(appletUid, appletVersion));
+		return this.dependencies.paginator.getPaginatedListFromResponse(response, (item: IAppletVersionFile) => new AppletVersionFile(item));
 	}
 
 	public async get(appletUid: string, appletVersion: string, filePath: string): Promise<IAppletVersionFile> {
-		const response = await getResource(this.options, AppletVersionFileManagement.getUrl(appletUid, appletVersion, filePath));
+		const response = await getResource(this.dependencies.options, AppletVersionFileManagement.getUrl(appletUid, appletVersion, filePath));
 
 		const storageResponse = (await parseStorageResponse(response, {
 			storage: 's3',
@@ -58,7 +57,7 @@ export default class AppletVersionFileManagement {
 			content: undefined,
 			size: undefined,
 		};
-		const response = await postResource(this.options, appletVersionPath, JSON.stringify(reqBody), options);
+		const response = await postResource(this.dependencies.options, appletVersionPath, JSON.stringify(reqBody), options);
 		const body = await response.json();
 
 		await postStorage(body.upload.request.url, body.upload.request.fields, settings.content, settings.size);
@@ -78,7 +77,7 @@ export default class AppletVersionFileManagement {
 			content: undefined,
 			size: undefined,
 		};
-		const response = await putResource(this.options, appletVersionPath, JSON.stringify(reqBody), options);
+		const response = await putResource(this.dependencies.options, appletVersionPath, JSON.stringify(reqBody), options);
 		const body = await response.json();
 
 		await postStorage(body.upload.request.url, body.upload.request.fields, settings.content, settings.size);
@@ -87,7 +86,7 @@ export default class AppletVersionFileManagement {
 	public async remove(appletUid: string, appletVersion: string, filePath: string, options: IUploadOptions = {}): Promise<void> {
 		const appletVersionPath = AppletVersionFileManagement.getUrl(appletUid, appletVersion, filePath);
 
-		await deleteResource(this.options, appletVersionPath, options);
+		await deleteResource(this.dependencies.options, appletVersionPath, options);
 	}
 
 	private static getResource(appletUid: string, appletVersion: string): string {
