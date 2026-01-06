@@ -295,8 +295,8 @@ describe('e2e.RestAPI - Timing', function () {
 			try {
 				await api.timing.delete('non-existent-timing-uid');
 			} catch (e: any) {
-				should(e.errorCode).be.equal(403099);
-				should(e.errorName).be.equal('NO_TIMING_TO_DELETE');
+				should(e.errorCode).be.equal(404311);
+				should(e.errorName).be.equal('RESOURCE_NOT_FOUND');
 			}
 		});
 
@@ -304,10 +304,8 @@ describe('e2e.RestAPI - Timing', function () {
 			try {
 				await api.timing.delete('527a80735ad1fb8c1a3229103bb5734068e7');
 			} catch (e: any) {
-				// Note: Since the test database is empty, this timing doesn't exist at all,
-				// so we get NO_TIMING_TO_DELETE instead of NO_OWN_TIMING_TO_DELETE
-				should(e.errorCode).be.equal(403099);
-				should(e.errorName).be.equal('NO_TIMING_TO_DELETE');
+				should(e.errorCode).be.equal(404311);
+				should(e.errorName).be.equal('RESOURCE_NOT_FOUND');
 			}
 		});
 	});
