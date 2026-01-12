@@ -149,6 +149,7 @@ export enum DeviceTelemetryType {
 	ONLINE_STATUS = 'ONLINE_STATUS',
 	CONNECTION_METHOD = 'CONNECTION_METHOD',
 	EXTENDED_MANAGEMENT = 'EXTENDED_MANAGEMENT',
+	INSTALLED_PACKAGES = 'INSTALLED_PACKAGES',
 }
 
 export type LogData = {
@@ -236,6 +237,10 @@ export type LogData = {
 	[DeviceTelemetryType.EXTENDED_MANAGEMENT]: {
 		url: string | null;
 	};
+	[DeviceTelemetryType.INSTALLED_PACKAGES]: {
+		buildHash: string;
+		specs: Record<string, unknown>;
+	}[];
 };
 
 export default interface IDeviceTelemetry {
