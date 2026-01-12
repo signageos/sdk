@@ -33,6 +33,7 @@ export declare const ApplicationTypes: readonly [
 	'linux',
 	'windows',
 	'default',
+	'chromeos'
 ];
 declare type ApplicationType = (typeof ApplicationTypes)[number];
 
