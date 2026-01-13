@@ -19,6 +19,8 @@ import PackageManagement from './Package/PackageManagement';
 import { CustomScriptManagement } from './CustomScript/CustomScriptManagement';
 import { PluginManagement } from './Plugin/PluginManagement';
 import { RunnerManagement } from './Runner/RunnerManagement';
+import { ContentGuardCategoryManagement } from './ContentGuard/Category/ContentGuardCategoryManagement';
+import { ContentGuardItemManagement } from './ContentGuard/Item/ContentGuardItemManagement';
 import { createDependencies } from './Dependencies';
 
 export default class RestApi {
@@ -50,6 +52,9 @@ export default class RestApi {
 	public readonly plugin: PluginManagement;
 	public readonly runner: RunnerManagement;
 
+	public readonly contentGuardCategory: ContentGuardCategoryManagement;
+	public readonly contentGuardItem: ContentGuardItemManagement;
+
 	constructor(
 		public readonly accountOptions: IOptions,
 		public readonly organizationOptions: IOptions,
@@ -77,5 +82,7 @@ export default class RestApi {
 		this.customScript = new CustomScriptManagement(organizationDependencies);
 		this.plugin = new PluginManagement(organizationDependencies);
 		this.runner = new RunnerManagement(organizationDependencies);
+		this.contentGuardCategory = new ContentGuardCategoryManagement(organizationDependencies);
+		this.contentGuardItem = new ContentGuardItemManagement(organizationDependencies);
 	}
 }
