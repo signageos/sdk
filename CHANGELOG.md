@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - `list()` method to `OrganizationTagManagement`
+- ContentGuard CRUD related methods
 
 ### Fixed
 - All `list()` methods now return `PaginatedList<T>` instead of `Promise<T[]>`: First page is returned immediately, additional pages must be fetched manually using `getNextPage()`

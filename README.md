@@ -41,22 +41,20 @@ SOS_PROFILE=
 2. In organizations select your organization (or create new one)
 3. In top tabs select `API tokens`
 4. Click on button `Add new token` and generate new values
-5. Generated values can be used in `.env` file `SOS_AUTH_CLIENT_ID` is `Token ID` and `SOS_AUTH_SECRET` is
-   `Token Secret`
+5. Generated values can be used in `.env` file `SOS_AUTH_CLIENT_ID` is `Token ID` and `SOS_AUTH_SECRET` is `Token Secret`
 
 #### How to obtain Account API SECURITY TOKENS
 
 1. Go to `Box` in the top navigation menu click on account icon
 2. In drop down menu select `My profile`
 3. Scroll to the bottom of the page, click on button `Add new token` and generate new values
-4. Generate values can be used in `.env` file `SOS_API_IDENTIFICATION` is `Token ID` and `SOS_API_SECURITY_TOKEN` is
-   `Token Secret`
+4. Generate values can be used in `.env` file `SOS_API_IDENTIFICATION` is `Token ID` and `SOS_API_SECURITY_TOKEN` is `Token Secret`
 
 You may read articles about setting up SDK & Rest API:
 
--   [signageOS REST APIs for device management](https://docs.signageos.io/hc/en-us/articles/4405231278482)
--   [REST-API-Authentication](https://docs.signageos.io/hc/en-us/articles/4405239033234)
--   [Getting started with REST APIs](https://docs.signageos.io/hc/en-us/articles/4405231428114)
+- [signageOS REST APIs for device management](https://docs.signageos.io/hc/en-us/articles/4405231278482)
+- [REST-API-Authentication](https://docs.signageos.io/hc/en-us/articles/4405239033234)
+- [Getting started with REST APIs](https://docs.signageos.io/hc/en-us/articles/4405231428114)
 
 Please see the `.env.dist` file where all mandatory ENV variables, required for SDK usage, are listed too.
 
@@ -64,26 +62,23 @@ Please see the `.env.dist` file where all mandatory ENV variables, required for 
 
 ### Credentials in code
 
-Just by setting ENV variables properly, you are ready to go and may use the api. If not ENV variables provided to
-node.js app, it tries to get values from user's `~/.sosrc` which is configured by
-[`@signageos/cli`](https://github.com/signageos/cli) dependency.
+Just by setting ENV variables properly, you are ready to go and may use the api. If not ENV variables provided to node.js app, it tries to
+get values from user's `~/.sosrc` which is configured by [`@signageos/cli`](https://github.com/signageos/cli) dependency.
 
 ```javascript
-import { createApiV1 } from "@signageos/sdk";
+import { createApiV1 } from '@signageos/sdk';
 
-const api = createApiV1(
-	{
-		url: 'https://api.signageos.io', // Optional
-		organizationAuth: {
-			clientId: '...OAuthClientID...',
-			secret: '...OAuthSecret...',
-		},
-		accountAuth: {
-			tokenId: '...apiSecurityTokenID...',
-			token: '...apiSecurityToken...',
-		},
+const api = createApiV1({
+	url: 'https://api.signageos.io', // Optional
+	organizationAuth: {
+		clientId: '...OAuthClientID...',
+		secret: '...OAuthSecret...',
 	},
-);
+	accountAuth: {
+		tokenId: '...apiSecurityTokenID...',
+		token: '...apiSecurityToken...',
+	},
+});
 
 // retrieves the list of all devices
 const devices = await api.device.list();
@@ -92,21 +87,19 @@ const devices = await api.device.list();
 ```
 
 ```javascript
-import { createApiV2 } from "@signageos/sdk";
+import { createApiV2 } from '@signageos/sdk';
 
-const api = createApiV2(
-	{
-		url: 'https://api.signageos.io', // Optional
-		organizationAuth: {
-			clientId: '...OAuthClientID...',
-			secret: '...OAuthSecret...',
-		},
-		accountAuth: {
-			tokenId: '...apiSecurityTokenID...',
-			token: '...apiSecurityToken...',
-		},
+const api = createApiV2({
+	url: 'https://api.signageos.io', // Optional
+	organizationAuth: {
+		clientId: '...OAuthClientID...',
+		secret: '...OAuthSecret...',
 	},
-);
+	accountAuth: {
+		tokenId: '...apiSecurityTokenID...',
+		token: '...apiSecurityToken...',
+	},
+});
 
 // retrieves the list of all devices
 const devices = await api.device.list();
@@ -117,7 +110,7 @@ const devices = await api.device.list();
 ### Credentials from ENV Variables
 
 ```javascript
-import { createApiV1 } from "@signageos/sdk";
+import { createApiV1 } from '@signageos/sdk';
 
 // takes parameters from env vars
 const api = createApiV1();
@@ -129,7 +122,7 @@ const devices = await api.device.list();
 ```
 
 ```javascript
-import { createApiV2 } from "@signageos/sdk";
+import { createApiV2 } from '@signageos/sdk';
 
 // takes parameters from env vars
 const api = createApiV2();
@@ -142,12 +135,13 @@ const devices = await api.device.list();
 
 ### Pagination
 
-All list methods in the SDK return a `PaginatedList` which extends the standard JavaScript `Array` with pagination capabilities. The API enforces cursor-based pagination with a maximum page size.
+All list methods in the SDK return a `PaginatedList` which extends the standard JavaScript `Array` with pagination capabilities. The API
+enforces cursor-based pagination with a maximum page size.
 
 #### Using Pagination
 
 ```javascript
-import { createApiV1 } from "@signageos/sdk";
+import { createApiV1 } from '@signageos/sdk';
 
 const api = createApiV1();
 
@@ -186,24 +180,10 @@ Once generated, the `docs` directory will contain the generated documentation.
 
 The most useful documentation pages:
 
--   [index](https://public.docs.signageos.io/sdk/latest/index.html)
+- [index](https://public.docs.signageos.io/sdk/latest/index.html)
 
--   [Organization management](https://public.docs.signageos.io/sdk/latest/classes/organizationmanagement.html)
--   [Device management](https://public.docs.signageos.io/sdk/latest/classes/devicemanagement.html)
--   [Applet management](https://public.docs.signageos.io/sdk/latest/classes/appletmanagement.html)
--   [Timing management](https://public.docs.signageos.io/sdk/latest/classes/timingmanagement.html)
--   [Timing Command management](https://public.docs.signageos.io/sdk/latest/classes/timingcommandmanagement.html)
-
-## Development
-
-### Running the tests
-
-Create .env file by running
-
-```
-cp .env.automated.test
-```
-
-and fill in the missing values. You have to ask the maintainer of the repository for the values.
-
-Then, run `npm run test`.
+- [Organization management](https://public.docs.signageos.io/sdk/latest/classes/organizationmanagement.html)
+- [Device management](https://public.docs.signageos.io/sdk/latest/classes/devicemanagement.html)
+- [Applet management](https://public.docs.signageos.io/sdk/latest/classes/appletmanagement.html)
+- [Timing management](https://public.docs.signageos.io/sdk/latest/classes/timingmanagement.html)
+- [Timing Command management](https://public.docs.signageos.io/sdk/latest/classes/timingcommandmanagement.html)
