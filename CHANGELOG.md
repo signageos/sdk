@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Download progress bar displayed in the console when connected devices fetch applet content during development
+
 ## [2.1.1] - 2026-02-01
 ### Fixed
 - Fixed race conditions and asserts in tests
