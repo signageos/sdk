@@ -45,6 +45,6 @@ describe('e2e.RestAPI.Organization.Tag.OrganizationTag', async () => {
 	it('should delete organization tag', async () => {
 		const createdOrganizationTag = await api.organizationTag.create(generateOrganizationTagCreate());
 		await api.organizationTag.delete(createdOrganizationTag.uid);
-		await should(api.organizationTag.getOne(createdOrganizationTag.uid)).rejectedWith(/Organization tag not found/);
+		await should(api.organizationTag.getOne(createdOrganizationTag.uid)).rejectedWith(/Resource not found|RESOURCE_NOT_FOUND/);
 	});
 });
