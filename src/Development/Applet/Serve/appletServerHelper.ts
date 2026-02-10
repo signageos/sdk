@@ -106,10 +106,73 @@ const errorHandler = (req: express.Request, res: express.Response) => {
 	res.end();
 };
 
-const logMiddleware = (req: express.Request, _res: express.Response, next: express.NextFunction) => {
+export const formatBytes = (bytes: number): string => {
+	if (bytes === 0) {
+		return '0 B';
+	}
+	const units = ['B', 'KB', 'MB', 'GB'];
+	const exponent = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+	const value = bytes / Math.pow(1024, exponent);
+	return `${value.toFixed(exponent > 0 ? 2 : 0)} ${units[exponent]}`;
+};
+
+const logMiddleware = (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	const method = req.method.toUpperCase();
 	const reqPath = req.originalUrl;
 	log('info', `Serving applet file: ${method} ${reqPath}`);
+
+	const originalWrite = res.write.bind(res);
+	const originalEnd = res.end.bind(res);
+	const originalSetHeader = res.setHeader.bind(res);
+	let totalBytes = 0;
+	let contentLength: number | undefined;
+	let lastProgressUpdate = 0;
+
+	res.setHeader = function (name: string, value: string | number | readonly string[]): express.Response {
+		if (name.toLowerCase() === 'content-length') {
+			contentLength = typeof value === 'number' ? value : parseInt(String(value), 10);
+		}
+		return originalSetHeader(name, value);
+	};
+
+	const updateProgress = (final: boolean = false) => {
+		let progressText: string;
+		if (contentLength) {
+			const percentage = Math.min(100, (totalBytes / contentLength) * 100).toFixed(1);
+			progressText = `  ↳ Downloaded: ${formatBytes(totalBytes)} / ${formatBytes(contentLength)} (${percentage}%)`;
+		} else {
+			progressText = `  ↳ Downloaded: ${formatBytes(totalBytes)}`;
+		}
+		if (final) {
+			process.stdout.write(`\r${progressText}\n`);
+		} else {
+			process.stdout.write(`\r${progressText}`);
+		}
+	};
+
+	res.write = function (chunk: string | Uint8Array, ...args: unknown[]): boolean {
+		if (chunk) {
+			totalBytes += chunk.length;
+			const now = Date.now();
+			// Update progress at most every 100ms to avoid excessive console writes
+			if (now - lastProgressUpdate > 100) {
+				updateProgress();
+				lastProgressUpdate = now;
+			}
+		}
+		return (originalWrite as (...a: unknown[]) => boolean)(chunk, ...args);
+	} as typeof res.write;
+
+	res.end = function (chunk?: string | Uint8Array, ...args: unknown[]): express.Response {
+		if (chunk) {
+			totalBytes += chunk.length;
+		}
+		if (totalBytes > 0) {
+			updateProgress(true);
+		}
+		return (originalEnd as (...a: unknown[]) => express.Response)(chunk, ...args);
+	} as typeof res.end;
+
 	next();
 };
 

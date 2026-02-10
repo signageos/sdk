@@ -1,5 +1,7 @@
 # SDK Library
 
+> ⚠️ **REST API Wrapper - Maintenance Mode**: The REST API wrapper portion of this SDK is no longer receiving new features. Existing functionality will continue to work and backward compatibility is maintained. For new REST API integrations, we recommend using the [REST API](https://docs.signageos.io/hc/en-us/articles/4405231278482) directly with proper OpenAPI specifications.
+
 Library which allows you to fully manage signageOS applets, devices, management & monitoring using JS.
 
 ## Installation and prerequisites
