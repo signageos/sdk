@@ -3,6 +3,7 @@ import * as os from 'os';
 import * as path from 'path';
 
 export const PACKAGE_ARCHIVE_FILENAME = '.package.zip';
+export const SOS_CONFIG_LOCAL_FILENAME = 'sos.config.local.json';
 
 export const RUNTIME_DIRNAME = 'signageos';
 const APPLET_BUILDS_DIRNAME = 'applet_builds';

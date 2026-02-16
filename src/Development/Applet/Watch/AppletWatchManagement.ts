@@ -1,5 +1,6 @@
 import * as chokidar from 'chokidar';
 import { log } from '../../../Console/log';
+import { SOS_CONFIG_LOCAL_FILENAME } from '../../runtimeFileSystem';
 import { AppletFilesManagement } from '../Files/AppletFilesManagement';
 import { AppletWatcher } from './AppletWatcher';
 
@@ -28,16 +29,18 @@ export class AppletWatchManagement {
 	 */
 	public async watch(options: IWatchOptions) {
 		const filePatterns = await this.appletFilesManagement.getAppletFilePatterns(options);
-		const watcher = chokidar.watch(filePatterns, {
+		// Also watch sos.config.local.json so config changes trigger a reload on connected devices
+		const allPatterns = [...filePatterns, SOS_CONFIG_LOCAL_FILENAME];
+		const watcher = chokidar.watch(allPatterns, {
 			ignoreInitial: true,
 			...options.chokidarOptions,
 			cwd: options.appletPath,
 		});
-		log('info', `Watching applet files in ${options.appletPath}: ${filePatterns.join(', ')}`);
+		log('info', `Watching applet files in ${options.appletPath}: ${allPatterns.join(', ')}`);
 
 		await waitInitialScanReady(watcher);
 
-		return new AppletWatcher(watcher, filePatterns, options.debounceTimeMs ?? DEFAULT_DEBOUNCE_TIME_MS);
+		return new AppletWatcher(watcher, allPatterns, options.debounceTimeMs ?? DEFAULT_DEBOUNCE_TIME_MS);
 	}
 }
 

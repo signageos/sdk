@@ -34,6 +34,8 @@ export interface IServeOptions {
 	appletUid: string;
 	/** Applet version that is used for targeting the temporary build folder. It should match the version in package.json */
 	appletVersion: string;
+	/** Path to the applet source directory used for serving sos.config.local.json directly */
+	appletPath?: string;
 	/**
 	 * The port on which the applet will be served.
 	 * If not specified, the default port 8091 will be used.
@@ -117,6 +119,7 @@ export class AppletServeManagement {
 				port,
 				options.publicUrl,
 				options.forwardServerUrl,
+				options.appletPath,
 			));
 			await this.createPidFile(options.appletUid, options.appletVersion, serverProcess.pid);
 			debug('Server process started', serverProcess.pid);
@@ -129,6 +132,7 @@ export class AppletServeManagement {
 				options.publicUrl,
 				options.forwardServerUrl,
 				processPid,
+				options.appletPath,
 			));
 			await this.createPidFile(options.appletUid, options.appletVersion, processPid); // Use the current process PID as the server PID
 			debug('Server started');
@@ -375,6 +379,7 @@ export class AppletServeManagement {
 		overridePublicUrl: string | undefined,
 		forwardServerUrl: string | undefined,
 		pid: number,
+		appletPath: string | undefined,
 	): Promise<{ appletHttpServer: KillableProcess; publicUrl: string | undefined }> {
 		const { stopServer, publicUrl } = await startAppletServer({
 			appletUid,
@@ -382,6 +387,7 @@ export class AppletServeManagement {
 			port,
 			overridePublicUrl,
 			forwardServerUrl,
+			appletPath,
 		});
 		if (publicUrl) {
 			await this.createPublicUrlFile(appletUid, appletVersion, publicUrl);
@@ -407,6 +413,7 @@ export class AppletServeManagement {
 		port: number,
 		publicUrl: string | undefined,
 		forwardServerUrl: string | undefined,
+		appletPath: string | undefined,
 	) {
 		const serverPath = path.join(__dirname, 'AppletServerProcess');
 		const serverProcess = child_process.fork(serverPath, [appletUid, appletVersion, port.toString(), ...(publicUrl ? [publicUrl] : [])], {
@@ -416,6 +423,7 @@ export class AppletServeManagement {
 			env: {
 				...process.env,
 				SOS_FORWARD_SERVER_URL: forwardServerUrl,
+				SOS_APPLET_PATH: appletPath,
 			},
 		});
 		const message = await new Promise((resolve, reject) => {
