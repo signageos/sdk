@@ -8,7 +8,7 @@ import { AppletIdentificationManagement } from './Identification/AppletIdentific
 import { AppletServeManagement, IServeOptions } from './Serve/AppletServeManagement';
 import { AppletWatchManagement, IWatchOptions } from './Watch/AppletWatchManagement';
 
-export interface IHotReloadOptions extends Omit<IServeOptions, 'appletUid' | 'appletVersion'>, IWatchOptions {}
+export interface IHotReloadOptions extends Omit<IServeOptions, 'appletUid' | 'appletVersion' | 'appletPath'>, IWatchOptions {}
 
 /**
  * Applet management contains all applet related functionality for development.

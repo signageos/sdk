@@ -7,6 +7,7 @@ const options = {
 	port: Number.parseInt(process.argv[4]),
 	overridePublicUrl: process.argv[5],
 	forwardServerUrl: process.env.SOS_FORWARD_SERVER_URL,
+	appletPath: process.env.SOS_APPLET_PATH,
 };
 
 if (!options.appletUid || !options.appletVersion || !options.port) {

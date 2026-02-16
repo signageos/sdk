@@ -3,8 +3,10 @@ import cors from 'cors';
 import express from 'express';
 import * as bodyParser from 'body-parser';
 import * as http from 'http';
+import * as path from 'path';
+import * as fs from 'fs-extra';
 import { log } from '../../../Console/log';
-import { getAppletPackageArchivePath, getPackagePublicPath } from '../../runtimeFileSystem';
+import { getAppletPackageArchivePath, getPackagePublicPath, SOS_CONFIG_LOCAL_FILENAME } from '../../runtimeFileSystem';
 import { forward } from '@signageos/forward-server-bridge/dist/client';
 
 export function getServerMessage(
@@ -22,10 +24,19 @@ export interface IServerOptions {
 	port: number;
 	overridePublicUrl?: string;
 	forwardServerUrl?: string;
+	/** Path to the applet source directory used for serving sos.config.local.json directly */
+	appletPath?: string;
 }
 
-export async function startAppletServer({ appletUid, appletVersion, port, overridePublicUrl, forwardServerUrl }: IServerOptions) {
-	const server = createHttpServer(appletUid, appletVersion);
+export async function startAppletServer({
+	appletUid,
+	appletVersion,
+	port,
+	overridePublicUrl,
+	forwardServerUrl,
+	appletPath,
+}: IServerOptions) {
+	const server = createHttpServer(appletUid, appletVersion, appletPath);
 	const forwarding = forwardServerUrl
 		? await forward({
 				localPort: port,
@@ -50,13 +61,14 @@ export async function startAppletServer({ appletUid, appletVersion, port, overri
 	return { stopServer, publicUrl };
 }
 
-function createHttpServer(appletUid: string, appletVersion: string) {
+function createHttpServer(appletUid: string, appletVersion: string, appletPath: string | undefined) {
 	const packagePublicPath = getPackagePublicPath(appletUid, appletVersion);
 	const packageArchivePath = getAppletPackageArchivePath(appletUid, appletVersion);
 
 	const app = express();
 	app.use(cors());
 	app.use(noCacheMiddleware);
+	app.get('/config', createConfigHandler(appletPath));
 	app.post('/log', bodyParser.json(), logHandler);
 	app.post('/error', bodyParser.json(), errorHandler);
 	app.use(packagePublicPath, logMiddleware, express.static(packageArchivePath));
@@ -90,6 +102,31 @@ const consoleTypeToLogLevel = (consoleType: ConsoleType) => {
 	} as const;
 	return levelsMap[consoleType] ?? 'info';
 };
+
+/**
+ * Creates a handler that serves the local configuration from `sos.config.local.json`.
+ * Reads directly from the applet source directory on every request so that changes
+ * are picked up immediately without requiring a rebuild.
+ * Returns the config JSON if the file exists and is valid, or an empty object `{}` otherwise.
+ * This endpoint is consumed by front-display on connected devices to apply local configuration.
+ */
+function createConfigHandler(appletPath: string | undefined) {
+	return async (_req: express.Request, res: express.Response) => {
+		const configPath = path.join(appletPath ?? process.cwd(), SOS_CONFIG_LOCAL_FILENAME);
+		try {
+			if (await fs.pathExists(configPath)) {
+				const content = await fs.readFile(configPath, 'utf8');
+				const config = JSON.parse(content);
+				log('info', `Serving local config from ${configPath}`);
+				res.json(config);
+				return;
+			}
+		} catch (error) {
+			log('warning', `Failed to read local config: ${error}`);
+		}
+		res.json({});
+	};
+}
 
 const logHandler = (req: express.Request, res: express.Response) => {
 	const data: LogData = req.body;

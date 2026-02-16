@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Support for `sos.config.local.json` on real connected devices via new `/config` endpoint on the dev server
+
+### Fixed
+- Fix applet file watcher race condition with chokidar when watching non-existent `sos.config.local.json`
 
 ## [2.2.0] - 2026-02-16
 ### Fixed
