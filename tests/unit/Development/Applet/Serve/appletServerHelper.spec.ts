@@ -1,5 +1,12 @@
 import should from 'should';
-import { formatBytes } from '../../../../../src/Development/Applet/Serve/appletServerHelper';
+import * as fs from 'fs-extra';
+import * as http from 'http';
+import * as os from 'os';
+import * as path from 'path';
+import sinon from 'sinon';
+import { formatBytes, startAppletServer } from '../../../../../src/Development/Applet/Serve/appletServerHelper';
+import { SOS_CONFIG_LOCAL_FILENAME } from '../../../../../src/Development/runtimeFileSystem';
+import * as logModule from '../../../../../src/Console/log';
 
 describe('Development.Applet.Serve.appletServerHelper', function () {
 	describe('formatBytes', function () {
@@ -32,6 +39,90 @@ describe('Development.Applet.Serve.appletServerHelper', function () {
 		it('should clamp to GB for values larger than TB', function () {
 			// 1 TB = 1099511627776 bytes, should still show as GB since TB unit is not defined
 			should(formatBytes(1099511627776)).equal('1024.00 GB');
+		});
+	});
+
+	describe('GET /config endpoint', function () {
+		const appletUid = 'test-config-applet';
+		const appletVersion = '1.0.0';
+		let stopServer: () => Promise<void>;
+		let logStub: sinon.SinonStub;
+		let tmpDir: string;
+		const port = 18099;
+
+		beforeEach(async function () {
+			logStub = sinon.stub(logModule, 'log');
+			tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'sdk-test-config-'));
+		});
+
+		afterEach(async function () {
+			if (stopServer) {
+				await stopServer();
+			}
+			logStub.restore();
+			await fs.remove(tmpDir);
+		});
+
+		function httpGet(url: string): Promise<{ statusCode: number; body: string }> {
+			return new Promise((resolve, reject) => {
+				http
+					.get(url, (res) => {
+						let data = '';
+						res.on('data', (chunk) => (data += chunk));
+						res.on('end', () => resolve({ statusCode: res.statusCode!, body: data }));
+					})
+					.on('error', reject);
+			});
+		}
+
+		it('should return config JSON when sos.config.local.json exists in applet directory', async function () {
+			const configContent = { apiKey: 'test-key', debug: true, timeout: 5000 };
+			const configPath = path.join(tmpDir, SOS_CONFIG_LOCAL_FILENAME);
+			await fs.writeFile(configPath, JSON.stringify(configContent));
+
+			const server = await startAppletServer({ appletUid, appletVersion, port, appletPath: tmpDir });
+			stopServer = server.stopServer;
+
+			const response = await httpGet(`http://localhost:${port}/config`);
+			should(response.statusCode).equal(200);
+			should(JSON.parse(response.body)).deepEqual(configContent);
+		});
+
+		it('should return empty object when no config file exists', async function () {
+			const server = await startAppletServer({ appletUid, appletVersion, port, appletPath: tmpDir });
+			stopServer = server.stopServer;
+
+			const response = await httpGet(`http://localhost:${port}/config`);
+			should(response.statusCode).equal(200);
+			should(JSON.parse(response.body)).deepEqual({});
+		});
+
+		it('should return empty object when config file contains invalid JSON', async function () {
+			const configPath = path.join(tmpDir, SOS_CONFIG_LOCAL_FILENAME);
+			await fs.writeFile(configPath, '{ invalid json }');
+
+			const server = await startAppletServer({ appletUid, appletVersion, port, appletPath: tmpDir });
+			stopServer = server.stopServer;
+
+			const response = await httpGet(`http://localhost:${port}/config`);
+			should(response.statusCode).equal(200);
+			should(JSON.parse(response.body)).deepEqual({});
+		});
+
+		it('should handle nested configuration objects', async function () {
+			const configContent = {
+				api: { key: 'test-key', endpoint: 'https://api.example.com' },
+				features: { experimental: true },
+			};
+			const configPath = path.join(tmpDir, SOS_CONFIG_LOCAL_FILENAME);
+			await fs.writeFile(configPath, JSON.stringify(configContent));
+
+			const server = await startAppletServer({ appletUid, appletVersion, port, appletPath: tmpDir });
+			stopServer = server.stopServer;
+
+			const response = await httpGet(`http://localhost:${port}/config`);
+			should(response.statusCode).equal(200);
+			should(JSON.parse(response.body)).deepEqual(configContent);
 		});
 	});
 });
