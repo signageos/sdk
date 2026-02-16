@@ -16,6 +16,16 @@ export interface IPaginatedList<T> extends Array<T> {
 }
 
 export class PaginatedList<T> extends Array<T> implements IPaginatedList<T> {
+	/**
+	 * Return Array as the species for methods like .filter(), .map(), .slice() etc.
+	 * Without this, these methods would try to create a new PaginatedList,
+	 * which would fail because they pass different constructor arguments (length)
+	 * than PaginatedList expects (items[], getNextPage).
+	 */
+	static get [Symbol.species]() {
+		return Array;
+	}
+
 	constructor(
 		currentPageItems: T[],
 		public readonly getNextPage: () => Promise<PaginatedList<T> | null>,
