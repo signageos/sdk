@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- `GET /v1/applet/:appletUid/version/:appletVersion/file` endpoint now supports pagination for applets with >1000 files via Link header with `rel="next"`
+
+### Fixed
+- `PaginatedList` support for device list, applet version list and device test endpoints
 
 ## [2.3.0] - 2026-02-26
 ### Added

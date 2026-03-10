@@ -1,6 +1,7 @@
 import should from 'should';
-import { Api } from '../../../../../../src';
+import { Api, PaginatedList } from '../../../../../../src';
 import { opts } from '../../../helper';
+import AppletVersionFile from '../../../../../../src/RestApi/Applet/Version/File/AppletVersionFile';
 
 const api = new Api(opts);
 
@@ -79,8 +80,8 @@ describe('e2e.RestAPI - Applet Version File Pagination', function () {
 	});
 
 	it('should support getNextPage to fetch all files', async function () {
-		const allFiles: any[] = [];
-		let currentPage: any = await api.applet.version.file.list(testAppletUid, testAppletVersion);
+		const allFiles: AppletVersionFile[] = [];
+		let currentPage: PaginatedList<AppletVersionFile> | null = await api.applet.version.file.list(testAppletUid, testAppletVersion);
 
 		// Collect files from all pages
 		do {

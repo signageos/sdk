@@ -4,6 +4,7 @@ import { Resources } from '../resources';
 import IDeviceFilter from './IDeviceFilter';
 import Device from './Device';
 import IDevice, { IDeviceUpdatable } from './IDevice';
+import { PaginatedList } from '../../Lib/Pagination/PaginatedList';
 import DeviceAppVersionManagement from './AppVersion/DeviceAppVersionManagement';
 import DeviceAudioManagement from './Audio/DeviceAudioManagement';
 import DeviceAuthenticationManagement from './Authentication/DeviceAuthenticationManagement';
@@ -100,11 +101,9 @@ export default class DeviceManagement {
 	 * use api.device.deviceAlive.list() for device alive status
 	 * use api.device.telemetry.listLatest() for latest telemetry readings
 	 */
-	public async list(filter: IDeviceFilter = {}): Promise<IDevice[]> {
+	public async list(filter: IDeviceFilter = {}): Promise<PaginatedList<IDevice>> {
 		const response = await getResource(this.organizationDI.options, Resources.Device, filter);
-		const data: IDevice[] = await parseJSONResponse(response);
-
-		return data.map((item: IDevice) => new Device(item));
+		return this.organizationDI.paginator.getPaginatedListFromResponse(response, (item: IDevice) => new Device(item));
 	}
 
 	/**

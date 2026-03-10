@@ -1,6 +1,7 @@
 import should from 'should';
-import { Api } from '../../../../../../src';
+import { Api, PaginatedList } from '../../../../../../src';
 import { opts } from '../../../helper';
+import AppletVersionFile from '../../../../../../src/RestApi/Applet/Version/File/AppletVersionFile';
 
 const api = new Api(opts);
 
@@ -39,7 +40,7 @@ describe('e2e.RestAPI - Applet Version File Pagination (Simple)', function () {
 		console.log(`Testing with version: ${version.version}`);
 
 		// Now test the file listing with pagination
-		const firstPage = await api.applet.version.file.list(applet.uid, version.version);
+		const firstPage: PaginatedList<AppletVersionFile> | null = await api.applet.version.file.list(applet.uid, version.version);
 
 		console.log(`First page contains ${firstPage.length} files`);
 
@@ -57,8 +58,8 @@ describe('e2e.RestAPI - Applet Version File Pagination (Simple)', function () {
 		should(typeof firstPage.getNextPage).equal('function');
 
 		// Try to fetch all pages
-		let allFiles: any[] = [];
-		let currentPage: any = firstPage;
+		let allFiles: AppletVersionFile[] = [];
+		let currentPage: PaginatedList<AppletVersionFile> | null = firstPage;
 		let pageCount = 1;
 
 		do {
