@@ -3,16 +3,20 @@ import IOptions from '../../IOptions';
 import { RESOURCE as APPLET } from '../AppletManagement';
 import IAppletTestSuite, { IAppletTestSuiteCreatable, IAppletTestSuiteUpdatable } from './IAppletTestSuite';
 import AppletTestSuite from './AppletTestSuite';
+import { Dependencies, createDependencies } from '../../Dependencies';
+import { PaginatedList } from '../../../Lib/Pagination/PaginatedList';
 
 export default class AppletTestSuiteManagement {
-	constructor(private options: IOptions) {}
+	private dependencies: Dependencies;
 
-	public async list(appletUid: string, appletVersion: string): Promise<IAppletTestSuite[]> {
+	constructor(private options: IOptions) {
+		this.dependencies = createDependencies(options);
+	}
+
+	public async list(appletUid: string, appletVersion: string): Promise<PaginatedList<IAppletTestSuite>> {
 		const url = AppletTestSuiteManagement.getResource(appletUid, appletVersion);
 		const response = await getResource(this.options, url);
-		const data: IAppletTestSuite[] = await parseJSONResponse(response);
-
-		return data.map((item: IAppletTestSuite) => new AppletTestSuite(item));
+		return this.dependencies.paginator.getPaginatedListFromResponse(response, (item: IAppletTestSuite) => new AppletTestSuite(item));
 	}
 
 	public async get(appletUid: string, appletVersion: string, identifier: string): Promise<IAppletTestSuite> {

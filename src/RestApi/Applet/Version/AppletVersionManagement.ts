@@ -6,21 +6,23 @@ import AppletVersion from './AppletVersion';
 import IAppletVersionFilter, { IAppletVersionListFilter } from './IAppletVersionFilter';
 import AppletVersionFileManagement from './File/AppletVersionFileManagement';
 import { checkAppletVersionUpdatable, checkAppletVersionCreatable } from './AppletVersionValidator';
+import { Dependencies, createDependencies } from '../../Dependencies';
+import { PaginatedList } from '../../../Lib/Pagination/PaginatedList';
 
 export const RESOURCE: string = 'version';
 
 export default class AppletVersionManagement {
 	public file: AppletVersionFileManagement;
+	private dependencies: Dependencies;
 
 	constructor(private options: IOptions) {
-		this.file = new AppletVersionFileManagement(options);
+		this.dependencies = createDependencies(options);
+		this.file = new AppletVersionFileManagement(this.dependencies);
 	}
 
-	public async list(appletUid: string, filter: IAppletVersionListFilter = {}): Promise<IAppletVersion[]> {
+	public async list(appletUid: string, filter: IAppletVersionListFilter = {}): Promise<PaginatedList<IAppletVersion>> {
 		const response = await getResource(this.options, AppletVersionManagement.getResource(appletUid), filter);
-		const data: IAppletVersion[] = await parseJSONResponse(response);
-
-		return data.map((item: IAppletVersion) => new AppletVersion(item));
+		return this.dependencies.paginator.getPaginatedListFromResponse(response, (item: IAppletVersion) => new AppletVersion(item));
 	}
 
 	public async get(appletUid: string, version: string, filter: IAppletVersionFilter = {}): Promise<IAppletVersion> {

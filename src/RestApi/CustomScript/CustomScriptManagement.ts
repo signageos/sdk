@@ -33,9 +33,27 @@ export class CustomScriptManagement {
 	}
 
 	public async create(data: ICustomScriptCreatable): Promise<ICustomScript> {
-		const options = { ...this.dependencies.options, followRedirects: true };
-		const response = await postResource(options, getUrl(), JSON.stringify(data));
-		return new CustomScript(await parseJSONResponse(response));
+		const response = await postResource(this.dependencies.options, getUrl(), JSON.stringify(data));
+		const locationHeader = response.headers.get('location');
+
+		if (!locationHeader) {
+			throw new Error("API didn't return location header for created custom script");
+		}
+
+		const customScriptUid = locationHeader.split('/').pop();
+		if (!customScriptUid) {
+			throw new Error(`Invalid location header: ${locationHeader}`);
+		}
+
+		// Wait a bit for eventual consistency before fetching
+		await new Promise((resolve) => setTimeout(resolve, 100));
+
+		const customScript = await this.get(customScriptUid);
+		if (!customScript) {
+			throw new Error(`Custom script ${customScriptUid} was created but could not be retrieved`);
+		}
+
+		return customScript;
 	}
 
 	public async update(customScriptUid: string, data: ICustomScriptUpdatable) {
