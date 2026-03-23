@@ -34,11 +34,36 @@ describe('e2e.RestAPI - Custom Script Version', () => {
 				},
 			];
 
-			const customScriptVersion = await api.customScript.version.create({ customScriptUid, version, configDefinition });
+			const jsApiVersion = '1.0.0';
+
+			const customScriptVersion = await api.customScript.version.create({ customScriptUid, version, configDefinition, jsApiVersion });
 
 			should(customScriptVersion.customScriptUid).be.equal(customScriptUid);
 			should(customScriptVersion.version).be.equal(version);
 			should(customScriptVersion.configDefinition).deepEqual(configDefinition);
+			should(customScriptVersion.jsApiVersion).be.equal(jsApiVersion);
+		});
+
+		it('should create custom script version without jsApiVersion', async () => {
+			const versionWithoutJsApi = '1.0.1';
+			const configDefinition = [
+				{
+					name: 'brightness',
+					valueType: 'number',
+					mandatory: true,
+					description: 'The brightness level to set',
+				},
+			];
+
+			const customScriptVersion = await api.customScript.version.create({
+				customScriptUid,
+				version: versionWithoutJsApi,
+				configDefinition,
+			});
+
+			should(customScriptVersion.jsApiVersion).be.undefined();
+
+			await api.customScript.version.delete({ customScriptUid, version: versionWithoutJsApi });
 		});
 	});
 
@@ -86,7 +111,9 @@ describe('e2e.RestAPI - Custom Script Version', () => {
 				},
 			];
 
-			await api.customScript.version.update({ customScriptUid, version, configDefinition });
+			const jsApiVersion = '2.0.0';
+
+			await api.customScript.version.update({ customScriptUid, version, configDefinition, jsApiVersion });
 
 			const customScriptVersion = await api.customScript.version.get({ customScriptUid, version });
 
@@ -94,6 +121,7 @@ describe('e2e.RestAPI - Custom Script Version', () => {
 			should(customScriptVersion!.customScriptUid).be.equal(customScriptUid);
 			should(customScriptVersion!.version).be.equal(version);
 			should(customScriptVersion!.configDefinition).deepEqual(configDefinition);
+			should(customScriptVersion!.jsApiVersion).be.equal(jsApiVersion);
 		});
 	});
 
