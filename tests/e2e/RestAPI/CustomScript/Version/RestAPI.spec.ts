@@ -34,7 +34,7 @@ describe('e2e.RestAPI - Custom Script Version', () => {
 				},
 			];
 
-			const jsApiVersion = '1.0.0';
+			const jsApiVersion = '8.5.3';
 
 			const customScriptVersion = await api.customScript.version.create({ customScriptUid, version, configDefinition, jsApiVersion });
 
@@ -111,7 +111,7 @@ describe('e2e.RestAPI - Custom Script Version', () => {
 				},
 			];
 
-			const jsApiVersion = '2.0.0';
+			const jsApiVersion = '8.5.3';
 
 			await api.customScript.version.update({ customScriptUid, version, configDefinition, jsApiVersion });
 
