@@ -60,7 +60,12 @@ export default class FirmwareVersionManagement {
 
 		await Promise.all(
 			bodyArr.map((bodyItem: any) => {
-				const file = _.find(settings.files, (item: IFile) => item.hash === bodyItem.upload.request.fields['Content-MD5']);
+				const file = _.find(settings.files, (item: IFile) => {
+					const contentMD5Field = bodyItem.upload.request.fields['Content-MD5'];
+					const contentMD5Hex = Buffer.from(contentMD5Field, 'base64').toString('hex');
+					// Fallback: if base64 decode didn't produce valid 32-char hex (old API returning hex directly), compare as-is
+					return /^[0-9a-f]{32}$/i.test(contentMD5Hex) ? item.hash === contentMD5Hex : item.hash === contentMD5Field;
+				});
 				if (!file) {
 					throw new Error('File not found');
 				}
