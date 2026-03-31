@@ -33,6 +33,10 @@ describe('FirmwareVersionManagement', () => {
 		uploaded: true,
 	};
 
+	// Content-MD5 values are base64-encoded (as returned by the API after the hex→base64 fix)
+	const hash1Base64 = Buffer.from('8e9c3ded774d7b021be452570e0aba10', 'hex').toString('base64'); // 'jpw97XdNewIb5FJXDgq6EA=='
+	const hash2Base64 = Buffer.from('8e9c3ded774d7b021be452570e0aba11', 'hex').toString('base64'); // 'jpw97XdNewIb5FJXDgq6EQ=='
+
 	const successCreateRes = [
 		{
 			upload: {
@@ -41,7 +45,7 @@ describe('FirmwareVersionManagement', () => {
 					fields: {
 						Key: 'test/file/path/testFileName',
 						'Content-Type': 'valid/type',
-						'Content-MD5': '8e9c3ded774d7b021be452570e0aba10',
+						'Content-MD5': hash1Base64,
 					},
 				},
 			},
@@ -56,7 +60,7 @@ describe('FirmwareVersionManagement', () => {
 					fields: {
 						Key: 'test/file/path/testFileName',
 						'Content-Type': 'valid/type',
-						'Content-MD5': '8e9c3ded774d7b021be452570e0aba11',
+						'Content-MD5': hash2Base64,
 					},
 				},
 			},
@@ -119,6 +123,49 @@ describe('FirmwareVersionManagement', () => {
 			],
 		};
 		await fm.create(validCreateClientReq);
+		should(true).true();
+	});
+
+	it('should create firmware with hex Content-MD5 fallback (old API compatibility)', async () => {
+		// Simulate old API returning hex Content-MD5 (not base64)
+		const hexCreateRes = [
+			{
+				upload: {
+					request: {
+						url: 'http://myNiceStorage/create',
+						fields: {
+							Key: 'test/file/path/testFileName',
+							'Content-Type': 'valid/type',
+							'Content-MD5': 'aabb00112233445566778899aabbccdd',
+						},
+					},
+				},
+				file: { url: 'final uploaded test file url' },
+			},
+		];
+
+		nock(nockOpts.url, {
+			reqheaders: { 'x-auth': `${nockOpts.auth.clientId}:${nockOpts.auth.secret}` },
+		})
+			.post('/v1/firmware/version')
+			.reply(200, hexCreateRes)
+			.put('/v1/firmware/version/webos/04.01.74')
+			.reply(200, successRes);
+
+		nock('http://myNiceStorage').post('/create').reply(204);
+
+		const createReq: IFirmwareVersionCreatable = {
+			applicationType: 'webos',
+			version: '04.01.74',
+			files: [
+				{
+					hash: 'aabb00112233445566778899aabbccdd',
+					content: createReadableStream('fallback content'),
+					size: 100,
+				},
+			],
+		};
+		await fm.create(createReq);
 		should(true).true();
 	});
 
