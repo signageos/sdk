@@ -32,7 +32,7 @@ export default class AppletManagement {
 		return new Applet(await parseJSONResponse(response));
 	}
 
-	public async create(settings: IAppletCreatable): Promise<Applet> {
+	public async create(settings: IAppletCreatable & { organizationUid?: string }): Promise<Applet> {
 		const { headers } = await postResource(this.dependencies.options, RESOURCE, JSON.stringify(settings));
 		const headerLink = headers.get('link');
 

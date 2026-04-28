@@ -1,6 +1,6 @@
 import nock from 'nock';
 
-import IOptions, { IAuthOptions } from '../../../src/RestApi/IOptions';
+import IOptions, { ILegacyAuthOptions } from '../../../src/RestApi/IOptions';
 import RequestError from '../../../src/RestApi/Error/RequestError';
 import { ApiVersions } from '../../../src/RestApi/apiVersions';
 
@@ -8,7 +8,7 @@ interface INockOptsParams {
 	version?: ApiVersions;
 }
 
-type TNockOpts = ({ version }: INockOptsParams) => IOptions & { auth: IAuthOptions };
+type TNockOpts = ({ version }: INockOptsParams) => IOptions & { auth: ILegacyAuthOptions };
 
 export const getNockOpts: TNockOpts = ({ version }: INockOptsParams) => ({
 	url: 'https://api.signageos.io',

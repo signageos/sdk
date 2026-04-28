@@ -11,7 +11,7 @@ export interface IRunner {
 	latestVersion?: string;
 }
 
-export type IRunnerCreatable = Pick<IRunner, 'name' | 'title' | 'description' | 'tagUids'>;
+export type IRunnerCreatable = Pick<IRunner, 'name' | 'title' | 'description' | 'tagUids'> & { organizationUid?: string };
 export type IRunnerUpdatable = Partial<Pick<IRunner, 'name' | 'title' | 'description' | 'tagUids'>>;
 
 export class Runner implements IRunner {

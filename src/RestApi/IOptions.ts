@@ -1,9 +1,18 @@
 import { ApiVersions } from './apiVersions';
 
-export interface IAuthOptions {
+/** Legacy authentication using clientId and secret pair (sent as `X-Auth: clientId:secret`). */
+export interface ILegacyAuthOptions {
 	clientId: string;
 	secret: string;
 }
+
+/** JWT authentication using an access token (sent as `X-Auth: <token>`). */
+export interface IJwtAuthOptions {
+	accessToken: string;
+}
+
+/** Authentication options — either legacy clientId:secret pair or a JWT access token. */
+export type IAuthOptions = ILegacyAuthOptions | IJwtAuthOptions;
 
 export type IAuthLikeOptions = IAuthOptions | (() => Promise<IAuthOptions>);
 

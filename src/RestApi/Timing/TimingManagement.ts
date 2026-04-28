@@ -27,7 +27,7 @@ export default class TimingManagement {
 		this.appletCommandManagement = new AppletCommandManagement(dependencies);
 	}
 
-	public async create(data: ITimingCreateOnly & ITimingUpdatable): Promise<Timing> {
+	public async create(data: ITimingCreateOnly & ITimingUpdatable & { organizationUid?: string }): Promise<Timing> {
 		this.assertV1();
 
 		await postResource(this.dependencies.options, TimingManagement.RESOURCE, JSON.stringify(data));
