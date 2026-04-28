@@ -15,13 +15,14 @@ const debug = Debug('@signageos/sdk:RestApi:requester');
 
 async function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options: IOptions, data?: BodyInit | Buffer): Promise<RequestInit> {
 	const authOptions = typeof options.auth === 'function' ? await options.auth() : options.auth;
+	const authHeader = 'accessToken' in authOptions ? authOptions.accessToken : authOptions.clientId + ':' + authOptions.secret;
 
 	const userAgent = createUserAgent(options);
 
 	return {
 		headers: {
 			'Content-Type': options.contentType ?? 'application/json',
-			'X-Auth': authOptions.clientId + ':' + authOptions.secret,
+			'X-Auth': authHeader,
 			'User-Agent': userAgent,
 		},
 		method,

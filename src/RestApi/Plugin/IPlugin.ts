@@ -9,5 +9,5 @@ export interface IPlugin {
 	latestVersion?: string;
 }
 
-export type IPluginCreatable = Pick<IPlugin, 'name' | 'title' | 'description' | 'tagUids'>;
+export type IPluginCreatable = Pick<IPlugin, 'name' | 'title' | 'description' | 'tagUids'> & { organizationUid?: string };
 export type IPluginUpdatable = Partial<Pick<IPlugin, 'name' | 'title' | 'description' | 'tagUids'>>;

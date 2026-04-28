@@ -29,6 +29,7 @@ export interface ILocationCreate {
 	address?: Address;
 	customId: ILocation['customId'];
 	description: ILocation['description'];
+	organizationUid?: string;
 }
 
 export interface ILocationUpdate {

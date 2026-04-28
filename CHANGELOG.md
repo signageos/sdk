@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Support JWT access token authentication via `X-Auth` header (discriminated union: `ILegacyAuthOptions | IJwtAuthOptions`)
+- `organizationUid` field on `IPluginCreatable`, `ICustomScriptCreatable`, `IRunnerCreatable`, `ILocationCreate`, `AppletManagement.create()`, and `TimingManagement.create()` for JWT auth flows where organization context is not implicit
+
 ## [2.5.0] - 2026-04-07
 ### Added
 - `jsApiVersion` field to custom script version create
