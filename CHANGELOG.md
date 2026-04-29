@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- `accessToken` field on `IOptions` for JWT auth support in `createDevelopment()` and `createApi*()` functions
+
+### Fixed
+- Strip `organizationUid` from timing create POST body to prevent API validation errors (already sent as query param)
+
 ## [2.6.1] - 2026-04-29
 
 ## [2.6.0] - 2026-04-28

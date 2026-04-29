@@ -29,8 +29,8 @@ export default class TimingManagement {
 
 	public async create(data: ITimingCreateOnly & ITimingUpdatable & { organizationUid?: string }): Promise<Timing> {
 		this.assertV1();
-
-		await postResource(this.dependencies.options, TimingManagement.RESOURCE, JSON.stringify(data));
+		const { organizationUid: _orgUid, ...bodyData } = data;
+		await postResource(this.dependencies.options, TimingManagement.RESOURCE, JSON.stringify(bodyData));
 		// v1 does not respond created uid
 		let timing: Timing | undefined;
 		do {

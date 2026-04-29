@@ -19,6 +19,12 @@ export interface IOptions {
 				/** @deprecated use token instead */
 				secret: string;
 		  };
+	/**
+	 * JWT access token for Auth0-based authentication.
+	 * When provided, this takes precedence over accountAuth and organizationAuth.
+	 * The token is sent as `X-Auth: <token>` header.
+	 */
+	accessToken?: string;
 	organizationUid?: string;
 	organizationAuth?: {
 		clientId: string;
@@ -53,6 +59,29 @@ export function createApiOrgAndAccountOptions(
 	accountOptions: IRestApiOptions;
 	organizationOptions: IRestApiOptions;
 } {
+	const generalOptions = {
+		url: options.url ?? parameters.apiUrl,
+		version: version ?? options.version ?? ApiVersions.V1,
+		contentType: options.contentType,
+		organizationUid: options.organizationUid ?? parameters.organizationUid,
+	};
+
+	// When a JWT access token is provided, use it for both account and organization auth
+	if (options.accessToken) {
+		const jwtAuth = { accessToken: options.accessToken };
+		const jwtAccountOptions: IRestApiOptions = {
+			...generalOptions,
+			clientVersions: options.clientVersions ?? {},
+			auth: jwtAuth,
+		};
+		const jwtOrganizationOptions: IRestApiOptions = {
+			...generalOptions,
+			clientVersions: options.clientVersions ?? {},
+			auth: jwtAuth,
+		};
+		return { accountOptions: jwtAccountOptions, organizationOptions: jwtOrganizationOptions };
+	}
+
 	if (options.accountAuth && 'accountId' in options.accountAuth) {
 		log(
 			'warning',
@@ -70,12 +99,6 @@ export function createApiOrgAndAccountOptions(
 					tokenId: options.accountAuth?.accountId,
 					token: options.accountAuth?.secret,
 				};
-
-	const generalOptions = {
-		url: options.url ?? parameters.apiUrl,
-		version: version ?? options.version ?? ApiVersions.V1,
-		contentType: options.contentType,
-	};
 
 	const accountOptions: IRestApiOptions = {
 		...generalOptions,
