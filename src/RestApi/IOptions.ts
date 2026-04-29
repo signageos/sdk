@@ -37,6 +37,12 @@ interface IOptions {
 	 * It will return the final response.
 	 */
 	followRedirects?: boolean;
+	/**
+	 * Organization UID for JWT-authenticated requests.
+	 * When using Auth0 JWT auth, the API needs to know which organization the request is for.
+	 * This is sent as a query parameter `organizationUid` on all requests.
+	 */
+	organizationUid?: string;
 }
 
 export default IOptions;

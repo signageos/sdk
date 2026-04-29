@@ -147,4 +147,74 @@ describe('requester', function () {
 			should(scope.isDone()).equal(true);
 		});
 	});
+
+	describe('organizationUid query param', function () {
+		afterEach(function () {
+			nock.cleanAll();
+		});
+
+		const BASE_URL = 'https://api.test.signageos.io';
+
+		it('should append organizationUid as query param when set on options', async function () {
+			const options: IOptions = {
+				url: BASE_URL,
+				auth: { accessToken: 'test-jwt-token' },
+				version: ApiVersions.V1,
+				clientVersions: {},
+				organizationUid: 'org-uid-123',
+			};
+
+			const scope = nock(BASE_URL).get('/v1/test-resource').query({ organizationUid: 'org-uid-123' }).reply(200, { ok: true });
+
+			await getResource(options, 'test-resource');
+			should(scope.isDone()).equal(true);
+		});
+
+		it('should merge organizationUid with existing query params', async function () {
+			const options: IOptions = {
+				url: BASE_URL,
+				auth: { accessToken: 'test-jwt-token' },
+				version: ApiVersions.V1,
+				clientVersions: {},
+				organizationUid: 'org-uid-456',
+			};
+
+			const scope = nock(BASE_URL)
+				.get('/v1/test-resource')
+				.query({ name: 'test', organizationUid: 'org-uid-456' })
+				.reply(200, { ok: true });
+
+			await getResource(options, 'test-resource', { name: 'test' });
+			should(scope.isDone()).equal(true);
+		});
+
+		it('should not append organizationUid when not set on options', async function () {
+			const options: IOptions = {
+				url: BASE_URL,
+				auth: { accessToken: 'test-jwt-token' },
+				version: ApiVersions.V1,
+				clientVersions: {},
+			};
+
+			const scope = nock(BASE_URL).get('/v1/test-resource').reply(200, { ok: true });
+
+			await getResource(options, 'test-resource');
+			should(scope.isDone()).equal(true);
+		});
+
+		it('should append organizationUid on POST requests', async function () {
+			const options: IOptions = {
+				url: BASE_URL,
+				auth: { accessToken: 'test-jwt-token' },
+				version: ApiVersions.V1,
+				clientVersions: {},
+				organizationUid: 'org-uid-789',
+			};
+
+			const scope = nock(BASE_URL).post('/v1/test-resource').query({ organizationUid: 'org-uid-789' }).reply(201, { created: true });
+
+			await postResource(options, 'test-resource', JSON.stringify({ name: 'test' }));
+			should(scope.isDone()).equal(true);
+		});
+	});
 });
