@@ -31,7 +31,8 @@ async function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options:
 }
 
 function createUri(options: IOptions, resource: string, queryParams?: any) {
-	return [options.url, options.version, resource].join('/') + prepareQueryParams(queryParams);
+	const mergedParams = options.organizationUid ? { ...queryParams, organizationUid: options.organizationUid } : queryParams;
+	return [options.url, options.version, resource].join('/') + prepareQueryParams(mergedParams);
 }
 
 export async function getResource(options: IOptions, path: string, query?: any) {
