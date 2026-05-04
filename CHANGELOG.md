@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.7.0] - 2026-05-04
+
 ### Added
 - `accessToken` field on `IOptions` for JWT auth support in `createDevelopment()` and `createApi*()` functions
 
