@@ -51,6 +51,7 @@ export default interface IDevice {
 	currentTime: {
 		time: Date;
 		timezone: string;
+		incorrectTime?: boolean;
 		updatedAt: Date;
 	};
 	supportedResolutions: ResolutionItem[];
