@@ -7,8 +7,15 @@ const rootPath = path.normalize(path.join(__dirname, '..'));
 const testsPath = rootPath + '/tests';
 const distPath = rootPath + '/dist';
 
-require('dotenv').config(); // try CWD path first
-require('dotenv').config({ path: path.join(rootPath, '.env') }); // default looks to lib path
+// Allow consumers (e.g. the CLI) to opt out of dotenv loading. When the SDK is used as a library,
+// loading its own shipped .env into process.env can clobber configuration that the consumer
+// resolves from other sources (e.g. ~/.sosrc). Set SOS_SKIP_DOTENV=1 before requiring the SDK
+// to disable both the CWD and SDK-package .env loading.
+const skipDotenv = !!process.env.SOS_SKIP_DOTENV && process.env.SOS_SKIP_DOTENV !== '0' && process.env.SOS_SKIP_DOTENV !== 'false';
+if (!skipDotenv) {
+	require('dotenv').config(); // try CWD path first
+	require('dotenv').config({ path: path.join(rootPath, '.env') }); // default looks to lib path
+}
 
 const requestMaxAttempts = process.env.SOS_REQUEST_MAX_ATTEMPTS ? Number.parseInt(process.env.SOS_REQUEST_MAX_ATTEMPTS) : 3;
 const configurableEnvVars = [
@@ -26,10 +33,10 @@ for (const envVar of configurableEnvVars) {
 	}
 }
 
+// SOS_API_URL is no longer required at module load. Consumers that don't rely on the SDK's
+// shipped .env (e.g. the CLI, which resolves the URL from ~/.sosrc) can opt out via
+// SOS_SKIP_DOTENV and pass `options.url` to the relevant SDK functions instead.
 const apiUrl = process.env.SOS_API_URL;
-if (!apiUrl) {
-	throw new Error(`Environment variable SOS_API_URL is required`);
-}
 
 export const parameters = {
 	environment,

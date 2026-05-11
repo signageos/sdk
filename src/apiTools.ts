@@ -44,12 +44,21 @@ export function createDefaultOptions(
 	version: ApiVersions.V1 | ApiVersions.V2 = ApiVersions.V1,
 ): IOptions & Required<Pick<IOptions, 'url'>> {
 	return {
-		url: parameters.apiUrl,
+		url: requireApiUrl(parameters.apiUrl),
 		version: version,
 		accountAuth: parameters.accountAuth,
 		organizationUid: parameters.organizationUid,
 		organizationAuth: parameters.organizationAuth,
 	};
+}
+
+function requireApiUrl(url: string | undefined): string {
+	if (!url) {
+		throw new Error(
+			`API URL is not configured. Set the SOS_API_URL environment variable, pass "url" in options, or configure a profile via ~/.sosrc.`,
+		);
+	}
+	return url;
 }
 
 export function createApiOrgAndAccountOptions(
@@ -60,7 +69,7 @@ export function createApiOrgAndAccountOptions(
 	organizationOptions: IRestApiOptions;
 } {
 	const generalOptions = {
-		url: options.url ?? parameters.apiUrl,
+		url: requireApiUrl(options.url ?? parameters.apiUrl),
 		version: version ?? options.version ?? ApiVersions.V1,
 		contentType: options.contentType,
 		organizationUid: options.organizationUid ?? parameters.organizationUid,
