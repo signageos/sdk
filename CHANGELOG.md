@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
-- option `SOS_SKIP_DOTENV` to disable loading .env by default
+- option `SOS_SKIP_DOTENV` to implicit configuration, specifically from .env and environment variables 
 
 ## [2.7.0] - 2026-05-04
 
