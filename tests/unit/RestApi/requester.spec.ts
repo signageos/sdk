@@ -216,5 +216,21 @@ describe('requester', function () {
 			await postResource(options, 'test-resource', JSON.stringify({ name: 'test' }));
 			should(scope.isDone()).equal(true);
 		});
+
+		it('should not append organizationUid for legacy clientId:secret auth', async function () {
+			const options: IOptions = {
+				url: BASE_URL,
+				auth: { clientId: 'my-client-id', secret: 'my-secret' },
+				version: ApiVersions.V1,
+				clientVersions: {},
+				organizationUid: 'org-uid-legacy',
+			};
+
+			// Expect the request WITHOUT organizationUid in query params
+			const scope = nock(BASE_URL).get('/v1/test-resource').reply(200, { ok: true });
+
+			await getResource(options, 'test-resource');
+			should(scope.isDone()).equal(true);
+		});
 	});
 });

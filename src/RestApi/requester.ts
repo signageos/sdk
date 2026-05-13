@@ -30,8 +30,16 @@ async function createOptions(method: 'POST' | 'GET' | 'PUT' | 'DELETE', options:
 	};
 }
 
+function isJwtAuth(auth: IOptions['auth']): boolean {
+	return typeof auth !== 'function' && 'accessToken' in auth;
+}
+
 function createUri(options: IOptions, resource: string, queryParams?: any) {
-	const mergedParams = options.organizationUid ? { ...queryParams, organizationUid: options.organizationUid } : queryParams;
+	// organizationUid is only needed as a query param for JWT (accessToken) auth.
+	// For legacy clientId:secret auth, the organization is already identified by the credentials themselves.
+	// Sending organizationUid as a query param for legacy-auth endpoints causes INVALID_QUERY_PARAMS errors.
+	const mergedParams =
+		options.organizationUid && isJwtAuth(options.auth) ? { ...queryParams, organizationUid: options.organizationUid } : queryParams;
 	return [options.url, options.version, resource].join('/') + prepareQueryParams(mergedParams);
 }
 
