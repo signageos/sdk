@@ -10,6 +10,7 @@ import {
 	TELEMETRY_BRIGHTNESS_1,
 	DEVICE_TELEMETRY_1,
 	DEVICE_TELEMETRY_2,
+	DEVICE_TELEMETRY_DATETIME,
 	DEVICE_TELEMETRY_3,
 } from '../../../../fixtures/Device/Telemetry/DeviceTelemetry.fixtures';
 import { getNockOpts, nockAuthHeader1 } from '../../helper';
@@ -43,6 +44,7 @@ describe('Unit.RestApi.Device.Telemetry.DeviceTelemetryManagement', () => {
 					telemetries: {
 						[DeviceTelemetryType.ONLINE_STATUS]: DEVICE_TELEMETRY_1,
 						[DeviceTelemetryType.REMOTE_CONTROL]: DEVICE_TELEMETRY_2,
+						[DeviceTelemetryType.DATETIME]: DEVICE_TELEMETRY_DATETIME,
 					},
 				},
 				{
@@ -68,6 +70,7 @@ describe('Unit.RestApi.Device.Telemetry.DeviceTelemetryManagement', () => {
 				telemetries: {
 					[DeviceTelemetryType.ONLINE_STATUS]: DEVICE_TELEMETRY_1,
 					[DeviceTelemetryType.REMOTE_CONTROL]: DEVICE_TELEMETRY_2,
+					[DeviceTelemetryType.DATETIME]: DEVICE_TELEMETRY_DATETIME,
 				},
 			});
 
@@ -78,6 +81,7 @@ describe('Unit.RestApi.Device.Telemetry.DeviceTelemetryManagement', () => {
 		should(telemetries).be.deepEqual({
 			[DeviceTelemetryType.ONLINE_STATUS]: DEVICE_TELEMETRY_1,
 			[DeviceTelemetryType.REMOTE_CONTROL]: DEVICE_TELEMETRY_2,
+			[DeviceTelemetryType.DATETIME]: DEVICE_TELEMETRY_DATETIME,
 		});
 	});
 });
