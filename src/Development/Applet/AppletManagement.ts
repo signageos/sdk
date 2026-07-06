@@ -8,7 +8,12 @@ import { AppletIdentificationManagement } from './Identification/AppletIdentific
 import { AppletServeManagement, IServeOptions } from './Serve/AppletServeManagement';
 import { AppletWatchManagement, IWatchOptions } from './Watch/AppletWatchManagement';
 
-export interface IHotReloadOptions extends Omit<IServeOptions, 'appletUid' | 'appletVersion' | 'appletPath'>, IWatchOptions {}
+export interface IHotReloadOptions extends Omit<IServeOptions, 'appletUid' | 'appletVersion' | 'appletPath'>, IWatchOptions {
+	/** Explicit applet UID. When provided, the ambiguous lookup by package.json name is skipped. */
+	appletUid?: string;
+	/** Explicit applet version. When provided, the version from package.json is not used. */
+	appletVersion?: string;
+}
 
 /**
  * Applet management contains all applet related functionality for development.
@@ -38,7 +43,10 @@ export class AppletManagement {
 	 * and reload applet on all connected devices
 	 */
 	public async startHotReload(options: IHotReloadOptions) {
-		const { appletUid, appletVersion } = await this.identification.getAppletUidAndVersion(options.appletPath);
+		const { appletUid, appletVersion } = await this.identification.getAppletUidAndVersion(options.appletPath, {
+			appletUid: options.appletUid,
+			appletVersion: options.appletVersion,
+		});
 
 		const buildAndReload = async () => {
 			const build = await this.build.build({
