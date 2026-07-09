@@ -30,6 +30,7 @@ type Parameters = typeof staticPaths & {
 	apiUrl: string | undefined;
 	requestMaxAttempts: number;
 	organizationUid: string | undefined;
+	appletUid: string | undefined;
 	forwardServerUrl: string | undefined;
 	organizationAuth: { clientId: string; secret: string } | undefined;
 	accountAuth: { tokenId: string; token: string } | undefined;
@@ -42,6 +43,7 @@ function buildExplicitParameters(): Parameters {
 		apiUrl: undefined,
 		requestMaxAttempts: 3,
 		organizationUid: undefined,
+		appletUid: undefined,
 		forwardServerUrl: undefined,
 		organizationAuth: undefined,
 		accountAuth: undefined,
@@ -73,6 +75,7 @@ function buildImplicitParameters(): Parameters {
 		apiUrl: process.env.SOS_API_URL,
 		requestMaxAttempts: process.env.SOS_REQUEST_MAX_ATTEMPTS ? Number.parseInt(process.env.SOS_REQUEST_MAX_ATTEMPTS) : 3,
 		organizationUid: process.env.SOS_ORGANIZATION_UID,
+		appletUid: process.env.SOS_APPLET_UID,
 		forwardServerUrl: process.env.SOS_FORWARD_SERVER_URL,
 		organizationAuth:
 			process.env.SOS_AUTH_CLIENT_ID && process.env.SOS_AUTH_SECRET
