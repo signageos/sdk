@@ -72,6 +72,18 @@ export default class AppletVersionManagement {
 		await putResource(options, path, data);
 	}
 
+	public async publish(appletUid: string, version: string): Promise<void> {
+		await postResource(this.options, `${AppletVersionManagement.getUrl(appletUid, version)}publish`, undefined);
+	}
+
+	public async deprecate(appletUid: string, version: string): Promise<void> {
+		await postResource(this.options, `${AppletVersionManagement.getUrl(appletUid, version)}deprecate`, undefined);
+	}
+
+	public async renew(appletUid: string, version: string): Promise<void> {
+		await postResource(this.options, `${AppletVersionManagement.getUrl(appletUid, version)}renew`, undefined);
+	}
+
 	private static getResource(appletUid: string): string {
 		return `${APPLET}/${appletUid}/${RESOURCE}/`;
 	}
