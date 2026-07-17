@@ -44,7 +44,13 @@ describe('AppletVersionManagement', () => {
 		.get('/v1/applet/appletUid/version/1.1.0/')
 		.reply(200, validGetResp)
 		.put('/v1/applet/appletUid/version/1.1.0/?frontAppletVersion=1.1.1', validUpdateReqBody)
-		.reply(200, successRes);
+		.reply(200, successRes)
+		.post('/v1/applet/appletUid/version/1.1.0/publish')
+		.reply(204)
+		.post('/v1/applet/appletUid/version/1.1.0/deprecate')
+		.reply(204)
+		.post('/v1/applet/appletUid/version/1.1.0/renew')
+		.reply(204);
 
 	const avm = new AppletVersionManagement(nockOpts);
 
@@ -70,6 +76,21 @@ describe('AppletVersionManagement', () => {
 
 	it('should update existing applet version', async () => {
 		await avm.update('appletUid', '1.1.0', validUpdateReq);
+		should(true).true();
+	});
+
+	it('should publish applet version', async () => {
+		await avm.publish('appletUid', '1.1.0');
+		should(true).true();
+	});
+
+	it('should deprecate applet version', async () => {
+		await avm.deprecate('appletUid', '1.1.0');
+		should(true).true();
+	});
+
+	it('should renew applet version', async () => {
+		await avm.renew('appletUid', '1.1.0');
 		should(true).true();
 	});
 });
