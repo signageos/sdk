@@ -4,6 +4,7 @@ import { deleteResource, getResource, parseJSONResponse, postResource, putResour
 import { CustomScript } from './CustomScript';
 import { ICustomScript, ICustomScriptCreatable, ICustomScriptUpdatable } from './ICustomScript';
 import { CustomScriptVersionManagement } from './Version/CustomScriptVersionManagement';
+import { CustomScriptManagedManagement } from './CustomScriptManagedManagement';
 
 export function getUrl(customScriptUid?: string): string {
 	const baseUrl = `custom-script`;
@@ -12,9 +13,12 @@ export function getUrl(customScriptUid?: string): string {
 
 export class CustomScriptManagement {
 	public readonly version: CustomScriptVersionManagement;
+	/** Managed (global) custom scripts maintained by signageOS. Versions still use `this.version`. */
+	public readonly managed: CustomScriptManagedManagement;
 
 	constructor(private readonly dependencies: Dependencies) {
 		this.version = new CustomScriptVersionManagement(dependencies.options);
+		this.managed = new CustomScriptManagedManagement(dependencies);
 	}
 
 	public async list(): Promise<ICustomScript[]> {
@@ -44,9 +48,6 @@ export class CustomScriptManagement {
 		if (!customScriptUid) {
 			throw new Error(`Invalid location header: ${locationHeader}`);
 		}
-
-		// Wait a bit for eventual consistency before fetching
-		await new Promise((resolve) => setTimeout(resolve, 100));
 
 		const customScript = await this.get(customScriptUid);
 		if (!customScript) {
