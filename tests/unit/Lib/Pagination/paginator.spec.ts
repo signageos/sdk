@@ -15,16 +15,7 @@ describe('Lib.Pagination.Paginator', function () {
 			}
 		}
 
-		const TEST_PORT = 12345;
-		const restOptions: IOptions = {
-			auth: {
-				clientId: 'test',
-				secret: 'test',
-			},
-			clientVersions: {},
-			url: `http://localhost:${TEST_PORT}`,
-			version: ApiVersions.V1,
-		};
+		let restOptions: IOptions;
 		const testCreateEntity = (data: unknown) => new DataWrapper(data);
 
 		const PAGE_1_ITEMS = [{ id: 1 }, { id: 2 }];
@@ -34,24 +25,39 @@ describe('Lib.Pagination.Paginator', function () {
 
 		let server: http.Server;
 		let paginator: Paginator;
+		let testPort: number;
 
 		before('start http server', function (done) {
-			paginator = new Paginator(restOptions);
 			const app = express();
 			app.get(`/${ApiVersions.V1}/resource-single-page`, (_req, res) => {
-				res.writeHead(200, {
-					'Content-Type': 'application/json',
-				});
-				res.end(JSON.stringify(PAGE_1_ITEMS));
+				res.json(PAGE_1_ITEMS);
 			});
 			app.get(`/${ApiVersions.V1}/resource-multi-page`, (req, res) => {
 				const page = typeof req.query.page === 'string' ? Number.parseInt(req.query.page) : 1;
 				if (page < 3) {
-					res.header('Link', `<http://localhost:${TEST_PORT}/${ApiVersions.V1}/resource-multi-page?page=${page + 1}>; rel="next"`);
+					res.header('Link', `<http://localhost:${testPort}/${ApiVersions.V1}/resource-multi-page?page=${page + 1}>; rel="next"`);
 				}
 				res.send(pages[page - 1]);
 			});
-			server = app.listen(TEST_PORT, done);
+			server = app.listen(0, () => {
+				const address = server.address();
+				if (!address || typeof address === 'string') {
+					done(new Error('Failed to resolve test server port'));
+					return;
+				}
+				testPort = address.port;
+				restOptions = {
+					auth: {
+						clientId: 'test',
+						secret: 'test',
+					},
+					clientVersions: {},
+					url: `http://localhost:${testPort}`,
+					version: ApiVersions.V1,
+				};
+				paginator = new Paginator(restOptions);
+				done();
+			});
 		});
 
 		after('stop http server', function (done) {

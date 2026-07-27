@@ -24,6 +24,15 @@ export const DEVICE_TELEMETRY_2: ITelemetryItem<DeviceTelemetryType.REMOTE_CONTR
 		enabled: true,
 	},
 };
+export const DEVICE_TELEMETRY_DATETIME: ITelemetryItem<DeviceTelemetryType.DATETIME> = {
+	id: random.uuid(),
+	updatedAt: new Date('2022-01-02T11:00:00.000Z'),
+	data: {
+		timezone: 'Europe/Prague',
+		ntpServer: null,
+		incorrectTime: true,
+	},
+};
 export const DEVICE_TELEMETRY_3: ITelemetryItem<DeviceTelemetryType.ONLINE_STATUS> = {
 	id: random.uuid(),
 	updatedAt: new Date('2022-01-03T10:00:00.000Z'),

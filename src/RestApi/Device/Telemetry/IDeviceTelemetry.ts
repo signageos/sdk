@@ -200,6 +200,7 @@ export type LogData = {
 	[DeviceTelemetryType.DATETIME]: {
 		timezone: string | null;
 		ntpServer: string | null;
+		incorrectTime?: boolean;
 	};
 	[DeviceTelemetryType.POWER_ACTIONS_SCHEDULE]: IPowerActionsScheduleSettings[];
 	[DeviceTelemetryType.TEMPERATURE]: {

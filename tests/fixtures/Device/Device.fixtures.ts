@@ -49,6 +49,7 @@ export const DEVICE_1: IDevice = {
 	currentTime: {
 		time: new Date('2022-01-22T14:00:00.000Z'),
 		timezone: 'Europe/Prague',
+		incorrectTime: false,
 		updatedAt: new Date('2022-01-22T14:30:00.000Z'),
 	},
 	supportedResolutions: [{ width: 1920, height: 1080 }],
