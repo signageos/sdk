@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.10.1] - 2026-07-28
+
 ## [2.10.0] - 2026-07-17
 ### Added
 - `applet.version.publish(appletUid, version)`, `.deprecate(appletUid, version)`, and `.renew(appletUid, version)` — set an Applet Version's lifecycle status (publish / deprecate / renew)
